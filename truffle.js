@@ -6,7 +6,7 @@ module.exports = {
       network_id: "*" // Match any network id
     },
     ganacheGUI: {
-      host: "http://192.168.1.71",
+      host: "192.168.1.71",
       port: 7545,
       network_id: "*" // Match any network id
     }
