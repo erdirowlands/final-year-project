@@ -4,6 +4,9 @@ build
 app/src/contracts
 .DS_Store
 
+#env variables
+.env
+
 #ionic project
 *~
 *.sw[mnpcod]

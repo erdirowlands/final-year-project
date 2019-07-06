@@ -1,10 +1,11 @@
+const dotenv = require("dotenv");
 const HDWalletProvider = require("truffle-hdwallet-provider");
 
-const privateKey = "5D0A44B2F735738D8D121CF8866D45A516582C5DCFACD05E79F431FD3BBE1B98";
+dotenv.config();
 
 module.exports = {
   networks: {
-    
+
     development: {
       host: "192.168.1.71",
       port: 7545,
@@ -28,7 +29,7 @@ module.exports = {
 
     rinkeby: {
       provider: function() {
-        return new HDWalletProvider(privateKey, "https://rinkeby.infura.io/v3/82bc3d3749d049248ee3333c6efabc25");
+        return new HDWalletProvider(process.env.DAPP_PRIVATE_KEY, "https://rinkeby.infura.io/v3/82bc3d3749d049248ee3333c6efabc25");
       },
       network_id: '4',
     },
