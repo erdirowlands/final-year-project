@@ -39,4 +39,8 @@ export class WalletService {
   public createAccount(password: string) {
     const newAccount = this.web3ProviderService.getWeb3().eth.accounts.create();
   }
+
+  public signVotingTransaction(candidateAddress: string, ) {
+
+  }
 }
