@@ -58,7 +58,6 @@ export class WalletService {
     const transactionParameters = {
       to: candidateAddress,
       //from: this.accountAddress,
-      value: this.web3.utils.toWei(amount.toString(), 'ether'),
       gasPrice: 5000000000,
       gasLimit: 21000,
       //chainId: 3
