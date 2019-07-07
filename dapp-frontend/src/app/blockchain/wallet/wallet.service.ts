@@ -24,7 +24,7 @@ export class WalletService {
   public createWallet(password: string) {
     this.wallet = this.web3Instance.eth.accounts.wallet.create(1, this.web3Instance.utils.randomHex.toString());
     this.wallet.save(password);
-    // Encrypt the in-memory wallet.
+    // Encrypt the class member "wallet" because it's still in memory.
     this.wallet.encrypt(password);
   }
 
@@ -42,11 +42,11 @@ export class WalletService {
 
   public async signVotingTransaction(candidateAddress: string, password: string) {
 
-    const wallet: 
+    //const wallet: 
     if (this.wallet !== undefined) {
       const loadedWallet = this.loadWallet(password);
     }
-    this.wallet
+    //this.wallet
     const transactionParameters = {
       to: candidateAddress,
       //from: this.accountAddress,
@@ -55,6 +55,6 @@ export class WalletService {
       //chainId: 3
     };
 
-    this.web3Instance.signVotingTransaction();
+   // this.web3Instance.signVotingTransaction();
   }
 }
