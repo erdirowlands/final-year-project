@@ -10,7 +10,10 @@ export class WalletService {
 
   // Hold a user's collection of private keys. Each private key is unique
   // to an Election.
+  // @Dev might have to check if wallet has a value before using it, if not, 
+  // call wallet.load() on it if it has been cleared from memory.
   private wallet: any;
+  private web3Instance: any = this.web3ProviderService.getWeb3();
 
   public createAccountAndWallet(password: string) {
     // Create the PPK.
@@ -28,8 +31,14 @@ export class WalletService {
    * @param password the user's password which encrypts the wallet.
    */
   public createWallet(password: string) {
-    this.wallet = this.web3ProviderService.getWeb3().accounts.wallet.create();
+    this.wallet = this.web3Instance.accounts.wallet.create();
     this.wallet.save(password);
+    // Encrypt the in-memory wallet.
+    this.wallet.encrypt(password);
+  }
+
+  public loadWallet(password: string) {
+    return this.web3Instance.eth.accounts.wallet.load(password);
   }
 
   /**
@@ -37,10 +46,24 @@ export class WalletService {
    * unique Election.
    */
   public createAccount(password: string) {
-    const newAccount = this.web3ProviderService.getWeb3().eth.accounts.create();
+    const newAccount = this.web3Instance.eth.accounts.create();
   }
 
-  public signVotingTransaction(candidateAddress: string, ) {
+  public async signVotingTransaction(candidateAddress: string, password: string) {
 
+    if (this.wallet !== undefined) {
+      this.loadWallet(password)
+    }
+    this.wallet
+    const transactionParameters = {
+      to: candidateAddress,
+      //from: this.accountAddress,
+      value: this.web3.utils.toWei(amount.toString(), 'ether'),
+      gasPrice: 5000000000,
+      gasLimit: 21000,
+      //chainId: 3
+    };
+
+    this.web3Instance.signVotingTransaction();
   }
 }
