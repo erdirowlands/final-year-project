@@ -20,8 +20,8 @@ export class WalletService {
   }
 
   /**
-   * Create an Ethereum wallet file encrypted by a password which is saved in local storage
-   * @param password 
+   * Create an Ethereum wallet file encrypted by a password which is saved to local storage.
+   * @param password the user's password which encrypts the wallet.
    */
   public createWallet(password: string) {
     const wallet = this.web3ProviderService.getWeb3().accounts.wallet.create();
