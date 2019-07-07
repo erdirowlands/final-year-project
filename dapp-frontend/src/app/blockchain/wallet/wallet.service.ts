@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import Web3 from 'web3'
 import { Web3ProviderService } from '../provider/web3provider.service';
 
 @Injectable({
@@ -13,32 +14,22 @@ export class WalletService {
   // @Dev might have to check if wallet has a value before using it, if not, 
   // call wallet.load() on it if it has been cleared from memory.
   private wallet: any;
-  private web3Instance: any = this.web3ProviderService.getWeb3();
+  private web3Instance: Web3 = this.web3ProviderService.getWeb3();
 
-  public createAccountAndWallet(password: string) {
-    // Create the PPK.
-    const newAccount = this.web3ProviderService.getWeb3().eth.accounts.create();
-    // Generate an Ethereum Wallet.
-    const wallet = this.web3ProviderService.getWeb3().accounts.wallet.create();
-    // Add the PPK to the wallet and save to local storage.
-    wallet.add(newAccount);
-    wallet.save(password);
-    return wallet;
-  }
 
   /**
    * Create an Ethereum wallet file encrypted by a password which is then saved to local storage.
    * @param password the user's password which encrypts the wallet.
    */
   public createWallet(password: string) {
-    this.wallet = this.web3Instance.accounts.wallet.create();
+    this.wallet = this.web3Instance.eth.accounts.wallet.create(1, this.web3Instance.utils.randomHex.toString());
     this.wallet.save(password);
     // Encrypt the in-memory wallet.
     this.wallet.encrypt(password);
   }
 
   public loadWallet(password: string) {
-    return this.web3Instance.eth.accounts.wallet.load(password);
+    return this.web3Instance.eth.accounts.wallet.load(password, 'web3js_wallet');
   }
 
   /**
@@ -51,8 +42,9 @@ export class WalletService {
 
   public async signVotingTransaction(candidateAddress: string, password: string) {
 
+    const wallet: 
     if (this.wallet !== undefined) {
-      this.loadWallet(password)
+      const loadedWallet = this.loadWallet(password);
     }
     this.wallet
     const transactionParameters = {
