@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   ethereum: {
-    provider: 'https://rinkeby.infura.io/v3/82bc3d3749d049248ee3333c6efabc25',
+    provider: 'http://192.168.1.71:7545',
     privateKey: '5D0A44B2F735738D8D121CF8866D45A516582C5DCFACD05E79F431FD3BBE1B98',
   }
 
