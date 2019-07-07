@@ -8,6 +8,8 @@ export class WalletService {
 
   constructor(private web3ProviderService: Web3ProviderService) { }
 
+  // Hold a user's collection of private keys. Each private key is unique
+  // to an Election.
   private wallet: any;
 
   public createAccountAndWallet(password: string) {
@@ -22,8 +24,7 @@ export class WalletService {
   }
 
   /**
-   * Create an Ethereum wallet file encrypted by a password which is saved to local storage.
-   * Will hold a user's collection of private keys that is unique to each election.
+   * Create an Ethereum wallet file encrypted by a password which is then saved to local storage.
    * @param password the user's password which encrypts the wallet.
    */
   public createWallet(password: string) {
@@ -33,7 +34,7 @@ export class WalletService {
 
   /**
    * Create an Ethereum account with public and private key that is used for a
-   * particular election.
+   * unique Election.
    */
   public createAccount(password: string) {
     const newAccount = this.web3ProviderService.getWeb3().eth.accounts.create();
