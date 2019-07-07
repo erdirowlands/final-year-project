@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Environment } from '../../../environments/environment';
 import { Web3 } from "web3";
+import { environment } from '../../../environments/environment';
+
 
 
 @Injectable({
@@ -16,6 +17,6 @@ export class Web3ProviderService {
   private wallet: string[];
 
   constructor() { 
-    this.web3 = new Web3(new Web3.providers.HttpProvider(Environment.ethereum.provider));
+    this.web3 = new Web3(new Web3.providers.HttpProvider(environment.ethereum.provider));
   }
 }
