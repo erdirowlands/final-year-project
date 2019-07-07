@@ -8,7 +8,12 @@ import { Web3 } from "web3";
 })
 export class Web3Service {
 
+  // Provides a connection to the Ethereum blockchain and contains various utility methods.
   private web3: any;
+
+  // Hold all of the private keys for the user. One private key is used per election, and
+  // each private key must be validated by an administrator for each election.
+  private wallet: string[];
 
   constructor() { 
     this.web3 = new Web3(new Web3.providers.HttpProvider(Environment.ethereum.provider));
