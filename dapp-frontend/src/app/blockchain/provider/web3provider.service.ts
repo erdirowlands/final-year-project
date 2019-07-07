@@ -20,7 +20,7 @@ export class Web3ProviderService {
     this.createWeb3();
   }
 
-  private createWeb3() {
+  private async createWeb3() {
     this.web3 = new Web3(new Web3.providers.HttpProvider(environment.ethereum.provider));
   }
 
