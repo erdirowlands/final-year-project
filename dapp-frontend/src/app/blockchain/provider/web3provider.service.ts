@@ -6,7 +6,7 @@ import { Web3 } from "web3";
 @Injectable({
   providedIn: 'root'
 })
-export class Web3Service {
+export class Web3ProviderService {
 
   // Provides a connection to the Ethereum blockchain and contains various utility methods.
   private web3: any;
