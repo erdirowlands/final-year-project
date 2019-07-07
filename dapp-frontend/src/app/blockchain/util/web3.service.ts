@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { environment } from './environment';
+import { Environment } from './environment';
 import { Web3 } from "web3";
 
 
@@ -8,5 +8,9 @@ import { Web3 } from "web3";
 })
 export class Web3Service {
 
-  constructor() { }
+  private web3: any;
+
+  constructor() { 
+    this.web3 = new Web3(new Web3.providers.HttpProvider(Environment.ethereum.provider));
+  }
 }
