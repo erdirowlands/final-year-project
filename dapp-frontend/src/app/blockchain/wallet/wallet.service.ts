@@ -8,6 +8,8 @@ export class WalletService {
 
   constructor(private web3ProviderService: Web3ProviderService) { }
 
+  private wallet: any;
+
   public createAccountAndWallet(password: string) {
     // Create the PPK.
     const newAccount = this.web3ProviderService.getWeb3().eth.accounts.create();
@@ -25,8 +27,8 @@ export class WalletService {
    * @param password the user's password which encrypts the wallet.
    */
   public createWallet(password: string) {
-    const wallet = this.web3ProviderService.getWeb3().accounts.wallet.create();
-    wallet.save(password);
+    this.wallet = this.web3ProviderService.getWeb3().accounts.wallet.create();
+    this.wallet.save(password);
   }
 
   /**
