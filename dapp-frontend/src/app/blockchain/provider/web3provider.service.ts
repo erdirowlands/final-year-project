@@ -17,6 +17,11 @@ export class Web3ProviderService {
   private wallet: string[];
 
   constructor() { 
+    this.createWeb3();
+  }
+
+  private createWeb3() {
     this.web3 = new Web3(new Web3.providers.HttpProvider(environment.ethereum.provider));
   }
+
 }
