@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Environment } from './environment';
+import { Environment } from '../../../environments/environment';
 import { Web3 } from "web3";
 
 
