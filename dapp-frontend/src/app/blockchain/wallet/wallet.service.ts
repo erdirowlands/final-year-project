@@ -19,8 +19,6 @@ export class WalletService {
     return wallet;
   }
 
-  
-
   /**
    * Create an Ethereum wallet file encrypted by a password which is saved to local storage.
    * Will hold a user's collection of private keys that is unique to each election.
@@ -35,8 +33,7 @@ export class WalletService {
    * Create an Ethereum account with public and private key that is used for a
    * particular election.
    */
-  public createAccount() {
+  public createAccount(password: string) {
     const newAccount = this.web3ProviderService.getWeb3().eth.accounts.create();
-
   }
 }
