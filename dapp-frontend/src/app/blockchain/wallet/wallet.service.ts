@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import Web3 from 'web3'
 import { Web3ProviderService } from '../provider/web3provider.service';
 import  { Account } from 'web3/eth/accounts';
+import   Accounts  from 'web3/eth/accounts';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,7 @@ export class WalletService {
   // call wallet.load() on it if it has been cleared from memory.
   private wallet: Account[];
   private web3Instance: Web3;
+  private walletAccountsTest: Accounts;
 
   constructor(private web3ProviderService: Web3ProviderService) {
     this.web3Instance = this.web3ProviderService.getWeb3();
@@ -25,7 +27,16 @@ export class WalletService {
    */
   public createWallet(password: string) {
    //WORKING: let test = this.web3Instance.eth.accounts.wallet.create(1, this.web3Instance.utils.randomHex.toString());
-   this.wallet = this.web3Instance.eth.accounts.wallet.create(1, this.web3Instance.utils.randomHex.toString());
+   // this.wallet = this.web3Instance.eth.accounts.wallet.create(1, this.web3Instance.utils.randomHex.toString());
+  // let hey: any = this.web3Instance.eth.accounts.wallet.create(1, this.web3Instance.utils.randomHex.toString());
+  // let savedWallet = hey;
+  //savedWallet.save("saved key", "12345");
+   let hey = this.web3Instance.eth.accounts.wallet;
+   hey.create(1, this.web3Instance.utils.randomHex.toString());
+   hey.save(1, "TEST");
+   console.log(hey);
+
+   //this.walletAccountsTest.wallet.save("sd", "sad");
    //console.log(test);
    // test = this.web3Instance.eth.accounts.wallet.create(1, this.web3Instance.utils.randomHex.toString());
    // this.walletConstruct.wallet.save(password);
@@ -53,7 +64,7 @@ export class WalletService {
 
     //const wallet: 
     if (this.wallet !== undefined) {
-      const loadedWallet = this.loadWallet(password);
+  //    const loadedWallet = this.loadWallet(password);
     }
     //this.wallet
     const transactionParameters = {
