@@ -17,14 +17,12 @@ export class Web3ProviderService {
   public web3: any;
 
   constructor() { 
-    this.web3 = new Web3(new Web3.providers.HttpProvider('http://192.168.1.71:7545'));
-
+    this.createWeb3();
   }
 
-  private createWeb3() {
+  private async createWeb3() {
    // this.web3 = new Web3(new Web3.providers.HttpProvider(environment.ethereum.provider));
-   this.web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:7545'));
-   console.log(this.web3);
+   this.web3 = new Web3(new Web3.providers.HttpProvider(environment.ethereum.provider));
   }
 
   public getWeb3() {
