@@ -1,28 +1,30 @@
 import { Injectable } from '@angular/core';
 import Web3 from 'web3'
 import { Web3ProviderService } from '../provider/web3provider.service';
+import { Account } from 'web3/eth/accounts';
 
 @Injectable({
   providedIn: 'root'
 })
 export class WalletService {
 
-  constructor(private web3ProviderService: Web3ProviderService) { }
-
-  // Hold a user's collection of private keys. Each private key is unique
+    // Hold a user's collection of private keys. Each private key is unique
   // to an Election.
   // @Dev might have to check if wallet has a value before using it, if not, 
   // call wallet.load() on it if it has been cleared from memory.
-  private wallet: any;
-  private web3Instance: Web3 = this.web3ProviderService.getWeb3();
+  private wallet: Account;
+  private web3Instance: Web3;
 
+  constructor(private web3ProviderService: Web3ProviderService) { 
+    this.web3Instance = this.web3ProviderService.getWeb3();
+  }
 
   /**
    * Create an Ethereum wallet file encrypted by a password which is then saved to local storage.
    * @param password the user's password which encrypts the wallet.
    */
   public createWallet(password: string) {
-    this.wallet = this.web3Instance.eth.accounts.wallet.create(1, this.web3Instance.utils.randomHex.toString());
+    this.wallet[0] = this.web3Instance.eth.accounts.wallet.create(1, this.web3Instance.utils.randomHex.toString());
     this.wallet.save(password);
     // Encrypt the class member "wallet" because it's still in memory.
     this.wallet.encrypt(password);
