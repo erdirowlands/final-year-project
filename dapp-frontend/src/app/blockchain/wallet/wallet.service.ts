@@ -15,7 +15,7 @@ export class WalletService {
   private wallet: Account[];
   private web3Instance: Web3;
 
-  constructor(private web3ProviderService: Web3ProviderService) { 
+  constructor(private web3ProviderService: Web3ProviderService) {
     this.web3Instance = this.web3ProviderService.getWeb3();
   }
 
@@ -27,7 +27,7 @@ export class WalletService {
     this.wallet = this.web3Instance.eth.accounts.wallet.create(1, this.web3Instance.utils.randomHex.toString());
     this.wallet.save(password);
     // Encrypt the class member "wallet" because it's still in memory.
-    this.wallet.encrypt(password);
+    this.wallet[0].encrypt(password);
   }
 
   public loadWallet(password: string) {
