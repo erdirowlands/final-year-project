@@ -32,8 +32,13 @@ export class WalletService {
   // let savedWallet = hey;
   //savedWallet.save("saved key", "12345");
    let hey = this.web3Instance.eth.accounts.wallet;
-   hey.create(1, this.web3Instance.utils.randomHex.toString());
-   hey.save(1, "TEST");
+   console.log(hey);
+
+  // hey.load("1", "TEST");
+   console.log(hey);
+
+   //hey.create(1, this.web3Instance.utils.randomHex.toString());
+   //hey.save(1, "TEST");
    console.log(hey);
 
    //this.walletAccountsTest.wallet.save("sd", "sad");
