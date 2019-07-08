@@ -22,9 +22,11 @@ export class WalletService {
    * Create an Ethereum wallet file encrypted by a password which is then saved to local storage.
    * @param password the user's password which encrypts the wallet.
    */
-  public createWallet(password: string) {
+  public async createWallet(password: string) {
    this.wallet  = this.web3Instance.eth.accounts.wallet.create(1);
    console.log(this.wallet);
+   console.log(this.web3Instance);
+   await console.log(this.web3Instance.eth.getAccounts[0]);
   }
 
   public loadWallet(password: string, electionName: string) {
