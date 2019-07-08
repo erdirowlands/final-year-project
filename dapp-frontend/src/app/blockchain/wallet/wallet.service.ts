@@ -12,7 +12,7 @@ export class WalletService {
   // to an Election.
   // @Dev might have to check if wallet has a value before using it, if not,
   // call wallet.load() on it if it has been cleared from memory.
-  private walletConstruct: Account[];
+  private wallet: Account[];
   private web3Instance: Web3;
 
   constructor(private web3ProviderService: Web3ProviderService) {
@@ -25,7 +25,7 @@ export class WalletService {
    */
   public createWallet(password: string) {
    //WORKING: let test = this.web3Instance.eth.accounts.wallet.create(1, this.web3Instance.utils.randomHex.toString());
-   this.walletConstruct = this.web3Instance.eth.accounts.wallet.create(1, this.web3Instance.utils.randomHex.toString());
+   this.wallet = this.web3Instance.eth.accounts.wallet.create(1, this.web3Instance.utils.randomHex.toString());
    //console.log(test);
    // test = this.web3Instance.eth.accounts.wallet.create(1, this.web3Instance.utils.randomHex.toString());
    // this.walletConstruct.wallet.save(password);
@@ -33,11 +33,12 @@ export class WalletService {
    // this.walletConstruct[0].encrypt(password);
    //this.web3Instance
    console.log(this.web3ProviderService);
-   console.log(this.walletConstruct);
+   console.log(this.wallet);
   }
 
-  public loadWallet(password: string) {
-    return this.web3Instance.eth.accounts.wallet.load(password, 'web3js_wallet');
+  //
+  public loadWallet(password: string, electionName: string) {
+    return this.web3Instance.eth.accounts.wallet.load(password, 'electionName');
   }
 
   /**
@@ -51,7 +52,7 @@ export class WalletService {
   public async signVotingTransaction(candidateAddress: string, password: string) {
 
     //const wallet: 
-    if (this.walletConstruct !== undefined) {
+    if (this.wallet !== undefined) {
       const loadedWallet = this.loadWallet(password);
     }
     //this.wallet
