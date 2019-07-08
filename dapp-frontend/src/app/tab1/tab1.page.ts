@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { WalletService } from "../blockchain/wallet/wallet.service";
 
 @Component({
   selector: 'app-tab1',

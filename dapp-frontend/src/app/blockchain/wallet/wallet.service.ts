@@ -8,9 +8,9 @@ import Accounts from 'web3/eth/accounts';
 })
 export class WalletService {
 
-    // Hold a user's collection of private keys. Each private key is unique
+  // Hold a user's collection of private keys. Each private key is unique
   // to an Election.
-  // @Dev might have to check if wallet has a value before using it, if not, 
+  // @Dev might have to check if wallet has a value before using it, if not,
   // call wallet.load() on it if it has been cleared from memory.
   private walletConstruct: Accounts;
   private web3Instance: Web3;
