@@ -21,7 +21,8 @@ export class Web3ProviderService {
   }
 
   private async createWeb3() {
-    this.web3 = new Web3(new Web3.providers.HttpProvider(environment.ethereum.provider));
+   // this.web3 = new Web3(new Web3.providers.HttpProvider(environment.ethereum.provider));
+   this.web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:7545'));
   }
 
   public getWeb3() {
