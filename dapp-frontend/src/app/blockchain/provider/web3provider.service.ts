@@ -10,11 +10,9 @@ import { environment } from '../../../environments/environment';
 export class Web3ProviderService {
 
   // Provides a connection to the Ethereum blockchain and contains various utility methods.
-  public web3: Web3;
+  public web3: any;
 
-  // Hold all of the private keys for the user. One private key is used per election, and
-  // each private key must be validated by an administrator for each election.
-  private wallet: string[];
+
 
   constructor() { 
     this.createWeb3();

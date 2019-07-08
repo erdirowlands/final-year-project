@@ -1,21 +1,18 @@
 import { Injectable } from '@angular/core';
-import Web3 from 'web3'
 import { Web3ProviderService } from '../provider/web3provider.service';
-import  { Account } from 'web3/eth/accounts';
-import   Accounts  from 'web3/eth/accounts';
 
 @Injectable({
   providedIn: 'root'
 })
 export class WalletService {
 
-  // Hold a user's collection of private keys. Each private key is unique
-  // to an Election.
-  // @Dev might have to check if wallet has a value before using it, if not,
+
+  private web3Instance: any;
+
+  // Hold all of the private keys for the user. One private key is used per election,
+  // Dev might have to check if wallet has a value before using it, if not,
   // call wallet.load() on it if it has been cleared from memory.
-  private wallet: Account[];
-  private web3Instance: Web3;
-  private walletAccountsTest: Accounts;
+  private wallet: any;
 
   constructor(private web3ProviderService: Web3ProviderService) {
     this.web3Instance = this.web3ProviderService.getWeb3();
@@ -26,33 +23,10 @@ export class WalletService {
    * @param password the user's password which encrypts the wallet.
    */
   public createWallet(password: string) {
-   //WORKING: let test = this.web3Instance.eth.accounts.wallet.create(1, this.web3Instance.utils.randomHex.toString());
-   // this.wallet = this.web3Instance.eth.accounts.wallet.create(1, this.web3Instance.utils.randomHex.toString());
-  // let hey: any = this.web3Instance.eth.accounts.wallet.create(1, this.web3Instance.utils.randomHex.toString());
-  // let savedWallet = hey;
-  //savedWallet.save("saved key", "12345");
-   let hey = this.web3Instance.eth.accounts.wallet;
-   console.log(hey);
-
-  // hey.load("1", "TEST");
-   console.log(hey);
-
-   //hey.create(1, this.web3Instance.utils.randomHex.toString());
-   //hey.save(1, "TEST");
-   console.log(hey);
-
-   //this.walletAccountsTest.wallet.save("sd", "sad");
-   //console.log(test);
-   // test = this.web3Instance.eth.accounts.wallet.create(1, this.web3Instance.utils.randomHex.toString());
-   // this.walletConstruct.wallet.save(password);
-    // Encrypt the class member "wallet" because it's still in memory.
-   // this.walletConstruct[0].encrypt(password);
-   //this.web3Instance
-   console.log(this.web3ProviderService);
+   this.wallet  = this.web3Instance.eth.accounts.wallet.create(1);
    console.log(this.wallet);
   }
 
-  //
   public loadWallet(password: string, electionName: string) {
     return this.web3Instance.eth.accounts.wallet.load(password, 'electionName');
   }
