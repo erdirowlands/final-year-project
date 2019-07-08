@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import Web3 from 'web3'
 import { Web3ProviderService } from '../provider/web3provider.service';
-import { Account } from 'web3/eth/accounts';
+import Accounts from 'web3/eth/accounts';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,7 @@ export class WalletService {
   // to an Election.
   // @Dev might have to check if wallet has a value before using it, if not, 
   // call wallet.load() on it if it has been cleared from memory.
-  private wallet: Account[];
+  private wallet: Accounts;
   private web3Instance: Web3;
 
   constructor(private web3ProviderService: Web3ProviderService) {
@@ -24,7 +24,7 @@ export class WalletService {
    * @param password the user's password which encrypts the wallet.
    */
   public createWallet(password: string) {
-    this.wallet = this.web3Instance.eth.accounts.wallet.create(1, this.web3Instance.utils.randomHex.toString());
+    this.wallet[0] = this.web3Instance.eth.accounts.wallet.create(1, this.web3Instance.utils.randomHex.toString());
     this.wallet.save(password);
     // Encrypt the class member "wallet" because it's still in memory.
     this.wallet[0].encrypt(password);
