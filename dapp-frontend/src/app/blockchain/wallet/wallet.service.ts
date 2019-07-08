@@ -12,7 +12,7 @@ export class WalletService {
   // to an Election.
   // @Dev might have to check if wallet has a value before using it, if not, 
   // call wallet.load() on it if it has been cleared from memory.
-  private wallet: Accounts;
+  private walletConstruct: Accounts;
   private web3Instance: Web3;
 
   constructor(private web3ProviderService: Web3ProviderService) {
@@ -24,10 +24,10 @@ export class WalletService {
    * @param password the user's password which encrypts the wallet.
    */
   public createWallet(password: string) {
-    this.wallet[0] = this.web3Instance.eth.accounts.wallet.create(1, this.web3Instance.utils.randomHex.toString());
-    this.wallet.save(password);
+    this.walletConstruct[0] = this.web3Instance.eth.accounts.wallet.create(1, this.web3Instance.utils.randomHex.toString());
+    this.walletConstruct.wallet.save(password);
     // Encrypt the class member "wallet" because it's still in memory.
-    this.wallet[0].encrypt(password);
+    this.walletConstruct[0].encrypt(password);
   }
 
   public loadWallet(password: string) {
@@ -45,7 +45,7 @@ export class WalletService {
   public async signVotingTransaction(candidateAddress: string, password: string) {
 
     //const wallet: 
-    if (this.wallet !== undefined) {
+    if (this.walletConstruct !== undefined) {
       const loadedWallet = this.loadWallet(password);
     }
     //this.wallet
