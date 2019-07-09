@@ -19,23 +19,27 @@ export class WalletService {
   // TODO the loading of the wallet logic might be better servied in the login/registration component! Or maybe not?
   constructor(private web3ProviderService: Web3ProviderService) {
     this.web3Instance = this.web3ProviderService.getWeb3();
-    // Load the wallet if not in memory already.
-    if (this.wallet === undefined) {
-      this.loadWallet("password", this.electionWalletName,);
-      console.log(this.wallet);
-    }
-    else {
-       console.log('No wallet found, would you like to create one?');
-       this.createWallet("password");
-    }
-  
+    this.initialiseWallet("password");
+  }
+
+
+  public initialiseWallet(password: string) {
+       // Load the wallet if not in memory already.
+       if (this.wallet === undefined) {
+        this.loadWallet("password", this.electionWalletName);
+        console.log(this.wallet);
+      }
+      else {
+         console.log('No wallet found, would you like to create one?');
+         this.createWallet("password");
+      }
   }
 
   /**
    * Create an Ethereum wallet file encrypted by a password which is then saved to local storage.
    * @param password the user's password which encrypts the wallet.
    */
-  public createWallet(password: string) {
+  private createWallet(password: string) {
    this.wallet  = this.web3Instance.eth.accounts.wallet.create(1);
    this.wallet.save(password, this.electionWalletName);
    //this.wallet = this.web3Instance.eth.accounts.wallet.load("password", "university_voting_wallet");
