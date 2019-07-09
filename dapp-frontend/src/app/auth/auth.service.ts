@@ -9,11 +9,19 @@ export class AuthService {
 
   constructor() { }
 
-  login() { 
+  login() {
     this._userIsAuthenticated = true;
   }
 
   logout() {
     this._userIsAuthenticated = false;
   }
+
+  public get userIsAuthenticated() {
+    return this._userIsAuthenticated;
+  }
+  public set userIsAuthenticated(value) {
+    this._userIsAuthenticated = value;
+  }
+
 }
