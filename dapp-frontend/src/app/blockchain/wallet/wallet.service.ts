@@ -23,14 +23,24 @@ export class WalletService {
    * @param password the user's password which encrypts the wallet.
    */
   public async createWallet(password: string) {
-   this.wallet  = this.web3Instance.eth.accounts.wallet.create(1);
+   //this.wallet  = this.web3Instance.eth.accounts.wallet.create(1);
+   this.wallet = this.web3Instance.eth.accounts.wallet.load("password", "TEST");
    console.log(this.wallet);
-   console.log(this.web3Instance);
-   await console.log(this.web3Instance.eth.getAccounts[0]);
+
+   let accounts;
+   // This will return either the accounts from the node, or if present and in that
+   // case preferentially, the accounts in the "Web 3" wallet, i.e. if I've loaded
+   // a wallet from local storage or created a new one. WIll be handy for getting
+   // all private keys for elections, to show which elections a user if verified for.
+   accounts = await this.web3Instance.eth.getAccounts();
+   console.log(accounts);
   }
 
+  // TODO Change .load() to use function params.
+  // TODO Should I return the wallet and pass value to caller, or set the class member wallet
+  // directly here?
   public loadWallet(password: string, electionName: string) {
-    return this.web3Instance.eth.accounts.wallet.load(password, 'electionName');
+    return this.web3Instance.eth.accounts.wallet.load("password", 'TEST');
   }
 
   /**
