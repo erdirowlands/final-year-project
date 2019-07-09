@@ -9,7 +9,7 @@ import { WalletService } from "../blockchain/wallet/wallet.service";
 export class Tab1Page {
 
   constructor(private walletService: WalletService) {
-    this.walletService.createWallet('erdi');
+   // this.walletService.createWallet('erdi');
   }
 
 }

@@ -5,7 +5,7 @@ import { environment } from '../../../environments/environment';
 
 
 @Injectable({
-  providedIn: 'root' 
+  providedIn: 'root'
 })
 export class Web3ProviderService {
 
@@ -23,6 +23,7 @@ export class Web3ProviderService {
   private async createWeb3() {
    // this.web3 = new Web3(new Web3.providers.HttpProvider(environment.ethereum.provider));
    this.web3 = new Web3(new Web3.providers.HttpProvider(environment.ethereum.provider));
+   console.log(this.web3);
   }
 
   public getWeb3() {
