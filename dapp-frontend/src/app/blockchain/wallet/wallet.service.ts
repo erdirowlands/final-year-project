@@ -14,17 +14,21 @@ export class WalletService {
   // call wallet.load() on it if it has been cleared from memory.
   private wallet: any;
 
-  constructor(private web3ProviderService: Web3ProviderService) {
+  constructor(private web3ProviderService: Web3ProviderService, password: string, election) {
     this.web3Instance = this.web3ProviderService.getWeb3();
+    // Load the wallet if not in memory already.
+    if (!this.wallet) {
+      this.loadWallet("password"); 
+    }
   }
 
   /**
    * Create an Ethereum wallet file encrypted by a password which is then saved to local storage.
    * @param password the user's password which encrypts the wallet.
    */
-  public async createWallet(password: string) {
+  public createWallet(password: string) {
    //this.wallet  = this.web3Instance.eth.accounts.wallet.create(1);
-   this.wallet = this.web3Instance.eth.accounts.wallet.load("password", "TEST");
+   this.wallet = this.web3Instance.eth.accounts.wallet.load("password", "university_voting_wallet");
    console.log(this.wallet);
 
    let accounts;
@@ -39,7 +43,7 @@ export class WalletService {
   // TODO Change .load() to use function params.
   // TODO Should I return the wallet and pass value to caller, or set the class member wallet
   // directly here? - Think we'll go with the second option, and make this private.
-  private loadWallet(password: string, electionName: string) {
+  private loadWallet(password: string) {
     this.wallet = this.web3Instance.eth.accounts.wallet.load("password", 'TEST');
   }
 
