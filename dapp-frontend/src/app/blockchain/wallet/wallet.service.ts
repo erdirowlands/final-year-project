@@ -6,6 +6,7 @@ import { Web3ProviderService } from '../provider/web3provider.service';
 })
 export class WalletService {
 
+  // TOTO Create auth service that should use fingerprint or password to provide password for loading wallet (or creating)
 
   private web3Instance: any;
   private electionWalletName = 'university_voting_wallet';
@@ -15,12 +16,12 @@ export class WalletService {
   // call wallet.load() on it if it has been cleared from memory.
   private wallet: any;
 
-  // TODO the loading of the wallet logic might be better servied in the login/registration component!
+  // TODO the loading of the wallet logic might be better servied in the login/registration component! Or maybe not?
   constructor(private web3ProviderService: Web3ProviderService) {
     this.web3Instance = this.web3ProviderService.getWeb3();
     // Load the wallet if not in memory already.
     if (this.wallet === undefined) {
-      this.loadWallet(this.electionWalletName, 'university_voting_wallet');
+      this.loadWallet("password", this.electionWalletName,);
       console.log(this.wallet);
     }
     else {
