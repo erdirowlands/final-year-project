@@ -38,9 +38,9 @@ export class WalletService {
 
   // TODO Change .load() to use function params.
   // TODO Should I return the wallet and pass value to caller, or set the class member wallet
-  // directly here?
-  public loadWallet(password: string, electionName: string) {
-    return this.web3Instance.eth.accounts.wallet.load("password", 'TEST');
+  // directly here? - Think we'll go with the second option, and make this private.
+  private loadWallet(password: string, electionName: string) {
+    this.wallet = this.web3Instance.eth.accounts.wallet.load("password", 'TEST');
   }
 
   /**
