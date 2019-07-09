@@ -31,6 +31,7 @@
     "bip39": "^3.0.2",
     "core-js": "^2.5.4",
     "hdkey": "^1.1.1",
+    "ipfs-http-client": "^32.0.1",
     "rxjs": "~6.5.1",
     "truffle-contract": "^4.0.23",
     "tslib": "^1.9.0",
