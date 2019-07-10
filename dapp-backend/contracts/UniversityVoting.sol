@@ -13,7 +13,7 @@ for the Election to be fully created, the customer will have to manually fund th
 has access to this smart contract, then we can assume they've paid me with a debit card, or something, and I've authorised an account creation and added it to a list of approved addresses?  e*/
 contract UniversityVoting is Ownable {
 
-    struct InstitutionsDetails {
+    struct Institution {
         string institutionName;
         mapping(address => InstitutionAdmin) adminInfo;
     }
