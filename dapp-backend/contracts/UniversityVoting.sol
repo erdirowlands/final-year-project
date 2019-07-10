@@ -13,32 +13,7 @@ for the Election to be fully created, the customer will have to manually fund th
 has access to this smart contract, then we can assume they've paid me with a debit card, or something, and I've authorised an account creation and added it to a list of approved addresses?  e*/
 contract UniversityVoting is Ownable {
 
-    /* INSTITUTION DATA */
 
-    struct Institution {
-        // Negate the need for using a counter to keep track of additions.
-        bool initialised;
-        string institutionName;
-        mapping(address => InstitutionAdmin) adminInfo;
-    }
-
-    struct InstitutionAdmin {
-        string firstName;
-        string surname;
-        bool isAuthorised;
-    }
-
-    mapping(uint => Institution) public _institutions;
-
-    // Store the address of created Institutions
-    //address[] public _institutions;
-
-    // Store authorised institution owners.
-    mapping(address => bool) public _institutionAdmins;
-
-    // Simple way to check if an In address is stored.
-    // TODO Use for election
-    mapping(address => bool) public _areInstitutionsStored;
 
     /** APPROVAL QUE FOR NEW INSTITUTION REQUESTS **/
 
@@ -48,18 +23,32 @@ contract UniversityVoting is Ownable {
     // TODO: Will need to initialise isPending to true upon struct creation.
     struct pendingApproval {
         bool isPending;
-        Institution pendingInstitution;
-        InstitutionAdmin pendingInstitutionAdmin;
+        Institution.InstitutionDetails pendingInstitution;
+        Institution.InstitutionAdmin pendingInstitutionAdmins;
     }
 
     mapping(address => pendingApproval) approvalQueue;
 
     modifier isApproved(address approvedAdminAddress) {
         require(approvalQueue[approvedAdminAddress], "This request has not been approved yet!");
+        _;
     }
+
+    // Enable the prevention of duplicate addresses caused by
+    // unforseen, errant client requests.
+    struct InstitutionAddress {
+        bool isAddress;
+    }
+
+    // Store Institutions addresses so they can be accessed without iteration. This
+    // limits gas costs.
+    mapping(address => InstitutionAddress) public _institutionAddressStructs;
+
+    // Store Institution addresses in dynamically sized array so the complete state, including
+    // the total number of Institutions stored can be quickly accessed.
+    address[] public institutionAddreses;
+
     
-
-
     /* INITIALISE NEW INSTITUTION */
 
     /**
@@ -70,8 +59,8 @@ contract UniversityVoting is Ownable {
      */
     function initialiseInstitutionWithAdmin(string memory institutionName, string memory adminFirstName, string memory adminSurname)
         public onlyOwner {
-        Institution memory newInstitution;
-        InstitutionAdmin memory newAdmin;
+        Institution newInstitution = new Institution();
+      //  InstitutionAdmin memory newAdmin;
 
         // Initialise new institution
         newInstitution.institutionName = institutionName;
@@ -86,7 +75,7 @@ contract UniversityVoting is Ownable {
     function requestInitialiseInstitutionWithAdmin(string memory institutionName, string memory adminFirstName, string memory adminSurname)
         public onlyOwner {
         Institution memory newInstitution;
-        InstitutionAdmin memory newAdmin;
+    //    InstitutionAdmin memory newAdmin;
 
         // Initialise new institution
         newInstitution.institutionName = institutionName;
