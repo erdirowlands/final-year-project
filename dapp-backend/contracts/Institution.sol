@@ -7,13 +7,7 @@ import "./Election.sol";
 An Institution can create Election Smart Contracts exclusivley for themselves. */
 contract Institution  {
 
-
-    struct InstitutionDetails {
-        // Negate the need for using a counter to keep track of additions.
-        bool initialised;
-        string institutionName;
-        mapping(address => InstitutionAdmin) adminInfo;
-    }
+    string private _institutionName;
 
     struct InstitutionAdmin {
         string firstName;
@@ -21,17 +15,12 @@ contract Institution  {
         bool isAuthorised;
     }
 
-
-    // Store the address of created Institutions
-    //address[] public _institutions;
-
-    // Store authorised institution owners.
+    // Store authorised institution admins.
     mapping(address => bool) public _institutionAdmins;
 
     // Simple way to check if an In address is stored.
     // TODO Use for election
     mapping(address => bool) public _areInstitutionsStored;
-
 
 
     // Store the address of all prior-purchased elections.
@@ -41,7 +30,7 @@ contract Institution  {
     event LogNewElection(address election);
 
     constructor (string memory institutionName, string memory adminFirstName, string memory adminSurname) public {
-        InstitutionDetails.institutionName =;
+        _institutionName = institutionName;
     }
 
     /**
