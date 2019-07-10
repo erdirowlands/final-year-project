@@ -37,7 +37,7 @@ contract Institution  {
         // Set the institution name.
         _institutionName = institutionName;
 
-        require(condition, message);
+        require(!isAdminAddressStored(adminAddress), "This admin has already been authorised");
         // Store the admin details using their address.
         _institutionAdmins[adminAddress] = InstitutionAdmin(adminFirstName, adminSurname, true);
     }
