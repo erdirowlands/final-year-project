@@ -13,37 +13,96 @@ for the Election to be fully created, the customer will have to manually fund th
 has access to this smart contract, then we can assume they've paid me with a debit card, or something, and I've authorised an account creation and added it to a list of approved addresses?  e*/
 contract UniversityVoting is Ownable {
 
-    struct InstitutionsDetails {
+    /* INSTITUTION DATA */
+
+    struct Institution {
+        // Negate the need for using a counter to keep track of additions.
+        bool initialised;
         string institutionName;
         mapping(address => InstitutionAdmin) adminInfo;
     }
 
     struct InstitutionAdmin {
-        string adminName;
+        string firstName;
+        string surname;
         bool isAuthorised;
     }
+
+    mapping(uint => Institution) public _institutions;
+
+    // Store the address of created Institutions
+    //address[] public _institutions;
 
     // Store authorised institution owners.
     mapping(address => bool) public _institutionAdmins;
 
-
-
-    // Store the address of all prior-purchased elections.
-    address[] public _institutions;
-
     // Simple way to check if an In address is stored.
+    // TODO Use for election
     mapping(address => bool) public _areInstitutionsStored;
 
-    // Emit an event on Election contract creation.
-    event LogNewInstitution(address institution);
+    /** APPROVAL QUE FOR NEW INSTITUTION REQUESTS **/
 
-    constructor () public {
-       
+    // Store a request from a prospective admin who would like to register their Institution.
+    // The flag "isPending" is included to stop potential abuse of the approval que - the intent
+    // is that only one approval per unique user address can be submitted at a time.
+    // TODO: Will need to initialise isPending to true upon struct creation.
+    struct pendingApproval {
+        bool isPending;
+        Institution pendingInstitution;
+        InstitutionAdmin pendingInstitutionAdmin;
     }
 
+    mapping(address => pendingApproval) approvalQueue;
+
+    modifier isApproved(address approvedAdminAddress) {
+        require(approvalQueue[approvedAdminAddress], "This request has not been approved yet!");
+    }
+    
+
+
+    /* INITIALISE NEW INSTITUTION */
+
+    /**
+     * Initialises an approved Institution with admin.
+     * @param institutionName name of the new institution.
+     * @param adminFirstName new admin's first name.
+     * @param adminSurname new admin's surname.
+     */
+    function initialiseInstitutionWithAdmin(string memory institutionName, string memory adminFirstName, string memory adminSurname)
+        public onlyOwner {
+        Institution memory newInstitution;
+        InstitutionAdmin memory newAdmin;
+
+        // Initialise new institution
+        newInstitution.institutionName = institutionName;
+        newInstitution.initialised = true;
+
+        //Initialise new admin
+        newAdmin.firstName = adminFirstName;
+        newAdmin.surname = adminSurname;
+        newAdmin.isAuthorised = true;
+    }
+
+    function requestInitialiseInstitutionWithAdmin(string memory institutionName, string memory adminFirstName, string memory adminSurname)
+        public onlyOwner {
+        Institution memory newInstitution;
+        InstitutionAdmin memory newAdmin;
+
+        // Initialise new institution
+        newInstitution.institutionName = institutionName;
+        newInstitution.initialised = true;
+
+        //Initialise new admin
+        newAdmin.firstName = adminFirstName;
+        newAdmin.surname = adminSurname;
+        newAdmin.isAuthorised = true;
+    }
+
+
+/*
     /**
     Create a new Institution contract which then acts as the main customer facing contract, in that
-    they can deploy Elections from within that contract, and control ownership roles etc. */
+    they can deploy Elections from within that contract, and control ownership roles etc. 
     function createInstitution() public
     returns (address newInstitution) {
         // Create new Inst
@@ -54,7 +113,7 @@ contract UniversityVoting is Ownable {
         emit LogNewInstitution(contractAddress);
         _institutions.push(contractAddress);
         return contractAddress;
-    }
+    } */
 
     function addInstitutionOwners(address institutionOwner) public onlyOwner {
        // _institutionAdmins.push(institutionOwner);
@@ -77,5 +136,7 @@ contract UniversityVoting is Ownable {
     function isInstitutionAddressStored(address institute) public view returns(bool isStored) {
         return _areInstitutionsStored[institute];
     }
+
+    
 
 }
