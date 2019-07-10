@@ -23,15 +23,16 @@ contract UniversityVoting is Ownable {
         bool isAuthorised;
     }
 
+    mapping(uint => Institution) public _institutions
+
+    // Store the address of created Institutions
+    address[] public _institutions;
+
     // Store authorised institution owners.
     mapping(address => bool) public _institutionAdmins;
 
-
-
-    // Store the address of all prior-purchased elections.
-    address[] public _institutions;
-
     // Simple way to check if an In address is stored.
+    // TODO Use for election
     mapping(address => bool) public _areInstitutionsStored;
 
     // Emit an event on Election contract creation.
