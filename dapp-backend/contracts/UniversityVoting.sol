@@ -23,7 +23,7 @@ contract UniversityVoting is Ownable {
         bool isAuthorised;
     }
 
-    mapping(uint => Institution) public _institutions
+    mapping(uint => Institution) public _institutions;
 
     // Store the address of created Institutions
     address[] public _institutions;
