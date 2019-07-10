@@ -14,6 +14,8 @@ has access to this smart contract, then we can assume they've paid me with a deb
 contract UniversityVoting is Ownable {
 
     struct Institution {
+        // Negate the need for using a counter to keep track of additions.
+        bool initialised;
         string institutionName;
         mapping(address => InstitutionAdmin) adminInfo;
     }
@@ -42,8 +44,9 @@ contract UniversityVoting is Ownable {
     constructor () public {
     }
 
-    function createInstitution() public onlyOwner {
+    function createInstitution(string name) public onlyOwner {
         Institution memory newInstitution;
+        newInstitution.institutionName
         
     }
 
