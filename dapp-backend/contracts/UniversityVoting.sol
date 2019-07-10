@@ -51,9 +51,14 @@ contract UniversityVoting is Ownable {
         Institution pendingInstitution;
         InstitutionAdmin pendingInstitutionAdmin;
     }
-    
 
     mapping(address => pendingApproval) approvalQueue;
+
+    modifier isApproved(address approvedAdminAddress) {
+        require(approvalQueue[approvedAdminAddress], "This request has not been approved yet!");
+    }
+    
+
 
     /* INITIALISE NEW INSTITUTION */
 
