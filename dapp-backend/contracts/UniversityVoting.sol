@@ -44,17 +44,22 @@ contract UniversityVoting is Ownable {
     constructor () public {
     }
 
-    // Ok, this will be called from a main "initialiseInstitutionWithAdmin"
     function initialiseInstitutionWithAdmin(string memory institutionName, string memory adminFirstName, string memory adminSurname)
         public onlyOwner {
         Institution memory newInstitution;
         InstitutionAdmin memory newAdmin;
-    
+
+        // Initialise new institution
         newInstitution.institutionName = institutionName;
         newInstitution.initialised = true;
 
+        //Initialise new admin
         newAdmin.firstName = adminFirstName;
         newAdmin.surname = adminSurname;
+    }
+
+    function initialiseNewAdmin() private {
+
     }
 
 
