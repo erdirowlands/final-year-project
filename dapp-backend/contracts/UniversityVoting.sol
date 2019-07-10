@@ -19,14 +19,15 @@ contract UniversityVoting is Ownable {
     }
 
     struct InstitutionAdmin {
-        string adminName;
+        string firstName;
+        string surname;
         bool isAuthorised;
     }
 
     mapping(uint => Institution) public _institutions;
 
     // Store the address of created Institutions
-    address[] public _institutions;
+    //address[] public _institutions;
 
     // Store authorised institution owners.
     mapping(address => bool) public _institutionAdmins;
