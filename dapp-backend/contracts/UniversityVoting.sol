@@ -40,12 +40,17 @@ contract UniversityVoting is Ownable {
     event LogNewInstitution(address institution);
 
     constructor () public {
-       
     }
 
+    function createInstitution() public onlyOwner {
+        Institution memory newInstitution;
+        
+    }
+
+/*
     /**
     Create a new Institution contract which then acts as the main customer facing contract, in that
-    they can deploy Elections from within that contract, and control ownership roles etc. */
+    they can deploy Elections from within that contract, and control ownership roles etc. 
     function createInstitution() public
     returns (address newInstitution) {
         // Create new Inst
@@ -56,7 +61,7 @@ contract UniversityVoting is Ownable {
         emit LogNewInstitution(contractAddress);
         _institutions.push(contractAddress);
         return contractAddress;
-    }
+    } */
 
     function addInstitutionOwners(address institutionOwner) public onlyOwner {
        // _institutionAdmins.push(institutionOwner);
