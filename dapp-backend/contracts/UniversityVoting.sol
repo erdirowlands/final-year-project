@@ -74,6 +74,7 @@ contract UniversityVoting is Ownable {
         return contractAddress;
     }
 
+/*
     function requestInitialiseInstitutionWithAdmin(string memory institutionName, string memory adminFirstName, string memory adminSurname)
         public onlyOwner {
         Institution memory newInstitution;
@@ -87,7 +88,7 @@ contract UniversityVoting is Ownable {
         newAdmin.firstName = adminFirstName;
         newAdmin.surname = adminSurname;
         newAdmin.isAuthorised = true;
-    }
+    } */
 
 
 /*
@@ -106,6 +107,8 @@ contract UniversityVoting is Ownable {
         return contractAddress;
     } */
 
+    // TODO - Nearly certain we shouldn't store institution admins here, as it''l
+    // be duplicating info for Institutions. Either way, need to copy this at leas to Institutions.
     function addInstitutionOwners(address institutionOwner) public onlyOwner {
        // _institutionAdmins.push(institutionOwner);
         require(!_institutionAdmins[institutionOwner],"This institution owner has already been added");
@@ -116,12 +119,15 @@ contract UniversityVoting is Ownable {
         return _institutionAdmins[institutionOwner];
     }
 
+    /**
+     * Get the number of currently created Institutions
+     */
     function getInstitutionsTotal() public view returns(uint total) {
-        return _institutions.length;
+        return _institutionAddreses.length;
     }
 
     function getInstitutionAddresses() public view returns (address[] memory) {
-        return _institutions;
+        return _institutionAddreses;
     }
 
     function isInstitutionAddressStored(address institute) public view returns(bool isStored) {
