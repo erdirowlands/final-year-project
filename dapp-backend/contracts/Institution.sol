@@ -18,13 +18,13 @@ contract Institution  {
     // Store authorised institution admins.
     // At some point in the future, they may be come de-authorised, for example
     // if an admin steps down and in which case the "isAuthorised" flag will be set to false.
-    // Crucially, however, this mapping will only store owners that have been authorised in 
+    // Crucially, however, this mapping will only store owners that have been authorised in
     // the first instance.
     mapping(address => InstitutionAdmin) public _institutionAdmins;
 
     // Store admin addresses in array for quick acceess and to reveal more information
     // about contract state, such as bow many admins there are.
-    address[] public _institutionAddreses;
+    address[] public _adminAddresses;
 
     // Store the address of all prior-purchased elections.
     address[] public elections;
