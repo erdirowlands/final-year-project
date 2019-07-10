@@ -37,6 +37,7 @@ contract Institution  {
         // Set the institution name.
         _institutionName = institutionName;
 
+        require(condition, message);
         // Store the admin details using their address.
         _institutionAdmins[adminAddress] = InstitutionAdmin(adminFirstName, adminSurname, true);
     }
@@ -57,5 +58,9 @@ contract Institution  {
     public view
     returns (bool isStored) {
 
+    }
+
+    function isAdminAddressStored(address admin) public view returns(bool isStored) {
+        return _adminAddresses[admin];
     }
 }
