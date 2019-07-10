@@ -40,16 +40,18 @@ contract UniversityVoting is Ownable {
     // TODO Use for election
     mapping(address => bool) public _areInstitutionsStored;
 
-    /* APPROVAL QUE FOR NEW INSTITUTION REQUESTS */
+    /** APPROVAL QUE FOR NEW INSTITUTION REQUESTS **/
 
     // Store a request from a prospective admin who would like to register their Institution.
     // The flag "isPending" is included to stop potential abuse of the approval que - the intent
     // is that only one approval per unique user address can be submitted at a time.
+    // TODO: Will need to initialise isPending to true upon struct creation.
     struct pendingApproval {
         bool isPending;
         Institution pendingInstitution;
         InstitutionAdmin pendingInstitutionAdmin;
     }
+    
 
     mapping(address => pendingApproval) approvalQueue;
 
