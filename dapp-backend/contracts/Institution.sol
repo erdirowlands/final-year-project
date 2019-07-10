@@ -32,8 +32,13 @@ contract Institution  {
     // Emit an event on Election contract creation.
     event LogNewElection(address election);
 
-    constructor (string memory institutionName, string memory adminFirstName, string memory adminSurname) public {
+    constructor (string memory institutionName, string memory adminFirstName, string memory adminSurname, address adminAddress)
+    public {
+        // Set the institution name.
         _institutionName = institutionName;
+
+        // Store the admin details using their address.
+        _institutionAdmins[adminAddress] = InstitutionAdmin(adminFirstName, adminSurname, true);
     }
 
     /**
