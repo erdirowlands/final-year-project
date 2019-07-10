@@ -18,10 +18,13 @@ contract UniversityVoting is Ownable {
         mapping(address => InstitutionAdmin) adminInfo;
     }
 
-    struct
+    struct InstitutionAdmin {
+        string adminName;
+        bool isAuthorised;
+    }
 
     // Store authorised institution owners.
-    mapping(address => bool) public _institutionAdmin;
+    mapping(address => bool) public _institutionAdmins;
 
 
 
@@ -54,13 +57,13 @@ contract UniversityVoting is Ownable {
     }
 
     function addInstitutionOwners(address institutionOwner) public onlyOwner {
-       // _institutionAdmin.push(institutionOwner);
-        require(!_institutionAdmin[institutionOwner],"This institution owner has already been added");
-        _institutionAdmin[institutionOwner] = true;
+       // _institutionAdmins.push(institutionOwner);
+        require(!_institutionAdmins[institutionOwner],"This institution owner has already been added");
+        _institutionAdmins[institutionOwner] = true;
     }
 
     function getInstitutionOwner(address institutionOwner) public view returns (bool isOwner) {
-        return _institutionAdmin[institutionOwner];
+        return _institutionAdmins[institutionOwner];
     }
 
     function getInstitutionsTotal() public view returns(uint total) {
