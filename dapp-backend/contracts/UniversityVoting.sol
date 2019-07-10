@@ -13,6 +13,8 @@ for the Election to be fully created, the customer will have to manually fund th
 has access to this smart contract, then we can assume they've paid me with a debit card, or something, and I've authorised an account creation and added it to a list of approved addresses?  e*/
 contract UniversityVoting is Ownable {
 
+    /* INSTITUTION DATA */
+
     struct Institution {
         // Negate the need for using a counter to keep track of additions.
         bool initialised;
@@ -24,12 +26,6 @@ contract UniversityVoting is Ownable {
         string firstName;
         string surname;
         bool isAuthorised;
-    }
-
-    // Store a request from a prospective admin who would like to register his Institution
-    struct pendingApproval {
-        Institution pendingInstitution;
-        InstitutionAdmin pendingInstitutionAdmin;
     }
 
     mapping(uint => Institution) public _institutions;
@@ -44,16 +40,24 @@ contract UniversityVoting is Ownable {
     // TODO Use for election
     mapping(address => bool) public _areInstitutionsStored;
 
+    /* APPROVAL QUE FOR NEW INSTITUTION REQUESTS */
 
-    mapping(address => medicalData) approvalQueue;
-
-
-    // Emit an event on Election contract creation.
-    event LogNewInstitution(address institution);
-
-    constructor () public {
+    // Store a request from a prospective admin who would like to register their Institution.
+    struct pendingApproval {
+        Institution pendingInstitution;
+        InstitutionAdmin pendingInstitutionAdmin;
     }
 
+    mapping(address => pendingApproval) approvalQueue;
+
+    /* INITIALISE NEW INSTITUTION */
+
+    /**
+     * Initialises an approved Institution with admin.
+     * @param institutionName name of the new institution.
+     * @param adminFirstName new admin's first name.
+     * @param adminSurname new admin's surname.
+     */
     function initialiseInstitutionWithAdmin(string memory institutionName, string memory adminFirstName, string memory adminSurname)
         public onlyOwner {
         Institution memory newInstitution;
@@ -122,5 +126,7 @@ contract UniversityVoting is Ownable {
     function isInstitutionAddressStored(address institute) public view returns(bool isStored) {
         return _areInstitutionsStored[institute];
     }
+
+    
 
 }
