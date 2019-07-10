@@ -16,12 +16,15 @@ contract Institution  {
     }
 
     // Store authorised institution admins.
-    mapping(address => bool) public _institutionAdmins;
+    // At some point in the future, they may be come de-authorised, for example
+    // if an admin steps down and in which case the "isAuthorised" flag will be set to false.
+    // Crucially, however, this mapping will only store owners that have been authorised in 
+    // the first instance.
+    mapping(address => InstitutionAdmin) public _institutionAdmins;
 
-    // Simple way to check if an In address is stored.
-    // TODO Use for election
-    mapping(address => bool) public _areInstitutionsStored;
-
+    // Store admin addresses in array for quick acceess and to reveal more information
+    // about contract state, such as bow many admins there are.
+    address[] public _institutionAddreses;
 
     // Store the address of all prior-purchased elections.
     address[] public elections;
