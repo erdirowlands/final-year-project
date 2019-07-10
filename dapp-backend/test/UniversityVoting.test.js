@@ -37,7 +37,7 @@ contract("UniversityVoting", accounts => {
   describe("institution owners", function() {
     it("add a new institution owner", async function() {
       await this.universityVoting.addInstitutionOwners(accounts[1]);
-      const newInstitutionOwner = await this.universityVoting._institutionOwners(accounts[1]);
+      const newInstitutionOwner = await this.universityVoting._institutionAdmins(accounts[1]);
       newInstitutionOwner.should.equal(true);
     });
 

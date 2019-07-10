@@ -14,11 +14,19 @@ has access to this smart contract, then we can assume they've paid me with a deb
 contract UniversityVoting is Ownable {
 
     struct InstitutionsDetails {
-        string institutions;
+        string institutionName;
+        mapping(address => InstitutionAdmin) adminInfo;
+    }
+
+    struct InstitutionAdmin {
+        string adminName;
+        bool isAuthorised;
     }
 
     // Store authorised institution owners.
-    mapping(address => bool) public _institutionOwners;
+    mapping(address => bool) public _institutionAdmins;
+
+
 
     // Store the address of all prior-purchased elections.
     address[] public _institutions;
@@ -49,13 +57,13 @@ contract UniversityVoting is Ownable {
     }
 
     function addInstitutionOwners(address institutionOwner) public onlyOwner {
-       // _institutionOwners.push(institutionOwner);
-        require(!_institutionOwners[institutionOwner],"This institution owner has already been added");
-        _institutionOwners[institutionOwner] = true;
+       // _institutionAdmins.push(institutionOwner);
+        require(!_institutionAdmins[institutionOwner],"This institution owner has already been added");
+        _institutionAdmins[institutionOwner] = true;
     }
 
     function getInstitutionOwner(address institutionOwner) public view returns (bool isOwner) {
-        return _institutionOwners[institutionOwner];
+        return _institutionAdmins[institutionOwner];
     }
 
     function getInstitutionsTotal() public view returns(uint total) {
