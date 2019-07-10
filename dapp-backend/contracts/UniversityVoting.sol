@@ -26,6 +26,12 @@ contract UniversityVoting is Ownable {
         bool isAuthorised;
     }
 
+    // Store a request from a prospective admin who would like to register his Institution
+    struct pendingApproval {
+        Institution pendingInstitution;
+        InstitutionAdmin pendingInstitutionAdmin;
+    }
+
     mapping(uint => Institution) public _institutions;
 
     // Store the address of created Institutions
@@ -37,6 +43,10 @@ contract UniversityVoting is Ownable {
     // Simple way to check if an In address is stored.
     // TODO Use for election
     mapping(address => bool) public _areInstitutionsStored;
+
+
+    mapping(address => medicalData) approvalQueue;
+
 
     // Emit an event on Election contract creation.
     event LogNewInstitution(address institution);
