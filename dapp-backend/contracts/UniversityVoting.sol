@@ -43,7 +43,10 @@ contract UniversityVoting is Ownable {
     /* APPROVAL QUE FOR NEW INSTITUTION REQUESTS */
 
     // Store a request from a prospective admin who would like to register their Institution.
+    // The flag "isPending" is included to stop potential abuse of the approval que - the intent
+    // is that only one approval per unique user address can be submitted at a time.
     struct pendingApproval {
+        bool isPending;
         Institution pendingInstitution;
         InstitutionAdmin pendingInstitutionAdmin;
     }
