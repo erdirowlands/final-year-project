@@ -37,7 +37,6 @@ contract Institution  {
         // Set the institution name.
         _institutionName = institutionName;
 
-        require(!isAdminAddressStored(adminAddress), "This admin has already been authorised");
         // Store the admin details using their address.
         _institutionAdmins[adminAddress] = InstitutionAdmin(adminFirstName, adminSurname, true);
     }
@@ -58,6 +57,17 @@ contract Institution  {
     public view
     returns (bool isStored) {
 
+    }
+
+
+    function addInstitutionOwners(address institutionOwner) public onlyOwner {
+       // _institutionAdmins.push(institutionOwner);
+        require(!_institutionAdmins[institutionOwner],"This institution owner has already been added");
+        _institutionAdmins[institutionOwner] = true;
+    }
+
+    function getInstitutionOwner(address institutionOwner) public view returns (bool isOwner) {
+        return _institutionAdmins[institutionOwner];
     }
 
     function isAdminAddressStored(address admin) public view returns(bool isStored) {

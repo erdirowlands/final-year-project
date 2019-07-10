@@ -29,7 +29,6 @@ contract UniversityVoting is Ownable {
         string adminFirstName;
         string adminSurname;
         string adminAddress;
-        
     }
 
     mapping(address => pendingApproval) approvalQueue;
