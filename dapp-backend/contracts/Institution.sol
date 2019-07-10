@@ -11,7 +11,7 @@ contract Institution  {
     struct InstitutionDetails {
         // Negate the need for using a counter to keep track of additions.
         bool initialised;
-        string name;
+        string institutionName;
         mapping(address => InstitutionAdmin) adminInfo;
     }
 
@@ -21,7 +21,6 @@ contract Institution  {
         bool isAuthorised;
     }
 
-    mapping(uint => Institution) public _institutions;
 
     // Store the address of created Institutions
     //address[] public _institutions;
@@ -39,10 +38,11 @@ contract Institution  {
     address[] public elections;
 
     // Emit an event on Election contract creation.
-    event LogNewElection(address election);
+    event LogNewInstitution(address institution);
+
 
     constructor (string memory institutionName, string memory adminFirstName, string memory adminSurname) public {
-        InstitutionDetails.institutionName = adminFirstName;
+        InstitutionDetails.institutionName =;
     }
 
     /**

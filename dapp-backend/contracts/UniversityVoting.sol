@@ -59,17 +59,14 @@ contract UniversityVoting is Ownable {
      */
     function initialiseInstitutionWithAdmin(string memory institutionName, string memory adminFirstName, string memory adminSurname)
         public onlyOwner {
-        Institution newInstitution = new Institution();
-      //  InstitutionAdmin memory newAdmin;
-
-        // Initialise new institution
-        newInstitution.institutionName = institutionName;
-        newInstitution.initialised = true;
-
-        //Initialise new admin
-        newAdmin.firstName = adminFirstName;
-        newAdmin.surname = adminSurname;
-        newAdmin.isAuthorised = true;
+        Institution institution = new Institution();
+        address contractAddress = (address(institution));
+        // Guard against clients accidentally adding already created addresses.
+        require(!_institutionAddressStructs[contractAddress].isAddress,"This institution has already been added");
+        emit LogNewInstitution(contractAddress);
+        _institutions.push(contractAddress);
+        return contractAddress;
+        
     }
 
     function requestInitialiseInstitutionWithAdmin(string memory institutionName, string memory adminFirstName, string memory adminSurname)
