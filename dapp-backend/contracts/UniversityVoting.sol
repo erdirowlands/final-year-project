@@ -36,19 +36,21 @@ contract UniversityVoting is Ownable {
 
     // Enable the prevention of duplicate addresses caused by
     // unforseen, errant client requests.
-    struct InstitutionAddress {
+    struct InstitutionAddressStruct {
         bool isAddress;
     }
 
     // Store Institutions addresses so they can be accessed without iteration. This
     // limits gas costs.
-    mapping(address => InstitutionAddress) public _institutionAddressStructs;
+    mapping(address => InstitutionAddressStruct) public _institutionAddressStructs;
 
     // Store Institution addresses in dynamically sized array so the complete state, including
     // the total number of Institutions stored can be quickly accessed.
-    address[] public institutionAddreses;
+    address[] public _institutionAddreses;
 
-    
+    // Emit an event on Institution contract creation.
+    event LogNewInstitution(address institution);
+
     /* INITIALISE NEW INSTITUTION */
 
     /**
@@ -62,11 +64,14 @@ contract UniversityVoting is Ownable {
         Institution institution = new Institution();
         address contractAddress = (address(institution));
         // Guard against clients accidentally adding already created addresses.
-        require(!_institutionAddressStructs[contractAddress].isAddress,"This institution has already been added");
+        require(!isInstitutionAddressStored(contractAddress),"This institution has already been added");
+        // Add address of newly created Institutions to dynamically sized array for quick access.
+        _institutionAddreses.push(contractAddress);
+        // Also add the address to not interable mapping to allow for instant access to the address.
+        InstitutionAddressStruct[contractAddress].isAddress = true;
+        // Emit the creation of the new Institution as an event.
         emit LogNewInstitution(contractAddress);
-        _institutions.push(contractAddress);
         return contractAddress;
-        
     }
 
     function requestInitialiseInstitutionWithAdmin(string memory institutionName, string memory adminFirstName, string memory adminSurname)
@@ -120,7 +125,7 @@ contract UniversityVoting is Ownable {
     }
 
     function isInstitutionAddressStored(address institute) public view returns(bool isStored) {
-        return _areInstitutionsStored[institute];
+        return _institutionAddreses[institute];
     }
 
     

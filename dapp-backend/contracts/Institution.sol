@@ -38,8 +38,7 @@ contract Institution  {
     address[] public elections;
 
     // Emit an event on Election contract creation.
-    event LogNewInstitution(address institution);
-
+    event LogNewElection(address election);
 
     constructor (string memory institutionName, string memory adminFirstName, string memory adminSurname) public {
         InstitutionDetails.institutionName =;
