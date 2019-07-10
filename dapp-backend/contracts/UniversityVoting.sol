@@ -20,11 +20,16 @@ contract UniversityVoting is Ownable {
     // Store a request from a prospective admin who would like to register their Institution.
     // The flag "isPending" is included to stop potential abuse of the approval que - the intent
     // is that only one approval per unique user address can be submitted at a time.
+    // The fields included are what is required to construct a new Institution using the
+    // Institution contract's constructor.
     // TODO: Will need to initialise isPending to true upon struct creation.
     struct pendingApproval {
         bool isPending;
-        Institution.InstitutionDetails pendingInstitution;
-        Institution.InstitutionAdmin pendingInstitutionAdmins;
+        string institutionName;
+        string adminFirstName;
+        string adminSurname;
+        string adminAddress;
+        
     }
 
     mapping(address => pendingApproval) approvalQueue;
