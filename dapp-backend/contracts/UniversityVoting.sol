@@ -56,10 +56,22 @@ contract UniversityVoting is Ownable {
         //Initialise new admin
         newAdmin.firstName = adminFirstName;
         newAdmin.surname = adminSurname;
+        newAdmin.isAuthorised = true;
     }
 
-    function initialiseNewAdmin() private {
+    function requestInitialiseInstitutionWithAdmin(string memory institutionName, string memory adminFirstName, string memory adminSurname)
+        public onlyOwner {
+        Institution memory newInstitution;
+        InstitutionAdmin memory newAdmin;
 
+        // Initialise new institution
+        newInstitution.institutionName = institutionName;
+        newInstitution.initialised = true;
+
+        //Initialise new admin
+        newAdmin.firstName = adminFirstName;
+        newAdmin.surname = adminSurname;
+        newAdmin.isAuthorised = true;
     }
 
 
