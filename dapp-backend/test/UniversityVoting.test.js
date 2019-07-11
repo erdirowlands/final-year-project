@@ -24,16 +24,15 @@ contract("UniversityVoting", accounts => {
   });
 
     describe('Operations on created Institution contract', function () {
-
     it("stores institution contract address in addresses array", async function() {
-     
       // Check if initialiseInstitutionWithAdmin() called from the beforeEach hook
       // stores the address in the array.
       const addressThatShouldBeStored = await this.universityVoting._institutionAddreses(0);
       addressThatShouldBeStored.should.equal(this.newInstitutionContractAddress);
     });
     it("stops duplicate institution contract addresses being stored in mapping", async function() {
-      assert.throw(function() { this.universityVoting.addInstitutionAddresstoMapping(newInstitutionContractAddress) }, Error);
+    //  this.universityVoting.addInstitutionAddresstoMapping(this.newInstitutionContractAddress);
+      assert.throw(function() { this.universityVoting.addInstitutionAddresstoMapping(this.newInstitutionContractAddress) }, Error);
     });
   });
 
