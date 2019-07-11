@@ -95,9 +95,17 @@ contract UniversityVoting is Ownable {
        // return contractAddress;
     }
 
-    function approve(address adminAddress) public onlyOwner {
+    function approveInstitutionCreation(address adminAddress) public onlyOwner {
         require(isApprovalStored(adminAddress), "Approval not found");
-        
+
+        // Create a new Institution contract and initialise it with the values from the admin's request.
+        Institution institution = new Institution(_approvalRequestQueue[adminAddress].institutionName,
+            _approvalRequestQueue[adminAddress].adminFirstName, _approvalRequestQueue[adminAddress].adminSurname, adminAddress);
+
+        address contractAddress = (address(institution));
+
+        // New Institution created sucessfully so set the request to not pending.
+        _approvalRequestQueue[adminAddress].isPending = false;
     }
 
 
