@@ -64,7 +64,7 @@ contract UniversityVoting is Ownable {
     }
 
     modifier isDuplicateApproval(address adminAddress) {
-        require(_approvalRequestQueue[adminAddress].isInitialised, "This approval has already been submitted!");
+        require(!_approvalRequestQueue[adminAddress].isInitialised, "This approval has already been submitted!");
         _;
     }
 

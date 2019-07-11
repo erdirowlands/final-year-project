@@ -17,18 +17,25 @@ contract("UniversityVoting", accounts => {
   const developerAccount = accounts[0];
   // Account for admin who makes a request for a new Institution
   const prospectiveAdminAccount = accounts[1];
-  beforeEach(async function() {
-    universityVoting = await UniversityVoting.new({ from: developerAccount });
-  });
 
-  afterEach(async function() {
-    await universityVoting.kill();
-  });
+  const institutionName = "Ulster University";
+  const adminFirstName = "John";
+  const adminSurname = "Francis"
 
   describe('Approving and creating a new Institution contract and operations on the newly created contract', function () {
-    it("Approves and creates a new Institution contract.", async function() {
 
-       const result = await universityVoting.approveInstitutionCreation({ from: developerAccount });
+    before(async function() {
+      universityVoting = await UniversityVoting.new({ from: developerAccount });
+    });
+    after(async function() {
+      await universityVoting.kill();
+    });
+
+    it("submits a new aproval request", async function() {
+      const result = universityVoting.submitInstitutionApprovalRequest(institutionName, adminFirstName, adminSurname, { from: prospectiveAdminAccount });
+    });
+    it("Approves and creates a new Institution contract.", async function() {
+      const result = await universityVoting.approveInstitutionCreation(prospectiveAdminAccount, { from: developerAccount });
       // Get emitted event from initialiseInstitutionWithAdmin()
       const log = await result.logs[0].args;
       // Get newly created contract address from event
