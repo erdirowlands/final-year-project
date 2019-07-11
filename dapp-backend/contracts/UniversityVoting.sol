@@ -147,7 +147,7 @@ contract UniversityVoting is Ownable {
     }
 
     function addApprovalToQueue(address adminAddress) public {
-        require(!_approvalRequestQueue[adminAddress].isInitialised, "You have an outstanding request, please wait for that to be processed");
+        require(_approvalRequestQueue[adminAddress].isInitialised, "You have an outstanding request, please wait for that to be processed");
     }
 
     function isApprovalStored(address adminAddress) public view returns(bool isStored) {
