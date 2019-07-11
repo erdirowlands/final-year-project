@@ -17,19 +17,27 @@ contract("UniversityVoting", accounts => {
   const unauthorisedAccount = accounts[9];
   beforeEach(async function() {
     universityVoting = await UniversityVoting.new({ from: developerAccount });
-    // Create a new Institution with asscociated data (e.g. admin details)
-    const result = await universityVoting.initialiseInstitutionWithAdmin({ from: developerAccount });
-    // Get emitted event from initialiseInstitutionWithAdmin()
-    const log = await result.logs[0].args;
-    // Get newly created contract address from event
-    newInstitutionContractAddress = await log.institution;
   });
 
   afterEach(async function() {
     await universityVoting.kill();
   });
 
-    describe('Operations on created Institution contract', function () {
+  describe('Approving and creating a new Institution contract and operations on the newly created contract', function () {
+    it("Approves and creates a new Institution contract.", async function() {
+      // Create a new Institution with asscociated data (e.g. admin details)
+       const result = await universityVoting.initialiseInstitutionWithAdmin({ from: developerAccount });
+      // Get emitted event from initialiseInstitutionWithAdmin()
+      const log = await result.logs[0].args;
+      // Get newly created contract address from event
+      newInstitutionContractAddress = await log.institution;
+    }); 
+    it("stores institution contract address in addresses array", async function() {
+      // Check if initialiseInstitutionWithAdmin() called from the beforeEach hook
+      // stores the address in the array.
+      const addressThatShouldBeStored = await universityVoting._addressArray(0);
+      addressThatShouldBeStored.should.equal(newInstitutionContractAddress);
+    });           
     it("stores institution contract address in addresses array", async function() {
       // Check if initialiseInstitutionWithAdmin() called from the beforeEach hook
       // stores the address in the array.
@@ -39,7 +47,7 @@ contract("UniversityVoting", accounts => {
     it("stores contract address in addresses mapping", async function() {
       // Check if initialiseInstitutionWithAdmin() called from the beforeEach hook
       // stores the address in the array.
-      const isAddressStored = await universityVoting.isInstitutionAddressStored(newInstitutionContractAddress, { unauthorisedAccount } );
+      const isAddressStored = await universityVoting.isInstitutionAddressStored(newInstitutionContractAddress);
       isAddressStored.should.equal(true);
     });
     it("reverts when attempting to store a duplicate contract address in address mapping", async function() {
