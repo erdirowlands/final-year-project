@@ -11,35 +11,37 @@ require("chai")
 
 
 contract("UniversityVoting", accounts => {
+  let universityVoting;
+  let newInstitutionContractAddress;
   beforeEach(async function() {
-    this.universityVoting = await UniversityVoting.new();
+    universityVoting = await UniversityVoting.new();
     // Create a new Institution with asscociated data (e.g. admin details)
-    const result = await this.universityVoting.initialiseInstitutionWithAdmin();
+    const result = await universityVoting.initialiseInstitutionWithAdmin();
     // Get emitted event from initialiseInstitutionWithAdmin()
     const log = await result.logs[0].args;
     // Get newly created contract address from event
-    this.newInstitutionContractAddress = await log.institution;
+    newInstitutionContractAddress = await log.institution;
   });
 
   afterEach(async function() {
-    await this.universityVoting.kill();
+    await universityVoting.kill();
   });
 
     describe('Operations on created Institution contract', function () {
     it("stores institution contract address in addresses array", async function() {
       // Check if initialiseInstitutionWithAdmin() called from the beforeEach hook
       // stores the address in the array.
-      const addressThatShouldBeStored = await this.universityVoting._addressArray(0);
-      addressThatShouldBeStored.should.equal(this.newInstitutionContractAddress);
+      const addressThatShouldBeStored = await universityVoting._addressArray(0);
+      addressThatShouldBeStored.should.equal(newInstitutionContractAddress);
     });
     it("stores contract address in addresses mapping", async function() {
       // Check if initialiseInstitutionWithAdmin() called from the beforeEach hook
       // stores the address in the array.
-      const isAddressStored = await this.universityVoting.isInstitutionAddressStored(this.newInstitutionContractAddress);
+      const isAddressStored = await universityVoting.isInstitutionAddressStored(newInstitutionContractAddress);
       isAddressStored.should.equal(true);
     });
     it("reverts when attempting to store a duplicate contract address in address mapping", async function() {
-      await expectRevert(this.universityVoting.addInstitutionAddresstoMapping(this.newInstitutionContractAddress), 
+      await expectRevert(universityVoting.addInstitutionAddresstoMapping(newInstitutionContractAddress), 
         "This institution has already been added" );
     });
   });

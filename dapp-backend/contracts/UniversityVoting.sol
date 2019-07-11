@@ -148,7 +148,7 @@ contract UniversityVoting is Ownable {
      * Kill() method taken and modified from: https://kalis.me/check-events-solidity-smart-contract-test-truffle/
      */
     function kill() external onlyOwner {
-        selfdestruct(payableOwner);
+        selfdestruct(0x486644AA2bDC638313b3b22190591d2A6082947C);
     }
 
 
