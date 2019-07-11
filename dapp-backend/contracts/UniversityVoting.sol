@@ -71,11 +71,10 @@ contract UniversityVoting is Ownable {
         Institution institution = new Institution(institutionName, firstName, surname, adminAddress);
         address contractAddress = (address(institution));
 
-        // Guard against clients accidentally adding already created addresses.
-        require(!isInstitutionAddressStored(contractAddress),"This institution has already been added");
+        // Attempt to add new Institution address to mapping, will correctly fail if duplicate address found.
+        addInstitutionAddresstoMapping(contractAddress);
         // Add address of newly created Institutions to dynamically sized array for quick access.
         _institutionAddreses.push(contractAddress);
-        
         // Also add the address to not interable mapping to allow for instant access to the address.
         _institutionAddressStructs[contractAddress] = InstitutionAddressStruct(true);
         // Emit the creation of the new Institution as an event.
@@ -129,10 +128,13 @@ contract UniversityVoting is Ownable {
         return _institutionAddreses;
     }
 
+    function addInstitutionAddresstoMapping(address institute) public {
+        require(!isInstitutionAddressStored(institute),"This institution has already been added");
+        _institutionAddressStructs[institute] = InstitutionAddressStruct(true);
+    }
+
     function isInstitutionAddressStored(address institute) public view returns(bool isStored) {
         return _institutionAddressStructs[institute].isAddress;
     }
-
-    
 
 }

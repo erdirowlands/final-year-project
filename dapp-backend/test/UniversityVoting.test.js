@@ -2,6 +2,7 @@ const BigNumber = web3.BigNumber;
 
 const UniversityVoting = artifacts.require("UniversityVoting");
 
+let newInstitutionContractAddress;
 
 require("chai")
   .use(require("chai-bignumber")(BigNumber))
@@ -11,17 +12,17 @@ require("chai")
 contract("UniversityVoting", accounts => {
   beforeEach(async function() {
     this.universityVoting = await UniversityVoting.new();
-    institutionCreation = await this.universityVoting.initialiseInstitutionWithAdmin();
-    //  this.universityVoting.addInstitutionOwners(accounts[0]);
+    this.result = await this.universityVoting.initialiseInstitutionWithAdmin();
+    const log = await this.result.logs[0].args;
+    this.newContractAddress = await log.institution;
+
+    // this.universityVoting.addInstitutionOwners(accounts[0]);
 
   });
 
-  describe("institution contract creation", function() {
-    it("creates a new institution", async function() {
-      const result = await this.universityVoting.initialiseInstitutionWithAdmin();
-    });
+    describe('Operations on created Institution contract', function () {
 
-    it("stores the institution contract address", async function() {
+    it("creates and stores a new institution contract address", async function() {
       const result = await this.universityVoting.initialiseInstitutionWithAdmin();
       // Get emitted event
       const log = await result.logs[0].args;
@@ -31,6 +32,9 @@ contract("UniversityVoting", accounts => {
       // institution which will be at index 1, not 0 due to setting up contract in beforeEach.
       const createdInstitution = await this.universityVoting._institutionAddreses(1);
       createdInstitution.should.equal(newContractAddress);
+    });
+    it("stops duplicate institution contract addresses being stored in mapping", async function() {
+      this.universityVoting._addInstitutionAddresstoMapping()
     });
   });
 
