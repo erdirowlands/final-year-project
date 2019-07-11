@@ -34,6 +34,9 @@ contract("UniversityVoting", accounts => {
     it("submits a new aproval request", async function() {
       const result = universityVoting.submitInstitutionApprovalRequest(institutionName, adminFirstName, adminSurname, { from: prospectiveAdminAccount });
     });
+    it("disallows second approval request from prospective admin", async function() {
+      await expectRevert(universityVoting.submitInstitutionApprovalRequest(institutionName, adminFirstName, adminSurname, { from: prospectiveAdminAccount }), "You have an outstanding request, please wait for that to be processed");
+    });
     it("Approves and creates a new Institution contract.", async function() {
       const result = await universityVoting.approveInstitutionCreation(prospectiveAdminAccount, { from: developerAccount });
       // Get emitted event from initialiseInstitutionWithAdmin()
