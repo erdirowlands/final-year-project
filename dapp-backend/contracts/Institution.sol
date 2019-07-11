@@ -88,7 +88,7 @@ contract Institution  {
 
 
     function isInstitutionAddressStored(address institute) public view returns(bool isStored) {
-        return _institutionAdmins[institute].isAddress;
+        return _institutionAdmins[institute].isInitialised;
     }
 
 }
