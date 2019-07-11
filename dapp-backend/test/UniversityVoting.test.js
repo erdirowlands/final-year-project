@@ -1,3 +1,5 @@
+const { expectRevert } = require('openzeppelin-test-helpers');
+
 const BigNumber = web3.BigNumber;
 
 const UniversityVoting = artifacts.require("UniversityVoting");
@@ -9,31 +11,44 @@ require("chai")
 
 
 contract("UniversityVoting", accounts => {
+  let universityVoting;
+  let newInstitutionContractAddress;
+  const developerAccount = accounts[0];
+  const unauthorisedAccount = accounts[9];
   beforeEach(async function() {
-    this.universityVoting = await UniversityVoting.new();
-    institutionCreation = await this.universityVoting.createInstitution();
-    await this.universityVoting.addInstitutionOwners(accounts[0]);
-
+    universityVoting = await UniversityVoting.new({ from: developerAccount });
+    // Create a new Institution with asscociated data (e.g. admin details)
+    const result = await universityVoting.initialiseInstitutionWithAdmin({ from: developerAccount });
+    // Get emitted event from initialiseInstitutionWithAdmin()
+    const log = await result.logs[0].args;
+    // Get newly created contract address from event
+    newInstitutionContractAddress = await log.institution;
   });
 
-  describe("institution contract creation", function() {
-    it("creates a new institution", async function() {
-      const result = await this.universityVoting.createInstitution();
-    });
+  afterEach(async function() {
+    await universityVoting.kill();
+  });
 
-    it("stores the institution contract address", async function() {
-      const result = await this.universityVoting.createInstitution();
-      // Get emitted event
-      const log = await result.logs[0].args;
-      // Get newly created contract address from event
-      const newContractAddress = await log.institution;
-      // Check if the address stored in the institutions array matches the newly created
-      // institution which will be at index 1, not 0 due to setting up contract in beforeEach.
-      const createdInstitution = await this.universityVoting._institutions(1);
-      createdInstitution.should.equal(newContractAddress);
+    describe('Operations on created Institution contract', function () {
+    it("stores institution contract address in addresses array", async function() {
+      // Check if initialiseInstitutionWithAdmin() called from the beforeEach hook
+      // stores the address in the array.
+      const addressThatShouldBeStored = await universityVoting._addressArray(0);
+      addressThatShouldBeStored.should.equal(newInstitutionContractAddress);
+    });
+    it("stores contract address in addresses mapping", async function() {
+      // Check if initialiseInstitutionWithAdmin() called from the beforeEach hook
+      // stores the address in the array.
+      const isAddressStored = await universityVoting.isInstitutionAddressStored(newInstitutionContractAddress, { unauthorisedAccount } );
+      isAddressStored.should.equal(true);
+    });
+    it("reverts when attempting to store a duplicate contract address in address mapping", async function() {
+      await expectRevert(universityVoting.addInstitutionAddresstoMapping(newInstitutionContractAddress), 
+        "This institution has already been added" );
     });
   });
 
+  /* // TODO MOVE TO INSTITUTION TEST!!!
   describe("institution owners", function() {
     it("add a new institution owner", async function() {
       await this.universityVoting.addInstitutionOwners(accounts[1]);
@@ -45,5 +60,5 @@ contract("UniversityVoting", accounts => {
       const institutionOwner = await this.universityVoting.getInstitutionOwner(accounts[0]);
       institutionOwner.should.equal(true);
     });
-  });
+  }); */
 });
