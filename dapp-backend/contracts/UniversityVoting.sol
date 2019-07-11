@@ -64,36 +64,12 @@ contract UniversityVoting is Ownable {
     }
 
     modifier isDuplicateApproval(address adminAddress) {
-        require(_approvalRequestQueue[adminAddress].isInitialised, "This approval has already been submitted!");
+        require(!_approvalRequestQueue[adminAddress].isInitialised, "This approval has already been submitted!");
         _;
     }
 
     // Emit an event on Institution contract creation.
     event LogNewInstitution(address institution);
-
-
-    /**
-     * Initialises an approved Institution with admin.
-     */
-    function initialiseInstitutionWithAdmin()
-        public onlyOwner returns(bool) {
-        string memory institutionName = _approvalRequestQueue[msg.sender].institutionName;
-        string memory firstName = _approvalRequestQueue[msg.sender].adminFirstName;
-        string memory surname = _approvalRequestQueue[msg.sender].adminSurname;
-        address adminAddress = _approvalRequestQueue[msg.sender].adminAddress;
-
-        Institution institution = new Institution(institutionName, firstName, surname, adminAddress);
-        address contractAddress = (address(institution));
-        // Attempt to add new Institution address to mapping, will correctly fail if duplicate address found.
-        addInstitutionAddresstoMapping(contractAddress);
-        // Add address of newly created Institutions to dynamically sized array for quick access.
-        _addressArray.push(contractAddress);
-        // Also add the address to not interable mapping to allow for instant access to the address.
-        _addressStructMapping[contractAddress] = InstitutionAddressStruct(true);
-        // Emit the creation of the new Institution as an event.
-        emit LogNewInstitution(contractAddress);
-       // return contractAddress;
-    }
 
     function approveInstitutionCreation(address adminAddress) public onlyOwner {
         require(isApprovalStored(adminAddress), "Approval not found");
