@@ -37,13 +37,17 @@ contract("UniversityVoting", accounts => {
       isAddressStored.should.equal(true);
     });
     it("stops duplicate institution contract addresses being stored in mapping", async function() {
-    //  this.universityVoting.addInstitutionAddresstoMapping(this.newInstitutionContractAddress);
-    //  assert.throw(function() { this.universityVoting.addInstitutionAddresstoMapping("0xE896C0427102A5a8961933a2d0E74b380599AE90") }, Error);
+      //this.universityVoting.addInstitutionAddresstoMapping(this.newInstitutionContractAddress);
+      let theAddress = this.newInstitutionContractAddress;
+      let uni = this.universityVoting;
+    //  this.universityVoting.addInstitutionAddresstoMapping("0x83DF8F7df441E8E7ef8B79629Ae760857dc2DB89");
+  //  assert.throws(function () { iThrowError(badParam) }, Error, "Error thrown"); 
+    assert.throw(function() { uni.addInstitutionAddresstoMapping("0x83DF8F7df441E8E7ef8B79629Ae760857dc2DB89") }, Error);
     });
     it("stops duplicate institution contract addresses being stored in array", async function() {
     //    assert.throw(function() { this.universityVoting.addInstitutionAddresstoMapping(this.newInstitutionContractAddress) }, Error);
-        this.universityVoting.addInstitutionAddresstoMapping(this.newInstitutionContractAddress);
-        this.universityVoting.addInstitutionAddresstoMapping(this.newInstitutionContractAddress);
+      //  this.universityVoting.addInstitutionAddresstoMapping(this.newInstitutionContractAddress);
+     //  this.universityVoting.addInstitutionAddresstoMapping(this.newInstitutionContractAddress);
       });
   });
 
