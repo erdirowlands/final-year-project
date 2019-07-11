@@ -63,6 +63,10 @@ contract UniversityVoting is Ownable {
         _;
     }
 
+    modifier isDuplicateApproval(address adminAddress) {
+        require(_approvalRequestQueue[adminAddress].isInitialised, "This approval has already been submitted!");
+    }
+
     // Emit an event on Institution contract creation.
     event LogNewInstitution(address institution);
 
@@ -131,11 +135,6 @@ contract UniversityVoting is Ownable {
     
     function isInstitutionAddressStored(address institute) public view returns(bool isStored) {
         return _addressStructMapping[institute].isAddress;
-    }
-
-    function addApprovalToQueue(address adminAddress) public {
-        require(_approvalRequestQueue[adminAddress].isInitialised, "You have an outstanding request, please wait for that to be processed");
-        _approvalRequestQueue[adminAddress] = 
     }
 
     function isApprovalStored(address adminAddress) public view returns(bool isStored) {
