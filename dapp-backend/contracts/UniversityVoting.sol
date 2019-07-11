@@ -60,9 +60,6 @@ contract UniversityVoting is Ownable {
 
     /**
      * Initialises an approved Institution with admin.
-     * @param institutionName name of the new institution.
-     * @param adminFirstName new admin's first name.
-     * @param adminSurname new admin's surname.
      */
     function initialiseInstitutionWithAdmin()
         public onlyOwner {
