@@ -1,14 +1,12 @@
-const { expectRevert } = require('openzeppelin-test-helpers');
+const { expectRevert } = require("openzeppelin-test-helpers");
 
 const BigNumber = web3.BigNumber;
 
 const UniversityVoting = artifacts.require("UniversityVoting");
 
-
 require("chai")
   .use(require("chai-bignumber")(BigNumber))
   .should();
-
 
 contract("UniversityVoting", accounts => {
   let universityVoting;
@@ -20,10 +18,9 @@ contract("UniversityVoting", accounts => {
 
   const institutionName = "Ulster University";
   const adminFirstName = "John";
-  const adminSurname = "Francis"
+  const adminSurname = "Francis";
 
-  describe('Approving and creating a new Institution contract and operations on the newly created contract', function () {
-
+  describe("Approving and creating a new Institution contract and operations on the newly created contract", function() {
     before(async function() {
       universityVoting = await UniversityVoting.new({ from: developerAccount });
     });
@@ -32,18 +29,43 @@ contract("UniversityVoting", accounts => {
     });
 
     it("submits a new aproval request", async function() {
-      const result = universityVoting.submitInstitutionApprovalRequest(institutionName, adminFirstName, adminSurname, { from: prospectiveAdminAccount });
+      const result = universityVoting.submitInstitutionApprovalRequest(
+        institutionName,
+        adminFirstName,
+        adminSurname,
+        { from: prospectiveAdminAccount }
+      );
     });
-    it("disallows second approval request from prospective admin", async function() {
-      await expectRevert(universityVoting.submitInstitutionApprovalRequest(institutionName, adminFirstName, adminSurname, { from: prospectiveAdminAccount }), "You have an outstanding request, please wait for that to be processed");
+    it("reverts on second approval request while original pending", async function() {
+      await expectRevert(
+        universityVoting.submitInstitutionApprovalRequest(
+          institutionName,
+          adminFirstName,
+          adminSurname,
+          { from: prospectiveAdminAccount }
+        ),
+        "You have an outstanding request, please wait for that to be processed"
+      );
     });
     it("Approves and creates a new Institution contract.", async function() {
-      const result = await universityVoting.approveInstitutionCreation(prospectiveAdminAccount, { from: developerAccount });
+      const result = await universityVoting.approveInstitutionCreation(
+        prospectiveAdminAccount,
+        { from: developerAccount }
+      );
       // Get emitted event from initialiseInstitutionWithAdmin()
       const log = await result.logs[0].args;
       // Get newly created contract address from event
       newInstitutionContractAddress = await log.institution;
-    });    
+    });
+    it("reverts on attempting to approve a non-existent approval", async function() {
+      await expectRevert(
+        universityVoting.approveInstitutionCreation(
+          developerAccount,
+          { from: developerAccount }
+        ),
+        "Approval not found"
+      );
+    }); 
     it("stores institution contract address in addresses array", async function() {
       // Check if initialiseInstitutionWithAdmin() called from the beforeEach hook
       // stores the address in the array.
@@ -53,12 +75,18 @@ contract("UniversityVoting", accounts => {
     it("stores contract address in addresses mapping", async function() {
       // Check if initialiseInstitutionWithAdmin() called from the beforeEach hook
       // stores the address in the array.
-      const isAddressStored = await universityVoting.isInstitutionAddressStored(newInstitutionContractAddress);
+      const isAddressStored = await universityVoting.isInstitutionAddressStored(
+        newInstitutionContractAddress
+      );
       isAddressStored.should.equal(true);
     });
     it("reverts when attempting to store a duplicate contract address in address mapping", async function() {
-      await expectRevert(universityVoting.addInstitutionAddresstoMapping(newInstitutionContractAddress), 
-        "This institution has already been added" );
+      await expectRevert(
+        universityVoting.addInstitutionAddresstoMapping(
+          newInstitutionContractAddress
+        ),
+        "This institution has already been added"
+      );
     });
   });
 
