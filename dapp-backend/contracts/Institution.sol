@@ -29,6 +29,8 @@ contract Institution  {
     // about contract state, such as bow many admins there are.
     address[] public _adminAddresses;
 
+    InstitutionAdmin[] _institutionAdminArray;
+
     // Store the address of all prior-purchased elections.
     address[] public elections;
 
@@ -86,12 +88,12 @@ contract Institution  {
 
         _institutionAdmins[adminAddress] = InstitutionAdmin(adminFirstName, adminSurname, adminAddress, true, true);
     }
-/*
+
     // TODO need to change this to get from the mapping.
     function getSpecificAdmin(address institutionOwner) public view returns (bool isOwner) {
         return _institutionAdmins[institutionOwner];
     } 
-*/
+
 
     function isAdminStored(address admin) public view returns(bool isStored) {
         return _institutionAdmins[admin].isInitialised;
@@ -100,6 +102,10 @@ contract Institution  {
 
     function isAdminAuthorised(address admin) public view returns(bool isStored) {
         return _institutionAdmins[admin].isAuthorised;
+    }
+
+    function getAllAdmins() public returns(InstitutionAdmin memory admins){
+        return _institutionAdminArray;
     }
 
 }
