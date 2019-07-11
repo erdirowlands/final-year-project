@@ -102,7 +102,8 @@ contract UniversityVoting is Ownable {
      */
     function submitInstitutionApprovalRequest(
         string memory requestInstitutionName,string memory requestAdminFirstName,string memory requestAdminSurname)
-        public {
+        public hasPendingRequest(msg.sender) isDuplicateApproval(msg.sender)
+        {
         ApprovalRequest memory newApprovalRequest;
 
         // Initialise new approval request
