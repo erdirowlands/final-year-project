@@ -12,8 +12,11 @@ require("chai")
 contract("UniversityVoting", accounts => {
   beforeEach(async function() {
     this.universityVoting = await UniversityVoting.new();
+    // Create a new Institution with asscociated data (e.g. admin details)
     this.result = await this.universityVoting.initialiseInstitutionWithAdmin();
+    // Get emitted event from initialiseInstitutionWithAdmin()
     const log = await this.result.logs[0].args;
+    // Get newly created contract address from event
     this.newContractAddress = await log.institution;
 
     // this.universityVoting.addInstitutionOwners(accounts[0]);
@@ -22,7 +25,7 @@ contract("UniversityVoting", accounts => {
 
     describe('Operations on created Institution contract', function () {
 
-    it("creates and stores a second institution contract address", async function() {
+    it("stores institution contract address in addresses array", async function() {
       const result = await this.universityVoting.initialiseInstitutionWithAdmin();
       // Get emitted event
       const log = await result.logs[0].args;
