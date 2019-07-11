@@ -115,6 +115,9 @@ contract UniversityVoting is Ownable {
 
         // New Institution created sucessfully so set the request to not pending.
         _approvalRequestQueue[adminAddress].isPending = false;
+
+        // TODO add delete the approval from the mapping - but I might want to keep the data for the frontend.
+        // if a backend as in place, could store in a database.
     }
 
 
