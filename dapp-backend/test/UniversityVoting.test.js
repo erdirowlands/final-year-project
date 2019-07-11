@@ -4,7 +4,6 @@ const BigNumber = web3.BigNumber;
 
 const UniversityVoting = artifacts.require("UniversityVoting");
 
-let newInstitutionContractAddress;
 
 require("chai")
   .use(require("chai-bignumber")(BigNumber))
@@ -15,9 +14,9 @@ contract("UniversityVoting", accounts => {
   beforeEach(async function() {
     this.universityVoting = await UniversityVoting.new();
     // Create a new Institution with asscociated data (e.g. admin details)
-    this.result = await this.universityVoting.initialiseInstitutionWithAdmin();
+    const result = await this.universityVoting.initialiseInstitutionWithAdmin();
     // Get emitted event from initialiseInstitutionWithAdmin()
-    const log = await this.result.logs[0].args;
+    const log = await result.logs[0].args;
     // Get newly created contract address from event
     this.newInstitutionContractAddress = await log.institution;
 
@@ -39,12 +38,8 @@ contract("UniversityVoting", accounts => {
       isAddressStored.should.equal(true);
     });
     it("stops duplicate institution contract addresses being stored in mapping", async function() {
-      //this.universityVoting.addInstitutionAddresstoMapping(this.newInstitutionContractAddress);
-      let theAddress = this.newInstitutionContractAddress;
-      let uni = this.universityVoting;
-    //  this.universityVoting.addInstitutionAddresstoMapping("0x83DF8F7df441E8E7ef8B79629Ae760857dc2DB89");
-  //  assert.throws(function () { iThrowError(badParam) }, Error, "Error thrown"); 
-    await expectRevert( uni.addInstitutionAddresstoMapping(theAddress), "This institution has already been added" );
+    await expectRevert(this.universityVoting.addInstitutionAddresstoMapping(this.newInstitutionContractAddress), 
+      "This institution has already been added" );
     });
     it("stops duplicate institution contract addresses being stored in array", async function() {
     //    assert.throw(function() { this.universityVoting.addInstitutionAddresstoMapping(this.newInstitutionContractAddress) }, Error);
