@@ -76,7 +76,7 @@ contract UniversityVoting is Ownable {
      * Initialises an approved Institution with admin.
      */
     function initialiseInstitutionWithAdmin()
-        public onlyOwner {
+        public onlyOwner returns(bool) {
         string memory institutionName = _approvalRequestQueue[msg.sender].institutionName;
         string memory firstName = _approvalRequestQueue[msg.sender].adminFirstName;
         string memory surname = _approvalRequestQueue[msg.sender].adminSurname;
@@ -109,13 +109,13 @@ contract UniversityVoting is Ownable {
         _addressArray.push(contractAddress);
         // Also add the address to not interable mapping to allow for instant access to the address.
         _addressStructMapping[contractAddress] = InstitutionAddressStruct(true);
-        // Emit the creation of the new Institution as an event.
-        emit LogNewInstitution(contractAddress);
-       // return contractAddress;
 
         // New Institution created sucessfully so set the request to not pending.
         _approvalRequestQueue[adminAddress].isPending = false;
 
+        // Emit the creation of the new Institution as an event.
+        emit LogNewInstitution(contractAddress);
+       // return contractAddress;
         // TODO add delete the approval from the mapping - but I might want to keep the data for the frontend.
         // if a backend as in place, could store in a database.
     }
