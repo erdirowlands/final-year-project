@@ -136,13 +136,10 @@ contract UniversityVoting is Ownable {
         return _institutionAddressStructs[institute].isAddress;
     }
 
+    // TODO Not required
     modifier isStored(address institute) {
         require(!isInstitutionAddressStored(institute),"This institution has already been added");
         _;
-    }
-
-            function addInstitutionAddresstoMappingTEST(address institute) public {
-        _institutionAddressStructs[institute] = InstitutionAddressStruct(true);
     }
 
 }

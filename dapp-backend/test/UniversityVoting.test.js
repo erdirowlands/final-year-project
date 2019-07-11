@@ -1,3 +1,5 @@
+const { expectRevert } = require('openzeppelin-test-helpers');
+
 const BigNumber = web3.BigNumber;
 
 const UniversityVoting = artifacts.require("UniversityVoting");
@@ -42,7 +44,7 @@ contract("UniversityVoting", accounts => {
       let uni = this.universityVoting;
     //  this.universityVoting.addInstitutionAddresstoMapping("0x83DF8F7df441E8E7ef8B79629Ae760857dc2DB89");
   //  assert.throws(function () { iThrowError(badParam) }, Error, "Error thrown"); 
-    assert.throw(function() { uni.addInstitutionAddresstoMapping("0x83DF8F7df441E8E7ef8B79629Ae760857dc2DB89") }, Error);
+    await expectRevert( uni.addInstitutionAddresstoMapping(theAddress), "This institution has already been added" );
     });
     it("stops duplicate institution contract addresses being stored in array", async function() {
     //    assert.throw(function() { this.universityVoting.addInstitutionAddresstoMapping(this.newInstitutionContractAddress) }, Error);
