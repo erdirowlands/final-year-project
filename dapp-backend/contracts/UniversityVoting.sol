@@ -14,6 +14,7 @@ has access to this smart contract, then we can assume they've paid me with a deb
 contract UniversityVoting is Ownable {
 
 
+    address payable public payableOwner;
 
     /** APPROVAL QUE FOR NEW INSTITUTION REQUESTS **/
 
@@ -89,7 +90,7 @@ contract UniversityVoting is Ownable {
      * Allows a prospective admin to submit the data for their new request. A ApprovalRequest is created and mapped
      * to the approval queue
      */
-    function submitInstitutionApprovalRequest(string memory requestInstitutionName, 
+    function submitInstitutionApprovalRequest(string memory requestInstitutionName,
         string memory requestAdminFirstName,string memory requestAdminSurname)
         public {
         ApprovalRequest memory newApprovalRequest;
@@ -141,10 +142,14 @@ contract UniversityVoting is Ownable {
         return _addressStructMapping[institute].isAddress;
     }
 
-    // TODO Not required
-    modifier isStored(address institute) {
-        require(!isInstitutionAddressStored(institute),"This institution has already been added");
-        _;
+    /**
+     * Self-destruct this contract // TODO expand explanation.
+     * Kill() method taken and modified from: https://kalis.me/check-events-solidity-smart-contract-test-truffle/
+     */
+    function kill() external onlyOwner {
+        payableOwner = address(uint160(owner()));
+        selfdestruct(payableOwner);
     }
+
 
 }

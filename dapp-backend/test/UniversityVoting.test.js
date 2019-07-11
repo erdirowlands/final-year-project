@@ -19,16 +19,17 @@ contract("UniversityVoting", accounts => {
     const log = await result.logs[0].args;
     // Get newly created contract address from event
     this.newInstitutionContractAddress = await log.institution;
+  });
 
-    // this.universityVoting.addInstitutionOwners(accounts[0]);
-
+  afterEach(async function() {
+    await this.universityVoting.kill();
   });
 
     describe('Operations on created Institution contract', function () {
     it("stores institution contract address in addresses array", async function() {
       // Check if initialiseInstitutionWithAdmin() called from the beforeEach hook
       // stores the address in the array.
-      const addressThatShouldBeStored = await this.universityVoting._institutionAddreses(0);
+      const addressThatShouldBeStored = await this.universityVoting._addressArray(0);
       addressThatShouldBeStored.should.equal(this.newInstitutionContractAddress);
     });
     it("stores contract address in addresses mapping", async function() {
