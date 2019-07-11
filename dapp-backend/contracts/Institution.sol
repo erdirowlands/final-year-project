@@ -67,9 +67,14 @@ contract Institution  {
     returns (bool isStored) {
 
     }
-/*
+
     modifier isAdmin(address caller) {
-        require(_institutionAdmins[msg.sender], "sad");
+        require(isAdminStored(caller), "Caller is not an admin!");
+        _;
+    }
+
+    modifier isAuthorisedAdmin(address caller) {
+        require(isAdminAuthorised(caller), "Caller is an admin, but not currently authorised!");
         _;
     }
 
@@ -83,12 +88,16 @@ contract Institution  {
     // TODO need to change this to get from the mapping.
     function getSpecificAdmin(address institutionOwner) public view returns (bool isOwner) {
         return _institutionAdmins[institutionOwner];
-    } */
+    } 
+*/
+
+    function isAdminStored(address admin) public view returns(bool isStored) {
+        return _institutionAdmins[admin].isInitialised;
+    }
 
 
-
-    function isElectionAddressStored(address election) public view returns(bool isStored) {
-        return _institutionAdmins[election].isInitialised;
+    function isAdminAuthorised(address admin) public view returns(bool isStored) {
+        return _institutionAdmins[admin].isAuthorised;
     }
 
 }
