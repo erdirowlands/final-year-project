@@ -49,11 +49,11 @@ contract UniversityVoting is Ownable {
     // limits gas costs. This also means that we can efficiently keep track of whether
     // or not an address is stored, because the Struct that is mapped to the address contains
     // a flag that can evaulated to see if an address exists.
-    mapping(address => InstitutionAddressStruct) public _institutionAddressStructs;
+    mapping(address => InstitutionAddressStruct) public _addressStructMapping;
 
     // Store Institution addresses in dynamically sized array so the complete state, including
     // the total number of Institutions stored can be quickly accessed.
-    address[] public _institutionAddreses;
+    address[] public _addressArray;
 
     // Emit an event on Institution contract creation.
     event LogNewInstitution(address institution);
@@ -75,9 +75,9 @@ contract UniversityVoting is Ownable {
         // Attempt to add new Institution address to mapping, will correctly fail if duplicate address found.
         addInstitutionAddresstoMapping(contractAddress);
         // Add address of newly created Institutions to dynamically sized array for quick access.
-        _institutionAddreses.push(contractAddress);
+        _addressArray.push(contractAddress);
         // Also add the address to not interable mapping to allow for instant access to the address.
-        _institutionAddressStructs[contractAddress] = InstitutionAddressStruct(true);
+        _addressStructMapping[contractAddress] = InstitutionAddressStruct(true);
         // Emit the creation of the new Institution as an event.
         emit LogNewInstitution(contractAddress);
        // return contractAddress;
@@ -122,20 +122,20 @@ contract UniversityVoting is Ownable {
      * Get the number of currently created Institutions
      */
     function getInstitutionsTotal() public view returns(uint total) {
-        return _institutionAddreses.length;
+        return _addressArray.length;
     }
 
     function getInstitutionAddresses() public view returns (address[] memory) {
-        return _institutionAddreses;
+        return _addressArray;
     }
 
     function addInstitutionAddresstoMapping(address institute) public {
         require(!isInstitutionAddressStored(institute),"This institution has already been added");
-        _institutionAddressStructs[institute] = InstitutionAddressStruct(true);
+        _addressStructMapping[institute] = InstitutionAddressStruct(true);
     }
     
     function isInstitutionAddressStored(address institute) public view returns(bool isStored) {
-        return _institutionAddressStructs[institute].isAddress;
+        return _addressStructMapping[institute].isAddress;
     }
 
     // TODO Not required
