@@ -13,10 +13,12 @@ require("chai")
 contract("UniversityVoting", accounts => {
   let universityVoting;
   let newInstitutionContractAddress;
+  const developerAccount = accounts[0];
+  const unauthorisedAccount = accounts[9];
   beforeEach(async function() {
-    universityVoting = await UniversityVoting.new();
+    universityVoting = await UniversityVoting.new({ from: developerAccount });
     // Create a new Institution with asscociated data (e.g. admin details)
-    const result = await universityVoting.initialiseInstitutionWithAdmin();
+    const result = await universityVoting.initialiseInstitutionWithAdmin({ from: developerAccount });
     // Get emitted event from initialiseInstitutionWithAdmin()
     const log = await result.logs[0].args;
     // Get newly created contract address from event
@@ -37,7 +39,7 @@ contract("UniversityVoting", accounts => {
     it("stores contract address in addresses mapping", async function() {
       // Check if initialiseInstitutionWithAdmin() called from the beforeEach hook
       // stores the address in the array.
-      const isAddressStored = await universityVoting.isInstitutionAddressStored(newInstitutionContractAddress);
+      const isAddressStored = await universityVoting.isInstitutionAddressStored(newInstitutionContractAddress, { unauthorisedAccount } );
       isAddressStored.should.equal(true);
     });
     it("reverts when attempting to store a duplicate contract address in address mapping", async function() {
