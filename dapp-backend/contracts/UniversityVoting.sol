@@ -90,8 +90,8 @@ contract UniversityVoting is Ownable {
      * Allows a prospective admin to submit the data for their new request. A ApprovalRequest is created and mapped
      * to the approval queue
      */
-    function submitInstitutionApprovalRequest(string memory requestInstitutionName,
-        string memory requestAdminFirstName,string memory requestAdminSurname)
+    function submitInstitutionApprovalRequest(
+        string memory requestInstitutionName,string memory requestAdminFirstName,string memory requestAdminSurname)
         public {
         ApprovalRequest memory newApprovalRequest;
 
@@ -102,6 +102,10 @@ contract UniversityVoting is Ownable {
         newApprovalRequest.adminSurname = requestAdminSurname;
         newApprovalRequest.adminAddress = msg.sender;
         newApprovalRequest.isInitialised = true;
+
+        // Add the approval request to the approval queue mapping, mapped by the
+        // prospective admin's address.
+        _approvalRequestQueue[msg.sender] = newApprovalRequest;
     }
 
 
