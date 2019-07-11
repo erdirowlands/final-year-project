@@ -36,8 +36,8 @@ contract UniversityVoting is Ownable {
 
     mapping(address => ApprovalRequest) _approvalRequestQueue;
 
-    modifier isApproved(address approvedAdminAddress) {
-        require(_approvalRequestQueue[approvedAdminAddress].isPending, "This request has not been approved yet!");
+    modifier hasPendingRequest(address approvedAdminAddress) {
+        require(_approvalRequestQueue[approvedAdminAddress].isPending, "You have an outstanding request, please wait for that to be processed");
         _;
     }
 
@@ -144,6 +144,10 @@ contract UniversityVoting is Ownable {
     
     function isInstitutionAddressStored(address institute) public view returns(bool isStored) {
         return _addressStructMapping[institute].isAddress;
+    }
+
+    function isApprovalStored(address adminAddress) public view returns(bool isStored) {
+        return _approvalRequestQueue[adminAddress].isInitialised;
     }
 
     /**
