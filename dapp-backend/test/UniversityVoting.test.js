@@ -31,21 +31,16 @@ contract("UniversityVoting", accounts => {
       const addressThatShouldBeStored = await this.universityVoting._institutionAddreses(0);
       addressThatShouldBeStored.should.equal(this.newInstitutionContractAddress);
     });
-    it("stores institution contract address in addresses mapping", async function() {
+    it("stores contract address in addresses mapping", async function() {
       // Check if initialiseInstitutionWithAdmin() called from the beforeEach hook
       // stores the address in the array.
       const isAddressStored = await this.universityVoting.isInstitutionAddressStored(this.newInstitutionContractAddress);
       isAddressStored.should.equal(true);
     });
-    it("stops duplicate institution contract addresses being stored in mapping", async function() {
-    await expectRevert(this.universityVoting.addInstitutionAddresstoMapping(this.newInstitutionContractAddress), 
-      "This institution has already been added" );
+    it("reverts when attempting to store a duplicate contract address in address mapping", async function() {
+      await expectRevert(this.universityVoting.addInstitutionAddresstoMapping(this.newInstitutionContractAddress), 
+        "This institution has already been added" );
     });
-    it("stops duplicate institution contract addresses being stored in array", async function() {
-    //    assert.throw(function() { this.universityVoting.addInstitutionAddresstoMapping(this.newInstitutionContractAddress) }, Error);
-      //  this.universityVoting.addInstitutionAddresstoMapping(this.newInstitutionContractAddress);
-     //  this.universityVoting.addInstitutionAddresstoMapping(this.newInstitutionContractAddress);
-      });
   });
 
   /* // TODO MOVE TO INSTITUTION TEST!!!
