@@ -14,7 +14,8 @@ contract Institution  {
         string surname;
         address adminAddress;
         bool isAuthorised;
-        bool isAddress;
+        // Allow the mapping _institutionAdmins to be easily queried for admins that exist.
+        bool isInitialised;
     }
 
     // Store authorised institution admins.

@@ -29,7 +29,8 @@ contract UniversityVoting is Ownable {
         string adminFirstName;
         string adminSurname;
         address adminAddress;
-        bool isAddress;
+        // Allow us to query the approval queue to see if a request exists.
+        bool isInitialised;
     }
 
     mapping(address => ApprovalRequest) _approvalRequestQueue;
@@ -94,7 +95,8 @@ contract UniversityVoting is Ownable {
 
 
         // Initialise new approval request
-        newInstitution.institutionName = institutionName;
+        newApprovalRequest.isPending = true;
+        newApprovalRequest.institutionName = institutionName;
         newInstitution.initialised = true;
 
         //Initialise new admin
