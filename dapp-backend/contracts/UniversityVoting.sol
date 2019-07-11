@@ -98,11 +98,20 @@ contract UniversityVoting is Ownable {
     function approveInstitutionCreation(address adminAddress) public onlyOwner {
         require(isApprovalStored(adminAddress), "Approval not found");
 
-        // Create a new Institution contract and initialise it with the values from the admin's request.
+        // Create a new Institution contract and initialise it with the values from the approval request struct.
         Institution institution = new Institution(_approvalRequestQueue[adminAddress].institutionName,
             _approvalRequestQueue[adminAddress].adminFirstName, _approvalRequestQueue[adminAddress].adminSurname, adminAddress);
 
         address contractAddress = (address(institution));
+          // Attempt to add new Institution address to mapping, will correctly fail if duplicate address found.
+        addInstitutionAddresstoMapping(contractAddress);
+        // Add address of newly created Institutions to dynamically sized array for quick access.
+        _addressArray.push(contractAddress);
+        // Also add the address to not interable mapping to allow for instant access to the address.
+        _addressStructMapping[contractAddress] = InstitutionAddressStruct(true);
+        // Emit the creation of the new Institution as an event.
+        emit LogNewInstitution(contractAddress);
+       // return contractAddress;
 
         // New Institution created sucessfully so set the request to not pending.
         _approvalRequestQueue[adminAddress].isPending = false;
