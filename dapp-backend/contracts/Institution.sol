@@ -12,8 +12,8 @@ contract Institution  {
     struct InstitutionAdmin {
         string firstName;
         string surname;
-        bool isAuthorised;
         address adminAddress;
+        bool isAuthorised;
         bool isAddress;
     }
 
@@ -40,7 +40,7 @@ contract Institution  {
         _institutionName = institutionName;
 
         // Store the admin details using their address.
-        _institutionAdmins[adminAddress] = InstitutionAdmin(adminFirstName, adminSurname, true, adminAddress, true);
+        _institutionAdmins[adminAddress] = InstitutionAdmin(adminFirstName, adminSurname, adminAddress, true, true);
     }
 
     /**
@@ -78,7 +78,10 @@ contract Institution  {
         return _institutionAdmins[institutionOwner];
     } */
 
-    function isAdminAddressStored(address admin) public view returns(bool isStored) {
-        return _institutionAdmins[admin].adminAddress;
-    } 
+
+
+        function isInstitutionAddressStored(address institute) public view returns(bool isStored) {
+        return _institutionAdmins[institute].isAddress;
+    }
+
 }

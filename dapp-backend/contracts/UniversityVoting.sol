@@ -64,9 +64,14 @@ contract UniversityVoting is Ownable {
      * @param adminFirstName new admin's first name.
      * @param adminSurname new admin's surname.
      */
-    function initialiseInstitutionWithAdmin(string memory institutionName, string memory adminFirstName, string memory adminSurname)
+    function initialiseInstitutionWithAdmin()
         public onlyOwner {
-        Institution institution = new Institution();
+        string institutionName = approvalQueue[msg.sender].institutionName;
+        string firstName = approvalQueue[msg.sender].adminFirstName;
+        string surname = approvalQueue[msg.sender].adminSurname;
+        address adminAddress = approvalQuer[msg.sender].adminAddress;
+
+        Institution institution = new Institution(institutionName, firstName, surname, adminAddress, true, true);
         address contractAddress = (address(institution));
         // Guard against clients accidentally adding already created addresses.
         require(!isInstitutionAddressStored(contractAddress),"This institution has already been added");
@@ -78,6 +83,7 @@ contract UniversityVoting is Ownable {
         emit LogNewInstitution(contractAddress);
         return contractAddress;
     }
+
 
 /*
     function requestInitialiseInstitutionWithAdmin(string memory institutionName, string memory adminFirstName, string memory adminSurname)
@@ -125,7 +131,7 @@ contract UniversityVoting is Ownable {
     }
 
     function isInstitutionAddressStored(address institute) public view returns(bool isStored) {
-        return _institutionAddressStructs[institute];
+        return _institutionAddressStructs[institute].isAddress;
     }
 
     
