@@ -70,7 +70,6 @@ contract UniversityVoting is Ownable {
 
         Institution institution = new Institution(institutionName, firstName, surname, adminAddress);
         address contractAddress = (address(institution));
-
         // Attempt to add new Institution address to mapping, will correctly fail if duplicate address found.
         addInstitutionAddresstoMapping(contractAddress);
         // Add address of newly created Institutions to dynamically sized array for quick access.
