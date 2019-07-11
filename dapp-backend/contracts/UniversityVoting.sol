@@ -58,7 +58,7 @@ contract UniversityVoting is Ownable {
     address[] public _addressArray;
 
 
-    modifier hasPendingRequest(address adminAddress) {
+    modifier onlyOneRequest(address adminAddress) {
         require(!_approvalRequestQueue[adminAddress].isPending, "You have an outstanding request, please wait for that to be processed");
         _;
     }
@@ -95,14 +95,19 @@ contract UniversityVoting is Ownable {
        // return contractAddress;
     }
 
+    function approve(address adminAddress) public onlyOwner {
+        require(isApprovalStored(adminAddress), "Approval not found");
+        
+    }
+
 
     /**
-     * Allows a prospective admin to submit the data for their new request. A ApprovalRequest is created and mapped
-     * to the approval queue
+     * Allows a prospective admin to submit the data for their new request. An ApprovalRequest is created and mapped
+     * to the approval queue.
      */
     function submitInstitutionApprovalRequest(
         string memory requestInstitutionName,string memory requestAdminFirstName,string memory requestAdminSurname)
-        public hasPendingRequest(msg.sender) isDuplicateApproval(msg.sender)
+        public onlyOneRequest(msg.sender) isDuplicateApproval(msg.sender)
         {
         ApprovalRequest memory newApprovalRequest;
 
