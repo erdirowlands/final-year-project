@@ -23,7 +23,7 @@ contract UniversityVoting is Ownable {
     // The fields included are what is required to construct a new Institution using the
     // Institution contract's constructor.
     // TODO: Will need to initialise isPending to true upon struct creation.
-    struct pendingApproval {
+    struct ApprovalRequest {
         bool isPending;
         string institutionName;
         string adminFirstName;
@@ -32,10 +32,10 @@ contract UniversityVoting is Ownable {
         bool isAddress;
     }
 
-    mapping(address => pendingApproval) approvalQueue;
+    mapping(address => ApprovalRequest) _approvalRequestQueue;
 
     modifier isApproved(address approvedAdminAddress) {
-        require(approvalQueue[approvedAdminAddress].isPending, "This request has not been approved yet!");
+        require(_approvalRequestQueue[approvedAdminAddress].isPending, "This request has not been approved yet!");
         _;
     }
 
@@ -65,10 +65,10 @@ contract UniversityVoting is Ownable {
      */
     function initialiseInstitutionWithAdmin()
         public onlyOwner {
-        string memory institutionName = approvalQueue[msg.sender].institutionName;
-        string memory firstName = approvalQueue[msg.sender].adminFirstName;
-        string memory surname = approvalQueue[msg.sender].adminSurname;
-        address adminAddress = approvalQueue[msg.sender].adminAddress;
+        string memory institutionName = _approvalRequestQueue[msg.sender].institutionName;
+        string memory firstName = _approvalRequestQueue[msg.sender].adminFirstName;
+        string memory surname = _approvalRequestQueue[msg.sender].adminSurname;
+        address adminAddress = _approvalRequestQueue[msg.sender].adminAddress;
 
         Institution institution = new Institution(institutionName, firstName, surname, adminAddress);
         address contractAddress = (address(institution));
@@ -84,13 +84,16 @@ contract UniversityVoting is Ownable {
     }
 
 
-/*
-    function requestInitialiseInstitutionWithAdmin(string memory institutionName, string memory adminFirstName, string memory adminSurname)
+    /**
+     * Allows a prospective admin to submit the data for their new request. A ApprovalRequest is created and mapped
+     * to the approval queue
+     */
+    function submitInstitutionApprovalRequest(string memory institutionName, string memory adminFirstName, string memory adminSurname)
         public onlyOwner {
-        Institution memory newInstitution;
-    //    InstitutionAdmin memory newAdmin;
+        ApprovalRequest memory newApprovalRequest;
 
-        // Initialise new institution
+
+        // Initialise new approval request
         newInstitution.institutionName = institutionName;
         newInstitution.initialised = true;
 
@@ -98,7 +101,7 @@ contract UniversityVoting is Ownable {
         newAdmin.firstName = adminFirstName;
         newAdmin.surname = adminSurname;
         newAdmin.isAuthorised = true;
-    } */
+    } 
 
 
 /*
