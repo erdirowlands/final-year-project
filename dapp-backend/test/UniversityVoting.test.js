@@ -17,7 +17,7 @@ contract("UniversityVoting", accounts => {
     // Get emitted event from initialiseInstitutionWithAdmin()
     const log = await this.result.logs[0].args;
     // Get newly created contract address from event
-    this.newContractAddress = await log.institution;
+    this.newInstitutionContractAddress = await log.institution;
 
     // this.universityVoting.addInstitutionOwners(accounts[0]);
 
@@ -26,15 +26,11 @@ contract("UniversityVoting", accounts => {
     describe('Operations on created Institution contract', function () {
 
     it("stores institution contract address in addresses array", async function() {
-      const result = await this.universityVoting.initialiseInstitutionWithAdmin();
-      // Get emitted event
-      const log = await result.logs[0].args;
-      // Get newly created contract address from event
-      const newContractAddress = await log.institution;
-      // Check if the address stored in the institutions array matches the newly created
-      // institution which will be at index 1, not 0 due to setting up contract in beforeEach.
-      const createdInstitution = await this.universityVoting._institutionAddreses(1);
-      createdInstitution.should.equal(newContractAddress);
+     
+      // Check if initialiseInstitutionWithAdmin() called from the beforeEach hook
+      // stores the address in the array.
+      const addressThatShouldBeStored = await this.universityVoting._institutionAddreses(0);
+      addressThatShouldBeStored.should.equal(this.newInstitutionContractAddress);
     });
     it("stops duplicate institution contract addresses being stored in mapping", async function() {
       assert.throw(function() { this.universityVoting.addInstitutionAddresstoMapping(newInstitutionContractAddress) }, Error);
