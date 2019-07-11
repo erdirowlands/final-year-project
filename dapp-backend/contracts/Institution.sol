@@ -13,6 +13,8 @@ contract Institution  {
         string firstName;
         string surname;
         bool isAuthorised;
+        address adminAddress;
+        bool isAddress;
     }
 
     // Store authorised institution admins.
@@ -38,7 +40,7 @@ contract Institution  {
         _institutionName = institutionName;
 
         // Store the admin details using their address.
-        _institutionAdmins[adminAddress] = InstitutionAdmin(adminFirstName, adminSurname, true);
+        _institutionAdmins[adminAddress] = InstitutionAdmin(adminFirstName, adminSurname, true, adminAddress, true);
     }
 
     /**
@@ -58,19 +60,25 @@ contract Institution  {
     returns (bool isStored) {
 
     }
+/*
+    modifier isAdmin(address caller) {
+        require(_institutionAdmins[msg.sender], "sad");
+        _;
+    }
 
-
-    function addInstitutionOwners(address institutionOwner) public onlyOwner {
+/*
+    function addNewAdmin(address adminAddress) public isAdmin {
        // _institutionAdmins.push(institutionOwner);
-        require(!_institutionAdmins[institutionOwner],"This institution owner has already been added");
-        _institutionAdmins[institutionOwner] = true;
+        require(!isAdminAddressStored(adminAddress),"This adminAddress has already been added");
+        _institutionAdmins[adminAddress] = true;
     }
 
-    function getInstitutionOwner(address institutionOwner) public view returns (bool isOwner) {
+    // TODO need to change this to get from the mapping.
+    function getSpecificAdmin(address institutionOwner) public view returns (bool isOwner) {
         return _institutionAdmins[institutionOwner];
-    }
+    } */
 
     function isAdminAddressStored(address admin) public view returns(bool isStored) {
-        return _adminAddresses[admin];
-    }
+        return _institutionAdmins[admin].adminAddress;
+    } 
 }

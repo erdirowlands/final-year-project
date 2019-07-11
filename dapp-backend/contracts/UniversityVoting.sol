@@ -28,13 +28,14 @@ contract UniversityVoting is Ownable {
         string institutionName;
         string adminFirstName;
         string adminSurname;
-        string adminAddress;
+        address adminAddress;
+        bool isAddress;
     }
 
     mapping(address => pendingApproval) approvalQueue;
 
     modifier isApproved(address approvedAdminAddress) {
-        require(approvalQueue[approvedAdminAddress], "This request has not been approved yet!");
+        require(approvalQueue[approvedAdminAddress].isPending, "This request has not been approved yet!");
         _;
     }
 
@@ -111,17 +112,6 @@ contract UniversityVoting is Ownable {
         return contractAddress;
     } */
 
-    // TODO - Nearly certain we shouldn't store institution admins here, as it''l
-    // be duplicating info for Institutions. Either way, need to copy this at leas to Institutions.
-    function addInstitutionOwners(address institutionOwner) public onlyOwner {
-       // _institutionAdmins.push(institutionOwner);
-        require(!_institutionAdmins[institutionOwner],"This institution owner has already been added");
-        _institutionAdmins[institutionOwner] = true;
-    }
-
-    function getInstitutionOwner(address institutionOwner) public view returns (bool isOwner) {
-        return _institutionAdmins[institutionOwner];
-    }
 
     /**
      * Get the number of currently created Institutions
@@ -135,7 +125,7 @@ contract UniversityVoting is Ownable {
     }
 
     function isInstitutionAddressStored(address institute) public view returns(bool isStored) {
-        return _institutionAddreses[institute];
+        return _institutionAddressStructs[institute];
     }
 
     
