@@ -47,7 +47,7 @@ contract("UniversityVoting", accounts => {
         "You have an outstanding request, please wait for that to be processed"
       );
     });
-    it("Approves and creates a new Institution contract.", async function() {
+    it("approves and creates a new Institution contract.", async function() {
       const result = await universityVoting.approveInstitutionCreation(
         prospectiveAdminAccount,
         { from: developerAccount }
