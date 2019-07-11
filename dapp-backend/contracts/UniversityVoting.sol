@@ -70,7 +70,6 @@ contract UniversityVoting is Ownable {
 
         Institution institution = new Institution(institutionName, firstName, surname, adminAddress);
         address contractAddress = (address(institution));
-                _institutionAddressStructs[contractAddress] = InstitutionAddressStruct(true);
 
         // Guard against clients accidentally adding already created addresses.
         require(!isInstitutionAddressStored(contractAddress),"This institution has already been added");
@@ -78,7 +77,7 @@ contract UniversityVoting is Ownable {
         _institutionAddreses.push(contractAddress);
         
         // Also add the address to not interable mapping to allow for instant access to the address.
-        _institutionAddressStructs[contractAddress].isAddress = true;
+        _institutionAddressStructs[contractAddress] = InstitutionAddressStruct(true);
         // Emit the creation of the new Institution as an event.
         emit LogNewInstitution(contractAddress);
        // return contractAddress;
