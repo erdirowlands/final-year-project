@@ -34,6 +34,12 @@ contract Institution  {
     // Emit an event on Election contract creation.
     event LogNewElection(address election);
 
+    /**
+     * @param institutionName the name of the new Institution
+     * @param adminFirstName first name of the admin
+     * @param adminSurname surname of the admin
+     * @param adminAddress address of the admin
+     */
     constructor (string memory institutionName, string memory adminFirstName, string memory adminSurname, address adminAddress)
     public {
         // Set the institution name.
