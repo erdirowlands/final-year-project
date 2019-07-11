@@ -65,6 +65,7 @@ contract UniversityVoting is Ownable {
 
     modifier isDuplicateApproval(address adminAddress) {
         require(_approvalRequestQueue[adminAddress].isInitialised, "This approval has already been submitted!");
+        _;
     }
 
     // Emit an event on Institution contract creation.
