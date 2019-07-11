@@ -13,10 +13,10 @@ for the Election to be fully created, the customer will have to manually fund th
 has access to this smart contract, then we can assume they've paid me with a debit card, or something, and I've authorised an account creation and added it to a list of approved addresses?  e*/
 contract UniversityVoting is Ownable {
 
-
-    address payable public payableOwner;
-
-    /** APPROVAL QUE FOR NEW INSTITUTION REQUESTS **/
+    // The payableOwner inherits from Open Zeppelin's Ownable contract
+    // which is the deployer of the contract, i.e. the developer.
+    // Should this contract need to be self-destructed, the developer will recieve all funds.
+    address payable public payableOwner = address(uint160(owner()));
 
     // Store a request from a prospective admin who would like to register their Institution.
     // The flag "isPending" is included to stop potential abuse of the approval que - the intent
@@ -34,18 +34,17 @@ contract UniversityVoting is Ownable {
         bool isInitialised;
     }
 
-    mapping(address => ApprovalRequest) _approvalRequestQueue;
-
-    modifier hasPendingRequest(address adminAddress) {
-        require(!_approvalRequestQueue[adminAddress].isPending, "You have an outstanding request, please wait for that to be processed");
-        _;
-    }
-
     // Enable the prevention of duplicate addresses caused by
     // unforseen, errant client requests.
     struct InstitutionAddressStruct {
         bool isAddress;
     }
+
+    // Store ApprovalRequests mapped by prospective admin addresses so they can be accessed without iteration. This
+    // limits gas costs. This also means that we can efficiently keep track of whether
+    // or not an address is stored, because the Struct that is mapped to the address contains
+    // a flag that can evaulated to see if an address exists.
+    mapping(address => ApprovalRequest) _approvalRequestQueue;
 
     // Store Institutions addresses so they can be accessed without iteration. This
     // limits gas costs. This also means that we can efficiently keep track of whether
@@ -57,10 +56,15 @@ contract UniversityVoting is Ownable {
     // the total number of Institutions stored can be quickly accessed.
     address[] public _addressArray;
 
+
+    modifier hasPendingRequest(address adminAddress) {
+        require(!_approvalRequestQueue[adminAddress].isPending, "You have an outstanding request, please wait for that to be processed");
+        _;
+    }
+
     // Emit an event on Institution contract creation.
     event LogNewInstitution(address institution);
 
-    /* INITIALISE NEW INSTITUTION */
 
     /**
      * Initialises an approved Institution with admin.
@@ -148,6 +152,7 @@ contract UniversityVoting is Ownable {
 
     function addApprovalToQueue(address adminAddress) public {
         require(_approvalRequestQueue[adminAddress].isInitialised, "You have an outstanding request, please wait for that to be processed");
+        _approvalRequestQueue[adminAddress] = 
     }
 
     function isApprovalStored(address adminAddress) public view returns(bool isStored) {
@@ -159,7 +164,6 @@ contract UniversityVoting is Ownable {
      * Kill() method taken and modified from: https://kalis.me/check-events-solidity-smart-contract-test-truffle/
      */
     function kill() external onlyOwner {
-        payableOwner = address(uint160(owner()));
         selfdestruct(payableOwner);
     }
 
