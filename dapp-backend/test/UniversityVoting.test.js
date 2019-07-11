@@ -22,7 +22,7 @@ contract("UniversityVoting", accounts => {
 
     describe('Operations on created Institution contract', function () {
 
-    it("creates and stores a new institution contract address", async function() {
+    it("creates and stores a second institution contract address", async function() {
       const result = await this.universityVoting.initialiseInstitutionWithAdmin();
       // Get emitted event
       const log = await result.logs[0].args;
@@ -34,7 +34,7 @@ contract("UniversityVoting", accounts => {
       createdInstitution.should.equal(newContractAddress);
     });
     it("stops duplicate institution contract addresses being stored in mapping", async function() {
-      this.universityVoting._addInstitutionAddresstoMapping()
+      assert.throw(function() { this.universityVoting.addInstitutionAddresstoMapping(newInstitutionContractAddress) }, Error);
     });
   });
 
