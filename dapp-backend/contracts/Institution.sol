@@ -78,13 +78,15 @@ contract Institution  {
         _;
     }
 
-/*
-    function addNewAdmin(address adminAddress) public isAdmin {
-       // _institutionAdmins.push(institutionOwner);
-        require(!isAdminAddressStored(adminAddress),"This adminAddress has already been added");
-        _institutionAdmins[adminAddress] = true;
-    }
+    function addNewAdmin(string memory adminFirstName, string memory adminSurname, address adminAddress)
+    public isAdmin(msg.sender) isAuthorisedAdmin(msg.sender) {
+        // Check for duplicate admin address
+        require(!isAdminStored(adminAddress),"This admin address has already been added");
+        _institutionAdmins[adminAddress].isInitialised = true;
 
+        _institutionAdmins[adminAddress] = InstitutionAdmin(adminFirstName, adminSurname, adminAddress, true, true);
+    }
+/*
     // TODO need to change this to get from the mapping.
     function getSpecificAdmin(address institutionOwner) public view returns (bool isOwner) {
         return _institutionAdmins[institutionOwner];
