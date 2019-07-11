@@ -46,7 +46,9 @@ contract UniversityVoting is Ownable {
     }
 
     // Store Institutions addresses so they can be accessed without iteration. This
-    // limits gas costs.
+    // limits gas costs. This also means that we can efficiently keep track of whether
+    // or not an address is stored, because the Struct that is mapped to the address contains
+    // a flag that can evaulated to see if an address exists.
     mapping(address => InstitutionAddressStruct) public _institutionAddressStructs;
 
     // Store Institution addresses in dynamically sized array so the complete state, including
