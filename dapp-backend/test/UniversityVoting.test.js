@@ -13,8 +13,10 @@ require("chai")
 contract("UniversityVoting", accounts => {
   let universityVoting;
   let newInstitutionContractAddress;
+  // Me, as the owner and deployer of the contract.
   const developerAccount = accounts[0];
-  const unauthorisedAccount = accounts[9];
+  // Account for admin who makes a request for a new Institution
+  const prospectiveAdminAccount = accounts[1];
   beforeEach(async function() {
     universityVoting = await UniversityVoting.new({ from: developerAccount });
   });
@@ -25,8 +27,8 @@ contract("UniversityVoting", accounts => {
 
   describe('Approving and creating a new Institution contract and operations on the newly created contract', function () {
     it("Approves and creates a new Institution contract.", async function() {
-      // Create a new Institution with asscociated data (e.g. admin details)
-       const result = await universityVoting.initialiseInstitutionWithAdmin({ from: developerAccount });
+
+       const result = await universityVoting.approveInstitutionCreation({ from: developerAccount });
       // Get emitted event from initialiseInstitutionWithAdmin()
       const log = await result.logs[0].args;
       // Get newly created contract address from event
