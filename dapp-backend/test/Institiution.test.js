@@ -1,7 +1,7 @@
 const BigNumber = web3.BigNumber;
 
 const truffleAssert = require('truffle-assertions');
-
+const { expectRevert } = require("openzeppelin-test-helpers");
 
 const UniversityVoting = artifacts.require("UniversityVoting");
 const Institution = artifacts.require("Institution");
@@ -57,6 +57,7 @@ contract('Institution', accounts => {
       const transactionReceipt = await newInstitutionContractAddress.addNewAdmin(newAdminFirstName, newAdminSurname, newAdminAddress, { from: prospectiveAdminAccount });
       truffleAssert.eventEmitted(transactionReceipt, "LogNewAdmin", (event) => {
         return newAdminAddress.should.equal(event.newAdmin);
+      });
     });
     // Specifically an admin who exists in the contract, but is unauthorised at the moment.
     it('reverts when an unauthorised institution admin tries to add another admin', async function () {
@@ -65,15 +66,19 @@ contract('Institution', accounts => {
       const newAdminAddress = accounts[3];
 
       // Unauthorise Ben Sisko's account from the previous test to serve as the unauthorised admin.
-      await newInstitutionContractAddress._adminAddresses(accounts[2]).isAuthorised = false;
-      const transactionReceipt = await newInstitutionContractAddress.addNewAdmin(newAdminFirstName, newAdminSurname, newAdminAddress, { from: prospectiveAdminAccount });
-      truffleAssert.eventEmitted(transactionReceipt, "LogNewAdmin", (event) => {
-        return newAdminAddress.should.equal(event.newAdmin);
+      await newInstitutionContractAddress.unauthoriseAdmin(accounts[2]);
+      await expectRevert(
+        newInstitutionContractAddress.addNewAdmin(newAdminFirstName, newAdminSurname, newAdminAddress, { from: accounts[2] }),
+        'Caller is an admin, but not currently authorised!'
+      );
+    //  truffleAssert.eventEmitted(transactionReceipt, "LogNewAdmin", (event) => {
+    //    return newAdminAddress.should.equal(event.newAdmin);
     });
+    
     //  const log = await transactionReceipt.logs[0].args;
       
     //  newAdminAddress.should.equal(log.adminAddress);
-    })
+
 
 
     /*
@@ -89,6 +94,6 @@ contract('Institution', accounts => {
         createdElection.should.equal(newContractAddress);
         }) */
 
-  })
+  });
 
-})
+});

@@ -93,8 +93,8 @@ contract Institution  {
     }
 
     function unauthoriseAdmin(address admin) public {
-        require(!isAdminStored(admin),"Admin address not found!");
-        require(!isAdminAuthorised(admin),"Admin is already unauthorised!");
+        require(isAdminStored(admin),"Admin address not found!");
+        require(isAdminAuthorised(admin),"Admin is already unauthorised!");
         _institutionAdmins[admin].isAuthorised = false;
     }
 
