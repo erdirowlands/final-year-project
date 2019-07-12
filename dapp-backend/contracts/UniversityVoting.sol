@@ -55,15 +55,14 @@ contract UniversityVoting is Ownable, ApprovalQueue {
 
     function approveRequest(address submittingAddress) public {
         super.approveRequest(submittingAddress);
-        bool memory isPending;
+        bool isPending;
         string memory requestType;
         bytes32[] memory data;
-        string[] memory dataString;
+        string memory dataString;
         (isPending, requestType, data) = getRequest(submittingAddress);
-        for (uint i = 0; i < data.length; i++) {
-            dataString.push[i];
-        }
-        Institution institution = new Institution(dataString[0], dataString[1], dataString[2]);
+        dataString = bytes32ToString(data);
+        string[] memory splitString = dataString.split(" ");
+        Institution institution = new Institution(splitString[0], splitString[1], splitString[2]);
         address contractAddress = (address(institution));
           // Attempt to add new Institution address to mapping, will correctly fail if duplicate address found.
         addInstitutionAddresstoMapping(contractAddress);
@@ -80,6 +79,24 @@ contract UniversityVoting is Ownable, ApprovalQueue {
        // return contractAddress;
         // TODO add delete the approval from the mapping - but I might want to keep the data for the frontend.
         // if a backend as in place, could store in a database.
+    }
+    /**
+    Taken from https://ethereum.stackexchange.com/questions/29295/how-to-convert-a-bytes-to-string-in-solidity */
+    function bytes32ToString(bytes32 x) public returns (string memory) {
+        bytes memory bytesString = new bytes(32);
+        uint charCount = 0;
+        for (uint j = 0; j < 32; j++) {
+            byte char = byte(bytes32(uint(x) * 2 ** (8 * j)));
+            if (char != 0) {
+                bytesString[charCount] = char;
+                charCount++;
+            }
+        }
+        bytes memory bytesStringTrimmed = new bytes(charCount);
+        for (j = 0; j < charCount; j++) {
+            bytesStringTrimmed[j] = bytesString[j];
+        }
+        return string(bytesStringTrimmed);
     }
 
 /*

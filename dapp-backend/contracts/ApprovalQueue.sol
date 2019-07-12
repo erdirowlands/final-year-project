@@ -66,10 +66,11 @@ contract ApprovalQueue {
         return _approvalRequestQueue[submittingAddress].isInitialised;
     }
 
+/*
     function isCorrectApprovalType(address submittingAddress, string memory approvalRequestType) public {
         require(_approvalRequestQueue[submittingAddress].approvalType.compareTo(approvalRequestType),"This approval has already been submitted!");
         _;
-    }
+    } */
 
     function getRequest(address submittingAddress) public view returns(bool, string memory, bytes32[] memory ) {
         // require(isAdminStored(storedAdmin), "Admin address not found"); // TODO shouldn't need this, as we'll be using the array as the index.
