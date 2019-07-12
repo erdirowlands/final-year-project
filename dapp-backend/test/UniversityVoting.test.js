@@ -1,7 +1,6 @@
 const { expectRevert } = require("openzeppelin-test-helpers");
-
+const { asciiToHex }  = require('web3-utils');
 const BigNumber = web3.BigNumber;
-
 const UniversityVoting = artifacts.require("UniversityVoting");
 
 require("chai")
@@ -28,23 +27,20 @@ contract("UniversityVoting", accounts => {
 
     it("submits a new institution aproval request", async function() {
       const transactionReceipt = await universityVoting.submitInstitutionApprovalRequest(
-        institutionName,
-        adminFirstName,
-        adminSurname,
+        newInstitutionRequestData.map((newInstitutionRequestData) => asciiToHex(newInstitutionRequestData)),
         { from: prospectiveAdminAccount }
       );
     });
     it("reverts on second approval request while original pending", async function() {
       await expectRevert(
         universityVoting.submitInstitutionApprovalRequest(
-          institutionName,
-          adminFirstName,
-          adminSurname,
+          newInstitutionRequestData.map((newInstitutionRequestData) => asciiToHex(newInstitutionRequestData)),
           { from: prospectiveAdminAccount }
         ),
         "You have an outstanding request, please wait for that to be processed"
       );
     });
+    /*
     it("approves and creates a new Institution contract.", async function() {
       const transactionReceipt = await universityVoting.approveInstitutionCreation(
         prospectiveAdminAccount,
@@ -89,7 +85,7 @@ contract("UniversityVoting", accounts => {
         ),
         "This institution has already been added"
       );
-    });
+    }); */
   });
 
   /* // TODO MOVE TO INSTITUTION TEST!!!

@@ -28,6 +28,9 @@ contract("ApprovalQueue", accounts => {
       before(async function() {
         approvalQueue = await ApprovalQueue.new({ from: developerAccount });
       });
+      after(async function() {
+        await approvalQueue.kill();
+      });
 
       it("submits a new aproval request", async function() {
         const transactionReceipt = await approvalQueue.submitApprovalRequest(

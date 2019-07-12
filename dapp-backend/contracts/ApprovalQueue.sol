@@ -58,4 +58,12 @@ contract ApprovalQueue {
         return _approvalRequestQueue[adminAddress].isInitialised;
     }
 
+    /**
+     * Self-destruct this contract // TODO expand explanation.
+     * Kill() method taken and modified from: https://kalis.me/check-events-solidity-smart-contract-test-truffle/
+     */ // TODO add owner modifier to this
+    function kill() external {
+        selfdestruct(msg.sender);
+    }
+
 }
