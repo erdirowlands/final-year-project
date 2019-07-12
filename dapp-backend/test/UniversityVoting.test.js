@@ -29,7 +29,7 @@ contract("UniversityVoting", accounts => {
     });
 
     it("submits a new aproval request", async function() {
-      const result = await universityVoting.submitInstitutionApprovalRequest(
+      const transactionReceipt = await universityVoting.submitInstitutionApprovalRequest(
         institutionName,
         adminFirstName,
         adminSurname,
@@ -48,12 +48,12 @@ contract("UniversityVoting", accounts => {
       );
     });
     it("approves and creates a new Institution contract.", async function() {
-      const result = await universityVoting.approveInstitutionCreation(
+      const transactionReceipt = await universityVoting.approveInstitutionCreation(
         prospectiveAdminAccount,
         { from: developerAccount }
       );
       // Get emitted event from initialiseInstitutionWithAdmin()
-      const log = await result.logs[0].args;
+      const log = await transactionReceipt.logs[0].args;
       // Get newly created contract address from event
       newInstitutionContractAddress = await log.institution;
     });
