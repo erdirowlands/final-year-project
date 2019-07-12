@@ -52,6 +52,19 @@ contract("UniversityVoting", accounts => {
       // Get newly created contract address from event
       newInstitutionContractAddress = await log.institution;
     });
+    // approveRequst relies on some relativley contrived bytes32 manipulation, because
+    // strings still really aren't a primitive type in solidity :(  
+    // so ensure that this has been done correctly.
+    it("ensures institution has been initialised with the correct values", async function() {
+      const transactionReceipt = await universityVoting.approveRequest(
+        prospectiveAdminAccount,
+        { from: developerAccount }
+      );
+      // Get emitted event from initialiseInstitutionWithAdmin()
+      const log = await transactionReceipt.logs[0].args;
+      // Get newly created contract address from event
+      newInstitutionContractAddress = await log.institution;
+    });
     /*
     it("reverts on attempting to approve a non-existent approval", async function() {
       await expectRevert(
