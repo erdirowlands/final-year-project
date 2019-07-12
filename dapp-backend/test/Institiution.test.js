@@ -10,9 +10,9 @@ require('chai')
 contract('Institution', accounts => {
   // UniversityVoting contract is responsible for deploying Institution, so mimick this flow in tests.
   let universityVoting;
-  let institution;
+  let newInstitutionContractAddress;
   // Me, as the owner and deployer of the contract.
-   const developerAccount = accounts[0];
+  const developerAccount = accounts[0];
   // Account for admin who makes a request for a new Institution
   const prospectiveAdminAccount = accounts[1];
 
@@ -39,13 +39,12 @@ contract('Institution', accounts => {
       const log = await result.logs[0].args;
       // Get newly created contract address from event
       newInstitutionContractAddress = await log.institution;
-      );
-
     });
     after(async function() {
       await universityVoting.kill();
     });
 
+    /*
     it('creates a new election', async function () {
     const result = await this.institution.createElection()
     })
