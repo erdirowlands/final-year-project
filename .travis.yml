@@ -18,7 +18,7 @@ matrix:
       - rm -rf node_modules
  
 install:
-  - bash ./bin/travis-install.sh
+  - bash ./dapp-backend/bin/travis-install.sh
  
 script:
-  - bash ./bin/test.sh
+  - bash ./dapp-backend/bin/test.sh
