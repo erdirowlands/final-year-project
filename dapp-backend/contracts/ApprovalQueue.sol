@@ -15,7 +15,7 @@ contract ApprovalQueue {
     // Institution contract's constructor.
     // TODO: Will need to initialise isPending to true upon struct creation.
     struct ApprovalRequest {
-        address submitter;
+        address submitter; // When constructing the unique request types, use this for the address, e.g. adminAddress, don't duplicate their address in data
         bool isPending;
         string approvalType;
         bytes32[] data;
