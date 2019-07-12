@@ -43,7 +43,7 @@ contract("UniversityVoting", accounts => {
     });
     
     it("approves and creates a new Institution contract.", async function() {
-      const transactionReceipt = await universityVoting.approveInstitutionCreation(
+      const transactionReceipt = await universityVoting.approveRequest(
         prospectiveAdminAccount,
         { from: developerAccount }
       );

@@ -92,7 +92,8 @@ contract UniversityVoting is Ownable, ApprovalQueue {
         // if a backend as in place, could store in a database.
     }
     /**
-    Taken from https://ethereum.stackexchange.com/questions/29295/how-to-convert-a-bytes-to-string-in-solidity */
+     * Taken from https://ethereum.stackexchange.com/questions/29295/how-to-convert-a-bytes-to-string-in-solidity
+     */
     function bytes32ToString(bytes32 x) public pure returns (string memory) {
         bytes memory bytesString = new bytes(32);
         uint charCount = 0;
