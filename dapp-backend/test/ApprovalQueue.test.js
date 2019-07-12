@@ -1,5 +1,5 @@
 const { expectRevert } = require("openzeppelin-test-helpers");
-const  asciiToHex  = require('web3-utils');
+const { asciiToHex }  = require('web3-utils');
 
 const BigNumber = web3.BigNumber;
 
@@ -31,7 +31,7 @@ contract("ApprovalQueue", accounts => {
       it("submits a new aproval request", async function() {
         const transactionReceipt = await approvalQueue.submitApprovalRequest(
           exampleApprovalType,
-          exampleApprovalData.map((exampleApprovalData) => asciiToHex.toHex(exampleApprovalData), 32),
+          exampleApprovalData.map((exampleApprovalData) => asciiToHex(exampleApprovalData)),
           { from: prospectiveAdminAccount }
         );
         
