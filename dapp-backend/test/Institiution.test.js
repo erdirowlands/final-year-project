@@ -65,7 +65,7 @@ contract('Institution', accounts => {
       const newAdminSurname = "Holden"
       const newAdminAddress = accounts[3];
 
-      // Unauthorise Ben Sisko's account from the previous test to serve as the unauthorised admin.
+      // Unauthorise Ben Sisko's account from the previous test to serve as the now unauthorised admin.
       await newInstitutionContractAddress.unauthoriseAdmin(accounts[2]);
       await expectRevert(
         newInstitutionContractAddress.addNewAdmin(newAdminFirstName, newAdminSurname, newAdminAddress, { from: accounts[2] }),
