@@ -71,8 +71,6 @@ contract('Institution', accounts => {
         newInstitutionContractAddress.addNewAdmin(newAdminFirstName, newAdminSurname, newAdminAddress, { from: accounts[2] }),
         'Caller is an admin, but not currently authorised!'
       );
-    //  truffleAssert.eventEmitted(transactionReceipt, "LogNewAdmin", (event) => {
-    //    return newAdminAddress.should.equal(event.newAdmin);
     });
     
     //  const log = await transactionReceipt.logs[0].args;
