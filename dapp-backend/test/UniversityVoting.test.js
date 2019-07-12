@@ -16,6 +16,7 @@ contract("UniversityVoting", accounts => {
   const prospectiveAdminAccount = accounts[1];
 
   const newInstitutionRequestData = ["Ulster University", "John", "Francis"];
+  newRequestDataAsBytes32 =  newInstitutionRequestData.map((newInstitutionRequestData) => asciiToHex(newInstitutionRequestData)),
 
   describe("Approving and creating a new Institution contract and operations on the newly created contract", function() {
     before(async function() {
@@ -27,14 +28,14 @@ contract("UniversityVoting", accounts => {
 
     it("submits a new institution aproval request", async function() {
       const transactionReceipt = await universityVoting.submitInstitutionApprovalRequest(
-        newInstitutionRequestData.map((newInstitutionRequestData) => asciiToHex(newInstitutionRequestData)),
+        newRequestDataAsBytes32,
         { from: prospectiveAdminAccount }
       );
     });
     it("reverts on second approval request while original pending", async function() {
       await expectRevert(
         universityVoting.submitInstitutionApprovalRequest(
-          newInstitutionRequestData.map((newInstitutionRequestData) => asciiToHex(newInstitutionRequestData)),
+          newRequestDataAsBytes32,
           { from: prospectiveAdminAccount }
         ),
         "You have an outstanding request, please wait for that to be processed"
