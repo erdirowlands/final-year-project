@@ -41,7 +41,7 @@ contract("UniversityVoting", accounts => {
         "You have an outstanding request, please wait for that to be processed"
       );
     });
-    /*
+    
     it("approves and creates a new Institution contract.", async function() {
       const transactionReceipt = await universityVoting.approveInstitutionCreation(
         prospectiveAdminAccount,
@@ -52,6 +52,7 @@ contract("UniversityVoting", accounts => {
       // Get newly created contract address from event
       newInstitutionContractAddress = await log.institution;
     });
+    /*
     it("reverts on attempting to approve a non-existent approval", async function() {
       await expectRevert(
         universityVoting.approveInstitutionCreation(
