@@ -2,6 +2,7 @@ pragma solidity ^0.5.2;
 
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 import "./Institution.sol";
+import "./ApprovalQueue.sol";
 
 // Name in progress - can possible be: ElectionFactory, though the current name indicates that this is the 'main entry point'.
 /** // TODO Change comments based on new functionality - keep notion of factory pattern. Also mention that mappings adhere to storage patters found at: https://ethereum.stackexchange.com/questions/13167/are-there-well-solved-and-simple-storage-patterns-for-solidity
@@ -12,7 +13,7 @@ import "./Institution.sol";
  * for the Election to be fully created, the customer will have to manually fund their address (or Voting System) with Ether? Or should it be for the purposes of this project, if a university
  * has access to this smart contract, then we can assume they've paid me with a debit card, or something, and I've authorised an account creation and added it to a list of approved addresses?  
 */
-contract UniversityVoting is Ownable {
+contract UniversityVoting is Ownable, ApprovalQueue {
 
     // The payableOwner inherits from Open Zeppelin's Ownable contract
     // which is the deployer of the contract, i.e. the developer.

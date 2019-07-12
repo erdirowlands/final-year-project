@@ -1,13 +1,19 @@
 pragma solidity ^0.5.2;
 
+/**
+* Initially, each contract that required some sort of approval functionality, whether that was for approving voters, or new institution
+* admins, contained their own unique approval queues. That approach proved to be in violation of the DRY principle, as the underlying requirements
+* for approving a request were the same. Therefore, the concept was generalised into this utility contract, with the approval data required to be
+* "split" around some basic regex - in this case, a comma.
+*/
 contract ApprovalQueue {
 
-    /** 
-     * Initially, each contract that required some sort of approval functionality, whether that was for approving voters, or new institution
-     * admins, contained their own unique approval queues. That approach proved to be in violation of the DRY principle, as the underlying requirements
-     * for approving a request were the same. Therefore, the concept was generalised into this utility contract, with the approval data required to be
-     * "split" around some basic regex - in this case, a comma.
-     */
+    // Store a request from a prospective admin who would like to register their Institution.
+    // The flag "isPending" is included to stop potential abuse of the approval que - the intent
+    // is that only one approval per unique user address can be submitted at a time.
+    // The fields included are what is required to construct a new Institution using the
+    // Institution contract's constructor.
+    // TODO: Will need to initialise isPending to true upon struct creation.
     struct ApprovalRequest {
         bool isPending;
         string approvalType;
@@ -20,6 +26,11 @@ contract ApprovalQueue {
     // or not an address is stored, because the Struct that is mapped to the address contains
     // a flag that can evaulated to see if an address exists.
     mapping(address => ApprovalRequest) _approvalRequestQueue;
+
+    function submitApprovalRequest(string memory approvalRequestType, string memory data)
+    public onlyOneRequest(msg.sender) isDuplicateApproval(msg.sender) {
+        
+    }
 
     modifier onlyOneRequest(address adminAddress) {
         require(!_approvalRequestQueue[adminAddress].isPending, "You have an outstanding request, please wait for that to be processed");
