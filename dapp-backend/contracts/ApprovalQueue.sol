@@ -48,18 +48,32 @@ contract ApprovalQueue {
         require(isApprovalStored(submittingAddress), "Approval not found");
     }
 
-    modifier onlyOneRequest(address adminAddress) {
-        require(!_approvalRequestQueue[adminAddress].isPending, "You have an outstanding request, please wait for that to be processed");
+    modifier onlyOneRequest(address submittingAddress) {
+        require(!_approvalRequestQueue[submittingAddress].isPending, "You have an outstanding request, please wait for that to be processed");
         _;
     }
 
-    modifier isDuplicateApproval(address adminAddress) {
-        require(!_approvalRequestQueue[adminAddress].isInitialised, "This approval has already been submitted!");
+    modifier isDuplicateApproval(address submittingAddress) {
+        require(!_approvalRequestQueue[submittingAddress].isInitialised, "This approval has already been submitted!");
         _;
     }
 
-    function isApprovalStored(address adminAddress) public view returns(bool isStored) {
-        return _approvalRequestQueue[adminAddress].isInitialised;
+    function isApprovalStored(address submittingAddress) public view returns(bool isStored) {
+        return _approvalRequestQueue[submittingAddress].isInitialised;
+    }
+
+    function isCorrectApprovalType(address submittingAddress, string memory approvalRequestType) public {
+        require(!_approvalRequestQueue[submittingAddress].approvalType == approvalRequestType, "This approval has already been submitted!");
+        _;
+    }
+
+    function getRequest(address submittingAddress) public view returns(bool, string memory, bytes32[] memory ) {
+        // require(isAdminStored(storedAdmin), "Admin address not found"); // TODO shouldn't need this, as we'll be using the array as the index.
+        if (isApprovalStored(submittingAddress)) { // TODO this might not be reachable as the return is in the if if it's anything like Java and
+        //the comment above should apply about using the array as the inex
+            return (_approvalRequestQueue[submittingAddress].isPending, _approvalRequestQueue[submittingAddress].approvalType, _approvalRequestQueue[submittingAddress].data,);
+        }
+
     }
 
     /**
