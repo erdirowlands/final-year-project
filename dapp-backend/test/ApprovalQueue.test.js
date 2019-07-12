@@ -46,7 +46,14 @@ contract("ApprovalQueue", accounts => {
           "You have an outstanding request, please wait for that to be processed"
         );
       });
-
+      it("returns true if an approval from a submitter exists", async function() {
+        const result = await approvalQueue.isApprovalStored(prospectiveAdminAccount);
+        result.should.equal(true);
+      });
+      it("returns false if an approval from a submitter does not exist", async function() {
+        const result = await approvalQueue.isApprovalStored(developerAccount);
+        result.should.equal(false);
+      });
 
     });
 });
