@@ -53,6 +53,12 @@ contract UniversityVoting is Ownable, ApprovalQueue {
     // Emit an event on Institution contract creation.
     event LogNewInstitution(address institution);
 
+    function approveRequest(address submittingAddress) public {
+        super.approveRequest(submittingAddress);
+        Institution institution = new Institution(_approvalRequestQueue[adminAddress].institutionName,
+            _approvalRequestQueue[adminAddress].adminFirstName, _approvalRequestQueue[adminAddress].adminSurname, adminAddress);
+    } 
+
 /*
     function approveInstitutionCreation(address adminAddress) public onlyOwner {
         require(isApprovalStored(adminAddress), "Approval not found");
@@ -88,7 +94,7 @@ contract UniversityVoting is Ownable, ApprovalQueue {
      */
     function submitInstitutionApprovalRequest(bytes32[] memory requestData) public {
        // institutionName adminFirstName adminSurname adminAddress
-        submitApprovalRequest(approvalRequestType, requestData);
+        super.submitApprovalRequest(approvalRequestType, requestData);
     }
 
     /**

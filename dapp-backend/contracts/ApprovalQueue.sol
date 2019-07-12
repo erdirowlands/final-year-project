@@ -44,6 +44,10 @@ contract ApprovalQueue {
         _approvalRequestQueue[msg.sender] = newApprovalRequest;
     }
 
+    function approveRequest(address submittingAddress) public {
+        require(isApprovalStored(submittingAddress), "Approval not found");
+    }
+
     modifier onlyOneRequest(address adminAddress) {
         require(!_approvalRequestQueue[adminAddress].isPending, "You have an outstanding request, please wait for that to be processed");
         _;
