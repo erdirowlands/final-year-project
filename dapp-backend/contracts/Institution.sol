@@ -89,10 +89,11 @@ contract Institution  {
         _institutionAdmins[adminAddress] = InstitutionAdmin(adminFirstName, adminSurname, adminAddress, true, true);
     }
 
+/*
     // TODO need to change this to get from the mapping.
     function getSpecificAdmin(address institutionOwner) public view returns (bool isOwner) {
         return _institutionAdmins[institutionOwner];
-    } 
+    } */
 
 
     function isAdminStored(address admin) public view returns(bool isStored) {
@@ -104,8 +105,9 @@ contract Institution  {
         return _institutionAdmins[admin].isAuthorised;
     }
 
+/*
     function getAllAdmins() public returns(InstitutionAdmin memory admins){
         return _institutionAdminArray;
-    }
+    } */
 
 }
