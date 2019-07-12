@@ -28,7 +28,7 @@ contract("UniversityVoting", accounts => {
       await universityVoting.kill();
     });
 
-    it("submits a new aproval request", async function() {
+    it("submits a new institution aproval request", async function() {
       const transactionReceipt = await universityVoting.submitInstitutionApprovalRequest(
         institutionName,
         adminFirstName,

@@ -86,7 +86,7 @@ contract UniversityVoting is Ownable, ApprovalQueue {
      * Allows a prospective admin to submit the data for their new request. An ApprovalRequest is created and mapped
      * to the approval queue.
      */
-    function submitInstitutionApprovalRequestNEW(bytes32[] memory requestData) public {
+    function submitInstitutionApprovalRequest(bytes32[] memory requestData) public {
        // institutionName adminFirstName adminSurname adminAddress
         submitApprovalRequest(institutionApprovalRequest, requestData);
     }
