@@ -29,7 +29,7 @@ contract("UniversityVoting", accounts => {
     });
 
     it("submits a new aproval request", async function() {
-      const result = universityVoting.submitInstitutionApprovalRequest(
+      const result = await universityVoting.submitInstitutionApprovalRequest(
         institutionName,
         adminFirstName,
         adminSurname,

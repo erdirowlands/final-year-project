@@ -23,6 +23,13 @@ contract('Institution', accounts => {
   describe('deploy and use the child institution contract', function () {
     before(async function() {
       universityVoting = await UniversityVoting.new({ from: developerAccount });
+      const result = universityVoting.submitInstitutionApprovalRequest(
+        institutionName,
+        adminFirstName,
+        adminSurname,
+        { from: prospectiveAdminAccount }
+      );
+
     });
     after(async function() {
       await universityVoting.kill();
