@@ -34,6 +34,9 @@ contract Institution  {
     // Store the address of all prior-purchased elections.
     address[] public elections;
 
+    // Emit an event when a new admin has been added.
+    event LogNewAdmin(address newAdmin);
+
     // Emit an event on Election contract creation.
     event LogNewElection(address election);
 
@@ -85,8 +88,14 @@ contract Institution  {
         // Check for duplicate admin address
         require(!isAdminStored(adminAddress),"This admin address has already been added");
         _institutionAdmins[adminAddress].isInitialised = true;
-
         _institutionAdmins[adminAddress] = InstitutionAdmin(adminFirstName, adminSurname, adminAddress, true, true);
+        emit LogNewAdmin(adminAddress);
+    }
+
+    function unauthoriseAdmin(address admin) public {
+        require(isAdminStored(admin),"Admin address not found!");
+        require(isAdminAuthorised(admin),"Admin is already unauthorised!");
+        _institutionAdmins[admin].isAuthorised = false;
     }
 
 /*
@@ -94,6 +103,16 @@ contract Institution  {
     function getSpecificAdmin(address institutionOwner) public view returns (bool isOwner) {
         return _institutionAdmins[institutionOwner];
     } */
+
+    function getAdmin(address storedAdmin) public view returns(string memory, string memory, address, bool) {
+        // require(isAdminStored(storedAdmin), "Admin address not found"); // TODO shouldn't need this, as we'll be using the array as the index.
+        if (isAdminStored(storedAdmin)) { // TODO this might not be reachable as the return is in the if if it's anything like Java and
+        //the comment above should apply about using the array as the inex
+            return (_institutionAdmins[storedAdmin].firstName, _institutionAdmins[storedAdmin].surname, _institutionAdmins[storedAdmin].adminAddress,
+            _institutionAdmins[storedAdmin].isAuthorised);
+        }
+
+    }
 
 
     function isAdminStored(address admin) public view returns(bool isStored) {
