@@ -16,9 +16,7 @@ contract("UniversityVoting", accounts => {
   // Account for admin who makes a request for a new Institution
   const prospectiveAdminAccount = accounts[1];
 
-  const institutionName = "Ulster University";
-  const adminFirstName = "John";
-  const adminSurname = "Francis";
+  const newInstitutionRequestData = ["Ulster University", "John", "Francis"];
 
   describe("Approving and creating a new Institution contract and operations on the newly created contract", function() {
     before(async function() {
