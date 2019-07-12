@@ -55,7 +55,9 @@ contract('Institution', accounts => {
       const newAdminAddress = accounts[2];
 
       const result = await newInstitutionContractAddress.addNewAdmin(newAdminFirstName, newAdminSurname, newAdminAddress, { from: prospectiveAdminAccount });
-     truffleAssert.eventEmitted(result, "LogNewAdmin");
+      truffleAssert.eventEmitted(result, "LogNewAdmin", (event) => {
+        return newAdminAddress.should.equal(event.newAdmin);
+    });
     //  const log = await result.logs[0].args;
       
     //  newAdminAddress.should.equal(log.adminAddress);
