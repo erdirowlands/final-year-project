@@ -18,7 +18,7 @@ contract ApprovalQueue {
         address submitter;
         bool isPending;
         string approvalType;
-        string data;
+        bytes32[] data;
         bool isInitialised;
     }
 
@@ -28,7 +28,7 @@ contract ApprovalQueue {
     // a flag that can evaulated to see if an address exists.
     mapping(address => ApprovalRequest) _approvalRequestQueue;
 
-    function submitApprovalRequest(string memory approvalRequestType, string memory requestData)
+    function submitApprovalRequest(string memory approvalRequestType, bytes32[] memory requestData)
     public onlyOneRequest(msg.sender) isDuplicateApproval(msg.sender) {
         ApprovalRequest memory newApprovalRequest;
 
