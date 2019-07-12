@@ -55,13 +55,32 @@ contract UniversityVoting is Ownable, ApprovalQueue {
 
     function approveRequest(address submittingAddress) public {
         super.approveRequest(submittingAddress);
-        bool isPending; 
-        string requestType; 
-        bytes32[] = data; 
+        bool memory isPending;
+        string memory requestType;
+        bytes32[] memory data;
+        string[] memory dataString;
         (isPending, requestType, data) = getRequest(submittingAddress);
-        Institution institution = new Institution(_approvalRequestQueue[adminAddress].institutionName,
-            _approvalRequestQueue[adminAddress].adminFirstName, _approvalRequestQueue[adminAddress].adminSurname, adminAddress);
-    } 
+        for (uint i = 0; i < data.length; i++) {
+            dataString.push[i];
+        }
+        Institution institution = new Institution(dataString[0], dataString[1], dataString[2]);
+        address contractAddress = (address(institution));
+          // Attempt to add new Institution address to mapping, will correctly fail if duplicate address found.
+        addInstitutionAddresstoMapping(contractAddress);
+        // Add address of newly created Institutions to dynamically sized array for quick access.
+        _addressArray.push(contractAddress);
+        // Also add the address to not interable mapping to allow for instant access to the address.
+        _addressStructMapping[contractAddress] = InstitutionAddressStruct(true);
+
+        // New Institution created sucessfully so set the request to not pending.
+        _approvalRequestQueue[submittingAddress].isPending = false;
+
+        // Emit the creation of the new Institution as an event.
+        emit LogNewInstitution(contractAddress);
+       // return contractAddress;
+        // TODO add delete the approval from the mapping - but I might want to keep the data for the frontend.
+        // if a backend as in place, could store in a database.
+    }
 
 /*
     function approveInstitutionCreation(address adminAddress) public onlyOwner {
