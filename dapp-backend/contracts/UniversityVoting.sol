@@ -19,7 +19,7 @@ contract UniversityVoting is Ownable, ApprovalQueue {
     // which is the deployer of the contract, i.e. the developer.
     // Should this contract need to be self-destructed, the developer will recieve all funds.
     address payable public payableOwner = address(uint160(owner()));
-
+    string constant private institutionApprovalRequest = "institutionApprovalRequest";
 
     struct ApprovalRequest {
         bool isPending;
@@ -119,11 +119,10 @@ contract UniversityVoting is Ownable, ApprovalQueue {
      * Allows a prospective admin to submit the data for their new request. An ApprovalRequest is created and mapped
      * to the approval queue.
      */
-    function submitInstitutionApprovalRequestNEW(
-        string memory requestInstitutionName)
-        public onlyOneRequest(msg.sender) isDuplicateApproval(msg.sender)
-        {
-            submitApprovalRequest(requestData);
+    function submitInstitutionApprovalRequestNEW(string memory requestInstitutionName,string memory requestAdminFirstName,string memory requestAdminSurname)
+    public {
+       // institutionName adminFirstName adminSurname adminAddress
+        submitApprovalRequest(institutionApprovalRequest, );
     }
 
     /**
