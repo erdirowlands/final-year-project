@@ -92,6 +92,12 @@ contract Institution  {
         emit LogNewAdmin(adminAddress);
     }
 
+    function unauthoriseAdmin(address admin) public {
+        require(!isAdminStored(admin),"Admin address not found!");
+        require(!isAdminAuthorised(admin),"Admin is already unauthorised!");
+        _institutionAdmins[admin].isAuthorised = false;
+    }
+
 /*
     // TODO need to change this to get from the mapping.
     function getSpecificAdmin(address institutionOwner) public view returns (bool isOwner) {
