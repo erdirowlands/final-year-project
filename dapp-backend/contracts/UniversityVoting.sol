@@ -55,6 +55,10 @@ contract UniversityVoting is Ownable, ApprovalQueue {
 
     function approveRequest(address submittingAddress) public {
         super.approveRequest(submittingAddress);
+        bool isPending; 
+        string requestType; 
+        bytes32[] = data; 
+        (isPending, requestType, data) = getRequest(submittingAddress);
         Institution institution = new Institution(_approvalRequestQueue[adminAddress].institutionName,
             _approvalRequestQueue[adminAddress].adminFirstName, _approvalRequestQueue[adminAddress].adminSurname, adminAddress);
     } 

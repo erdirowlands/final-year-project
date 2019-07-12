@@ -1,5 +1,7 @@
 pragma solidity ^0.5.2;
 
+import "solidity-util/lib/Strings.sol";
+
 /**
 * Initially, each contract that required some sort of approval functionality, whether that was for approving voters, or new institution
 * admins, contained their own unique approval queues. That approach proved to be in violation of the DRY principle, as the underlying requirements
@@ -7,6 +9,8 @@ pragma solidity ^0.5.2;
 * "split" around some basic regex - in this case, a comma.
 */
 contract ApprovalQueue {
+
+    using Strings for string;
 
     // Store a request from a prospective admin who would like to register their Institution.
     // The flag "isPending" is included to stop potential abuse of the approval que - the intent
@@ -63,7 +67,7 @@ contract ApprovalQueue {
     }
 
     function isCorrectApprovalType(address submittingAddress, string memory approvalRequestType) public {
-        require(!_approvalRequestQueue[submittingAddress].approvalType == approvalRequestType, "This approval has already been submitted!");
+        require(_approvalRequestQueue[submittingAddress].approvalType.compareTo(approvalRequestType),"This approval has already been submitted!");
         _;
     }
 
@@ -71,7 +75,7 @@ contract ApprovalQueue {
         // require(isAdminStored(storedAdmin), "Admin address not found"); // TODO shouldn't need this, as we'll be using the array as the index.
         if (isApprovalStored(submittingAddress)) { // TODO this might not be reachable as the return is in the if if it's anything like Java and
         //the comment above should apply about using the array as the inex
-            return (_approvalRequestQueue[submittingAddress].isPending, _approvalRequestQueue[submittingAddress].approvalType, _approvalRequestQueue[submittingAddress].data,);
+            return (_approvalRequestQueue[submittingAddress].isPending, _approvalRequestQueue[submittingAddress].approvalType, _approvalRequestQueue[submittingAddress].data);
         }
 
     }
