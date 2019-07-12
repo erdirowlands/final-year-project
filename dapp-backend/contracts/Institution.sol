@@ -95,6 +95,11 @@ contract Institution  {
         return _institutionAdmins[institutionOwner];
     } */
 
+    function getAdmin(address storedAdmin) public returns(string memory, string memory, address, bool) {
+        return (_institutionAdmins[storedAdmin].firstName, _institutionAdmins[storedAdmin].surname, _institutionAdmins[storedAdmin].adminAddress,
+            _institutionAdmins[storedAdmin].isAuthorised);
+    }
+
 
     function isAdminStored(address admin) public view returns(bool isStored) {
         return _institutionAdmins[admin].isInitialised;
