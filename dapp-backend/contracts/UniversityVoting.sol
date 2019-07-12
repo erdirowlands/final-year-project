@@ -21,15 +21,6 @@ contract UniversityVoting is Ownable, ApprovalQueue {
     address payable public payableOwner = address(uint160(owner()));
     string constant private institutionApprovalRequest = "institutionApprovalRequest";
 
-    struct ApprovalRequest {
-        bool isPending;
-        string institutionName;
-        string adminFirstName;
-        string adminSurname;
-        address adminAddress;
-        // Allow us to query the approval queue to see if a request exists.
-        bool isInitialised;
-    }
 
     // Enable the prevention of duplicate addresses caused by
     // unforseen, errant client requests.
@@ -37,11 +28,7 @@ contract UniversityVoting is Ownable, ApprovalQueue {
         bool isAddress;
     }
 
-    // Store ApprovalRequests mapped by prospective admin addresses so they can be accessed without iteration. This
-    // limits gas costs. This also means that we can efficiently keep track of whether
-    // or not an address is stored, because the Struct that is mapped to the address contains
-    // a flag that can evaulated to see if an address exists.
-    mapping(address => ApprovalRequest) _approvalRequestQueue;
+
 
     // Store Institutions addresses so they can be accessed without iteration. This
     // limits gas costs. This also means that we can efficiently keep track of whether
@@ -66,6 +53,7 @@ contract UniversityVoting is Ownable, ApprovalQueue {
     // Emit an event on Institution contract creation.
     event LogNewInstitution(address institution);
 
+/*
     function approveInstitutionCreation(address adminAddress) public onlyOwner {
         require(isApprovalStored(adminAddress), "Approval not found");
 
@@ -89,31 +77,10 @@ contract UniversityVoting is Ownable, ApprovalQueue {
        // return contractAddress;
         // TODO add delete the approval from the mapping - but I might want to keep the data for the frontend.
         // if a backend as in place, could store in a database.
-    }
+    } */
 
+/*
 
-    /**
-     * Allows a prospective admin to submit the data for their new request. An ApprovalRequest is created and mapped
-     * to the approval queue.
-     */
-    function submitInstitutionApprovalRequest(
-        string memory requestInstitutionName,string memory requestAdminFirstName,string memory requestAdminSurname)
-        public onlyOneRequest(msg.sender) isDuplicateApproval(msg.sender)
-        {
-        ApprovalRequest memory newApprovalRequest;
-
-        // Initialise new approval request
-        newApprovalRequest.isPending = true;
-        newApprovalRequest.institutionName = requestInstitutionName;
-        newApprovalRequest.adminFirstName = requestAdminFirstName;
-        newApprovalRequest.adminSurname = requestAdminSurname;
-        newApprovalRequest.adminAddress = msg.sender;
-        newApprovalRequest.isInitialised = true;
-
-        // Add the approval request to the approval queue mapping, mapped by the
-        // prospective admin's address.
-        _approvalRequestQueue[msg.sender] = newApprovalRequest;
-    }
 
     /**
      * Allows a prospective admin to submit the data for their new request. An ApprovalRequest is created and mapped
