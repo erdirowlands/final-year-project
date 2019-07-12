@@ -1,5 +1,6 @@
 const BigNumber = web3.BigNumber;
 
+const UniversityVoting = artifacts.require("UniversityVoting");
 const Institution = artifacts.require('Institution')
 
 require('chai')
@@ -44,7 +45,7 @@ contract('Institution', accounts => {
       await universityVoting.kill();
     });
 
-    /*
+    
     it('creates a new election', async function () {
     const result = await this.institution.createElection()
     })
