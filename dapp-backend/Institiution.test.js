@@ -23,11 +23,22 @@ contract('Institution', accounts => {
   describe('deploy and use the child institution contract', function () {
     before(async function() {
       universityVoting = await UniversityVoting.new({ from: developerAccount });
-      const result = universityVoting.submitInstitutionApprovalRequest(
+      // Submit the approval from 'prospective admin' addresss
+      await universityVoting.submitInstitutionApprovalRequest(
         institutionName,
         adminFirstName,
         adminSurname,
         { from: prospectiveAdminAccount }
+      );
+      // Developer Approves the request and UniversityVoting contract the new Institution contract.
+      const result = await universityVoting.approveInstitutionCreation(
+        prospectiveAdminAccount,
+        { from: developerAccount }
+      );
+      // Get emitted event from initialiseInstitutionWithAdmin()
+      const log = await result.logs[0].args;
+      // Get newly created contract address from event
+      newInstitutionContractAddress = await log.institution;
       );
 
     });
