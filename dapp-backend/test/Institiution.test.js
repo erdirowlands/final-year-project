@@ -1,5 +1,8 @@
 const BigNumber = web3.BigNumber;
 
+const truffleAssert = require('truffle-assertions');
+
+
 const UniversityVoting = artifacts.require("UniversityVoting");
 const Institution = artifacts.require("Institution");
 
@@ -51,8 +54,13 @@ contract('Institution', accounts => {
       const newAdminSurname = "Sisko"
       const newAdminAddress = accounts[2];
 
-      newInstitutionContractAddress.addNewAdmin(newAdminFirstName, newAdminSurname, newAdminAddress, { from: prospectiveAdminAccount });
+      const result = await newInstitutionContractAddress.addNewAdmin(newAdminFirstName, newAdminSurname, newAdminAddress, { from: prospectiveAdminAccount });
+     truffleAssert.eventEmitted(result, "LogNewAdmin");
+    //  const log = await result.logs[0].args;
+      
+    //  newAdminAddress.should.equal(log.adminAddress);
     })
+
 
     /*
     it('stores the election contract address', async function () {

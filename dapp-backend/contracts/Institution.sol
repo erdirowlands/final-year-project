@@ -34,6 +34,9 @@ contract Institution  {
     // Store the address of all prior-purchased elections.
     address[] public elections;
 
+    // Emit an event when a new admin has been added.
+    event LogNewAdmin(address newAdmin);
+
     // Emit an event on Election contract creation.
     event LogNewElection(address election);
 
@@ -85,8 +88,8 @@ contract Institution  {
         // Check for duplicate admin address
         require(!isAdminStored(adminAddress),"This admin address has already been added");
         _institutionAdmins[adminAddress].isInitialised = true;
-
         _institutionAdmins[adminAddress] = InstitutionAdmin(adminFirstName, adminSurname, adminAddress, true, true);
+        emit LogNewAdmin(adminAddress);
     }
 
 /*
