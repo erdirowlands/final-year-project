@@ -19,6 +19,7 @@ contract("ApprovalQueue", accounts => {
     const developerAccount = accounts[0];
     const prospectiveAdminAccount = accounts[1];
 
+    // For this test the we'll use mock the data of an Institution approval request.
     const exampleApprovalType = "institutionApprovalRequest";
     const exampleApprovalData = ["Ulster University", "Bob", "Abbot"];
   //  let test = [exampleApprovalData.map((exampleApprovalData) => web3.utils.asciiToHex(exampleApprovalData)) = asciiToHex(exampleApprovalData)]
@@ -33,8 +34,17 @@ contract("ApprovalQueue", accounts => {
           exampleApprovalType,
           exampleApprovalData.map((exampleApprovalData) => asciiToHex(exampleApprovalData)),
           { from: prospectiveAdminAccount }
+        );    
+      });
+      it("reverts on second approval request while original pending", async function() {
+        await expectRevert(
+          approvalQueue.submitApprovalRequest(
+            "dummy data",
+            exampleApprovalData.map((exampleApprovalData) => asciiToHex(exampleApprovalData)),
+            { from: prospectiveAdminAccount }
+          ),
+          "You have an outstanding request, please wait for that to be processed"
         );
-        
       });
 
 
