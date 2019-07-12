@@ -8,7 +8,7 @@ import "./Election.sol";
 An Institution can create Election Smart Contracts exclusivley for themselves. */
 contract Institution  {
 
-    string private _institutionName;
+    string public _institutionName;
 
     struct InstitutionAdmin {
         string firstName;
@@ -97,6 +97,10 @@ contract Institution  {
         require(isAdminStored(admin),"Admin address not found!");
         require(isAdminAuthorised(admin),"Admin is already unauthorised!");
         _institutionAdmins[admin].isAuthorised = false;
+    }
+
+    function getInstitutionName() public view returns(string memory) {
+        return _institutionName;
     }
 
 /*

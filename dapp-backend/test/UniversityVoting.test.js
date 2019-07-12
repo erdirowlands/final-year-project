@@ -2,6 +2,8 @@ const { expectRevert } = require("openzeppelin-test-helpers");
 const { asciiToHex }  = require('web3-utils');
 const BigNumber = web3.BigNumber;
 const UniversityVoting = artifacts.require("UniversityVoting");
+const Institution = artifacts.require("Institution");
+
 
 require("chai")
   .use(require("chai-bignumber")(BigNumber))
@@ -52,19 +54,20 @@ contract("UniversityVoting", accounts => {
       // Get newly created contract address from event
       newInstitutionContractAddress = await log.institution;
     });
+    it("stores institution contract address in addresses array", async function() {
+      // Check if initialiseInstitutionWithAdmin() called from the beforeEach hook
+      // stores the address in the array.
+      const addressThatShouldBeStored = await universityVoting._addressArray(0);
+      addressThatShouldBeStored.should.equal(newInstitutionContractAddress);
+    });
     // approveRequst relies on some relativley contrived bytes32 manipulation, because
     // strings still really aren't a primitive type in solidity :(  
     // so ensure that manipulation has been done correctly.
     it("ensures institution has been initialised with the correct values", async function() {
-      const transactionReceipt = await universityVoting.approveRequest(
-        prospectiveAdminAccount,
-        { from: developerAccount }
-      );
-      // Get emitted event from initialiseInstitutionWithAdmin()
-      const log = await transactionReceipt.logs[0].args;
-      // Get newly created contract address from event
-      newInstitutionContractAddress = await log.institution;
-    });
+      deployedInstitutionContract = await Institution.at(newInstitutionContractAddress);
+      let resultName = await deployedInstitutionContract.getInstitutionName();
+      resultName.should.equal("Ulster University")
+    }); 
     
     it("reverts on attempting to approve a non-existent approval", async function() {
       await expectRevert(
@@ -74,13 +77,8 @@ contract("UniversityVoting", accounts => {
         ),
         "Approval not found"
       ); 
-    }); /*
-    it("stores institution contract address in addresses array", async function() {
-      // Check if initialiseInstitutionWithAdmin() called from the beforeEach hook
-      // stores the address in the array.
-      const addressThatShouldBeStored = await universityVoting._addressArray(0);
-      addressThatShouldBeStored.should.equal(newInstitutionContractAddress);
-    });
+    }); 
+ /*
     it("stores contract address in addresses mapping", async function() {
       // Check if initialiseInstitutionWithAdmin() called from the beforeEach hook
       // stores the address in the array.
