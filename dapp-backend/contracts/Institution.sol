@@ -2,14 +2,11 @@ pragma solidity ^0.5.2;
 
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 import "./Election.sol";
-import "solidity-util/lib/Strings.sol";
 
 
 /**
 An Institution can create Election Smart Contracts exclusivley for themselves. */
 contract Institution  {
-
-    using Strings for string;
 
     string private _institutionName;
 
