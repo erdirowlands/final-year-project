@@ -29,6 +29,8 @@ contract Institution  {
     // about contract state, such as bow many admins there are.
     address[] public _adminAddresses;
 
+    InstitutionAdmin[] _institutionAdminArray;
+
     // Store the address of all prior-purchased elections.
     address[] public elections;
 
@@ -67,28 +69,45 @@ contract Institution  {
     returns (bool isStored) {
 
     }
-/*
+
     modifier isAdmin(address caller) {
-        require(_institutionAdmins[msg.sender], "sad");
+        require(isAdminStored(caller), "Caller is not an admin!");
         _;
     }
 
-/*
-    function addNewAdmin(address adminAddress) public isAdmin {
-       // _institutionAdmins.push(institutionOwner);
-        require(!isAdminAddressStored(adminAddress),"This adminAddress has already been added");
-        _institutionAdmins[adminAddress] = true;
+    modifier isAuthorisedAdmin(address caller) {
+        require(isAdminAuthorised(caller), "Caller is an admin, but not currently authorised!");
+        _;
     }
 
+    function addNewAdmin(string memory adminFirstName, string memory adminSurname, address adminAddress)
+    public isAdmin(msg.sender) isAuthorisedAdmin(msg.sender) {
+        // Check for duplicate admin address
+        require(!isAdminStored(adminAddress),"This admin address has already been added");
+        _institutionAdmins[adminAddress].isInitialised = true;
+
+        _institutionAdmins[adminAddress] = InstitutionAdmin(adminFirstName, adminSurname, adminAddress, true, true);
+    }
+
+/*
     // TODO need to change this to get from the mapping.
     function getSpecificAdmin(address institutionOwner) public view returns (bool isOwner) {
         return _institutionAdmins[institutionOwner];
     } */
 
 
-
-    function isElectionAddressStored(address election) public view returns(bool isStored) {
-        return _institutionAdmins[election].isInitialised;
+    function isAdminStored(address admin) public view returns(bool isStored) {
+        return _institutionAdmins[admin].isInitialised;
     }
+
+
+    function isAdminAuthorised(address admin) public view returns(bool isStored) {
+        return _institutionAdmins[admin].isAuthorised;
+    }
+
+/*
+    function getAllAdmins() public returns(InstitutionAdmin memory admins){
+        return _institutionAdminArray;
+    } */
 
 }

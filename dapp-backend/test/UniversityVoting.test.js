@@ -80,6 +80,10 @@ contract("UniversityVoting", accounts => {
       );
       isAddressStored.should.equal(true);
     });
+    it("gets the number of stored instituion addresses", async function() {
+      const totalAddresses = (await universityVoting.getInstitutionsTotal()).toNumber();
+      totalAddresses.should.equal(1);
+    });
     it("reverts when attempting to store a duplicate contract address in address mapping", async function() {
       await expectRevert(
         universityVoting.addInstitutionAddresstoMapping(

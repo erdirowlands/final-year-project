@@ -57,6 +57,8 @@ contract UniversityVoting is Ownable {
     // the total number of Institutions stored can be quickly accessed.
     address[] public _addressArray;
 
+    ApprovalRequest[] public test;
+
 
     modifier onlyOneRequest(address adminAddress) {
         require(!_approvalRequestQueue[adminAddress].isPending, "You have an outstanding request, please wait for that to be processed");
