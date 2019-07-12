@@ -15,6 +15,7 @@ contract ApprovalQueue {
     // Institution contract's constructor.
     // TODO: Will need to initialise isPending to true upon struct creation.
     struct ApprovalRequest {
+        address submitter;
         bool isPending;
         string approvalType;
         string data;
@@ -27,9 +28,20 @@ contract ApprovalQueue {
     // a flag that can evaulated to see if an address exists.
     mapping(address => ApprovalRequest) _approvalRequestQueue;
 
-    function submitApprovalRequest(string memory approvalRequestType, string memory data)
+    function submitApprovalRequest(string memory approvalRequestType, string memory requestData)
     public onlyOneRequest(msg.sender) isDuplicateApproval(msg.sender) {
-        
+        ApprovalRequest memory newApprovalRequest;
+
+        // Initialise new approval request
+        newApprovalRequest.submitter = msg.sender;
+        newApprovalRequest.isPending = true;
+        newApprovalRequest.approvalType = approvalRequestType;
+        newApprovalRequest.data = requestData;
+        newApprovalRequest.isInitialised = true;
+
+        // Add the approval request to the approval queue mapping, mapped by the
+        // prospective admin's address.
+        _approvalRequestQueue[msg.sender] = newApprovalRequest;
     }
 
     modifier onlyOneRequest(address adminAddress) {
