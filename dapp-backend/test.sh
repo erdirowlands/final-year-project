@@ -2,7 +2,7 @@
  
 set -e
  
-ganache-cli --gasLimit 67219752> /dev/null 1> /dev/null &
+ganache-cli
 sleep 5 # to make sure ganache-cli is up and running before compiling
 rm -rf build
 truffle compile
