@@ -15,7 +15,7 @@ contract("UniversityVoting", accounts => {
   // Account for admin who makes a request for a new Institution
   const prospectiveAdminAccount = accounts[1];
 
-  const newInstitutionRequestData = ["Ulster University", "John", "Francis"];
+  const newInstitutionRequestData = ["Ulster University ", "John ", "Francis"];
   newRequestDataAsBytes32 =  newInstitutionRequestData.map((newInstitutionRequestData) => asciiToHex(newInstitutionRequestData)),
 
   describe("Approving and creating a new Institution contract and operations on the newly created contract", function() {

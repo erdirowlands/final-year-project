@@ -4,6 +4,9 @@ import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 import "./Institution.sol";
 import "./ApprovalQueue.sol";
 
+import "solidity-util/lib/Strings.sol";
+
+
 // Name in progress - can possible be: ElectionFactory, though the current name indicates that this is the 'main entry point'.
 /** // TODO Change comments based on new functionality - keep notion of factory pattern. Also mention that mappings adhere to storage patters found at: https://ethereum.stackexchange.com/questions/13167/are-there-well-solved-and-simple-storage-patterns-for-solidity
  * A contract which removes the requirement of university officials deploying their own instances of Election contracts.
@@ -14,6 +17,9 @@ import "./ApprovalQueue.sol";
  * has access to this smart contract, then we can assume they've paid me with a debit card, or something, and I've authorised an account creation and added it to a list of approved addresses?  
 */
 contract UniversityVoting is Ownable, ApprovalQueue {
+
+    using Strings for string;
+
 
     // The payableOwner inherits from Open Zeppelin's Ownable contract
     // which is the deployer of the contract, i.e. the developer.
@@ -58,11 +64,16 @@ contract UniversityVoting is Ownable, ApprovalQueue {
         bool isPending;
         string memory requestType;
         bytes32[] memory data;
-        string memory dataString;
         (isPending, requestType, data) = getRequest(submittingAddress);
-        dataString = bytes32ToString(data);
-        string[] memory splitString = dataString.split(" ");
-        Institution institution = new Institution(splitString[0], splitString[1], splitString[2]);
+        string memory institutionName;
+        string memory adminFirstName;
+        string memory adminSurname;
+        institutionName = bytes32ToString(data[0]);
+        adminFirstName = bytes32ToString(data[1]);
+        adminSurname = bytes32ToString(data[2]);
+
+
+        Institution institution = new Institution(institutionName, adminFirstName, adminSurname, submittingAddress);
         address contractAddress = (address(institution));
           // Attempt to add new Institution address to mapping, will correctly fail if duplicate address found.
         addInstitutionAddresstoMapping(contractAddress);
@@ -82,7 +93,7 @@ contract UniversityVoting is Ownable, ApprovalQueue {
     }
     /**
     Taken from https://ethereum.stackexchange.com/questions/29295/how-to-convert-a-bytes-to-string-in-solidity */
-    function bytes32ToString(bytes32 x) public returns (string memory) {
+    function bytes32ToString(bytes32 x) public pure returns (string memory) {
         bytes memory bytesString = new bytes(32);
         uint charCount = 0;
         for (uint j = 0; j < 32; j++) {
@@ -93,7 +104,7 @@ contract UniversityVoting is Ownable, ApprovalQueue {
             }
         }
         bytes memory bytesStringTrimmed = new bytes(charCount);
-        for (j = 0; j < charCount; j++) {
+        for (uint j = 0; j < charCount; j++) {
             bytesStringTrimmed[j] = bytesString[j];
         }
         return string(bytesStringTrimmed);
