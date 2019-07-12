@@ -96,8 +96,12 @@ contract Institution  {
     } */
 
     function getAdmin(address storedAdmin) public view returns(string memory, string memory, address, bool) {
-        return (_institutionAdmins[storedAdmin].firstName, _institutionAdmins[storedAdmin].surname, _institutionAdmins[storedAdmin].adminAddress,
+        // require(isAdminStored(storedAdmin), "Admin address not found"); // TODO shouldn't need this, as we'll be using the array as the index.
+        if (isAdminStored(storedAdmin)) { // TODO this might not be reachable as the return is in the if if it's anything like Java, test this.
+            return (_institutionAdmins[storedAdmin].firstName, _institutionAdmins[storedAdmin].surname, _institutionAdmins[storedAdmin].adminAddress,
             _institutionAdmins[storedAdmin].isAuthorised);
+        }
+
     }
 
 
