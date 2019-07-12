@@ -4,12 +4,9 @@ module.exports = {
   networks: {
 
     development: {
-      host: "192.168.1.71",
-      port: 7545,
-      network_id: "*",
-      accounts: 5,
-      defaultEtherBalance: 500,
-      blockTime: 3
+      host: "127.0.0.1",
+      port: 8545,
+      network_id: "*" // Match any network id
     },
 
     ganacheGUI: {
