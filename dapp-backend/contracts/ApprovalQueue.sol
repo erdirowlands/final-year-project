@@ -5,6 +5,7 @@ pragma solidity ^0.5.2;
 * admins, contained their own unique approval queues. That approach proved to be in violation of the DRY principle, as the underlying requirements
 * for approving a request were the same. Therefore, the concept was generalised into this utility contract, with the approval data required to be
 * "split" around some basic regex - in this case, a comma.
+* UPDATE: Splitting strings in solidity takes some work, abandoning that idea due to time constrains, and just adding flags for which type it is.
 */
 contract ApprovalQueue {
 
@@ -17,7 +18,9 @@ contract ApprovalQueue {
     struct ApprovalRequest {
         address submitter;
         bool isPending;
-        string approvalType;
+        bool isVotingRequest;
+        bool isNewInstitutionRequest;
+        bool isNewInstitutionAdminRequest;
         string data;
         bool isInitialised;
     }
@@ -28,14 +31,13 @@ contract ApprovalQueue {
     // a flag that can evaulated to see if an address exists.
     mapping(address => ApprovalRequest) _approvalRequestQueue;
 
-    function submitApprovalRequest(string memory approvalRequestType, string memory requestData)
+    function submitApprovalRequest(string memory requestData)
     public onlyOneRequest(msg.sender) isDuplicateApproval(msg.sender) {
         ApprovalRequest memory newApprovalRequest;
 
         // Initialise new approval request
         newApprovalRequest.submitter = msg.sender;
         newApprovalRequest.isPending = true;
-        newApprovalRequest.approvalType = approvalRequestType;
         newApprovalRequest.data = requestData;
         newApprovalRequest.isInitialised = true;
 
@@ -59,3 +61,7 @@ contract ApprovalQueue {
     }
 
 }
+
+// add isVotinApproval then can check for that
+
+// based on the address the function is being called from, base the requst type on that

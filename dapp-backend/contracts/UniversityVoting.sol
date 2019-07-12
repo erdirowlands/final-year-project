@@ -20,12 +20,7 @@ contract UniversityVoting is Ownable, ApprovalQueue {
     // Should this contract need to be self-destructed, the developer will recieve all funds.
     address payable public payableOwner = address(uint160(owner()));
 
-    // Store a request from a prospective admin who would like to register their Institution.
-    // The flag "isPending" is included to stop potential abuse of the approval que - the intent
-    // is that only one approval per unique user address can be submitted at a time.
-    // The fields included are what is required to construct a new Institution using the
-    // Institution contract's constructor.
-    // TODO: Will need to initialise isPending to true upon struct creation.
+
     struct ApprovalRequest {
         bool isPending;
         string institutionName;
@@ -118,6 +113,17 @@ contract UniversityVoting is Ownable, ApprovalQueue {
         // Add the approval request to the approval queue mapping, mapped by the
         // prospective admin's address.
         _approvalRequestQueue[msg.sender] = newApprovalRequest;
+    }
+
+    /**
+     * Allows a prospective admin to submit the data for their new request. An ApprovalRequest is created and mapped
+     * to the approval queue.
+     */
+    function submitInstitutionApprovalRequestNEW(
+        string memory requestInstitutionName)
+        public onlyOneRequest(msg.sender) isDuplicateApproval(msg.sender)
+        {
+            submitApprovalRequest(requestData);
     }
 
     /**
