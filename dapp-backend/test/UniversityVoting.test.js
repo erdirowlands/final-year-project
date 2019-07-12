@@ -17,7 +17,7 @@ contract("UniversityVoting", accounts => {
   // Account for admin who makes a request for a new Institution
   const prospectiveAdminAccount = accounts[1];
 
-  const newInstitutionRequestData = ["Ulster University ", "John ", "Francis"];
+  const newInstitutionRequestData = ["Ulster University", "John", "Francis"];
   newRequestDataAsBytes32 =  newInstitutionRequestData.map((newInstitutionRequestData) => asciiToHex(newInstitutionRequestData)),
 
   describe("Approving and creating a new Institution contract and operations on the newly created contract", function() {
@@ -68,7 +68,6 @@ contract("UniversityVoting", accounts => {
       let resultName = await deployedInstitutionContract.getInstitutionName();
       resultName.should.equal("Ulster University")
     }); 
-    
     it("reverts on attempting to approve a non-existent approval", async function() {
       await expectRevert(
         universityVoting.approveRequest(
