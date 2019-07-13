@@ -4,9 +4,6 @@ import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 import "./Institution.sol";
 import "./ApprovalQueue.sol";
 
-import "solidity-util/lib/Strings.sol";
-
-
 // Name in progress - can possible be: ElectionFactory, though the current name indicates that this is the 'main entry point'.
 /** // TODO Change comments based on new functionality - keep notion of factory pattern. Also mention that mappings adhere to storage patters found at: https://ethereum.stackexchange.com/questions/13167/are-there-well-solved-and-simple-storage-patterns-for-solidity
  * A contract which removes the requirement of university officials deploying their own instances of Election contracts.
@@ -17,9 +14,6 @@ import "solidity-util/lib/Strings.sol";
  * has access to this smart contract, then we can assume they've paid me with a debit card, or something, and I've authorised an account creation and added it to a list of approved addresses?  
 */
 contract UniversityVoting is Ownable, ApprovalQueue {
-
-    using Strings for string;
-
 
     // The payableOwner inherits from Open Zeppelin's Ownable contract
     // which is the deployer of the contract, i.e. the developer.
@@ -33,8 +27,6 @@ contract UniversityVoting is Ownable, ApprovalQueue {
     struct InstitutionAddressStruct {
         bool isAddress;
     }
-
-
 
     // Store Institutions addresses so they can be accessed without iteration. This
     // limits gas costs. This also means that we can efficiently keep track of whether
