@@ -73,7 +73,6 @@ contract UniversityVoting is Ownable, ApprovalQueue {
         adminFirstName = bytes32ToString(data[1]);
         adminSurname = bytes32ToString(data[2]);
 
-
         Institution institution = new Institution(institutionName, adminFirstName, adminSurname, submittingAddress);
         address contractAddress = (address(institution));
           // Attempt to add new Institution address to mapping, will correctly fail if duplicate address found.

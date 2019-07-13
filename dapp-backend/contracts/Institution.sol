@@ -10,6 +10,7 @@ An Institution can create Election Smart Contracts exclusivley for themselves. *
 contract Institution is ApprovalQueue {
 
     string public _institutionName;
+    string constant public approvalRequestType = "adminApprovalRequest";
 
     struct InstitutionAdmin {
         string firstName;
@@ -61,6 +62,7 @@ contract Institution is ApprovalQueue {
     event NewAdminApproved(address admin);
     function approveRequest(address submittingAddress) public {
         super.approveRequest(submittingAddress);
+
     }
 
     /**
