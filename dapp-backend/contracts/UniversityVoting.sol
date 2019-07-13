@@ -42,7 +42,7 @@ contract UniversityVoting is Ownable, ApprovalQueue {
     // TODO this can be in the superclass I think?
     event NewInstitutionApproved(address institution);
 
-    function approveRequest(address submittingAddress) public {
+    function approveInstitutionRequest(address submittingAddress) public {
         super.approveRequest(submittingAddress);
 
         bytes32[] memory data = getRequestData(submittingAddress);
@@ -92,8 +92,6 @@ contract UniversityVoting is Ownable, ApprovalQueue {
     } */
 
 /*
-
-
     /**
      * Allows a prospective admin to submit the data for their new request. An ApprovalRequest is created and mapped
      * to the approval queue.

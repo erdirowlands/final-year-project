@@ -55,7 +55,7 @@ contract("Institution", accounts => {
           { from: prospectiveAdmin1 }
         );
         // Developer Approves the request and UniversityVoting contract the new Institution contract.
-        const transactionReceipt = await universityVoting.approveRequest(
+        const transactionReceipt = await universityVoting.approveInstitutionRequest(
           prospectiveAdmin1,
           { from: developerAccount }
         );
@@ -84,7 +84,7 @@ contract("Institution", accounts => {
         );
       });
       it("approves the new admin request.", async function() {
-        const transactionReceipt = await newInstitutionContractAddress.approveRequest(
+        const transactionReceipt = await newInstitutionContractAddress.approveAdminRequest(
           prospectiveAdmin2,
           { from: prospectiveAdmin1 }
         );
@@ -129,10 +129,6 @@ contract("Institution", accounts => {
           "Caller is an admin, but not currently authorised!"
         );
       });
-
-      //  const log = await transactionReceipt.logs[0].args;
-
-      //  newAdminAddress.should.equal(log.adminAddress);
 
       /*
     it('stores the election contract address', async function () {

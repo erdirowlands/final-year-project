@@ -45,7 +45,7 @@ contract("UniversityVoting", accounts => {
     });
     
     it("approves and creates a new Institution contract.", async function() {
-      const transactionReceipt = await universityVoting.approveRequest(
+      const transactionReceipt = await universityVoting.approveInstitutionRequest(
         prospectiveAdminAccount,
         { from: developerAccount }
       );
@@ -77,7 +77,7 @@ contract("UniversityVoting", accounts => {
     }); 
     it("reverts on attempting to approve a non-existent approval", async function() {
       await expectRevert(
-        universityVoting.approveRequest(
+        universityVoting.approveInstitutionRequest(
           developerAccount,
           { from: developerAccount }
         ),
