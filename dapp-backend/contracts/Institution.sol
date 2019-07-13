@@ -77,7 +77,7 @@ contract Institution is ApprovalQueue {
         emit LogNewAdmin(submittingAddress);
     }
 
-    function submitInstitutionApprovalRequest(bytes32[] memory requestData) public {
+    function submitAdminApprovalRequest(bytes32[] memory requestData) public {
        // institutionName adminFirstName adminSurname adminAddress
         super.submitApprovalRequest(approvalRequestType, requestData);
     }

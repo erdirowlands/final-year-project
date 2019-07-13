@@ -25,18 +25,19 @@ contract('Institution', accounts => {
   const adminFirstName = "John";
   const adminSurname = "Francis";
 
+  const newInstitutionRequestData = [institutionName, adminFirstName, adminSurname];
+  newRequestDataAsBytes32 =  newInstitutionRequestData.map((newInstitutionRequestData) => asciiToHex(newInstitutionRequestData)),
+
   describe('Deploy and use the child institution contract', function () {
     before(async function() {
       universityVoting = await UniversityVoting.new({ from: developerAccount });
       // Submit the approval from 'prospective admin' addresss
       await universityVoting.submitInstitutionApprovalRequest(
-        institutionName,
-        adminFirstName,
-        adminSurname,
+        newInstitutionRequestData,
         { from: prospectiveAdminAccount }
       );
       // Developer Approves the request and UniversityVoting contract the new Institution contract.
-      const transactionReceipt = await universityVoting.approveInstitutionCreation(
+      const transactionReceipt = await universityVoting.approveRequest(
         prospectiveAdminAccount,
         { from: developerAccount }
       );
@@ -48,7 +49,33 @@ contract('Institution', accounts => {
     after(async function() {
       await universityVoting.kill();
     });
-
+    it("submits a new admin aproval request", async function() {
+      const transactionReceipt = await newInstitutionContractAddress.submitAdminApprovalRequest(
+        newRequestDataAsBytes32,
+        { from: prospectiveAdminAccount }
+      );
+    });
+    it("reverts on second admin approval request while original pending", async function() {
+      await expectRevert(
+        newInstitutionContractAddress.submitInstitutionApprovalRequest(
+          newRequestDataAsBytes32,
+          { from: prospectiveAdminAccount }
+        ),
+        "You have an outstanding request, please wait for that to be processed"
+      );
+    });
+    it("approves the new admin request.", async function() {
+      const transactionReceipt = await newInstitutionContractAddress.approveRequest(
+        prospectiveAdminAccount,
+        { from: developerAccount }
+      );
+    });
+    it("stores the new admin address in quick access array", async function() {
+      // Check if initialiseInstitutionWithAdmin() called from the beforeEach hook
+      // stores the address in the array.
+      const adminThatShouldBeStored = await newInstitutionContractAddress._adminAddresses(0);
+      adminThatShouldBeStored.should.equal(prospectiveAdminAccount);
+    });
     it('lets an approved institution admin add another admin', async function () {
       const newAdminFirstName = "Ben";
       const newAdminSurname = "Sisko"
