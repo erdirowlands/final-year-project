@@ -65,8 +65,15 @@ contract("UniversityVoting", accounts => {
     // so ensure that manipulation has been done correctly.
     it("ensures institution has been initialised with the correct values", async function() {
       deployedInstitutionContract = await Institution.at(newInstitutionContractAddress);
-      let resultName = await deployedInstitutionContract.getInstitutionName();
-      resultName.should.equal("Ulster University")
+      const resultName = await deployedInstitutionContract.getInstitutionName();
+      resultName.should.equal("Ulster University");
+      
+      // Get the admin's firstname, surname, address, and if they are authorised
+      const admin = await deployedInstitutionContract.getAdmin(prospectiveAdminAccount);
+      admin[0].should.equal("John");
+      admin[1].should.equal("Francis");
+      admin[2].should.equal(prospectiveAdminAccount);
+      admin[3].should.equal(true);
     }); 
     it("reverts on attempting to approve a non-existent approval", async function() {
       await expectRevert(
