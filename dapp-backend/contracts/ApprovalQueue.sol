@@ -48,15 +48,8 @@ contract ApprovalQueue {
         _approvalRequestQueue[msg.sender] = newApprovalRequest;
     }
 
-    function approveRequest(address submittingAddress) public returns (bytes32[] memory) {
+    function approveRequest(address submittingAddress) public  {
         require(isApprovalStored(submittingAddress), "Approval not found");
-
-        // todo if requestType then add the relevant data to the bytes32
-        bool isPending;
-        string memory requestType;
-        bytes32[] memory data;
-        (isPending, requestType, data) = getRequest(submittingAddress);
-        return data;
     }
 
     modifier onlyOneRequest(address submittingAddress) {

@@ -69,9 +69,9 @@ contract UniversityVoting is Ownable, ApprovalQueue {
         string memory institutionName;
         string memory adminFirstName;
         string memory adminSurname;
-        institutionName = bytes32ToString(data[0]);
-        adminFirstName = bytes32ToString(data[1]);
-        adminSurname = bytes32ToString(data[2]);
+        institutionName = super.bytes32ToString(data[0]);
+        adminFirstName = super.bytes32ToString(data[1]);
+        adminSurname = super.bytes32ToString(data[2]);
 
         Institution institution = new Institution(institutionName, adminFirstName, adminSurname, submittingAddress);
         address contractAddress = (address(institution));
@@ -91,26 +91,6 @@ contract UniversityVoting is Ownable, ApprovalQueue {
         // TODO add delete the approval from the mapping - but I might want to keep the data for the frontend.
         // if a backend as in place, could store in a database.
     }
-    /**
-     * Taken from https://ethereum.stackexchange.com/questions/29295/how-to-convert-a-bytes-to-string-in-solidity
-     */
-    function bytes32ToString(bytes32 x) public pure returns (string memory) {
-        bytes memory bytesString = new bytes(32);
-        uint charCount = 0;
-        for (uint j = 0; j < 32; j++) {
-            byte char = byte(bytes32(uint(x) * 2 ** (8 * j)));
-            if (char != 0) {
-                bytesString[charCount] = char;
-                charCount++;
-            }
-        }
-        bytes memory bytesStringTrimmed = new bytes(charCount);
-        for (uint j = 0; j < charCount; j++) {
-            bytesStringTrimmed[j] = bytesString[j];
-        }
-        return string(bytesStringTrimmed);
-    }
-
 /*
     function approveInstitutionCreation(address adminAddress) public onlyOwner {
         require(isApprovalStored(adminAddress), "Approval not found");
