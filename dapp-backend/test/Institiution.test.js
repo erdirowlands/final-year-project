@@ -65,7 +65,8 @@ contract("Institution", accounts => {
         newInstitutionContractAddress = await Institution.at(log.institution);
       });
       after(async function() {
-     //   await universityVoting.kill();
+        await universityVoting.kill();
+        await newInstitutionContractAddress.kill();
       });
       it("submits a new admin aproval request", async function() {
         const transactionReceipt = await newInstitutionContractAddress.submitAdminApprovalRequest(

@@ -54,10 +54,11 @@ contract Institution is ApprovalQueue {
         // Set the institution name.
         _institutionName = institutionName;
 
-        // Store the admin details using their address.
+        // Store the admin details.
+        require(!isAdminStored(adminAddress),"This admin address has already been added");
         _institutionAdmins[adminAddress] = InstitutionAdmin(adminFirstName, adminSurname, adminAddress, true, true);
+         // Add address of newly created Institutions to dynamically sized array for quick access.
         _adminAddresses.push(adminAddress);
-
     }
 
     // Emit an event on Institution contract creation.
@@ -71,10 +72,8 @@ contract Institution is ApprovalQueue {
         string memory adminSurname;
         adminFirstName = super.bytes32ToString(data[0]);
         adminSurname = super.bytes32ToString(data[1]);
-        // Store the new admin info in mapping.
+        // Store the new admin info in mapping and array.
         addNewAdmin(adminFirstName, adminSurname, submittingAddress);
-        // Add address of newly created Institutions to dynamically sized array for quick access.
-        _adminAddresses.push(submittingAddress);
 
         // New Institution created sucessfully so set the request to not pending.
         _approvalRequestQueue[submittingAddress].isPending = false;
@@ -120,8 +119,10 @@ contract Institution is ApprovalQueue {
     public isAdmin(msg.sender) isAuthorisedAdmin(msg.sender) {
         // Check for duplicate admin address
         require(!isAdminStored(adminAddress),"This admin address has already been added");
-        _institutionAdmins[adminAddress].isInitialised = true;
         _institutionAdmins[adminAddress] = InstitutionAdmin(adminFirstName, adminSurname, adminAddress, true, true);
+         // Add address of newly created Institutions to dynamically sized array for quick access.
+        _adminAddresses.push(adminAddress);
+
     }
 
     function unauthoriseAdmin(address admin) public {
