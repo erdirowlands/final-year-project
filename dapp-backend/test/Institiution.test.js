@@ -99,33 +99,7 @@ contract("Institution", accounts => {
           1
         );
         adminThatShouldBeStored.should.equal(prospectiveAdmin2);
-      }); /*
-      it("lets an approved institution admin add another admin", async function() {
-        const newAdminFirstName = "Ben";
-        const newAdminSurname = "Sisko";
-        const newAdminAddress = accounts[3];
-
-        const transactionReceipt = await newInstitutionContractAddress.addNewAdmin(
-          newAdminFirstName,
-          newAdminSurname,
-          newAdminAddress,
-          { from: prospectiveAdmin2 }
-        );
-        truffleAssert.eventEmitted(transactionReceipt, "LogNewAdmin", event => {
-          return newAdminAddress.should.equal(event.newAdmin);
-        });
-      }); */ /*
-      it("stores the address of admin approved by other admin address in array", async function() {
-        // Check if initialiseInstitutionWithAdmin() called from the beforeEach hook
-        // stores the address in the array.
-        const adminThatShouldBeStored = await newInstitutionContractAddress._adminAddresses(
-          1
-        );
-        adminThatShouldBeStored.should.equal(accounts[2]);
-      }); */
-      // approveRequst relies on some relativley contrived bytes32 manipulation, because
-      // strings still really aren't a primitive type in solidity :(
-      // so ensure that manipulation has been done correctly.
+      }); 
       it("ensures admin has been initialised with the correct values", async function() {
         const resultName = await newInstitutionContractAddress.getInstitutionName();
         resultName.should.equal("Ulster University");
