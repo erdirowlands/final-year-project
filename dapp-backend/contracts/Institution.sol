@@ -57,7 +57,11 @@ contract Institution is ApprovalQueue {
         _institutionAdmins[adminAddress] = InstitutionAdmin(adminFirstName, adminSurname, adminAddress, true, true);
     }
 
-    
+    // Emit an event on Institution contract creation.
+    event NewAdminApproved(address admin);
+    function approveRequest(address submittingAddress) public {
+        super.approveRequest(submittingAddress);
+    }
 
     /**
     Create a new Election contract which can then be configured by a customer per their requirements. */
