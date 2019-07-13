@@ -48,6 +48,10 @@ contract ApprovalQueue {
         _approvalRequestQueue[msg.sender] = newApprovalRequest;
     }
 
+    /**
+     *
+     * @dev inherriting contracts must override this based on their requirements.
+     */
     function approveRequest(address submittingAddress) public  {
         require(isApprovalStored(submittingAddress), "Approval not found");
     }
@@ -82,6 +86,7 @@ contract ApprovalQueue {
     }
 
     /**
+     * Helper method to get data from a request
      * Taken from https://ethereum.stackexchange.com/questions/29295/how-to-convert-a-bytes-to-string-in-solidity
      */
     function bytes32ToString(bytes32 x) public pure returns (string memory) {

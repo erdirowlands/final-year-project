@@ -65,6 +65,11 @@ contract Institution is ApprovalQueue {
 
     }
 
+    function submitInstitutionApprovalRequest(bytes32[] memory requestData) public {
+       // institutionName adminFirstName adminSurname adminAddress
+        super.submitApprovalRequest(approvalRequestType, requestData);
+    }
+
     /**
     Create a new Election contract which can then be configured by a customer per their requirements. */
     function createElection()
