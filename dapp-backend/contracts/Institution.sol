@@ -2,11 +2,12 @@ pragma solidity ^0.5.2;
 
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 import "./Election.sol";
+import "./ApprovalQueue.sol";
 
 
 /**
 An Institution can create Election Smart Contracts exclusivley for themselves. */
-contract Institution  {
+contract Institution is ApprovalQueue {
 
     string public _institutionName;
 
@@ -55,6 +56,8 @@ contract Institution  {
         // Store the admin details using their address.
         _institutionAdmins[adminAddress] = InstitutionAdmin(adminFirstName, adminSurname, adminAddress, true, true);
     }
+
+    
 
     /**
     Create a new Election contract which can then be configured by a customer per their requirements. */

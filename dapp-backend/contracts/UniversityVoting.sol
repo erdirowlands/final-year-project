@@ -57,7 +57,7 @@ contract UniversityVoting is Ownable, ApprovalQueue {
     }
 
     // Emit an event on Institution contract creation.
-    event LogNewInstitution(address institution);
+    event NewInstitutionApproved(address institution);
 
     function approveRequest(address submittingAddress) public {
         super.approveRequest(submittingAddress);
@@ -86,7 +86,7 @@ contract UniversityVoting is Ownable, ApprovalQueue {
         _approvalRequestQueue[submittingAddress].isPending = false;
 
         // Emit the creation of the new Institution as an event.
-        emit LogNewInstitution(contractAddress);
+        emit NewInstitutionApproved(contractAddress);
        // return contractAddress;
         // TODO add delete the approval from the mapping - but I might want to keep the data for the frontend.
         // if a backend as in place, could store in a database.
@@ -131,7 +131,7 @@ contract UniversityVoting is Ownable, ApprovalQueue {
         _approvalRequestQueue[adminAddress].isPending = false;
 
         // Emit the creation of the new Institution as an event.
-        emit LogNewInstitution(contractAddress);
+        emit NewInstitutionApproved(contractAddress);
        // return contractAddress;
         // TODO add delete the approval from the mapping - but I might want to keep the data for the frontend.
         // if a backend as in place, could store in a database.
