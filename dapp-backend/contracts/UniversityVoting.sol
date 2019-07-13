@@ -70,7 +70,6 @@ contract UniversityVoting is Ownable, ApprovalQueue {
         institutionName = super.bytes32ToString(data[0]);
         adminFirstName = super.bytes32ToString(data[1]);
         adminSurname = super.bytes32ToString(data[2]);
-    //
 
         Institution institution = new Institution(institutionName, adminFirstName, adminSurname, submittingAddress);
         address contractAddress = (address(institution));

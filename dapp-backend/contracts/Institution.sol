@@ -60,9 +60,15 @@ contract Institution is ApprovalQueue {
 
     // Emit an event on Institution contract creation.
     event NewAdminApproved(address admin);
+
     function approveRequest(address submittingAddress) public {
         super.approveRequest(submittingAddress);
 
+        bytes32[] memory data = getRequestData(submittingAddress);
+        string memory adminFirstName;
+        string memory adminSurname;
+        adminFirstName = super.bytes32ToString(data[0]);
+        adminSurname = super.bytes32ToString(data[1]);
     }
 
     function submitInstitutionApprovalRequest(bytes32[] memory requestData) public {
