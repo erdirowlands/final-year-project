@@ -78,7 +78,7 @@ contract Institution is ApprovalQueue {
         // New Institution created sucessfully so set the request to not pending.
         _approvalRequestQueue[submittingAddress].isPending = false;
         // Emit the succesfull approval of the new admin.
-        
+
         emit LogNewAdmin(submittingAddress);
     }
 

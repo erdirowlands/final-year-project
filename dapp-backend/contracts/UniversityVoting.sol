@@ -74,16 +74,8 @@ contract UniversityVoting is Ownable, ApprovalQueue {
         Institution institution = new Institution(institutionName, adminFirstName, adminSurname, submittingAddress);
         // Get the address of the newly created contract.
         address contractAddress = (address(institution));
-          // Attempt to add new Institution address to mapping, will correctly fail if duplicate address found.
-        addInstitutionAddresstoMapping(contractAddress);
-        // Add address of newly created Institutions to dynamically sized array for quick access.
-        _addressArray.push(contractAddress);
-        // Also add the address to not interable mapping to allow for instant access to the address.
-        _addressStructMapping[contractAddress] = InstitutionAddressStruct(true);
-
-        // New Institution created sucessfully so set the request to not pending.
-        _approvalRequestQueue[submittingAddress].isPending = false;
-
+        // Add information about the newly created contract so it can be accessed later.
+        storeInstitutionContractInfo(contractAddress);
         // Emit the creation of the new Institution as an event.
         emit NewInstitutionApproved(contractAddress);
        // return contractAddress;
@@ -101,7 +93,7 @@ contract UniversityVoting is Ownable, ApprovalQueue {
 
         address contractAddress = (address(institution));
           // Attempt to add new Institution address to mapping, will correctly fail if duplicate address found.
-        addInstitutionAddresstoMapping(contractAddress);
+        addInstitutionToContract(contractAddress);
         // Add address of newly created Institutions to dynamically sized array for quick access.
         _addressArray.push(contractAddress);
         // Also add the address to not interable mapping to allow for instant access to the address.
@@ -140,11 +132,16 @@ contract UniversityVoting is Ownable, ApprovalQueue {
         return _addressArray;
     }
 
-    function addInstitutionAddresstoMapping(address institute) public {
+    function storeInstitutionContractInfo(address institute) public {
         require(!isInstitutionAddressStored(institute),"This institution has already been added");
+        // Add the address to not interable mapping to allow for instant access to the address.
         _addressStructMapping[institute] = InstitutionAddressStruct(true);
+        // Also add address of newly created Institutions to dynamically sized array for quick access.
+        _addressArray.push(institute);
+        // New Institution created sucessfully so set the request to not pending.
+        _approvalRequestQueue[institute].isPending = false;
     }
-    
+
     function isInstitutionAddressStored(address institute) public view returns(bool isStored) {
         return _addressStructMapping[institute].isAddress;
     }
