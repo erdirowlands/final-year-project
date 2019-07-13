@@ -69,16 +69,12 @@ contract Institution is ApprovalQueue {
         string memory adminSurname;
         adminFirstName = super.bytes32ToString(data[0]);
         adminSurname = super.bytes32ToString(data[1]);
-
         // Store the new admin info in mapping.
         addNewAdmin(adminFirstName, adminSurname, submittingAddress);
         // Add address of newly created Institutions to dynamically sized array for quick access.
         _adminAddresses.push(submittingAddress);
         // Emit the succesfull approval of the new admin.
         emit LogNewAdmin(submittingAddress);
-
-
-
     }
 
     function submitInstitutionApprovalRequest(bytes32[] memory requestData) public {
