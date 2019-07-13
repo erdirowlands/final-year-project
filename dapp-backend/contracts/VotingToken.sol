@@ -6,7 +6,7 @@ import "openzeppelin-solidity/contracts/token/ERC20/ERC20Mintable.sol";
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 
 
-contract VotingToken is ERC20, ERC20Mintable, ERC20Detailed{
+contract VotingToken is ERC20Mintable, ERC20Detailed{
 
     constructor (string memory _name, string memory _symbol, uint8 _decimals)
     ERC20Detailed(_name, _symbol, _decimals) public {
