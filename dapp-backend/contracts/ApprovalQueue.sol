@@ -82,7 +82,14 @@ contract ApprovalQueue {
         //the comment above should apply about using the array as the inex
             return (_approvalRequestQueue[submittingAddress].isPending, _approvalRequestQueue[submittingAddress].approvalType, _approvalRequestQueue[submittingAddress].data);
         }
+    }
 
+    function getRequestData(address submittingAddress) public view returns(bytes32[] memory ) {
+        // require(isAdminStored(storedAdmin), "Admin address not found"); // TODO shouldn't need this, as we'll be using the array as the index.
+        if (isApprovalStored(submittingAddress)) { // TODO this might not be reachable as the return is in the if if it's anything like Java and
+        //the comment above should apply about using the array as the inex
+            _approvalRequestQueue[submittingAddress].data;
+        }
     }
 
     /**
