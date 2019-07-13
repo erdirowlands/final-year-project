@@ -45,16 +45,16 @@ contract Institution is ApprovalQueue {
 
     /**
      * @param institutionName the name of the new Institution
-     * @param adminFirstName first name of the admin
-     * @param adminSurname surname of the admin
-     * @param adminAddress address of the admin
+     * @param adminFirstName first name of the admin who submitted the new institution request
+     * @param adminSurname surname of the admin who submitted the new institution request
+     * @param adminAddress addres of  the admin who submitted the new institution request
      */
     constructor (string memory institutionName, string memory adminFirstName, string memory adminSurname, address adminAddress)
     public {
         // Set the institution name.
         _institutionName = institutionName;
 
-        // Store the admin details.
+        // Store details of the first admin to be approved
         require(!isAdminStored(adminAddress),"This admin address has already been added");
         _institutionAdmins[adminAddress] = InstitutionAdmin(adminFirstName, adminSurname, adminAddress, true, true);
          // Add address of newly created Institutions to dynamically sized array for quick access.
