@@ -38,16 +38,6 @@ contract UniversityVoting is Ownable, ApprovalQueue {
     // the total number of Institutions stored can be quickly accessed.
     address[] public _addressArray;
 
-    modifier onlyOneRequest(address adminAddress) {
-        require(!_approvalRequestQueue[adminAddress].isPending, "You have an outstanding request, please wait for that to be processed");
-        _;
-    }
-
-    modifier isDuplicateApproval(address adminAddress) {
-        require(!_approvalRequestQueue[adminAddress].isInitialised, "This approval has already been submitted!");
-        _;
-    }
-
     // Emit an event on Institution contract creation.
     // TODO this can be in the superclass I think?
     event NewInstitutionApproved(address institution);
