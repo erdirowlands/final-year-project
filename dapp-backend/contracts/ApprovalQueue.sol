@@ -34,7 +34,7 @@ contract ApprovalQueue {
 
     function submitApprovalRequest(string memory approvalRequestType, bytes32[] memory requestData)
     public onlyOneRequest(msg.sender) isDuplicateApproval(msg.sender) {
-        ApprovalRequest storage newApprovalRequest;
+        ApprovalRequest memory newApprovalRequest;
 
         // Initialise new approval request
         newApprovalRequest.submitter = msg.sender;
@@ -48,7 +48,7 @@ contract ApprovalQueue {
         _approvalRequestQueue[msg.sender] = newApprovalRequest;
     }
 
-    function approveRequest(address submittingAddress) public {
+    function approveRequest(address submittingAddress) public returns (bytes32[] memory) {
         require(isApprovalStored(submittingAddress), "Approval not found");
 
         // todo if requestType then add the relevant data to the bytes32
@@ -56,31 +56,7 @@ contract ApprovalQueue {
         string memory requestType;
         bytes32[] memory data;
         (isPending, requestType, data) = getRequest(submittingAddress);
-
-        if (requestType.compareTo("adminApprovalRequest")) {
-            string memory institutionName;
-            string memory adminFirstName;
-            string memory adminSurname;
-            institutionName = bytes32ToString(data[0]);
-            adminFirstName = bytes32ToString(data[1]);
-            adminSurname = bytes32ToString(data[2]);
-        }
-
-        else if (requestType.compareTo("adminApprovalRequest")) {
-            string memory adminFirstName; //string memory adminFirstName;
-            string memory adminSurname;
-            adminFirstName = bytes32ToString(data[0]);
-            adminSurname = bytes32ToString(data[1]);
-            adminSurname = bytes32ToString(data[2]);
-        }
-
-        else if (requestType.compareTo("voterApprovalRequest")) {
-            string memory voter; //string memory adminFirstName;
-            string memory adminSurname;
-            adminFirstName = bytes32ToString(data[0]);
-            adminSurname = bytes32ToString(data[1]);
-            adminSurname = bytes32ToString(data[2]);
-        }
+        return data;
     }
 
     modifier onlyOneRequest(address submittingAddress) {
