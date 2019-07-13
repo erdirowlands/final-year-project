@@ -56,6 +56,8 @@ contract Institution is ApprovalQueue {
 
         // Store the admin details using their address.
         _institutionAdmins[adminAddress] = InstitutionAdmin(adminFirstName, adminSurname, adminAddress, true, true);
+        _adminAddresses.push(adminAddress);
+
     }
 
     // Emit an event on Institution contract creation.

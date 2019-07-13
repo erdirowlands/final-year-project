@@ -65,7 +65,7 @@ contract("Institution", accounts => {
         newInstitutionContractAddress = await Institution.at(log.institution);
       });
       after(async function() {
-        await universityVoting.kill();
+     //   await universityVoting.kill();
       });
       it("submits a new admin aproval request", async function() {
         const transactionReceipt = await newInstitutionContractAddress.submitAdminApprovalRequest(
@@ -89,6 +89,7 @@ contract("Institution", accounts => {
         );
         truffleAssert.eventEmitted(transactionReceipt, "LogNewAdmin", event => {
           return prospectiveAdmin2.should.equal(event.newAdmin);
+        });
       });
       it("stores the new admin address in array", async function() {
         // Check if initialiseInstitutionWithAdmin() called from the beforeEach hook
@@ -97,8 +98,7 @@ contract("Institution", accounts => {
           1
         );
         adminThatShouldBeStored.should.equal(prospectiveAdmin2);
-      });
-      /*
+      }); /*
       it("lets an approved institution admin add another admin", async function() {
         const newAdminFirstName = "Ben";
         const newAdminSurname = "Sisko";
@@ -113,7 +113,7 @@ contract("Institution", accounts => {
         truffleAssert.eventEmitted(transactionReceipt, "LogNewAdmin", event => {
           return newAdminAddress.should.equal(event.newAdmin);
         });
-      }); */
+      }); */ /*
       it("stores the address of admin approved by other admin address in array", async function() {
         // Check if initialiseInstitutionWithAdmin() called from the beforeEach hook
         // stores the address in the array.
@@ -121,7 +121,7 @@ contract("Institution", accounts => {
           1
         );
         adminThatShouldBeStored.should.equal(accounts[2]);
-      });
+      }); */
       // approveRequst relies on some relativley contrived bytes32 manipulation, because
       // strings still really aren't a primitive type in solidity :(
       // so ensure that manipulation has been done correctly.
@@ -171,5 +171,5 @@ contract("Institution", accounts => {
         const createdElection = await this.institution.elections(0);
         createdElection.should.equal(newContractAddress);
         }) */
-      }
+    });
 });
