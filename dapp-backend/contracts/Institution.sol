@@ -25,6 +25,18 @@ contract Institution is ApprovalQueue {
         bool isInitialised;
     }
 
+    // Enable the prevention of duplicate addresses caused by
+    // unforseen, errant client requests.
+    struct ElectionAddressStruct {
+        bool isAddress;
+    }
+
+    // Store Election addresses so they can be accessed without iteration. This
+    // limits gas costs. This also means that we can efficiently keep track of whether
+    // or not an address is stored, because the Struct that is mapped to the address contains
+    // the flag isAddress that can evaulated to see if an address exists.
+    mapping(address => ElectionAddressStruct) public _electionAddressMapping;
+
     // Store authorised institution admins.
     // At some point in the future, they may be come de-authorised, for example
     // if an admin steps down and in which case the "isAuthorised" flag will be set to false.
@@ -37,7 +49,7 @@ contract Institution is ApprovalQueue {
     address[] public _adminAddresses;
 
     // Store the address of all prior-purchased elections.
-    address[] public elections;
+    address[] public _electionAddresses;
 
     // Emit an event when a new admin has been added.
     event LogNewAdmin(address newAdmin);
@@ -94,12 +106,20 @@ contract Institution is ApprovalQueue {
         super.submitApprovalRequest(voterApprovalRequestType, requestData);
     }
 
+    // Emit an event on Institution contract creation.
+    event NewElectiomCreated(address election);
     /**
     Create a new Election contract which can then be configured by a customer per their requirements. */
-    function createElection(uint256 openingTime, uint256 closingTime)  public {
+    function createElection(uint256 openingTime, uint256  closingTime)  public {
         VotingToken votingToken = new VotingToken();
-        VotingTokenAuthorisation tokenAuthorisation = new VotingTokenAuthorisation(address(this), msg.sender, openingTime, closingTime, votingToken);
+        VotingTokenAuthorisation tokenAuthorisation = new VotingTokenAuthorisation(address(this), msg.sender, openingTime, closingTime * days, votingToken);
         Election election = new Election(address(this), tokenAuthorisation);
+
+        // Get the address of the newly created Election contract.
+        address electionContractAddress = (address(election));
+        // Add information about the newly created contract so it can be accessed later.
+        storeInstitutionContractInfo(contractAddress);
+        emit NewElectiomCreated();
      //   Election election = new Election();
     //    address contractAddress = (address(election));
     //    emit LogNewElection(contractAddress);
@@ -107,10 +127,16 @@ contract Institution is ApprovalQueue {
    //     return contractAddress;
     }
 
-    function isElectionStored(address election)
-    public view
-    returns (bool isStored) {
+    function storeNewElection(address election, address admin) public isAdmin(admin) isAuthorisedAdmin(admin) {
+        // Check for duplicate election address
+        require(!isElectionAddressStored(address election),"This election address has already been added");
+        _electionAddressMapping[election] = ElectionAddressStruct(true);
+         // Add address of newly created Institutions to dynamically sized array for quick access.
+        _electionAddresses.push(election);
+    }
 
+    function isElectionAddressStored(address election) public view returns (bool) {
+        return _electionAddressMapping[election].isAddress;
     }
 
     modifier isAdmin(address caller) {
@@ -157,7 +183,6 @@ contract Institution is ApprovalQueue {
         }
 
     }
-
 
     function isAdminStored(address admin) public view returns(bool isStored) {
         return _institutionAdmins[admin].isInitialised;

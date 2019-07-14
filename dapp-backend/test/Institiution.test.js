@@ -7,6 +7,7 @@ const { asciiToHex } = require("web3-utils");
 const UniversityVoting = artifacts.require("UniversityVoting");
 const Institution = artifacts.require("Institution");
 const Election = artifacts.require("Election");
+const VotingTokenAuthorisation = artifacts.require("VotingTokenAuthorisation");
 
 require("chai")
   .use(require("chai-bignumber")(BigNumber))
@@ -54,7 +55,7 @@ contract("Institution", accounts => {
   
   // Candidate data
   const candidateFirstName = "Abraham";
-  const andidateSurname = "Lincoln";    
+  const candidateSurname = "Lincoln";    
 
     describe("Deploy and use the child institution contract", function() {
       before(async function() {
@@ -140,6 +141,24 @@ contract("Institution", accounts => {
           ),
           "Caller is an admin, but not currently authorised!"
         );
+      });
+      it("creates a new election.", async function() {
+        let date = (new Date()).getTime();
+        let days = 7;
+        let dateInUnixTimestamp = date / 1000,
+        const transactionReceipt = await newElectionContractAddress.createElection(
+          dateInUnixTimestamp, 
+          7, 
+
+          { from: prospectiveAdmin1 }
+        );
+        // Get emitted event from initialiseInstitutionWithAdmin()
+        const log = await transactionReceipt.logs[0].args;
+        // Get newly created contract address from event and use truffle-contract to get an instance.
+        newInstitutionContractAddress = await Institution.at(log.institution);
+        truffleAssert.eventEmitted(transactionReceipt, "LogNewAdmin", event => {
+          return prospectiveAdmin2.should.equal(event.newAdmin);
+        });
       });
 
 
