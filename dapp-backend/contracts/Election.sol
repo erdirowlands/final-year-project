@@ -73,6 +73,14 @@ contract Election is Ownable {
         return _candidateAddressArray.length;
     }
 
+    function hasVoterVoted(address voter) public view returns(bool isStored) {
+        return _voterMapping[voter].hasVoted;
+    }
+
+    function isVoterAuthorised(address voter) public view returns(bool isStored) {
+        return _voterMapping[voter].isAuthorised;
+    }
+
     function isVoterAddressStored(address voter) public view returns(bool isStored) {
         return _voterMapping[voter].isInitialised;
     }
