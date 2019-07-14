@@ -26,7 +26,7 @@ contract VotingTokenAuthorisation is MintedCrowdsale, TimedCrowdsale {
 
     modifier isAdmin(address admin)  {
         require(_institution.isAdminStored(admin), "Caller is not an admin!");
-        require(_institution.isAuthorisedAdmin(admin), "Caller is an admin but not authorised!");
+        require(_institution.isAdminAuthorised(admin), "Caller is an admin but not authorised!");
 
         _;
     }

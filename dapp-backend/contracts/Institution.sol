@@ -99,7 +99,7 @@ contract Institution is ApprovalQueue {
     function createElection(uint256 openingTime, uint256 closingTime)  public {
         VotingToken votingToken = new VotingToken();
         VotingTokenAuthorisation tokenAuthorisation = new VotingTokenAuthorisation(address(this), msg.sender, openingTime, closingTime, votingToken);
-        Election election = new Election(tokenAuthorisation);
+        Election election = new Election(address(this), tokenAuthorisation);
      //   Election election = new Election();
     //    address contractAddress = (address(election));
     //    emit LogNewElection(contractAddress);
@@ -130,7 +130,6 @@ contract Institution is ApprovalQueue {
         _institutionAdmins[adminAddress] = InstitutionAdmin(adminFirstName, adminSurname, adminAddress, true, true);
          // Add address of newly created Institutions to dynamically sized array for quick access.
         _adminAddresses.push(adminAddress);
-
     }
 
     function unauthoriseAdmin(address admin) public {
