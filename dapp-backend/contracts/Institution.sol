@@ -115,22 +115,17 @@ contract Institution is ApprovalQueue {
         VotingTokenAuthorisation tokenAuthorisation = new VotingTokenAuthorisation
             (address(this), msg.sender, openingTime, closingTime * 1 days, votingToken);
         Election election = new Election(address(this), tokenAuthorisation);
-
         // Get the address of the newly created Election contract.
         address electionContractAddress = (address(election));
         // Add information about the newly created contract so it can be accessed later.
-        storeInstitutionContractInfo(electionContractAddress, msg.sender);
-        emit NewElectiomCreated();
-     //   Election election = new Election();
-    //    address contractAddress = (address(election));
-    //    emit LogNewElection(contractAddress);
-    //    elections.push(contractAddress);
-   //     return contractAddress;
+        storeNewElection(electionContractAddress, msg.sender);
+        // Emit the creation of the new Election as an event.
+        emit NewElectiomCreated(electionContractAddress);
     }
 
     function storeNewElection(address election, address admin) public isAdmin(admin) isAuthorisedAdmin(admin) {
         // Check for duplicate election address
-        require(!isElectionAddressStored(address election),"This election address has already been added");
+        require(!isElectionAddressStored(election),"This election address has already been added");
         _electionAddressMapping[election] = ElectionAddressStruct(true);
          // Add address of newly created Institutions to dynamically sized array for quick access.
         _electionAddresses.push(election);
