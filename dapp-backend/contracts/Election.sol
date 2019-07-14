@@ -1,13 +1,13 @@
 pragma solidity ^0.5.2;
 
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
+import "./VotingTokenAuthorisation.sol";
+
 
 contract Election is Ownable {
 
-    constructor () public {
-
-    }
-
+    VotingTokenAuthorisation _votingTokenAuthorisation;
+    
     // A pending Election will be when an Election admin has configured the Election to run
     // at some point in the future. This allows the contract to be deployed at the time
     // of admin interaction, but to start at a pre-defined time.
@@ -37,6 +37,10 @@ contract Election is Ownable {
     // Store candidate addresses in array for quick acceess and to reveal more information
     // about contract state, such as bow many candidate there are.
     address[] public _candidateAddressArray;
+
+    constructor (address votingTokenAuthorisation) public {
+
+    }
 
     function isCandidateAVictor(address candidate) public view returns(bool isStored) {
         return _candidateMapping[candidate].isVictor;
