@@ -118,7 +118,7 @@ contract Institution is ApprovalQueue {
         // Get the address of the newly created Election contract.
         address electionContractAddress = (address(election));
         // Add information about the newly created contract so it can be accessed later.
-        storeInstitutionContractInfo(contractAddress);
+        storeInstitutionContractInfo(electionContractAddress, msg.sender);
         emit NewElectiomCreated();
      //   Election election = new Election();
     //    address contractAddress = (address(election));
