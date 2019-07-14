@@ -44,6 +44,11 @@ contract Election is Ownable {
     // about contract state, such as bow many candidate there are.
     address[] public _candidateAddressArray;
 
+    mapping(address => Voter) public _voterMapping;
+
+    address[] public _voterAddressArray;
+
+
     constructor (VotingTokenAuthorisation votingTokenAuthorisation) public {
         _votingTokenAuthorisation = votingTokenAuthorisation;
     }
@@ -66,6 +71,14 @@ contract Election is Ownable {
 
     function getTotalCandidates() public view returns(uint total) {
         return _candidateAddressArray.length;
+    }
+
+    function isVoterAddressStored(address voter) public view returns(bool isStored) {
+        return _voterMapping[voter].isInitialised;
+    }
+
+    function getTotalVoters() public view returns(uint total) {
+        return _voterAddressArray.length;
     }
 
 }
