@@ -6,6 +6,7 @@ const { asciiToHex } = require("web3-utils");
 
 const UniversityVoting = artifacts.require("UniversityVoting");
 const Institution = artifacts.require("Institution");
+const Election = artifacts.require("Election");
 
 require("chai")
   .use(require("chai-bignumber")(BigNumber))
@@ -14,17 +15,18 @@ require("chai")
 contract("Institution", accounts => {
   // UniversityVoting contract is responsible for deploying Institution, so mimick this flow in tests.
   let universityVoting;
-  // The deployed child institution contract address.
+  // The deployed child Institution contract address of UnviversityVoting.
   let newInstitutionContractAddress;
+
+  // The deployed child Election contract address of Institution
+  let newElectionContractAddress;
+
+
   // Me, as the owner and deployer of the contract.
   const developerAccount = accounts[0];
   // Account for admin who makes a request for a new Institution (will become approved in the before hook).
   const prospectiveAdmin1 = accounts[1];
   const prospectiveAdmin2 = accounts[2];
-
-  const institutionName = "Ulster University";
-  const adminFirstName = "John";
-  const adminSurname = "Francis";
 
   const newInstitutionRequestData = [
     institutionName,
@@ -44,6 +46,16 @@ contract("Institution", accounts => {
   (newAdminRequestDataAsBytes32 = newAdminRequestData.map(
     newAdminRequestData => asciiToHex(newAdminRequestData)
   ));
+
+  // Admin data
+  const institutionName = "Ulster University";
+  const adminFirstName = "John";
+  const adminSurname = "Francis";
+  
+  // Candidate data
+  const candidateFirstName = "Abraham";
+  const andidateSurname = "Lincoln";    
+
     describe("Deploy and use the child institution contract", function() {
       before(async function() {
         universityVoting = await UniversityVoting.new({
@@ -129,6 +141,7 @@ contract("Institution", accounts => {
           "Caller is an admin, but not currently authorised!"
         );
       });
+
 
       /*
     it('stores the election contract address', async function () {
