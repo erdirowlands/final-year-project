@@ -27,8 +27,8 @@ contract TokenAuthorisation is MintedCrowdsale, TimedCrowdsale {
         _;
     }
 
-    function sendVotingToken() public {
-
+    function sendVotingToken(address voter, uint256 tokenAmount) public isAdmin(msg.sender) {
+        super._deliverTokens(voter, tokenAmount);
     }
 
     
