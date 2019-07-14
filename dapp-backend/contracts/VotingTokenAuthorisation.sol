@@ -18,7 +18,7 @@ contract VotingTokenAuthorisation is MintedCrowdsale, TimedCrowdsale {
     Institution _institution;
 
     constructor (address institution, address admin, uint256 openingTime, uint256 closingTime, VotingToken votingToken)
-    Crowdsale(0,  address(uint160(admin)), VotingToken(votingToken))
+    Crowdsale(1,  address(uint160(admin)), VotingToken(votingToken))
     TimedCrowdsale(openingTime, closingTime)
     public isAdmin(admin) {
         _institution = Institution(institution);
@@ -29,10 +29,6 @@ contract VotingTokenAuthorisation is MintedCrowdsale, TimedCrowdsale {
         require(_institution.isAdminAuthorised(admin), "Caller is an admin but not authorised!");
 
         _;
-    }
-
-    function isInstitutionAdmin(address admin) public returns (bool) {
-        return _institution.isAdminStored(admin);
     }
 
     function sendVotingToken(address voter, uint256 tokenAmount) public isAdmin(msg.sender) {

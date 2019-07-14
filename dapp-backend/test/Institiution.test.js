@@ -29,6 +29,11 @@ contract("Institution", accounts => {
   const prospectiveAdmin1 = accounts[1];
   const prospectiveAdmin2 = accounts[2];
 
+  // Admin data
+  const institutionName = "Ulster University";
+  const adminFirstName = "John";
+  const adminSurname = "Francis";
+
   const newInstitutionRequestData = [
     institutionName,
     adminFirstName,
@@ -48,12 +53,7 @@ contract("Institution", accounts => {
     newAdminRequestData => asciiToHex(newAdminRequestData)
   ));
 
-  // Admin data
-  const institutionName = "Ulster University";
-  const adminFirstName = "John";
-  const adminSurname = "Francis";
-  
-  // Candidate data
+  // Election Candidate data
   const candidateFirstName = "Abraham";
   const candidateSurname = "Lincoln";    
 
@@ -141,25 +141,24 @@ contract("Institution", accounts => {
           ),
           "Caller is an admin, but not currently authorised!"
         );
-      });
+      });/*
       it("creates a new election.", async function() {
         let date = (new Date()).getTime();
         let days = 7;
-        let dateInUnixTimestamp = date / 1000,
-        const transactionReceipt = await newElectionContractAddress.createElection(
-          dateInUnixTimestamp, 
-          7, 
-
+        let dateInUnixTimestamp = date / 1000;
+        const transactionReceipt = await newInstitutionContractAddress.createElection(
+          date, 
+          days, 
           { from: prospectiveAdmin1 }
         );
         // Get emitted event from initialiseInstitutionWithAdmin()
         const log = await transactionReceipt.logs[0].args;
         // Get newly created contract address from event and use truffle-contract to get an instance.
-        newInstitutionContractAddress = await Institution.at(log.institution);
-        truffleAssert.eventEmitted(transactionReceipt, "LogNewAdmin", event => {
-          return prospectiveAdmin2.should.equal(event.newAdmin);
+        newElectionContractAddress = await Election.at(log.election);
+        truffleAssert.eventEmitted(transactionReceipt, "NewElectiomCreated", event => {
+          return newElectionContractAddress.should.equal(event.election);
         });
-      });
+      }); /*
 
 
       /*
