@@ -18,7 +18,8 @@ contract TokenAuthorisation is MintedCrowdsale, TimedCrowdsale {
     Institution _institution;
     VotingToken public _votingToken;
 
-    constructor (address institution) public isAdmin(msg.sender) {
+    constructor (address institution, uint256 openingTime, uint256 closingTime)
+    TimedCrowdsale(openingTime, closingTime) public isAdmin(msg.sender) {
         _institution = Institution(institution);
     }
 
@@ -30,8 +31,4 @@ contract TokenAuthorisation is MintedCrowdsale, TimedCrowdsale {
     function sendVotingToken(address voter, uint256 tokenAmount) public isAdmin(msg.sender) {
         super._deliverTokens(voter, tokenAmount);
     }
-
-    
-
-
 }
