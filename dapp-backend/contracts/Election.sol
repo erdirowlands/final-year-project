@@ -56,6 +56,8 @@ contract Election is Ownable {
         _votingTokenAuthorisation = votingTokenAuthorisation;
     }
 
+    ///////////CANDIDATE DATA OPERATIONS///////////
+
     function addNewCandidate(address admin, string memory candidateFirstName, string memory candidateSurname, address candidateAddress)
     public {
         // Make sure caller is an Institution admin
@@ -90,7 +92,7 @@ contract Election is Ownable {
         return _candidateAddressArray.length;
     }
 
-    ///////////VOTER DATA RETREIVAL///////////
+    ///////////VOTER DATA OPERATIONS///////////
 
     modifier ableToVote(address voter) {
         require(isVoterAddressStored(voter), "Voter address isn't stored");
