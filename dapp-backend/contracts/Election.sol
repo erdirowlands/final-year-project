@@ -78,7 +78,7 @@ contract Election is Ownable {
     modifier ableToVote(address voter) {
         require(isVoterAddressStored(voter), "Voter address isn't stored");
         require(isVoterAuthorised(voter), "Voter isn't authorised to vote!");
-        require(hasVoterVoted(voter), "Voter has already voted!");
+        require(!hasVoterVoted(voter), "Voter has already voted!");
         _;
     }
 
