@@ -19,7 +19,7 @@ contract VotingTokenAuthorisation is MintedCrowdsale, TimedCrowdsale {
     VotingToken public _votingToken;
 
     constructor (address institution, address admin, uint256 openingTime, uint256 closingTime)
-    Crowdsale(0, msg.sender, _votingToken)
+    Crowdsale(0,  address(uint160(admin)), _votingToken)
     TimedCrowdsale(openingTime, closingTime) public isAdmin(admin) {
         _institution = Institution(institution);
     }
