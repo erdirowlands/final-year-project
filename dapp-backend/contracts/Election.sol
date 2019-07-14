@@ -16,6 +16,7 @@ contract Election is Ownable {
     uint startTime;
     uint runningTime;
     VotingTokenAuthorisation tokenSale; // The address of the VotingTokenSale contract for this election
+    Institution _institution;
 
     struct Candidate {
         string firstName;
@@ -50,16 +51,22 @@ contract Election is Ownable {
     address[] public _voterAddressArray;
 
 
-    constructor (VotingTokenAuthorisation votingTokenAuthorisation) public {
+    constructor (Institution institution, VotingTokenAuthorisation votingTokenAuthorisation) public {
+        _institution = institution;
         _votingTokenAuthorisation = votingTokenAuthorisation;
     }
 
-    function addNewCandidate(string memory candidateFirstName, string memory candidateSurname, address candidateAddress)
-    public isAdmin(msg.sender) isAuthorisedAdmin(msg.sender) {
-        // Check for duplicate admin address
+    function addNewCandidate(address admin, string memory candidateFirstName, string memory candidateSurname, address candidateAddress)
+    public {
+        // Make sure caller is an Institution admin
+        require(_institution.isAdminStored(admin), "Caller is not an admin!";
+        // If an admin, make sure they are authorised
+        _institution.isAdminAuthorised(admin), "Caller is an admin, but not currently authorised!";
+        // Check for duplicate candidate address
         require(!isCandidateAddressStored(candidateAddress),"This candidateAddress address has already been added");
+        // Add candidate to mapping for non-iterable access.
         _candidateMapping[candidateAddress] = Candidate(candidateFirstName, candidateSurname, 0, false,  true, true);
-         // Add address of newly created Institutions to dynamically sized array for quick access.
+         // Add address of newly created candidate to dynamically sized array for quick access.
         _candidateAddressArray.push(candidateAddress);
     }
 
