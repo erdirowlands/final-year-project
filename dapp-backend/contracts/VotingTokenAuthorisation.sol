@@ -16,11 +16,11 @@ import "./Institution.sol";
 contract VotingTokenAuthorisation is MintedCrowdsale, TimedCrowdsale {
 
     Institution _institution;
-    VotingToken public _votingToken;
 
-    constructor (address institution, address admin, uint256 openingTime, uint256 closingTime)
-    Crowdsale(0,  address(uint160(admin)), _votingToken)
-    TimedCrowdsale(openingTime, closingTime) public isAdmin(admin) {
+    constructor (address institution, address admin, uint256 openingTime, uint256 closingTime, VotingToken votingToken)
+    Crowdsale(0,  address(uint160(admin)), VotingToken(votingToken))
+    TimedCrowdsale(openingTime, closingTime)
+    public isAdmin(admin) {
         _institution = Institution(institution);
     }
 
