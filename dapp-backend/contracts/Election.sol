@@ -1,7 +1,6 @@
 pragma solidity ^0.5.2;
 
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
-import "./VotingToken.sol";
 
 contract Election is Ownable {
 
@@ -16,6 +15,7 @@ contract Election is Ownable {
 
     struct ElectionDetails {
         uint startTime;
+        address tokenSale; // The address of the VotingTokenSale contract for this election
     }
 
     struct Candidate {

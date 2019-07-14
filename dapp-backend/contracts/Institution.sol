@@ -96,12 +96,12 @@ contract Institution is ApprovalQueue {
     /**
     Create a new Election contract which can then be configured by a customer per their requirements. */
     function createElection(uint256 openingTime, uint256 closingTime)  public returns (address newInstitution) {
-        VotingTokenSale tokenSale = new VotingTokenSale(address(this), openingTime, closingTime );
-        Election election = new Election();
-        address contractAddress = (address(election));
-        emit LogNewElection(contractAddress);
-        elections.push(contractAddress);
-        return contractAddress;
+          VotingTokenSale tokenSale = new VotingTokenSale(address(this), openingTime, closingTime );
+     //   Election election = new Election();
+    //    address contractAddress = (address(election));
+    //    emit LogNewElection(contractAddress);
+    //    elections.push(contractAddress);
+   //     return contractAddress;
     }
 
     function isElectionStored(address election)
