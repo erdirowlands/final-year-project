@@ -7,19 +7,20 @@ import "./Institution.sol";
 
 
 /**
- * The authorisation of Voting Tokens is implemented as a crowdsale - however the concept of purchasing tokens for Ether
+ * The authorisation of Voting Tokens is implemented as a custom crowdsale - however the concept of purchasing tokens for Ether
  * is not utilised here. In simple terms, that boils down to buyTokens() not being called in the flow of an Institution admin
  * authorising a voter; rather,_deliverTokens() is called, and a token will then be minted and then transferred to the user.
- * Open Zeppelin crowdale contracts are being inherited to provide automatic
- * protection against reentrancy attacks and to not reinvent the ubiqitous crowdsale-wheel.
+ * Open Zeppelin crowdsale contracts are being inherited to provide automatic protection against reentrancy attacks and to
+ * provide common crowdsale functionality without having to reinvent the wheel.
  */
-contract VotingTokenSale is MintedCrowdsale, TimedCrowdsale {
+contract VotingTokenAuthorisation is MintedCrowdsale, TimedCrowdsale {
 
     Institution _institution;
     VotingToken public _votingToken;
 
-    constructor (address institution, uint256 openingTime, uint256 closingTime)
-    TimedCrowdsale(openingTime, closingTime) public isAdmin(msg.sender) {
+    constructor (address institution, address admin, uint256 openingTime, uint256 closingTime)
+    Crowdsale(0, msg.sender, _votingToken)
+    TimedCrowdsale(openingTime, closingTime) public isAdmin(admin) {
         _institution = Institution(institution);
     }
 

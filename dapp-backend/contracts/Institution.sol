@@ -3,7 +3,7 @@ pragma solidity ^0.5.2;
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 import "./Election.sol";
 import "./ApprovalQueue.sol";
-import "./VotingTokenSale.sol";
+import "./VotingTokenAuthorisation.sol";
 
 
 /**
@@ -96,7 +96,7 @@ contract Institution is ApprovalQueue {
     /**
     Create a new Election contract which can then be configured by a customer per their requirements. */
     function createElection(uint256 openingTime, uint256 closingTime)  public returns (address newInstitution) {
-        VotingTokenSale tokenSale = new VotingTokenSale(address(this), openingTime, closingTime );
+        VotingTokenAuthorisation tokenSale = new VotingTokenAuthorisation(address(this), openingTime, closingTime );
      //   Election election = new Election();
     //    address contractAddress = (address(election));
     //    emit LogNewElection(contractAddress);
