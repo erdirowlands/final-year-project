@@ -9,10 +9,10 @@ import "./Institution.sol";
 /**
  * The authorisation of Voting Tokens is implemented as a crowdsale - however the concept of purchasing tokens for Ether
  * is not utilised here. In simple terms, that boils down to buyTokens() not being called in the flow of an Institution admin
- * authorising a voter; rather,_deliverTokens() is called. Open Zeppelin crowdale contracts are being inherited to provide automatic
- * protection against reentrancy attacks and to not reinvent the ubiqitous. crowdsale-wheel.
- * Instead, election administrators need only initiate a token transfer once they have checked
- * a voter's student card/approved ID. A token will then be minted and then transferred to the user. */
+ * authorising a voter; rather,_deliverTokens() is called, and a token will then be minted and then transferred to the user.
+ * Open Zeppelin crowdale contracts are being inherited to provide automatic
+ * protection against reentrancy attacks and to not reinvent the ubiqitous crowdsale-wheel.
+ */
 contract TokenAuthorisation is MintedCrowdsale, TimedCrowdsale {
 
     Institution _institution;
