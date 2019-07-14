@@ -4,6 +4,7 @@ import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 import "./Election.sol";
 import "./ApprovalQueue.sol";
 import "./VotingTokenAuthorisation.sol";
+import "./VotingToken.sol";
 
 
 /**

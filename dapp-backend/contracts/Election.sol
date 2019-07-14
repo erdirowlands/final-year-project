@@ -28,6 +28,13 @@ contract Election is Ownable {
         bool isInitialised;
     }
 
+    struct Voter {
+        bool isInitialised;
+        bool isAuthorised;
+        bool hasVoted;
+        uint vote;
+    }
+
     // Store Candidate addresses so they can be accessed without iteration. This
     // limits gas costs. This also means that we can efficiently keep track of whether
     // or not an address is stored, because the Struct that is mapped to the address contains
@@ -37,8 +44,8 @@ contract Election is Ownable {
     // about contract state, such as bow many candidate there are.
     address[] public _candidateAddressArray;
 
-    constructor (address votingTokenAuthorisation) public {
-
+    constructor (VotingTokenAuthorisation votingTokenAuthorisation) public {
+        _votingTokenAuthorisation = votingTokenAuthorisation;
     }
 
     function isCandidateAVictor(address candidate) public view returns(bool isStored) {
