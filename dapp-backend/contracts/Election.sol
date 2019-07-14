@@ -31,15 +31,22 @@ contract Election is Ownable {
         bool isInitialised;
     }
 
-    // A mapping and array allows us to get candidates without iteration 
-    mapping(address => Candidate) public _candidates;
+    // Store Candidate addresses so they can be accessed without iteration. This
+    // limits gas costs. This also means that we can efficiently keep track of whether
+    // or not an address is stored, because the Struct that is mapped to the address contains
+    // the flag isInitialised that can evaulated to see if an address exists.
+    mapping(address => Candidate) public _candidateMapping;
     // Store candidate addresses in array for quick acceess and to reveal more information
     // about contract state, such as bow many candidate there are.
-    address[] public _candidateAddresses;
+    address[] public _candidateAddressArray;
 
 
     function test(VotingToken token) public {
         _token = token;
+    }
+
+    function isCandidateAddressStored(address candidate) public view returns(bool isStored) {
+        return _candidateMapping[candidate].isInitialised;
     }
 
 }
