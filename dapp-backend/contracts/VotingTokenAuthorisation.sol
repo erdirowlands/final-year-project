@@ -29,6 +29,10 @@ contract VotingTokenAuthorisation is MintedCrowdsale, TimedCrowdsale {
         _;
     }
 
+    function isInstitutionAdmin(address admin) public returns (bool) {
+        return _institution.isAdminStored(admin);
+    }
+
     function sendVotingToken(address voter, uint256 tokenAmount) public isAdmin(msg.sender) {
         super._deliverTokens(voter, tokenAmount);
     }

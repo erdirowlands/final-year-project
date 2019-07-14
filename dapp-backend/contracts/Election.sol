@@ -18,7 +18,8 @@ contract Election is Ownable {
     VotingTokenAuthorisation tokenSale; // The address of the VotingTokenSale contract for this election
 
     struct Candidate {
-        string name;
+        string firstName;
+        string surname;
         // TODO change name to reflect this could be fractional voting
         uint totalVotes;
         bool isVictor;
@@ -51,6 +52,15 @@ contract Election is Ownable {
 
     constructor (VotingTokenAuthorisation votingTokenAuthorisation) public {
         _votingTokenAuthorisation = votingTokenAuthorisation;
+    }
+
+    function addNewCandidate(string memory candidateFirstName, string memory candidateSurname, address candidateAddress)
+    public isAdmin(msg.sender) isAuthorisedAdmin(msg.sender) {
+        // Check for duplicate admin address
+        require(!isCandidateAddressStored(candidateAddress),"This candidateAddress address has already been added");
+        _candidateMapping[candidateAddress] = Candidate(candidateFirstName, candidateSurname, 0, false,  true, true);
+         // Add address of newly created Institutions to dynamically sized array for quick access.
+        _candidateAddressArray.push(candidateAddress);
     }
 
     function isCandidateAVictor(address candidate) public view returns(bool) {
