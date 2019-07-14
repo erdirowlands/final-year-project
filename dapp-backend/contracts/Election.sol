@@ -73,6 +73,15 @@ contract Election is Ownable {
         return _candidateAddressArray.length;
     }
 
+    ///////////VOTER DATA RETREIVAL///////////
+
+    modifier ableToVote(address voter) {
+        require(isVoterAddressStored(voter), "Voter address isn't stored");
+        require(isVoterAuthorised(voter), "Voter isn't authorised to vote!");
+        require(hasVoterVoted(voter), "Voter has already voted!");
+        _;
+    }
+
     function hasVoterVoted(address voter) public view returns(bool) {
         return _voterMapping[voter].hasVoted;
     }
