@@ -34,8 +34,6 @@ contract Institution is ApprovalQueue {
     // about contract state, such as bow many admins there are.
     address[] public _adminAddresses;
 
-    InstitutionAdmin[] _institutionAdminArray;
-
     // Store the address of all prior-purchased elections.
     address[] public elections;
 
@@ -167,10 +165,5 @@ contract Institution is ApprovalQueue {
     function isAdminAuthorised(address admin) public view returns(bool isStored) {
         return _institutionAdmins[admin].isAuthorised;
     }
-
-/*
-    function getAllAdmins() public returns(InstitutionAdmin memory admins){
-        return _institutionAdminArray;
-    } */
 
 }

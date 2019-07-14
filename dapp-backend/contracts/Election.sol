@@ -24,7 +24,19 @@ contract Election is Ownable {
         string name;
         // TODO change name to reflect this could be fractional voting
         uint totalVotes;
+        bool victor;
+        // Allows a candidate to step down.
+        bool active;
+        // Allow the candidates mapping to be easily queried for admins that exist.
+        bool isInitialised;
     }
+
+    // A mapping and array allows us to get candidates without iteration 
+    mapping(address => Candidate) public _candidates;
+    // Store candidate addresses in array for quick acceess and to reveal more information
+    // about contract state, such as bow many candidate there are.
+    address[] public _candidateAddresses;
+
 
     function test(VotingToken token) public {
         _token = token;
