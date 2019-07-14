@@ -2,12 +2,17 @@ pragma solidity ^0.5.2;
 
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 import "./Election.sol";
+import "./ApprovalQueue.sol";
+
 
 /**
 An Institution can create Election Smart Contracts exclusivley for themselves. */
-contract Institution  {
+contract Institution is ApprovalQueue {
 
-    string private _institutionName;
+    string public _institutionName;
+    string constant public adminApprovalRequestType = "adminApprovalRequest";
+    string constant public voterApprovalRequestType = "voterApprovalRequest";
+
 
     struct InstitutionAdmin {
         string firstName;
@@ -29,8 +34,6 @@ contract Institution  {
     // about contract state, such as bow many admins there are.
     address[] public _adminAddresses;
 
-    InstitutionAdmin[] _institutionAdminArray;
-
     // Store the address of all prior-purchased elections.
     address[] public elections;
 
@@ -42,17 +45,51 @@ contract Institution  {
 
     /**
      * @param institutionName the name of the new Institution
-     * @param adminFirstName first name of the admin
-     * @param adminSurname surname of the admin
-     * @param adminAddress address of the admin
+     * @param adminFirstName first name of the admin who submitted the new institution request
+     * @param adminSurname surname of the admin who submitted the new institution request
+     * @param adminAddress addres of  the admin who submitted the new institution request
      */
     constructor (string memory institutionName, string memory adminFirstName, string memory adminSurname, address adminAddress)
     public {
         // Set the institution name.
         _institutionName = institutionName;
 
-        // Store the admin details using their address.
+        // Store details of the first admin to be approved
+        require(!isAdminStored(adminAddress),"This admin address has already been added");
         _institutionAdmins[adminAddress] = InstitutionAdmin(adminFirstName, adminSurname, adminAddress, true, true);
+         // Add address of newly created Institutions to dynamically sized array for quick access.
+        _adminAddresses.push(adminAddress);
+    }
+
+    // Emit an event on Institution contract creation.
+    event NewAdminApproved(address admin);
+
+    function approveAdminRequest(address submittingAddress) public {
+        super.approveRequest(submittingAddress);
+
+        bytes32[] memory data = getRequestData(submittingAddress);
+        string memory adminFirstName;
+        string memory adminSurname;
+        adminFirstName = super.bytes32ToString(data[0]);
+        adminSurname = super.bytes32ToString(data[1]);
+        // Store the new admin info in mapping and array.
+        addNewAdmin(adminFirstName, adminSurname, submittingAddress);
+
+        // New Institution created sucessfully so set the request to not pending.
+        _approvalRequestQueue[submittingAddress].isPending = false;
+        // Emit the succesfull approval of the new admin.
+
+        emit LogNewAdmin(submittingAddress);
+    }
+
+    function submitAdminApprovalRequest(bytes32[] memory requestData) public {
+       // institutionName adminFirstName adminSurname adminAddress
+        super.submitApprovalRequest(adminApprovalRequestType, requestData);
+    }
+
+    function submitVoterApprovalRequest(bytes32[] memory requestData) public {
+       // institutionName adminFirstName adminSurname adminAddress
+        super.submitApprovalRequest(voterApprovalRequestType, requestData);
     }
 
     /**
@@ -87,15 +124,20 @@ contract Institution  {
     public isAdmin(msg.sender) isAuthorisedAdmin(msg.sender) {
         // Check for duplicate admin address
         require(!isAdminStored(adminAddress),"This admin address has already been added");
-        _institutionAdmins[adminAddress].isInitialised = true;
         _institutionAdmins[adminAddress] = InstitutionAdmin(adminFirstName, adminSurname, adminAddress, true, true);
-        emit LogNewAdmin(adminAddress);
+         // Add address of newly created Institutions to dynamically sized array for quick access.
+        _adminAddresses.push(adminAddress);
+
     }
 
     function unauthoriseAdmin(address admin) public {
         require(isAdminStored(admin),"Admin address not found!");
         require(isAdminAuthorised(admin),"Admin is already unauthorised!");
         _institutionAdmins[admin].isAuthorised = false;
+    }
+
+    function getInstitutionName() public view returns(string memory) {
+        return _institutionName;
     }
 
 /*
@@ -123,10 +165,5 @@ contract Institution  {
     function isAdminAuthorised(address admin) public view returns(bool isStored) {
         return _institutionAdmins[admin].isAuthorised;
     }
-
-/*
-    function getAllAdmins() public returns(InstitutionAdmin memory admins){
-        return _institutionAdminArray;
-    } */
 
 }
