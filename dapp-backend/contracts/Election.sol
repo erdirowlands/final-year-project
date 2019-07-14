@@ -13,10 +13,9 @@ contract Election is Ownable {
     // of admin interaction, but to start at a pre-defined time.
     enum ElectionStatus { PENDING, IN_PROGRESS, TALLY, CONCLUDED }
 
-    struct ElectionDetails {
-        uint startTime;
-        address tokenSale; // The address of the VotingTokenSale contract for this election
-    }
+    uint startTime;
+    uint runningTime;
+    VotingTokenAuthorisation tokenSale; // The address of the VotingTokenSale contract for this election
 
     struct Candidate {
         string name;
