@@ -53,35 +53,35 @@ contract Election is Ownable {
         _votingTokenAuthorisation = votingTokenAuthorisation;
     }
 
-    function isCandidateAVictor(address candidate) public view returns(bool isStored) {
+    function isCandidateAVictor(address candidate) public view returns(bool) {
         return _candidateMapping[candidate].isVictor;
     }
 
-    function isCandidateActive(address candidate) public view returns(bool isStored) {
+    function isCandidateActive(address candidate) public view returns(bool) {
         return _candidateMapping[candidate].isActive;
     }
 
-    function isCandidateAddressStored(address candidate) public view returns(bool isStored) {
+    function isCandidateAddressStored(address candidate) public view returns(bool) {
         return _candidateMapping[candidate].isInitialised;
     }
 
-    function getTotalCandidateVotes(address candidate) public view returns(uint total) {
+    function getTotalCandidateVotes(address candidate) public view returns(uint) {
         return _candidateMapping[candidate].totalVotes;
     }
 
-    function getTotalCandidates() public view returns(uint total) {
+    function getTotalCandidates() public view returns(uint) {
         return _candidateAddressArray.length;
     }
 
-    function hasVoterVoted(address voter) public view returns(bool isStored) {
+    function hasVoterVoted(address voter) public view returns(bool) {
         return _voterMapping[voter].hasVoted;
     }
 
-    function isVoterAuthorised(address voter) public view returns(bool isStored) {
+    function isVoterAuthorised(address voter) public view returns(bool) {
         return _voterMapping[voter].isAuthorised;
     }
 
-    function isVoterAddressStored(address voter) public view returns(bool isStored) {
+    function isVoterAddressStored(address voter) public view returns(bool) {
         return _voterMapping[voter].isInitialised;
     }
 
