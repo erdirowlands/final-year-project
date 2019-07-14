@@ -24,9 +24,9 @@ contract Election is Ownable {
         string name;
         // TODO change name to reflect this could be fractional voting
         uint totalVotes;
-        bool victor;
+        bool isVictor;
         // Allows a candidate to step down.
-        bool active;
+        bool isActive;
         // Allow the candidates mapping to be easily queried for admins that exist.
         bool isInitialised;
     }
@@ -45,8 +45,24 @@ contract Election is Ownable {
         _token = token;
     }
 
+    function isCandidateAVictor(address candidate) public view returns(bool isStored) {
+        return _candidateMapping[candidate].isVictor;
+    }
+
+    function isCandidateActive(address candidate) public view returns(bool isStored) {
+        return _candidateMapping[candidate].isActive;
+    }
+
     function isCandidateAddressStored(address candidate) public view returns(bool isStored) {
         return _candidateMapping[candidate].isInitialised;
+    }
+
+    function getTotalCandidateVotes(address candidate) public view returns(uint total) {
+        return _candidateMapping[candidate].totalVotes;
+    }
+
+    function getTotalCandidates() public view returns(uint total) {
+        return _candidateAddressArray.length;
     }
 
 }
