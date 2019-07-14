@@ -5,8 +5,6 @@ import "./VotingToken.sol";
 
 contract Election is Ownable {
 
-    VotingToken public _token;
-
     constructor () public {
 
     }
@@ -39,11 +37,6 @@ contract Election is Ownable {
     // Store candidate addresses in array for quick acceess and to reveal more information
     // about contract state, such as bow many candidate there are.
     address[] public _candidateAddressArray;
-
-
-    function test(VotingToken token) public {
-        _token = token;
-    }
 
     function isCandidateAVictor(address candidate) public view returns(bool isStored) {
         return _candidateMapping[candidate].isVictor;
