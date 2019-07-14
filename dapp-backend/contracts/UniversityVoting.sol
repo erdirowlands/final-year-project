@@ -65,33 +65,6 @@ contract UniversityVoting is Ownable, ApprovalQueue {
         // if a backend as in place, could store in a database.
     }
 
-/*
-    function approveInstitutionCreation(address adminAddress) public onlyOwner {
-        require(isApprovalStored(adminAddress), "Approval not found");
-
-        // Create a new Institution contract and initialise it with the values from the approval request struct.
-        Institution institution = new Institution(_approvalRequestQueue[adminAddress].institutionName,
-            _approvalRequestQueue[adminAddress].adminFirstName, _approvalRequestQueue[adminAddress].adminSurname, adminAddress);
-
-        address contractAddress = (address(institution));
-          // Attempt to add new Institution address to mapping, will correctly fail if duplicate address found.
-        addInstitutionToContract(contractAddress);
-        // Add address of newly created Institutions to dynamically sized array for quick access.
-        _addressArray.push(contractAddress);
-        // Also add the address to not interable mapping to allow for instant access to the address.
-        _addressStructMapping[contractAddress] = InstitutionAddressStruct(true);
-
-        // New Institution created sucessfully so set the request to not pending.
-        _approvalRequestQueue[adminAddress].isPending = false;
-
-        // Emit the creation of the new Institution as an event.
-        emit NewInstitutionApproved(contractAddress);
-       // return contractAddress;
-        // TODO add delete the approval from the mapping - but I might want to keep the data for the frontend.
-        // if a backend as in place, could store in a database.
-    } */
-
-/*
     /**
      * Allows a prospective admin to submit the data for their new request. An ApprovalRequest is created and mapped
      * to the approval queue.
