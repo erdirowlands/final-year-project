@@ -147,13 +147,13 @@ contract("Institution", accounts => {
           ),
           "Caller is an admin, but not currently authorised!"
         );
-      });/*
+      });
       it("creates a new election.", async function() {
-        let date = (new Date()).getTime();
+    //    let date = (new Date()).getTime();
         let days = 7;
-        let dateInUnixTimestamp = date / 1000;
+    //    let dateInUnixTimestamp = date / 1000;
         const transactionReceipt = await newInstitutionContractAddress.createElection(
-          date, 
+       //   date, 
           days, 
           { from: prospectiveAdmin1 }
         );
@@ -164,7 +164,7 @@ contract("Institution", accounts => {
         truffleAssert.eventEmitted(transactionReceipt, "NewElectiomCreated", event => {
           return newElectionContractAddress.should.equal(event.election);
         });
-      }); /*
+      }); 
 
 
       /*
