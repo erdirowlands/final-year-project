@@ -167,6 +167,14 @@ contract("Institution", accounts => {
         truffleAssert.eventEmitted(transactionReceipt, "NewElectionCreated", event => {
           return newElectionContractAddress.should.equal(event.election);
         });
+      });
+      it("stores the new election address in array", async function() {
+        // Check if initialiseInstitutionWithAdmin() called from the beforeEach hook
+        // stores the address in the array.
+        const electionAddressThatShouldBeStored = await newInstitutionContractAddress._electionAddresses(
+          0
+        );
+        electionAddressThatShouldBeStored.should.equal(newElectionContractAddress);
       }); 
 
 
