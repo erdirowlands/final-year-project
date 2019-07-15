@@ -110,7 +110,7 @@ contract Institution is ApprovalQueue {
     }
 
     // Emit an event on Institution contract creation.
-    event NewElectiomCreated(address election);
+    event NewElectionCreated(address election);
     /**
     Create a new Election contract which can then be configured by a customer per their requirements. */
     function createElection(uint256 openingTime, uint256  closingTime)  public {
@@ -122,7 +122,7 @@ contract Institution is ApprovalQueue {
         // Add information about the newly created contract so it can be accessed later.
         storeNewElection(electionContractAddress, msg.sender);
         // Emit the creation of the new Election as an event.
-        emit NewElectiomCreated(electionContractAddress);
+        emit NewElectionCreated(electionContractAddress);
     }
 
     function storeNewElection(address election, address admin) public isAdmin(admin) isAuthorisedAdmin(admin) {

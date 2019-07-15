@@ -151,11 +151,11 @@ contract("Institution", accounts => {
       });
       it("creates a new election.", async function() {
     //    let date = (new Date()).getTime();
-       //   await time.advanceBlock();
+          await time.advanceBlock();
           const electionStartTime = await time.latest();
           const electionEndTime =  await electionStartTime + time.duration.weeks(1);
     //    let dateInUnixTimestamp = date / 1000;
-        const transactionReceipt = await newInstitutionContractAddress.createElection(
+          const transactionReceipt = await newInstitutionContractAddress.createElection(
           electionStartTime, 
           electionEndTime, 
           { from: prospectiveAdmin1 }
@@ -164,7 +164,7 @@ contract("Institution", accounts => {
         const log = await transactionReceipt.logs[0].args;
         // Get newly created contract address from event and use truffle-contract to get an instance.
         newElectionContractAddress = await log.election;
-        truffleAssert.eventEmitted(transactionReceipt, "NewElectiomCreated", event => {
+        truffleAssert.eventEmitted(transactionReceipt, "NewElectionCreated", event => {
           return newElectionContractAddress.should.equal(event.election);
         });
       }); 
