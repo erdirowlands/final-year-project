@@ -58,7 +58,7 @@ contract UniversityVoting is Ownable, ApprovalQueue {
         adminFirstName = super.bytes32ToString(data[1]);
         adminSurname = super.bytes32ToString(data[2]);
 
-        Institution institution = new Institution(institutionName, adminFirstName, adminSurname, submittingAddress);
+        Institution institution = new Institution(institutionName, adminFirstName, adminSurname, submittingAddress, deployedVotingToken);
         // Get the address of the newly created contract.
         address contractAddress = (address(institution));
         // Add information about the newly created contract so it can be accessed later.

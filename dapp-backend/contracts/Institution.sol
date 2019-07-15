@@ -64,7 +64,7 @@ contract Institution is ApprovalQueue {
      * @param adminSurname surname of the admin who submitted the new institution request
      * @param adminAddress addres of  the admin who submitted the new institution request
      */
-    constructor (string memory institutionName, string memory adminFirstName, string memory adminSurname, address adminAddress)
+    constructor (string memory institutionName, string memory adminFirstName, string memory adminSurname, address adminAddress, address deployedToken)
     public {
         // Set the institution name.
         _institutionName = institutionName;
@@ -74,6 +74,8 @@ contract Institution is ApprovalQueue {
         _institutionAdmins[adminAddress] = InstitutionAdmin(adminFirstName, adminSurname, adminAddress, true, true);
          // Add address of newly created Institutions to dynamically sized array for quick access.
         _adminAddresses.push(adminAddress);
+        // Give Institution access to the deployed voting token
+        votingToken = deployedToken;
     }
 
     // Emit an event on Institution contract creation.
