@@ -1,8 +1,9 @@
 const BigNumber = web3.BigNumber;
 
 const truffleAssert = require("truffle-assertions");
-const { expectRevert } = require("openzeppelin-test-helpers");
+const { expectRevert, time } = require("openzeppelin-test-helpers");
 const { asciiToHex } = require("web3-utils");
+
 
 const UniversityVoting = artifacts.require("UniversityVoting");
 const Institution = artifacts.require("Institution");
@@ -150,11 +151,13 @@ contract("Institution", accounts => {
       });
       it("creates a new election.", async function() {
     //    let date = (new Date()).getTime();
-        let days = 7;
+       //   await time.advanceBlock();
+          const electionStartTime = await time.latest();
+          const electionEndTime =  await electionStartTime + time.duration.weeks(1);
     //    let dateInUnixTimestamp = date / 1000;
         const transactionReceipt = await newInstitutionContractAddress.createElection(
-       //   date, 
-          days, 
+          electionStartTime, 
+          electionEndTime, 
           { from: prospectiveAdmin1 }
         );
         // Get emitted event from initialiseInstitutionWithAdmin()
