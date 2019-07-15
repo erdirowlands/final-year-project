@@ -21,11 +21,16 @@ contract UniversityVoting is Ownable, ApprovalQueue {
     address payable public payableOwner = address(uint160(owner()));
     string constant public approvalRequestType = "institutionApprovalRequest";
 
+    address deployedVotingToken;
 
     // Enable the prevention of duplicate addresses caused by
     // unforseen, errant client requests.
     struct InstitutionAddressStruct {
         bool isAddress;
+    }
+
+    constructor (address votingToken) public {
+        deployedVotingToken = votingToken;
     }
 
     // Store Institutions addresses so they can be accessed without iteration. This

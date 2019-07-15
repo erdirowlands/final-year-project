@@ -7,10 +7,9 @@ module.exports = function(deployer) {
   /*
   const _name = 'Voting Token';
   const _symbols = 'VTK';
-  const _decimals = '18';
+  const _decimals = '18';  */
 
-  deployer.deploy(VotingToken, _name, _symbols, _decimals); */
 
-  deployer.deploy(UniversityVoting);
+  deployer.deploy(UniversityVoting, VotingToken.address );
 
 };
