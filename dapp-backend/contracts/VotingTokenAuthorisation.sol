@@ -13,14 +13,13 @@ import "./Institution.sol";
  * Open Zeppelin crowdsale contracts are being inherited to provide automatic protection against reentrancy attacks and to
  * provide common crowdsale functionality without having to reinvent the wheel.
  */
-contract VotingTokenAuthorisation is MintedCrowdsale, TimedCrowdsale {
+contract VotingTokenAuthorisation is MintedCrowdsale{
 
     Institution _institution;
 
-    constructor (address institution, address admin, uint256 openingTime, uint256 closingTime, VotingToken votingToken)
-    Crowdsale(1,  address(uint160(admin)), VotingToken(votingToken))
-    TimedCrowdsale(openingTime, closingTime)
-    public isAdmin(admin) {
+    constructor (address institution, address admin, VotingToken votingToken)
+    Crowdsale(500,  address(uint160(admin)), IERC20(votingToken))
+    public { //isAdmin(admin) {
         _institution = Institution(institution);
     }
 
