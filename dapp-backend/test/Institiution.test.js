@@ -7,7 +7,7 @@ const { asciiToHex } = require("web3-utils");
 const UniversityVoting = artifacts.require("UniversityVoting");
 const Institution = artifacts.require("Institution");
 const Election = artifacts.require("Election");
-const VotingTokenAuthorisation = artifacts.require("VotingTokenAuthorisation");
+const VotingToken= artifacts.require("VotingToken");
 
 require("chai")
   .use(require("chai-bignumber")(BigNumber))
@@ -16,6 +16,9 @@ require("chai")
 contract("Institution", accounts => {
   // UniversityVoting contract is responsible for deploying Institution, so mimick this flow in tests.
   let universityVoting;
+
+  let deployedVotingToken;
+
   // The deployed child Institution contract address of UnviversityVoting.
   let newInstitutionContractAddress;
 
@@ -59,7 +62,10 @@ contract("Institution", accounts => {
 
     describe("Deploy and use the child institution contract", function() {
       before(async function() {
-        universityVoting = await UniversityVoting.new({
+        deployedVotingToken = await VotingToken.new({ from: developerAccount });
+        universityVoting = await UniversityVoting.new(
+          deployedVotingToken.address,
+          {
           from: developerAccount
         });
         // Submit the approval from 'prospective admin' addresss

@@ -3,6 +3,7 @@ const { asciiToHex }  = require('web3-utils');
 const BigNumber = web3.BigNumber;
 const UniversityVoting = artifacts.require("UniversityVoting");
 const Institution = artifacts.require("Institution");
+const VotingToken = artifacts.require("VotingToken");
 
 
 require("chai")
@@ -11,6 +12,7 @@ require("chai")
 
 contract("UniversityVoting", accounts => {
   let universityVoting;
+  let deployedVotingToken;
   let newInstitutionContractAddress;
   // Me, as the owner and deployer of the contract.
   const developerAccount = accounts[0];
@@ -22,7 +24,9 @@ contract("UniversityVoting", accounts => {
 
   describe("Approving and creating a new Institution contract and operations on the newly created contract", function() {
     before(async function() {
-      universityVoting = await UniversityVoting.new({ from: developerAccount });
+      // Deploy Voting Token and University Voting contracts
+      deployedVotingToken = await VotingToken.new({ from: developerAccount });
+      universityVoting = await UniversityVoting.new(deployedVotingToken.address, { from: developerAccount });
     });
     after(async function() {
       await universityVoting.kill();
