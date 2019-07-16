@@ -25,9 +25,8 @@ contract("UniversityVoting", accounts => {
     describe("Approving and creating a new Institution contract and operations on the newly created contract", function() {
       before(async function() {
         // Deploy Voting Token and University Voting contracts
-        universityVoting = await UniversityVoting.new({
+        universityVoting = await UniversityVoting.deployed();
           from: developerAccount
-        });
       });
       after(async function() {
         await universityVoting.kill();
