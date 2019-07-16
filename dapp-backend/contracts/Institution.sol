@@ -15,7 +15,7 @@ contract Institution is ApprovalQueue {
     string constant public adminApprovalRequestType = "adminApprovalRequest";
     string constant public voterApprovalRequestType = "voterApprovalRequest";
 
-    VotingToken theToken;
+    VotingToken _deployedVotingToken;
 
     struct InstitutionAdmin {
         string firstName;
@@ -64,7 +64,7 @@ contract Institution is ApprovalQueue {
      * @param adminSurname surname of the admin who submitted the new institution request
      * @param adminAddress addres of  the admin who submitted the new institution request
      */
-    constructor (string memory institutionName, string memory adminFirstName, string memory adminSurname, address adminAddress, address deployedToken)
+    constructor (string memory institutionName, string memory adminFirstName, string memory adminSurname, address adminAddress, VotingToken deployedVotingToken)
     public {
         // Set the institution name.
         _institutionName = institutionName;
@@ -75,7 +75,7 @@ contract Institution is ApprovalQueue {
          // Add address of newly created Institutions to dynamically sized array for quick access.
         _adminAddresses.push(adminAddress);
         // Give Institution access to the deployed voting token
-        theToken = deployedToken;
+        _deployedVotingToken = deployedVotingToken;
     }
 
     // Emit an event on Institution contract creation.
@@ -113,19 +113,19 @@ contract Institution is ApprovalQueue {
     event NewElectionCreated(address election);
     /**
     Create a new Election contract which can then be configured by a customer per their requirements. */
-    function createElection(uint256 openingTime, uint256  closingTime)  public {
+    function createElection(uint256 openingTime, uint256  closingTime, VotingToken deployedVotingToken2)  public {
         VotingTokenAuthorisation tokenAuthorisation = new VotingTokenAuthorisation
-            (address(this), msg.sender, openingTime, closingTime, theToken);
+            (address(this), msg.sender, openingTime, closingTime, deployedVotingToken2);
         // Let VotingTokenAuthorisation have the role as minter so it can mint tokens for voters upon request.
-      //  VotingToken(votingToken).addMinter(address(tokenAuthorisation));
+        deployedVotingToken.addMinter(address(tokenAuthorisation));
         // Create new Election contract.
-      //  Election election = new Election(address(this), tokenAuthorisation);
+        Election election = new Election(address(this), tokenAuthorisation);
         // Get the address of the newly created Election contract.
-      //  address electionContractAddress = (address(election));
+        address electionContractAddress = (address(election));
         // Add information about the newly created contract so it can be accessed later.
-   //     storeNewElection(electionContractAddress, msg.sender);
+        storeNewElection(electionContractAddress, msg.sender);
         // Emit the creation of the new Election as an event.
-   //     emit NewElectionCreated(electionContractAddress);
+        emit NewElectionCreated(electionContractAddress);
     }
 
     function storeNewElection(address election, address admin) public isAdmin(admin) isAuthorisedAdmin(admin) {
@@ -198,8 +198,8 @@ contract Institution is ApprovalQueue {
    //     deployedVotingToken = tokenAddress;
     }
 
-    function getVotingTokenAddress() public view returns (address) {
-  //      return deployedVotingToken;
+    function getVotingTokenAddress() public view returns (VotingToken) {
+        return deployedVotingToken;
     }
 
 }

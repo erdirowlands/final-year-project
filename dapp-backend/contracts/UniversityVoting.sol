@@ -20,10 +20,10 @@ contract UniversityVoting is Ownable, ApprovalQueue {
     // The payableOwner inherits from Open Zeppelin's Ownable contract
     // which is the deployer of the contract, i.e. the developer.
     // Should this contract need to be self-destructed, the developer will recieve all funds.
-    address payable public payableOwner; 
+    address payable public payableOwner;
     string constant public approvalRequestType = "institutionApprovalRequest";
 
-    address private deployedVotingToken;
+    VotingToken deployedVotingToken;
 
     // Enable the prevention of duplicate addresses caused by
     // unforseen, errant client requests.
@@ -114,11 +114,11 @@ contract UniversityVoting is Ownable, ApprovalQueue {
         return _approvalRequestQueue[adminAddress].isInitialised;
     }
 
-    function setVotingTokenAddress(address tokenAddress) public {
+    function setVotingTokenAddress(VotingToken tokenAddress) public {
         deployedVotingToken = tokenAddress;
     }
 
-    function getVotingTokenAddress() public view returns (address) {
+    function getVotingTokenAddress() public view returns (VotingToken) {
         return deployedVotingToken;
     }
 
