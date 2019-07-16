@@ -1,5 +1,6 @@
 pragma solidity ^0.5.3;
 
+import "./Institution.sol";
 import "./VotingTokenAuthorisation.sol";
 
 
