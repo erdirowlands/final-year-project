@@ -61,6 +61,8 @@ contract UniversityVoting is Ownable, ApprovalQueue {
         Institution institution = new Institution(institutionName, adminFirstName, adminSurname, submittingAddress, deployedVotingToken);
         // Get the address of the newly created contract.
         address contractAddress = (address(institution));
+        // Give the new required role to mint VotingTokens
+        VotingToken(deployedVotingToken).addMinter(contractAddress);
         // Add information about the newly created contract so it can be accessed later.
         storeInstitutionContractInfo(contractAddress);
         // Emit the creation of the new Institution as an event.
