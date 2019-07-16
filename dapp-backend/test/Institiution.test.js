@@ -64,16 +64,6 @@ contract("Institution", accounts => {
     describe("Deploy and use the child institution contract", function() {
       before(async function() {
         universityVoting = await UniversityVoting.deployed();
-/*
-        votingToken = await VotingToken.new(
-          universityVoting.address,
-          {
-          from: developerAccount
-        });
-        const setToken = await universityVoting.setVotingTokenAddress(
-          votingToken.address,
-          { from: developerAccount }
-        ); */
         // Submit the approval from 'prospective admin' addresss
         await universityVoting.submitInstitutionApprovalRequest(
           newRequestDataAsBytes32,
