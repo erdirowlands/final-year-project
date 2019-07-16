@@ -113,7 +113,7 @@ contract Institution is ApprovalQueue {
     event NewElectionCreated(address election);
     /**
     Create a new Election contract which can then be configured by a customer per their requirements. */
-    function createElection(uint256 openingTime, uint256  closingTime)  public {
+    function createElection(uint256 openingTime, uint256  closingTime) isAdmin(msg.sender) isAuthorisedAdmin(msg.sender)  public {
         VotingTokenAuthorisation tokenAuthorisation = new VotingTokenAuthorisation
             (address(this), msg.sender, openingTime, closingTime, _deployedVotingToken);
         // Let VotingTokenAuthorisation have the role as minter so it can mint tokens for voters upon request.

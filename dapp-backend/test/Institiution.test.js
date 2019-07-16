@@ -171,19 +171,5 @@ contract("Institution", accounts => {
         );
         electionAddressThatShouldBeStored.should.equal(newElectionContractAddress);
       }); 
-
-
-      /*
-    it('stores the election contract address', async function () {
-        const transactionReceipt = await this.institution.createElection()
-        // Get emitted event
-        const log = await transactionReceipt.logs[0].args;
-        // Get newly created contract address from event
-        const newContractAddress = await log.election;
-        // Check if the address stored in the elections array matches the newly created 
-        // election.
-        const createdElection = await this.institution.elections(0);
-        createdElection.should.equal(newContractAddress);
-        }) */
     });
 });
