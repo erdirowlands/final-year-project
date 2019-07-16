@@ -3,6 +3,8 @@ pragma solidity ^0.5.3;
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 import "./Institution.sol";
 import "./ApprovalQueue.sol";
+import "./VotingToken.sol";
+
 
 // Name in progress - can possible be: ElectionFactory, though the current name indicates that this is the 'main entry point'.
 /** // TODO Change comments based on new functionality - keep notion of factory pattern. Also mention that mappings adhere to storage patters found at: https://ethereum.stackexchange.com/questions/13167/are-there-well-solved-and-simple-storage-patterns-for-solidity
@@ -63,7 +65,7 @@ contract UniversityVoting is Ownable, ApprovalQueue {
         // Get the address of the newly created contract.
         address contractAddress = (address(institution));
         // Give the new required role to mint VotingTokens
-     //   VotingToken(deployedVotingToken).addMinter(contractAddress);
+        VotingToken(deployedVotingToken).addMinter(contractAddress);
         // Add information about the newly created contract so it can be accessed later.
         storeInstitutionContractInfo(contractAddress);
         // Emit the creation of the new Institution as an event.
