@@ -1,15 +1,12 @@
 var VotingToken = artifacts.require('./VotingToken.sol');
 var UniversityVoting = artifacts.require('./UniversityVoting.sol');
 
-module.exports = function(deployer) {
+module.exports = async (deployer) => {
 
-  // TODO Workout correct deployment script for all contracts.
-  /*
-  const _name = 'Voting Token';
-  const _symbols = 'VTK';
-  const _decimals = '18';  */
+  VotingTokenInstance = await VotingToken.deployed();
 
+  await deployer.deploy(UniversityVoting, VotingToken.address );
 
-  deployer.deploy(UniversityVoting, VotingToken.address );
+  await VotingTokenInstance.addMinter(UniversityVoting.address);
 
 };

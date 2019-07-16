@@ -1,8 +1,8 @@
 var VotingToken = artifacts.require('./VotingToken.sol');
 
-module.exports = function(deployer) {
+module.exports = async (deployer) => {
 
   
-    deployer.deploy(VotingToken);
+  await deployer.deploy(VotingToken);
   
   };
