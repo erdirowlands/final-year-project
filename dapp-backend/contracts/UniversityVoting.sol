@@ -31,7 +31,7 @@ contract UniversityVoting is Ownable, ApprovalQueue {
 
     constructor (address votingToken) public {
         deployedVotingToken = votingToken;
-       // VotingToken(deployedVotingToken).addMinter((address(this)));
+        VotingToken(deployedVotingToken).addMinter(msg.sender);
     }
 
     // Store Institutions addresses so they can be accessed without iteration. This
