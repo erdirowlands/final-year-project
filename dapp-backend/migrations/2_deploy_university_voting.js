@@ -7,9 +7,9 @@ module.exports = async (deployer) => {
 
 //  VotingTokenInstance = await VotingToken.deployed();
 //  deployer.deploy(Migrations);
-//  await deployer.deploy(UniversityVoting);
+  await deployer.deploy(UniversityVoting);
 
-  UniversityVotingInstance = await UniversityVoting.deployed();
+ // UniversityVotingInstance = await UniversityVoting.deployed();
 
 //  await deployer.deploy(VotingToken, UniversityVotingInstance.address);
  // VotingToken.address

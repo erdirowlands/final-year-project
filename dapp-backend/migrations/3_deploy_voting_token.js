@@ -3,8 +3,11 @@ var UniversityVoting = artifacts.require('./UniversityVoting.sol');
 
 module.exports = async (deployer) => {
 
+    await deployer.deploy(VotingToken, UniversityVoting.address);
+
     UniversityVotingInstance = await UniversityVoting.deployed();
 
-    await deployer.deploy(VotingToken, UniversityVoting.address);
+    await UniversityVotingInstance.setVotingTokenAddress(VotingToken.address);
+
 
 };

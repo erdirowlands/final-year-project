@@ -29,7 +29,7 @@ contract UniversityVoting is Ownable, ApprovalQueue {
         bool isAddress;
     }
 
-    constructor (address votingToken) public {
+    constructor () public {
      //   deployedVotingToken = votingToken;
    //     VotingToken(deployedVotingToken).addMinter(msg.sender);
     }
