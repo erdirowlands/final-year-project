@@ -58,6 +58,19 @@ contract("UniversityVoting", accounts => {
       // Get newly created contract address from event
       newInstitutionContractAddress = await log.institution;
     });
+    it("reverts on a non-developer/'owner trying attempting to authorise an approval", async function() {
+      const transactionReceipt = await universityVoting.submitInstitutionApprovalRequest(
+        newRequestDataAsBytes32,
+        { from: accounts[5] }
+      );
+      await expectRevert(
+        universityVoting.approveInstitutionRequest(
+          accounts[5],
+          { from: prospectiveAdminAccount }
+        ),
+        "Ownable: caller is not the owner."
+      ); 
+    }); 
     it("stores institution contract address in addresses array", async function() {
       // Check if initialiseInstitutionWithAdmin() called from the beforeEach hook
       // stores the address in the array.
