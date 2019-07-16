@@ -160,7 +160,6 @@ contract("Institution", accounts => {
           electionEndTime, 
           { from: prospectiveAdmin1 }
         );
-        // Get emitted event from initialiseInstitutionWithAdmin()
         const log = await transactionReceipt.logs[0].args;
         // Get newly created contract address from event and use truffle-contract to get an instance.
         newElectionContractAddress = await log.election;
