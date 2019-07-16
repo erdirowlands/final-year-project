@@ -15,6 +15,7 @@ contract Election {
 
     uint startTime;
     uint runningTime;
+    ElectionStatus electionStatus;
     VotingTokenAuthorisation tokenSale; // The address of the VotingTokenSale contract for this election
     Institution _institution;
 
@@ -54,7 +55,12 @@ contract Election {
     constructor (address institution, VotingTokenAuthorisation votingTokenAuthorisation) public {
         _institution = Institution(institution);
         _votingTokenAuthorisation = votingTokenAuthorisation;
+        electionStatus = ElectionStatus.IN_PROGRESS;
     }
+
+    ///////////VOTER APPROVAL REQUEST FLOW ///////////
+
+
 
     ///////////CANDIDATE DATA OPERATIONS///////////
 

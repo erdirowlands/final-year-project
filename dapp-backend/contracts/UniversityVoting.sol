@@ -32,8 +32,6 @@ contract UniversityVoting is Ownable, ApprovalQueue {
     }
 
     constructor () public {
-     //   deployedVotingToken = votingToken;
-   //     VotingToken(deployedVotingToken).addMinter(msg.sender);
         payableOwner = address(uint160(owner()));
     }
 
