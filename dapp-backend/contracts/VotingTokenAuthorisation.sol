@@ -6,6 +6,7 @@ import "openzeppelin-solidity/contracts/crowdsale/validation/TimedCrowdsale.sol"
 import "./VotingToken.sol";
 import "./Institution.sol";
 
+// *****TODO Complete Ownable flow for this contract*****
 
 /**
  * The authorisation of Voting Tokens is implemented as a custom crowdsale - however the concept of purchasing tokens for Ether
@@ -19,7 +20,7 @@ contract VotingTokenAuthorisation is MintedCrowdsale, TimedCrowdsale, Ownable {
     Institution _institution;
 
     constructor (address institution, address admin, uint256 openingTime, uint256 closingTime, VotingToken votingToken)
-    Crowdsale(1,  address(uint160(admin)), VotingToken(votingToken))
+    Crowdsale(1,  address(uint160(admin)), votingToken)
     TimedCrowdsale(openingTime, closingTime)
     public { //isAdmin(admin) {
         _institution = Institution(institution);

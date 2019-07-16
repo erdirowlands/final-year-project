@@ -15,7 +15,7 @@ contract Institution is ApprovalQueue {
     string constant public adminApprovalRequestType = "adminApprovalRequest";
     string constant public voterApprovalRequestType = "voterApprovalRequest";
 
-    address votingToken;
+    VotingToken theToken;
 
     struct InstitutionAdmin {
         string firstName;
@@ -75,7 +75,7 @@ contract Institution is ApprovalQueue {
          // Add address of newly created Institutions to dynamically sized array for quick access.
         _adminAddresses.push(adminAddress);
         // Give Institution access to the deployed voting token
-        votingToken = deployedToken;
+        theToken = deployedToken;
     }
 
     // Emit an event on Institution contract creation.
@@ -115,7 +115,7 @@ contract Institution is ApprovalQueue {
     Create a new Election contract which can then be configured by a customer per their requirements. */
     function createElection(uint256 openingTime, uint256  closingTime)  public {
         VotingTokenAuthorisation tokenAuthorisation = new VotingTokenAuthorisation
-            (address(this), msg.sender, openingTime, closingTime, VotingToken(votingToken));
+            (address(this), msg.sender, openingTime, closingTime, theToken);
         // Let VotingTokenAuthorisation have the role as minter so it can mint tokens for voters upon request.
       //  VotingToken(votingToken).addMinter(address(tokenAuthorisation));
         // Create new Election contract.

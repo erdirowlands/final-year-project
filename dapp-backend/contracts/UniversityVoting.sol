@@ -20,7 +20,7 @@ contract UniversityVoting is Ownable, ApprovalQueue {
     // The payableOwner inherits from Open Zeppelin's Ownable contract
     // which is the deployer of the contract, i.e. the developer.
     // Should this contract need to be self-destructed, the developer will recieve all funds.
-    address payable public payableOwner = address(uint160(owner()));
+    address payable public payableOwner; 
     string constant public approvalRequestType = "institutionApprovalRequest";
 
     address private deployedVotingToken;
@@ -34,6 +34,7 @@ contract UniversityVoting is Ownable, ApprovalQueue {
     constructor () public {
      //   deployedVotingToken = votingToken;
    //     VotingToken(deployedVotingToken).addMinter(msg.sender);
+        payableOwner = address(uint160(owner()));
     }
 
     // Store Institutions addresses so they can be accessed without iteration. This
