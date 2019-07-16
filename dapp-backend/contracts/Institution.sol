@@ -119,7 +119,7 @@ contract Institution is ApprovalQueue {
         // Let VotingTokenAuthorisation have the role as minter so it can mint tokens for voters upon request.
         _deployedVotingToken.addMinter(address(tokenAuthorisation));
         // Create new Election contract.
-        Election election = new Election(address(this), tokenAuthorisation);
+        Election election = new Election(address(this), tokenAuthorisation, _deployedVotingToken);
         // Get the address of the newly created Election contract.
         address electionContractAddress = (address(election));
         // Add information about the newly created contract so it can be accessed later.

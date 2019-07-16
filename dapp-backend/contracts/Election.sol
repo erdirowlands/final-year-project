@@ -6,7 +6,7 @@ import "./VotingTokenAuthorisation.sol";
 
 contract Election {
 
-    VotingTokenAuthorisation _votingTokenAuthorisation;
+
     
     // A pending Election will be when an Election admin has configured the Election to run
     // at some point in the future. This allows the contract to be deployed at the time
@@ -15,8 +15,9 @@ contract Election {
 
     uint startTime;
     uint runningTime;
-    ElectionStatus electionStatus;
-    VotingTokenAuthorisation tokenSale; // The address of the VotingTokenSale contract for this election
+    ElectionStatus _electionStatus;
+    VotingToken _votingToken;
+    VotingTokenAuthorisation _votingTokenAuthorisation; // The address of the VotingTokenSale contract for this election
     Institution _institution;
 
     struct Candidate {
@@ -52,13 +53,21 @@ contract Election {
     address[] public _voterAddressArray;
 
 
-    constructor (address institution, VotingTokenAuthorisation votingTokenAuthorisation) public {
-        _institution = Institution(institution);
+    constructor (address institution, VotingTokenAuthorisation votingTokenAuthorisation, VotingToken votingToken) public {
         _votingTokenAuthorisation = votingTokenAuthorisation;
-        electionStatus = ElectionStatus.IN_PROGRESS;
+        _institution = Institution(institution);
+        _votingToken = votingToken;
+        _electionStatus = ElectionStatus.IN_PROGRESS;
     }
 
     ///////////VOTER APPROVAL REQUEST FLOW ///////////
+
+
+    ///////////VOTING///////////
+
+    function vote(address voter) public {
+
+    }
 
 
 
