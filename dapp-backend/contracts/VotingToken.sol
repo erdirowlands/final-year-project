@@ -19,6 +19,7 @@ contract VotingToken is ERC20Mintable, ERC20Detailed{
     ERC20Detailed(_name, _symbol, _decimals) public {
         universityVoting = UniversityVoting(universityVotingAddress);
         addMinter(address(universityVoting));
+        _mint(address(universityVoting), 1000);
     }
 
     function test(address _to, uint256 _value) public returns (bool) {

@@ -119,13 +119,13 @@ contract Institution is ApprovalQueue {
         // Let VotingTokenAuthorisation have the role as minter so it can mint tokens for voters upon request.
       //  VotingToken(votingToken).addMinter(address(tokenAuthorisation));
         // Create new Election contract.
-        Election election = new Election(address(this), tokenAuthorisation);
+      //  Election election = new Election(address(this), tokenAuthorisation);
         // Get the address of the newly created Election contract.
-        address electionContractAddress = (address(election));
+      //  address electionContractAddress = (address(election));
         // Add information about the newly created contract so it can be accessed later.
-        storeNewElection(electionContractAddress, msg.sender);
+   //     storeNewElection(electionContractAddress, msg.sender);
         // Emit the creation of the new Election as an event.
-        emit NewElectionCreated(electionContractAddress);
+   //     emit NewElectionCreated(electionContractAddress);
     }
 
     function storeNewElection(address election, address admin) public isAdmin(admin) isAuthorisedAdmin(admin) {
@@ -192,6 +192,14 @@ contract Institution is ApprovalQueue {
 
     function isAdminAuthorised(address admin) public view returns(bool isStored) {
         return _institutionAdmins[admin].isAuthorised;
+    }
+
+    function setVotingTokenAddress(address tokenAddress) public {
+   //     deployedVotingToken = tokenAddress;
+    }
+
+    function getVotingTokenAddress() public view returns (address) {
+  //      return deployedVotingToken;
     }
 
 }

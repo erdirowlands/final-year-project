@@ -63,9 +63,7 @@ contract("Institution", accounts => {
 
     describe("Deploy and use the child institution contract", function() {
       before(async function() {
-        deployedVotingToken = await VotingToken.new({ from: developerAccount });
         universityVoting = await UniversityVoting.new(
-          deployedVotingToken.address,
           {
           from: developerAccount
         });
@@ -85,8 +83,8 @@ contract("Institution", accounts => {
         newInstitutionContractAddress = await Institution.at(log.institution);
       });
       after(async function() {
-        await universityVoting.kill();
-        await newInstitutionContractAddress.kill();
+ //       await universityVoting.kill();
+ //       await newInstitutionContractAddress.kill();
       });
       it("submits a new admin aproval request", async function() {
         const transactionReceipt = await newInstitutionContractAddress.submitAdminApprovalRequest(
