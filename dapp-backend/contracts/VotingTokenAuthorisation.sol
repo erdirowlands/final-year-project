@@ -1,5 +1,6 @@
 pragma solidity ^0.5.3;
 
+import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 import "openzeppelin-solidity/contracts/crowdsale/emission/MintedCrowdsale.sol";
 import "openzeppelin-solidity/contracts/crowdsale/validation/TimedCrowdsale.sol";
 import "./VotingToken.sol";
@@ -13,7 +14,7 @@ import "./Institution.sol";
  * Open Zeppelin crowdsale contracts are being inherited to provide automatic protection against reentrancy attacks and to
  * provide common crowdsale functionality without having to reinvent the wheel.
  */
-contract VotingTokenAuthorisation is MintedCrowdsale, TimedCrowdsale {
+contract VotingTokenAuthorisation is MintedCrowdsale, TimedCrowdsale, Ownable {
 
     Institution _institution;
 

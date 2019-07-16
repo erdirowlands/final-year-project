@@ -47,7 +47,7 @@ contract UniversityVoting is Ownable, ApprovalQueue {
     // TODO this can be in the superclass I think?
     event NewInstitutionApproved(address institution);
 
-    function approveInstitutionRequest(address submittingAddress) public {
+    function approveInstitutionRequest(address submittingAddress) public onlyOwner {
         super.approveRequest(submittingAddress);
 
         bytes32[] memory data = getRequestData(submittingAddress);
