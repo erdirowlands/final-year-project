@@ -113,11 +113,11 @@ contract Institution is ApprovalQueue {
     event NewElectionCreated(address election);
     /**
     Create a new Election contract which can then be configured by a customer per their requirements. */
-    function createElection(uint256 openingTime, uint256  closingTime, VotingToken deployedVotingToken2)  public {
+    function createElection(uint256 openingTime, uint256  closingTime)  public {
         VotingTokenAuthorisation tokenAuthorisation = new VotingTokenAuthorisation
-            (address(this), msg.sender, openingTime, closingTime, deployedVotingToken2);
+            (address(this), msg.sender, openingTime, closingTime, _deployedVotingToken);
         // Let VotingTokenAuthorisation have the role as minter so it can mint tokens for voters upon request.
-        deployedVotingToken.addMinter(address(tokenAuthorisation));
+        _deployedVotingToken.addMinter(address(tokenAuthorisation));
         // Create new Election contract.
         Election election = new Election(address(this), tokenAuthorisation);
         // Get the address of the newly created Election contract.
@@ -194,12 +194,12 @@ contract Institution is ApprovalQueue {
         return _institutionAdmins[admin].isAuthorised;
     }
 
-    function setVotingTokenAddress(address tokenAddress) public {
-   //     deployedVotingToken = tokenAddress;
+    function setVotingTokenAddress(VotingToken votingToken) public {
+        _deployedVotingToken = votingToken;
     }
 
     function getVotingTokenAddress() public view returns (VotingToken) {
-        return deployedVotingToken;
+        return _deployedVotingToken;
     }
 
 }

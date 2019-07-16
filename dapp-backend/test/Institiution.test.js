@@ -119,21 +119,7 @@ contract("Institution", accounts => {
           return prospectiveAdmin2.should.equal(event.newAdmin);
         });
       });
-      it("verifies the voting token is initialised.", async function() {
-  //      await time.advanceBlock();
-  //      const electionStartTime = await time.latest();
-  //      const electionEndTime =  await electionStartTime + time.duration.weeks(1);
-        const originalToken = await universityVoting.getVotingTokenAddress();
-        const token = await universityVoting.getVotingTokenAddress();
-        originalToken.should.equal("0x34344343434");
-       // token.should.equal(originalToken);
-    //    const transactionReceipt = await newInstitutionContractAddress.createElection(
-  //        electionStartTime, 
-  //        electionEndTime,
-   //       originalToken,
-   //       { from: prospectiveAdmin1 }
-   //     );
-          });
+
       it("stores the new admin address in array", async function() {
         // Check if initialiseInstitutionWithAdmin() called from the beforeEach hook
         // stores the address in the array.
@@ -170,7 +156,7 @@ contract("Institution", accounts => {
           ),
           "Caller is an admin, but not currently authorised!"
         );
-      }); /*
+      }); 
       it("creates a new election.", async function() {
     //    let date = (new Date()).getTime();
           await time.advanceBlock();
@@ -188,7 +174,7 @@ contract("Institution", accounts => {
         truffleAssert.eventEmitted(transactionReceipt, "NewElectionCreated", event => {
           return newElectionContractAddress.should.equal(event.election);
         });
-      }); */
+      }); 
       it("stores the new election address in array", async function() {
         // Check if initialiseInstitutionWithAdmin() called from the beforeEach hook
         // stores the address in the array.
