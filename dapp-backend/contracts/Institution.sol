@@ -116,6 +116,8 @@ contract Institution is ApprovalQueue {
     function createElection(uint256 openingTime, uint256  closingTime)  public {
         VotingTokenAuthorisation tokenAuthorisation = new VotingTokenAuthorisation
             (address(this), msg.sender, openingTime, closingTime, VotingToken(votingToken));
+        // Let VotingTokenAuthorisation have the role as minter so it can mint tokens for voters upon request.
+        VotingToken(votingToken).addMinter(address(tokenAuthorisation));
         Election election = new Election(address(this), tokenAuthorisation);
         // Get the address of the newly created Election contract.
         address electionContractAddress = (address(election));

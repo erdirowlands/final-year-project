@@ -59,9 +59,10 @@ contract("UniversityVoting", accounts => {
       newInstitutionContractAddress = await log.institution;
     });
     it("reverts on a non-developer/'owner trying attempting to authorise an approval", async function() {
+      // Create a new approval request.
       const transactionReceipt = await universityVoting.submitInstitutionApprovalRequest(
         newRequestDataAsBytes32,
-        { from: accounts[5] }
+        { from: accounts[5] } // This account is not the developer/owner, so it should be rejected.
       );
       await expectRevert(
         universityVoting.approveInstitutionRequest(
