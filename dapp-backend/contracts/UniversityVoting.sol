@@ -21,7 +21,7 @@ contract UniversityVoting is Ownable, ApprovalQueue {
     address payable public payableOwner = address(uint160(owner()));
     string constant public approvalRequestType = "institutionApprovalRequest";
 
-    address deployedVotingToken;
+    address private deployedVotingToken;
 
     // Enable the prevention of duplicate addresses caused by
     // unforseen, errant client requests.
@@ -30,8 +30,8 @@ contract UniversityVoting is Ownable, ApprovalQueue {
     }
 
     constructor (address votingToken) public {
-        deployedVotingToken = votingToken;
-       // VotingToken(deployedVotingToken).addMinter(msg.sender);
+     //   deployedVotingToken = votingToken;
+   //     VotingToken(deployedVotingToken).addMinter(msg.sender);
     }
 
     // Store Institutions addresses so they can be accessed without iteration. This
@@ -109,6 +109,14 @@ contract UniversityVoting is Ownable, ApprovalQueue {
 
     function isApprovalStored(address adminAddress) public view returns(bool isStored) {
         return _approvalRequestQueue[adminAddress].isInitialised;
+    }
+
+    function setVotingTokenAddress(address tokenAddress) public {
+        deployedVotingToken = tokenAddress;
+    }
+
+    function getVotingTokenAddress() public view returns (address) {
+        return deployedVotingToken;
     }
 
     /**
