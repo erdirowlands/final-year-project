@@ -65,8 +65,8 @@ contract Election {
 
     ///////////VOTING///////////
 
-    function vote(address voter) public {
-
+    function vote(address candidate, uint weight) public {
+        _votingToken.transfer(candidate, weight);
     }
 
 
