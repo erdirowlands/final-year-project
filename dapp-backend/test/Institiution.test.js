@@ -217,6 +217,23 @@ contract("Institution", accounts => {
         const isCandidateStored = await newElectionContractInstance.isCandidateAddressStored(prospectiveCandidate1);
         isCandidateStored.should.equal(true);
       });
+      it("lets a second candidate submit a request and get approved", async function() {
+        const transactionSubmissionReceipt = await newInstitutionContractAddress.submitCandidateApprovalRequest(
+          newCandidateRequestDataAsBytes32,
+          newElectionContractAddress,
+          { from: prospectiveCandidate2 }
+        );
+        const transactionApprovalReceipt = await newInstitutionContractAddress.approveCandidateRequest(
+          prospectiveCandidate2,
+          { from: prospectiveAdmin1 }
+        );
+        truffleAssert.eventEmitted(transactionApprovalReceipt, "NewCandidateApproved", event => {
+          return prospectiveCandidate2.should.equal(event.candidate);
+        });
+        // Check if candidate has been added to the Election created earlier.
+        const isCandidateStored = await newElectionContractInstance.isCandidateAddressStored(prospectiveCandidate2);
+        isCandidateStored.should.equal(true);
+      }); 
     }); 
     describe("Voter approval requests", function() {
       it("lets a voter submit a request", async function() {
