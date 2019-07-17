@@ -407,7 +407,7 @@ contract("Institution", accounts => {
         );
       const concludeElection = await newElectionContractInstance.concludeElection({from: prospectiveAdmin1});
       const winner = await  newElectionContractInstance.getVictor();
-      winner.should.equal(prospectiveCandidate2);
+      winner.should.equal(prospectiveCandidate1);
       });
     }); 
   });

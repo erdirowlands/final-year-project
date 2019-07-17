@@ -76,7 +76,7 @@ contract Election {
         _electionStatus = ElectionStatus.CONCLUDED;
 
     }
-
+/*
     function determineVictor() public   {
         address candAddress;
         uint256 winningVoteCount = 0;
@@ -86,8 +86,8 @@ contract Election {
                 winningVoteCount = _votingToken.balanceOf(candAddress);
                 _victor = candAddress;
             }
-    }
-/*
+    } 
+/* */
     function determineVictor() internal {
         uint256 tokenCounter = 0;
         address candAddress;
@@ -99,7 +99,7 @@ contract Election {
             }
         }
     }
- */
+ 
 /*
     function determineVictor() internal {
         address candAddress;
