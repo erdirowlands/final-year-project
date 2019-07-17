@@ -76,9 +76,13 @@ contract Election {
     }
 
     function determineVictor() internal {
+        uint tokenCounter;
         for (uint i = 0; i <= _candidateArray.length; i++ ) {
-            
+            if (tokenCounter < _votingToken.balanceOf(_candidateArray[i]))
+            tokenCounter = _votingToken.balanceOf(_candidateArray[i]);
+            _victor = _candidateArray[i];
         }
+        
     }
     
     modifier isAdmin(address admin) {
