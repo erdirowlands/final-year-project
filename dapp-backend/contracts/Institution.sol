@@ -18,8 +18,7 @@ contract Institution is ApprovalQueue {
     VotingToken _deployedVotingToken;
 
     struct InstitutionAdmin {
-        string firstName;
-        string surname;
+        string name;
         bool isAuthorised;
         // Allow the mapping _institutionAdmins to be easily queried for admins that exist.
         bool isInitialised;
@@ -70,18 +69,17 @@ contract Institution is ApprovalQueue {
 
     /**
      * @param institutionName the name of the new Institution
-     * @param adminFirstName first name of the admin who submitted the new institution request
-     * @param adminSurname surname of the admin who submitted the new institution request
+     * @param adminName full name of the admin who submitted the new institution request
      * @param adminAddress addres of  the admin who submitted the new institution request
      */
-    constructor (string memory institutionName, string memory adminFirstName, string memory adminSurname, address adminAddress, VotingToken deployedVotingToken)
+    constructor (string memory institutionName, string memory adminName, address adminAddress, VotingToken deployedVotingToken)
     public {
         // Set the institution name.
         _institutionName = institutionName;
 
         // Store details of the first admin to be approved
         require(!isAdminStored(adminAddress),"This admin address has already been added");
-        _institutionAdmins[adminAddress] = InstitutionAdmin(adminFirstName, adminSurname, true, true);
+        _institutionAdmins[adminAddress] = InstitutionAdmin(adminName, true, true);
          // Add address of newly created Institutions to dynamically sized array for quick access.
         _adminAddresses.push(adminAddress);
         // Give Institution access to the deployed voting token
@@ -102,12 +100,10 @@ contract Institution is ApprovalQueue {
         super.approveRequest(submittingAddress);
 
         bytes32[] memory data = getRequestData(submittingAddress);
-        string memory adminFirstName;
-        string memory adminSurname;
-        adminFirstName = super.bytes32ToString(data[0]);
-        adminSurname = super.bytes32ToString(data[1]);
+        string memory adminName;
+        adminName = super.bytes32ToString(data[0]);
         // Store the new admin info in mapping and array.
-        addNewAdmin(adminFirstName, adminSurname, submittingAddress);
+        addNewAdmin(adminName, submittingAddress);
 
         // New Institution created sucessfully so set the request to not pending.
         _approvalRequestQueue[submittingAddress].isPending = false;
@@ -122,11 +118,11 @@ contract Institution is ApprovalQueue {
     }
     
 
-    function addNewAdmin(string memory adminFirstName, string memory adminSurname, address adminAddress)
+    function addNewAdmin(string memory adminName, address adminAddress)
     public isAdmin(msg.sender) isAuthorisedAdmin(msg.sender) {
         // Check for duplicate admin address
         require(!isAdminStored(adminAddress),"This admin address has already been added");
-        _institutionAdmins[adminAddress] = InstitutionAdmin(adminFirstName, adminSurname, true, true);
+        _institutionAdmins[adminAddress] = InstitutionAdmin(adminName, true, true);
          // Add address of newly created Institutions to dynamically sized array for quick access.
         _adminAddresses.push(adminAddress);
     }
@@ -147,12 +143,11 @@ contract Institution is ApprovalQueue {
         _;
     }
 
-    function getAdmin(address storedAdmin) public view returns(string memory, string memory, bool) {
+    function getAdmin(address storedAdmin) public view returns(string memory, bool) {
         // require(isAdminStored(storedAdmin), "Admin address not found"); // TODO shouldn't need this, as we'll be using the array as the index.
         if (isAdminStored(storedAdmin)) { // TODO this might not be reachable as the return is in the if if it's anything like Java and
         //the comment above should apply about using the array as the inex
-            return (_institutionAdmins[storedAdmin].firstName, _institutionAdmins[storedAdmin].surname,
-            _institutionAdmins[storedAdmin].isAuthorised);
+            return (_institutionAdmins[storedAdmin].name, _institutionAdmins[storedAdmin].isAuthorised);
         }
 
     }

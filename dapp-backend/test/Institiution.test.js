@@ -46,18 +46,15 @@ contract("Institution", accounts => {
 
   // Admin data
   const institutionName = "Ulster University";
-  const adminFirstName = "John";
-  const adminSurname = "Francis";
+  const adminName = "John Francis";
 
   const newInstitutionRequestData = [
     institutionName,
-    adminFirstName,
-    adminSurname
+    adminName
   ];
 
   const newAdminRequestData = [
-    adminFirstName,
-    adminSurname
+    adminName
   ];
 
   (newRequestDataAsBytes32 = newInstitutionRequestData.map(
@@ -135,18 +132,15 @@ contract("Institution", accounts => {
         const admin = await newInstitutionContractAddress.getAdmin(
           prospectiveAdmin2
         );
-        admin[0].should.equal("John");
-        admin[1].should.equal("Francis");
-        admin[2].should.equal(true);
+        admin[0].should.equal("John Francis");
+        admin[1].should.equal(true);
       });
       it("reverts when a currently unauthorised admin tries to add another admin", async function() {
-        const newAdminFirstName = "Jim";
-        const newAdminSurname = "Holden";
+        const newAdminName = "JimHolden ";
         await newInstitutionContractAddress.unauthoriseAdmin(prospectiveAdmin2);
         await expectRevert(
           newInstitutionContractAddress.addNewAdmin(
-            newAdminFirstName,
-            newAdminSurname,
+            newAdminName,
             prospectiveAdmin3,
             { from: prospectiveAdmin2 }
           ),

@@ -54,13 +54,11 @@ contract UniversityVoting is Ownable, ApprovalQueue {
 
         bytes32[] memory data = getRequestData(submittingAddress);
         string memory institutionName;
-        string memory adminFirstName;
-        string memory adminSurname;
+        string memory adminName;
         institutionName = super.bytes32ToString(data[0]);
-        adminFirstName = super.bytes32ToString(data[1]);
-        adminSurname = super.bytes32ToString(data[2]);
+        adminName = super.bytes32ToString(data[1]);
 
-        Institution institution = new Institution(institutionName, adminFirstName, adminSurname, submittingAddress, deployedVotingToken);
+        Institution institution = new Institution(institutionName, adminName, submittingAddress, deployedVotingToken);
         // Get the address of the newly created contract.
         address contractAddress = (address(institution));
         // Give the new required role to mint VotingTokens
@@ -79,7 +77,6 @@ contract UniversityVoting is Ownable, ApprovalQueue {
      * to the approval queue.
      */
     function submitInstitutionApprovalRequest(bytes32[] memory requestData) public {
-       // institutionName adminFirstName adminSurname adminAddress
         super.submitApprovalRequest(approvalRequestType, requestData);
     }
 
