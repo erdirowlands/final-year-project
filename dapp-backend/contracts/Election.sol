@@ -45,7 +45,6 @@ contract Election {
     mapping(address => Candidate) public _candidateMapping;
     // Store candidate addresses in array for quick acceess and to reveal more information
     // about contract state, such as bow many candidate there are.
-    address[] public _candidateAddressArray;
 
     mapping(address => Voter) public _voterMapping;
 
@@ -71,11 +70,9 @@ contract Election {
 
     ///////////VOTING///////////
 
-    function vote(address candidate, uint weight) public {
-        _votingToken.transfer(candidate, weight);
+    function vote(address candidate,  uint weight) public ableToVote(msg.sender) {
+        _votingToken.vote(msg.sender, candidate, weight);
     }
-
-
 
     ///////////CANDIDATE DATA OPERATIONS///////////
 
@@ -86,8 +83,6 @@ contract Election {
         require(!isCandidateAddressStored(candidateAddress),"This candidateAddress address has already been added");
         // Add candidate to mapping for non-iterable access.
         _candidateMapping[candidateAddress] = Candidate(candidateName, 0, false,  true, true);
-         // Add address of newly created candidate to dynamically sized array for quick access.
-        _candidateAddressArray.push(candidateAddress);
     }
 
     function isCandidateAVictor(address candidate) public view returns(bool) {
@@ -106,10 +101,6 @@ contract Election {
         return _candidateMapping[candidate].totalVotes;
     }
 
-    function getTotalCandidates() public view returns(uint) {
-        return _candidateAddressArray.length;
-    }
-
     ///////////VOTER DATA OPERATIONS///////////
 
     function addNewVoter(address voter, address admin, uint tokenAmount)
@@ -124,24 +115,18 @@ contract Election {
 
     modifier ableToVote(address voter) {
         require(isVoterAddressStored(voter), "Voter address isn't stored");
-        require(isVoterATokenHolder(voter), "Voter doesn't have any Voting Tokens!");
+        require(getTokenBalance() != 0, "Voter doesn't have any Voting Tokens!");
         _;
-    }
-
-    function isVoterATokenHolder(address voter) public view returns(bool) {
-        if ( _voterMapping[voter].votingTokenBalance == 0) {
-            return false;
-        }
-        else return true;
     }
 
     function isVoterAddressStored(address voter) public view returns(bool) {
         return _voterMapping[voter].isInitialised;
     }
 
-    function getVoterTokenbalance(address voter) public view returns(uint) {
-        return _voterMapping[voter].votingTokenBalance;
-    }
+    function getTokenBalance() public view returns(uint) {
+   //     return _voterMapping[voter].votingTokenBalance;
+        return _votingToken.balanceOf(msg.sender);
+    } 
 
     function getTotalVoters() public view returns(uint total) {
         return _voterAddressArray.length;
