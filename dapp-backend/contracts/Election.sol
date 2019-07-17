@@ -19,6 +19,7 @@ contract Election {
     VotingToken _votingToken;
     VotingTokenAuthorisation _votingTokenAuthorisation; // The address of the VotingTokenSale contract for this election
     Institution _institution;
+    string description;
 
     struct Candidate {
         string firstName;
