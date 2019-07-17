@@ -20,11 +20,11 @@ contract VotingTokenAuthorisation is MintedCrowdsale, TimedCrowdsale, Ownable {
     Institution _institution;
     VotingToken theToken;
 
-    constructor (address institution, address admin, uint256 openingTime, uint256 closingTime, VotingToken votingToken)
+    constructor (Institution institution, address admin, uint256 openingTime, uint256 closingTime, VotingToken votingToken)
     Crowdsale(1,  address(uint160(admin)), votingToken)
     TimedCrowdsale(openingTime, closingTime)
     public { //isAdmin(admin) {
-        _institution = Institution(institution);
+        _institution = institution;
     }
 
     modifier isAdmin(address admin)  {
