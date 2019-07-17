@@ -46,6 +46,9 @@ contract Election {
     // Store candidate addresses in array for quick acceess and to reveal more information
     // about contract state, such as bow many candidate there are.
 
+    // Saving gas cost and using a simple counter as opposed to an array which isn't required for small amount of candidates
+    uint _candidateCounter;
+
     mapping(address => Voter) public _voterMapping;
 
     address[] public _voterAddressArray;
@@ -59,6 +62,20 @@ contract Election {
         _description = description;
     }
 
+    // TODO add isAdmin modifier for code document
+    function beginElection() public {
+        _electionStatus = ElectionStatus.CONCLUDED;
+    }
+
+    // TODO add isAdmin modifier for code document
+    function concludeElection() public {
+        _electionStatus = ElectionStatus.IN_PROGRESS;
+    }
+
+    // TODO add isAdmin modifier for code document
+    function determineVictor() public {
+        
+    }
     
     modifier isAdmin(address admin) {
         // Make sure caller is an Institution admin
@@ -83,6 +100,8 @@ contract Election {
         require(!isCandidateAddressStored(candidateAddress),"This candidateAddress address has already been added");
         // Add candidate to mapping for non-iterable access.
         _candidateMapping[candidateAddress] = Candidate(candidateName, 0, false,  true, true);
+        // Keep track of total candidates for later usage, especially when tallying votes.
+        _candidateCounter++;
     }
 
     function isCandidateAVictor(address candidate) public view returns(bool) {
