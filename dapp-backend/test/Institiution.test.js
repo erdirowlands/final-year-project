@@ -155,6 +155,7 @@ contract("Institution", accounts => {
       }); 
       it("creates a new election.", async function() {
     //    let date = (new Date()).getTime();
+          const description = "Start of term election"
           await time.advanceBlock();
           const electionStartTime = await time.latest();
           const electionEndTime =  await electionStartTime + time.duration.weeks(1);
@@ -162,6 +163,7 @@ contract("Institution", accounts => {
           const transactionReceipt = await newInstitutionContractAddress.createElection(
           electionStartTime, 
           electionEndTime, 
+          description,
           { from: prospectiveAdmin1 }
         );
         const log = await transactionReceipt.logs[0].args;
