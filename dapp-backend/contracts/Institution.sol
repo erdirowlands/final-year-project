@@ -20,7 +20,6 @@ contract Institution is ApprovalQueue {
     struct InstitutionAdmin {
         string firstName;
         string surname;
-        address adminAddress;
         bool isAuthorised;
         // Allow the mapping _institutionAdmins to be easily queried for admins that exist.
         bool isInitialised;
@@ -82,7 +81,7 @@ contract Institution is ApprovalQueue {
 
         // Store details of the first admin to be approved
         require(!isAdminStored(adminAddress),"This admin address has already been added");
-        _institutionAdmins[adminAddress] = InstitutionAdmin(adminFirstName, adminSurname, adminAddress, true, true);
+        _institutionAdmins[adminAddress] = InstitutionAdmin(adminFirstName, adminSurname, true, true);
          // Add address of newly created Institutions to dynamically sized array for quick access.
         _adminAddresses.push(adminAddress);
         // Give Institution access to the deployed voting token
@@ -127,7 +126,7 @@ contract Institution is ApprovalQueue {
     public isAdmin(msg.sender) isAuthorisedAdmin(msg.sender) {
         // Check for duplicate admin address
         require(!isAdminStored(adminAddress),"This admin address has already been added");
-        _institutionAdmins[adminAddress] = InstitutionAdmin(adminFirstName, adminSurname, adminAddress, true, true);
+        _institutionAdmins[adminAddress] = InstitutionAdmin(adminFirstName, adminSurname, true, true);
          // Add address of newly created Institutions to dynamically sized array for quick access.
         _adminAddresses.push(adminAddress);
     }
@@ -148,11 +147,11 @@ contract Institution is ApprovalQueue {
         _;
     }
 
-    function getAdmin(address storedAdmin) public view returns(string memory, string memory, address, bool) {
+    function getAdmin(address storedAdmin) public view returns(string memory, string memory, bool) {
         // require(isAdminStored(storedAdmin), "Admin address not found"); // TODO shouldn't need this, as we'll be using the array as the index.
         if (isAdminStored(storedAdmin)) { // TODO this might not be reachable as the return is in the if if it's anything like Java and
         //the comment above should apply about using the array as the inex
-            return (_institutionAdmins[storedAdmin].firstName, _institutionAdmins[storedAdmin].surname, _institutionAdmins[storedAdmin].adminAddress,
+            return (_institutionAdmins[storedAdmin].firstName, _institutionAdmins[storedAdmin].surname,
             _institutionAdmins[storedAdmin].isAuthorised);
         }
 
@@ -174,7 +173,7 @@ contract Institution is ApprovalQueue {
     event NewElectionCreated(address election);
     /**
     Create a new Election contract which can then be configured by a customer per their requirements. */
-    function createElection(uint256 openingTime, uint256  closingTime) isAdmin(msg.sender) isAuthorisedAdmin(msg.sender)  public {
+    function createElection(uint256 openingTime, uint256  closingTime) public isAdmin(msg.sender) isAuthorisedAdmin(msg.sender) {
         _tokenAuthorisation = new VotingTokenAuthorisation(Institution(this), msg.sender, openingTime, closingTime, _deployedVotingToken);
         // Let VotingTokenAuthorisation have the role as minter so it can mint tokens for voters upon request.
         _deployedVotingToken.addMinter(address(_tokenAuthorisation));
