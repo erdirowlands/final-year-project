@@ -213,7 +213,7 @@ contract Institution is ApprovalQueue {
         _approvalRequestQueue[submittingAddress].isPending = false;
         // Emit the succesfull approval of the new admin.
 
-        emit LogNewAdmin(submittingAddress);
+        emit NewCandidateApproved(submittingAddress);
     }
 
     function submitCandidateApprovalRequest(bytes32[] memory requestData, address electionAddress) public {
