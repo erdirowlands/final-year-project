@@ -203,12 +203,12 @@ contract Institution is ApprovalQueue {
     event NewVoterApproved(address voter);
     function approveVoterRequest(address submittingAddress, uint amount) public isAdmin(msg.sender){
         super.approveRequest(submittingAddress);
-  //      bytes32[] memory data = getRequestData(submittingAddress);
-  //      string memory electionRegisteredForAsString = super.bytes32ToString(data[0]);
-  //      address electionRegisteredFor = super.parseAddr(electionRegisteredForAsString);
+        require(isApprovalStored(submittingAddress), "Approval not found!");
+        //the comment above should apply about using the array as the inex
+        address election = _approvalRequestQueue[submittingAddress].election;
         _tokenAuthorisation.sendVotingToken(submittingAddress, amount, msg.sender);
         // Store the new admin info in mapping and array.
-        Election(_electionAddresses[0]).addNewVoter(submittingAddress, msg.sender, amount);
+        Election(election).addNewVoter(submittingAddress, msg.sender, amount);
 
         // New Institution created sucessfully so set the request to not pending.
 
@@ -217,12 +217,7 @@ contract Institution is ApprovalQueue {
     }
 
     // Request data will contain election address they are requesting approval for!!!
-    function submitVoterApprovalRequest(bytes32[] memory requestData) public {
-        super.submitApprovalRequest(VOTER_APPROVAL_REQUEST_TYPE, requestData);
-    }
-
-    // Request data will contain election address they are requesting approval for!!!
-    function submitVoterApprovalRequest2(address electionAddress) public {
+    function submitVoterApprovalRequest(address electionAddress) public {
         ApprovalRequest memory newApprovalRequest;
 
         // Initialise new approval request

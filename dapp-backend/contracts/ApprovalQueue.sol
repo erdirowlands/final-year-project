@@ -90,14 +90,6 @@ contract ApprovalQueue {
         }
     }
 
-    function getRequestAddress(address submittingAddress) public view returns(address) {
-        // require(isAdminStored(storedAdmin), "Admin address not found"); // TODO shouldn't need this, as we'll be using the array as the index.
-        if (isApprovalStored(submittingAddress)) { // TODO this might not be reachable as the return is in the if if it's anything like Java and
-        //the comment above should apply about using the array as the inex
-            return  _approvalRequestQueue[submittingAddress].election;
-        }
-    }
-
     /**
      * Helper method to get data from a request
      * Taken from https://ethereum.stackexchange.com/questions/29295/how-to-convert-a-bytes-to-string-in-solidity
