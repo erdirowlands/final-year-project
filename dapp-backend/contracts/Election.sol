@@ -13,8 +13,8 @@ contract Election {
     // of admin interaction, but to start at a pre-defined time.
     enum ElectionStatus { CANDIDATES_APPROVAL, IN_PROGRESS, CONCLUDED }
 
-    //uint startTime;
-   // uint runningTime;
+    uint _openingTime;
+    uint _closingTime;
     ElectionStatus public _electionStatus;
     VotingToken public _votingToken;
     VotingTokenAuthorisation public _votingTokenAuthorisation; // The address of the VotingTokenSale contract for this election
@@ -49,12 +49,16 @@ contract Election {
     address[] public _voterAddressArray;
 
 
-    constructor (address institution, VotingTokenAuthorisation votingTokenAuthorisation, VotingToken votingToken, string memory description) public {
+    constructor (address institution, VotingTokenAuthorisation votingTokenAuthorisation,
+    VotingToken votingToken, string memory description, uint openingTime, uint closingTime)
+    public {
         _votingTokenAuthorisation = votingTokenAuthorisation;
         _institution = Institution(institution);
         _votingToken = votingToken;
         _electionStatus = ElectionStatus.CANDIDATES_APPROVAL;
         _description = description;
+        _openingTime = openingTime;
+        _closingTime = closingTime;
     }
 
     // TODO add isAdmin modifier for code document
