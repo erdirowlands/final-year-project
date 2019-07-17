@@ -1,7 +1,6 @@
 const BigNumber = web3.BigNumber;
-
 const truffleAssert = require("truffle-assertions");
-const { expectRevert, time } = require("openzeppelin-test-helpers");
+const { expectRevert, time, BN } = require("openzeppelin-test-helpers");
 const { asciiToHex } = require("web3-utils");
 
 
@@ -190,7 +189,6 @@ contract("Institution", accounts => {
           voterRequestData,
           { from: prospectiveVoter1 }
         );
-          voterRequestData.should.equal("asd");
       }); 
       it("let admin approve the new voter request and issue 1 VotingToken.", async function() {
         const electionInstance = await Election.at(newElectionContractAddress);
@@ -204,8 +202,8 @@ contract("Institution", accounts => {
           return prospectiveVoter1.should.equal(event.voter);
         });
        
-        const voterTokenBalance = await electionInstance.getVoterTokenbalance(prospectiveVoter1);
-        tokenAmount.should.equal(voterTokenBalance);
+        const voterTokenBalance = (await electionInstance.getVoterTokenbalance(prospectiveVoter1)).toNumber();
+        tokenAmount.should.be.bignumber.equal(voterTokenBalance);
       });
     });
 });
