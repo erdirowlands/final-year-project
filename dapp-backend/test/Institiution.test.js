@@ -195,6 +195,16 @@ contract("Institution", accounts => {
           { from: prospectiveCandidate1 }
         );
       }); 
+      it("reverts on second candidate approval request while original pending", async function() {
+        await expectRevert(
+          newInstitutionContractAddress.submitCandidateApprovalRequest(
+            newCandidateRequestDataAsBytes32,
+            newElectionContractAddress,
+            { from: prospectiveCandidate1 }
+          ),
+          "You have an outstanding request, please wait for that to be processed"
+        );
+      });
       it("lets admin approve the new candidate request", async function() {
         const transactionReceipt = await newInstitutionContractAddress.approveCandidateRequest(
           prospectiveCandidate1,
