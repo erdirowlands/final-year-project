@@ -12,12 +12,9 @@ An Institution can create Election Smart Contracts exclusivley for themselves. *
 contract Institution is ApprovalQueue {
 
     string public _institutionName;
-    string constant public ADMIN_APPROVAL_REQUEST_TYPE = "adminApprovalRequest";
-    string constant public VOTER_APPROVAL_REQUEST_TYPE = "voterApprovalRequest";
-    string constant public CANDIDATE_APPROVAL_REQUEST_TYPE = "candidateApprovalRequest";
 
-    VotingTokenAuthorisation _tokenAuthorisation;
-    VotingToken _deployedVotingToken;
+    VotingTokenAuthorisation public _tokenAuthorisation;
+    VotingToken public _deployedVotingToken;
 
     struct InstitutionAdmin {
         string name;
@@ -116,7 +113,7 @@ contract Institution is ApprovalQueue {
 
     function submitAdminApprovalRequest(bytes32[] memory requestData) public {
        // institutionName adminFirstName adminSurname adminAddress
-        super.submitApprovalRequest(ADMIN_APPROVAL_REQUEST_TYPE, requestData);
+        super.submitApprovalRequest("adminApprovalRequest", requestData);
     }
     
 
@@ -175,7 +172,7 @@ contract Institution is ApprovalQueue {
         // Let VotingTokenAuthorisation have the role as minter so it can mint tokens for voters upon request.
         _deployedVotingToken.addMinter(address(_tokenAuthorisation));
         // Create new Election contract.
-        Election election = new Election(address(this), _tokenAuthorisation, _deployedVotingToken, description);
+        Election election = new Election(address(this), _tokenAuthorisation, _deployedVotingToken, description, openingTime, closingTime);
         // Get the address of the newly created Election contract.
         address electionContractAddress = (address(election));
         // Add information about the newly created contract so it can be accessed later.
@@ -223,7 +220,7 @@ contract Institution is ApprovalQueue {
         // Initialise new approval request
         newApprovalRequest.submitter = msg.sender;
         newApprovalRequest.isPending = true;
-        newApprovalRequest.approvalType = CANDIDATE_APPROVAL_REQUEST_TYPE;
+        newApprovalRequest.approvalType = "candidateApprovalRequest";
         newApprovalRequest.data = requestData;
         newApprovalRequest.election = electionAddress;
         newApprovalRequest.isInitialised = true;
@@ -258,7 +255,7 @@ contract Institution is ApprovalQueue {
         // Initialise new approval request
         newApprovalRequest.submitter = msg.sender;
         newApprovalRequest.isPending = true;
-        newApprovalRequest.approvalType = VOTER_APPROVAL_REQUEST_TYPE;
+        newApprovalRequest.approvalType = "voterApprovalRequest";
         newApprovalRequest.election = electionAddress;
         newApprovalRequest.isInitialised = true;
 

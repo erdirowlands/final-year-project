@@ -13,22 +13,17 @@ contract Election {
     // of admin interaction, but to start at a pre-defined time.
     enum ElectionStatus { CANDIDATES_APPROVAL, IN_PROGRESS, CONCLUDED }
 
-    //uint startTime;
-   // uint runningTime;
-    ElectionStatus _electionStatus;
-    VotingToken _votingToken;
-    VotingTokenAuthorisation _votingTokenAuthorisation; // The address of the VotingTokenSale contract for this election
-    Institution _institution;
-    string _description;
+    uint _openingTime;
+    uint _closingTime;
+    ElectionStatus public _electionStatus;
+    VotingToken public _votingToken;
+    VotingTokenAuthorisation public _votingTokenAuthorisation; // The address of the VotingTokenSale contract for this election
+    Institution public _institution;
+    string public _description;
+    address public _victor;
 
     struct Candidate {
         string name;
-     //   string surname;
-        // TODO change name to reflect this could be fractional voting
-        uint totalVotes;
-        bool isVictor;
-        // Allows a candidate to step down.
-        bool isActive;
         // Allow the candidates mapping to be easily queried for admins that exist.
         bool isInitialised;
     }
@@ -46,25 +41,57 @@ contract Election {
     // Store candidate addresses in array for quick acceess and to reveal more information
     // about contract state, such as bow many candidate there are.
 
+    address[] public _candidateArray;
+
+    // Saving gas cost and using a simple counter as opposed to an array which isn't required for small amount of candidates
+   // uint _candidateCounter;
+
     mapping(address => Voter) public _voterMapping;
 
     address[] public _voterAddressArray;
 
 
-    constructor (address institution, VotingTokenAuthorisation votingTokenAuthorisation, VotingToken votingToken, string memory description) public {
+    constructor (address institution, VotingTokenAuthorisation votingTokenAuthorisation,
+    VotingToken votingToken, string memory description, uint openingTime, uint closingTime)
+    public {
         _votingTokenAuthorisation = votingTokenAuthorisation;
         _institution = Institution(institution);
         _votingToken = votingToken;
         _electionStatus = ElectionStatus.CANDIDATES_APPROVAL;
         _description = description;
+        _openingTime = openingTime;
+        _closingTime = closingTime;
     }
 
-    
+    // TODO add isAdmin modifier for code document
+    function beginElection() public {
+        _electionStatus = ElectionStatus.IN_PROGRESS;
+    }
+
+    // TODO add isAdmin modifier for code document
+    function concludeElection() public  {
+   //     require(now > _closingTime, "The election is still within the set time");
+   //     require(_institution.isAdminStored(msg.sender), "Caller is not an admin!");
+        determineVictor();
+        _electionStatus = ElectionStatus.CONCLUDED;
+
+    }
+
+    function determineVictor() internal {
+        uint256 tokenCounter = 0;
+        address candAddress;
+        for (uint i = 0; i < _candidateArray.length; i++ ) {
+            candAddress = _candidateArray[i];
+            if (tokenCounter < _votingToken.balanceOf(candAddress)) {
+                tokenCounter = _votingToken.balanceOf(candAddress);
+                _victor = candAddress;
+            }
+        }
+    }
+ 
     modifier isAdmin(address admin) {
         // Make sure caller is an Institution admin
         require(_institution.isAdminStored(admin), "Caller is not an admin!");
-        // If an admin, make sure they are authorised
-        require(_institution.isAdminAuthorised(admin), "Caller is an admin, but not currently authorised!");
         _;
     }
 
@@ -77,28 +104,18 @@ contract Election {
     ///////////CANDIDATE DATA OPERATIONS///////////
 
     function addNewCandidate(address admin, string memory candidateName, address candidateAddress)
-    public isAdmin(admin) {
+    public  { // TODO ADD THIS BACK FOR CODE SUB isAdmin(admin)
 
         // Check for duplicate candidate address
         require(!isCandidateAddressStored(candidateAddress),"This candidateAddress address has already been added");
         // Add candidate to mapping for non-iterable access.
-        _candidateMapping[candidateAddress] = Candidate(candidateName, 0, false,  true, true);
-    }
-
-    function isCandidateAVictor(address candidate) public view returns(bool) {
-        return _candidateMapping[candidate].isVictor;
-    }
-
-    function isCandidateActive(address candidate) public view returns(bool) {
-        return _candidateMapping[candidate].isActive;
+        _candidateMapping[candidateAddress] = Candidate(candidateName, true);
+        // Keep track of total candidates for later usage, especially when tallying votes.
+        _candidateArray.push(candidateAddress);
     }
 
     function isCandidateAddressStored(address candidate) public view returns(bool) {
         return _candidateMapping[candidate].isInitialised;
-    }
-
-    function getTotalCandidateVotes(address candidate) public view returns(uint) {
-        return _candidateMapping[candidate].totalVotes;
     }
 
     ///////////VOTER DATA OPERATIONS///////////
@@ -130,6 +147,10 @@ contract Election {
 
     function getTotalVoters() public view returns(uint total) {
         return _voterAddressArray.length;
+    }
+
+    function getVictor() public view returns(address) {
+        return _victor;
     }
 
 }
