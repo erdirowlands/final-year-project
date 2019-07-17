@@ -311,14 +311,14 @@ contract("Institution", accounts => {
             return prospectiveVoter2.should.equal(event.voter);
           }
         );
-        // Check if the voter's token balance matches what was sent to them.
+        // Get the voter's approved token balance.
         const voterTokenBalance = await newElectionContractInstance.getTokenBalance(
           { from: prospectiveVoter2 }
         );
-        // const usefulBalance = Utils.toWei(voterTokenBalance, 'ether');
-        const actual = web3.utils.toBN(voterTokenBalance).toString();
-        const before = web3.utils.toBN(tokenAmount).toString();
-        actual.should.equal(before);
+        // Make sure the voter's new balance equals what was issued to them upon approval.
+        const voterTokenBalanceBigNumber = web3.utils.toBN(voterTokenBalance).toString();
+        const approvedTokenAmountBigNumber = web3.utils.toBN(tokenAmount).toString();
+        voterTokenBalanceBigNumber.should.equal(approvedTokenAmountBigNumber);
       });
     });
     describe("Election voting", function() {
@@ -335,7 +335,7 @@ contract("Institution", accounts => {
         //  const voterTokenBalance = await newElectionContractInstance.getVoterTokenbalance(prospectiveVoter1);
         //   const actual  = web3.utils.toBN(voterTokenBalance).toString();
         //   actual.should.equal('1000000000000000000');
-        let tokenAmount = Utils.toWei("1", "ether");
+        const tokenAmount = Utils.toWei("1", "ether");
         const transactionReceipt = await newElectionContractInstance.vote(
           prospectiveCandidate1,
           tokenAmount,
