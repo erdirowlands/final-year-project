@@ -71,11 +71,9 @@ contract Election {
 
     ///////////VOTING///////////
 
-    function vote(address candidate, uint weight) public {
-        _votingToken.transfer(candidate, weight);
+    function vote(address candidate,  uint weight) public {
+        _votingToken.vote(msg.sender, candidate, weight);
     }
-
-
 
     ///////////CANDIDATE DATA OPERATIONS///////////
 
@@ -139,8 +137,9 @@ contract Election {
         return _voterMapping[voter].isInitialised;
     }
 
-    function getVoterTokenbalance(address voter) public view returns(uint) {
-        return _voterMapping[voter].votingTokenBalance;
+    function getVoterTokenbalance() public view returns(uint) {
+   //     return _voterMapping[voter].votingTokenBalance;
+        return _votingToken.balanceOf(msg.sender);
     }
 
     function getTotalVoters() public view returns(uint total) {

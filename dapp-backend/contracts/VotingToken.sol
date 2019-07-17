@@ -22,8 +22,8 @@ contract VotingToken is ERC20Mintable, ERC20Detailed{
         _mint(address(universityVoting), 1000);
     }
 
-    function test(address _to, uint256 _value) public returns (bool) {
-        return super.transfer(_to, _value);
+    function vote(address sender, address recipient, uint256 value) public  {
+        return super._transfer(sender, recipient, value);
     }
 
 }
