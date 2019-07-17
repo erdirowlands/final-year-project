@@ -5,6 +5,8 @@ import "openzeppelin-solidity/contracts/crowdsale/emission/MintedCrowdsale.sol";
 import "openzeppelin-solidity/contracts/crowdsale/validation/TimedCrowdsale.sol";
 import "./VotingToken.sol";
 import "./Institution.sol";
+import "./ApprovalQueue.sol";
+
 
 // *****TODO Complete Ownable flow for this contract*****
 
@@ -15,16 +17,33 @@ import "./Institution.sol";
  * Open Zeppelin crowdsale contracts are being inherited to provide automatic protection against reentrancy attacks and to
  * provide common crowdsale functionality without having to reinvent the wheel.
  */
-contract VotingTokenAuthorisation is MintedCrowdsale, TimedCrowdsale, Ownable {
+contract VotingTokenAuthorisation is MintedCrowdsale, TimedCrowdsale, Ownable, ApprovalQueue {
+
+    string constant public voterApprovalRequestType = "voterApprovalRequest";
 
     Institution _institution;
     VotingToken theToken;
 
+    // Enable the prevention of duplicate addresses caused by
+    // unforseen, errant client requests.
+    struct VoterRequestStruct {
+        bool isPending;
+        bool isAuthorised;
+        bool isInitialised;
+    }
+
+    mapping(address => VoterRequestStruct) public _voterRequests;
+
     constructor (Institution institution, address admin, uint256 openingTime, uint256 closingTime, VotingToken votingToken)
     Crowdsale(1,  address(uint160(admin)), votingToken)
     TimedCrowdsale(openingTime, closingTime)
-    public { //isAdmin(admin) {
+    public { //isAdmin(admin) { // CAN'T DO THIS BECAUSE _INSTITUTION NOT INITIALISED YET
         _institution = institution;
+    }
+
+    function submitVoterApprovalRequest(bytes32[] memory requestData) public {
+       // institutionName adminFirstName adminSurname adminAddress
+        super.submitApprovalRequest(voterApprovalRequestType, requestData);
     }
 
     modifier isAdmin(address admin)  {
