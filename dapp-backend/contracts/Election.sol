@@ -126,6 +126,13 @@ contract Election {
         _;
     }
 
+    function isVoterATokenHolder(address voter) public view returns(bool) {
+        if ( _voterMapping[voter].votingTokenBalance == 0) {
+            return false;
+        }
+        else return true;
+    }
+
     function isVoterAddressStored(address voter) public view returns(bool) {
         return _voterMapping[voter].isInitialised;
     }
