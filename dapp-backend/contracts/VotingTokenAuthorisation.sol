@@ -18,7 +18,7 @@ import "./ApprovalQueue.sol";
  * provide common crowdsale functionality without having to reinvent the wheel.
  */
  // TODO check ownable is still relevant
-contract VotingTokenAuthorisation is MintedCrowdsale, TimedCrowdsale, Ownable, ApprovalQueue {
+contract VotingTokenAuthorisation is MintedCrowdsale, TimedCrowdsale, ApprovalQueue {
 
     string constant public voterApprovalRequestType = "voterApprovalRequest";
 
@@ -42,8 +42,12 @@ contract VotingTokenAuthorisation is MintedCrowdsale, TimedCrowdsale, Ownable, A
         _institution = institution;
     }
 
-    function approveVoterRequest(address submittingAddress) public {
+    function approveVoterRequest(address submittingAddress) public isAdmin(msg.sender){
         super.approveRequest(submittingAddress);
+
+        // New Institution created sucessfully so set the request to not pending.
+        _approvalRequestQueue[submittingAddress].isPending = false;
+        // Emit the succesfull approval of the new admin.
     }
 
     function submitVoterApprovalRequest(bytes32[] memory requestData) public {
