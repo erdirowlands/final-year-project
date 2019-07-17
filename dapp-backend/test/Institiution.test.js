@@ -137,8 +137,7 @@ contract("Institution", accounts => {
         );
         admin[0].should.equal("John");
         admin[1].should.equal("Francis");
-        admin[2].should.equal(prospectiveAdmin2);
-        admin[3].should.equal(true);
+        admin[2].should.equal(true);
       });
       it("reverts when a currently unauthorised admin tries to add another admin", async function() {
         const newAdminFirstName = "Jim";
