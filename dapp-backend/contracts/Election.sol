@@ -13,17 +13,17 @@ contract Election {
     // of admin interaction, but to start at a pre-defined time.
     enum ElectionStatus { IN_PROGRESS, TALLY, CONCLUDED }
 
-    uint startTime;
-    uint runningTime;
+    //uint startTime;
+   // uint runningTime;
     ElectionStatus _electionStatus;
     VotingToken _votingToken;
     VotingTokenAuthorisation _votingTokenAuthorisation; // The address of the VotingTokenSale contract for this election
     Institution _institution;
-    string description;
+    string _description;
 
     struct Candidate {
-        string firstName;
-        string surname;
+        string name;
+     //   string surname;
         // TODO change name to reflect this could be fractional voting
         uint totalVotes;
         bool isVictor;
@@ -52,15 +52,22 @@ contract Election {
     address[] public _voterAddressArray;
 
 
-    constructor (address institution, VotingTokenAuthorisation votingTokenAuthorisation, VotingToken votingToken) public {
+    constructor (address institution, VotingTokenAuthorisation votingTokenAuthorisation, VotingToken votingToken, string memory description) public {
         _votingTokenAuthorisation = votingTokenAuthorisation;
         _institution = Institution(institution);
         _votingToken = votingToken;
         _electionStatus = ElectionStatus.IN_PROGRESS;
+        _description = description;
     }
 
     
-
+    modifier isAdmin(address admin) {
+        // Make sure caller is an Institution admin
+        require(_institution.isAdminStored(admin), "Caller is not an admin!");
+        // If an admin, make sure they are authorised
+        require(_institution.isAdminAuthorised(admin), "Caller is an admin, but not currently authorised!");
+        _;
+    }
 
     ///////////VOTING///////////
 
@@ -72,16 +79,13 @@ contract Election {
 
     ///////////CANDIDATE DATA OPERATIONS///////////
 
-    function addNewCandidate(address admin, string memory candidateFirstName, string memory candidateSurname, address candidateAddress)
-    public {
-        // Make sure caller is an Institution admin
-        require(_institution.isAdminStored(admin), "Caller is not an admin!");
-        // If an admin, make sure they are authorised
-        require(_institution.isAdminAuthorised(admin), "Caller is an admin, but not currently authorised!");
+    function addNewCandidate(address admin, string memory candidateName, address candidateAddress)
+    public isAdmin(admin) {
+
         // Check for duplicate candidate address
         require(!isCandidateAddressStored(candidateAddress),"This candidateAddress address has already been added");
         // Add candidate to mapping for non-iterable access.
-        _candidateMapping[candidateAddress] = Candidate(candidateFirstName, candidateSurname, 0, false,  true, true);
+        _candidateMapping[candidateAddress] = Candidate(candidateName, 0, false,  true, true);
          // Add address of newly created candidate to dynamically sized array for quick access.
         _candidateAddressArray.push(candidateAddress);
     }
@@ -109,11 +113,7 @@ contract Election {
     ///////////VOTER DATA OPERATIONS///////////
 
     function addNewVoter(address voter, address admin, uint tokenAmount)
-    public  {
-        // Make sure caller is an Institution admin
-        require(_institution.isAdminStored(admin), "Caller is not an admin!");
-        // If an admin, make sure they are authorised
-        require(_institution.isAdminAuthorised(admin), "Caller is an admin, but not currently authorised!");
+    public isAdmin(admin) {
         // Check for duplicate voter address
         require(!isVoterAddressStored(voter),"This candidateAddress address has already been added");
         // Add voter to mapping for non-iterable access.
