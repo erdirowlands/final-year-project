@@ -35,12 +35,12 @@ contract("Institution", accounts => {
   // Voter accounts
   const prospectiveVoter1 = accounts[4];
   const prospectiveVoter2 = accounts[5];
-  const fakeVoter = accounts[6];
+  const prospectiveVoter3 = accounts[6];
+  const fakeVoter = accounts[7];
 
   // Candidate accounts
-  const prospectiveCandidate1 = accounts[7];
-  const prospectiveCandidate2 = accounts[8];
-  const prospectiveCandidate3 = accounts[9];
+  const prospectiveCandidate1 = accounts[8];
+  const prospectiveCandidate2 = accounts[9];
 
   // Institution data
   const institutionName = "Ulster University";
@@ -378,5 +378,34 @@ contract("Institution", accounts => {
         );
       });
     });
+    describe("Election Conclusion", function() {
+      it("gets the election results", async function() {
+        const transactionSubmissionReceipt = await newInstitutionContractAddress.submitVoterApprovalRequest(
+          newElectionContractAddress,
+          { from: prospectiveVoter3 }
+        );
+        //let decimals = Utils.toBN(18);
+        //let amount = Utils.toBN(10);
+        //let value = amount.mul(Utils.toBN(1).pow(decimals));
+        const transactionReceipt = await newInstitutionContractAddress.approveVoterRequest(
+          prospectiveVoter3,
+          tokenAmount,
+          { from: prospectiveAdmin1 }
+        );
+        const transactionVoteReceipt = await newElectionContractInstance.vote(
+          prospectiveCandidate2,
+          tokenAmount,
+          { from: prospectiveVoter2 }
+        );
+        const transactionVoteReceipt2 = await newElectionContractInstance.vote(
+          prospectiveCandidate1,
+          tokenAmount,
+          { from: prospectiveVoter3}
+        );
+      const concludeElection = await newElectionContractInstance.concludeElection();
+      const winner = newElectionContractInstance._victor;
+      winner.should.equal(prospectiveCandidate1);
+      });
+    }); 
   });
 });
