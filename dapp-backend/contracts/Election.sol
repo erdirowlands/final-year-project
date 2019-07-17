@@ -71,7 +71,9 @@ contract Election {
 
     ///////////VOTING///////////
 
-    function vote(address candidate,  uint weight) public {
+    function vote(address candidate,  uint weight) public  {
+        require(isVoterAddressStored(msg.sender), "Voter address isn't stored");
+        require(isVoterATokenHolder(msg.sender), "Voter doesn't have any Voting Tokens!");
         _votingToken.vote(msg.sender, candidate, weight);
     }
 
@@ -104,10 +106,6 @@ contract Election {
         return _candidateMapping[candidate].totalVotes;
     }
 
-    function getTotalCandidates() public view returns(uint) {
-        return _candidateAddressArray.length;
-    }
-
     ///////////VOTER DATA OPERATIONS///////////
 
     function addNewVoter(address voter, address admin, uint tokenAmount)
@@ -118,12 +116,6 @@ contract Election {
         _voterMapping[voter] = Voter(true, tokenAmount);
          // Add address of newly created voter to dynamically sized array for quick access.
         _voterAddressArray.push(voter);
-    }
-
-    modifier ableToVote(address voter) {
-        require(isVoterAddressStored(voter), "Voter address isn't stored");
-        require(isVoterATokenHolder(voter), "Voter doesn't have any Voting Tokens!");
-        _;
     }
 
     function isVoterATokenHolder(address voter) public view returns(bool) {
@@ -140,10 +132,7 @@ contract Election {
     function getTokenBalance() public view returns(uint) {
    //     return _voterMapping[voter].votingTokenBalance;
         return _votingToken.balanceOf(msg.sender);
-    } 
-
-    function getTotalVoters() public view returns(uint total) {
-        return _voterAddressArray.length;
     }
+
 
 }
