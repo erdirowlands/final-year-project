@@ -29,9 +29,20 @@ contract("Institution", accounts => {
 
   // Me, as the owner and deployer of the contract.
   const developerAccount = accounts[0];
-  // Account for admin who makes a request for a new Institution (will become approved in the before hook).
+  // Admin accounts
   const prospectiveAdmin1 = accounts[1];
   const prospectiveAdmin2 = accounts[2];
+  const prospectiveAdmin3 = accounts[3];
+
+  // Voter accounts
+  const prospectiveVoter1 = accounts[4];
+  const prospectiveVoter2 = accounts[5];
+  const prospectiveVoter3 = accounts[6];
+
+  // Candidate accounts
+  const prospectiveCandidate1 = accounts[7];
+  const prospectiveCandidate2 = accounts[8];
+  const prospectiveCandidate3 = accounts[9];
 
   // Admin data
   const institutionName = "Ulster University";
@@ -132,15 +143,13 @@ contract("Institution", accounts => {
       it("reverts when a currently unauthorised admin tries to add another admin", async function() {
         const newAdminFirstName = "Jim";
         const newAdminSurname = "Holden";
-        const newAdminAddress = accounts[4];
-        // Unauthorise Ben Sisko's account from the previous test to serve as the now unauthorised admin.
-        await newInstitutionContractAddress.unauthoriseAdmin(accounts[2]);
+        await newInstitutionContractAddress.unauthoriseAdmin(prospectiveAdmin2);
         await expectRevert(
           newInstitutionContractAddress.addNewAdmin(
             newAdminFirstName,
             newAdminSurname,
-            newAdminAddress,
-            { from: accounts[2] }
+            prospectiveAdmin3,
+            { from: prospectiveAdmin2 }
           ),
           "Caller is an admin, but not currently authorised!"
         );
@@ -166,6 +175,14 @@ contract("Institution", accounts => {
       it("stores the new election address in array", async function() {
         // Check if initialiseInstitutionWithAdmin() called from the beforeEach hook
         // stores the address in the array.
+        const electionAddressThatShouldBeStored = await newInstitutionContractAddress._electionAddresses(
+          0
+        );
+        electionAddressThatShouldBeStored.should.equal(newElectionContractAddress);
+      }); 
+      it("lets a voter submit a request", async function() {
+        let voterRequestData = []; 
+        voterRequestData = asciiToHex(voterRequestData);
         const electionAddressThatShouldBeStored = await newInstitutionContractAddress._electionAddresses(
           0
         );
