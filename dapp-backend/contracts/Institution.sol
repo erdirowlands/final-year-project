@@ -1,8 +1,10 @@
-pragma solidity ^0.5.2;
+pragma solidity ^0.5.3;
 
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 import "./Election.sol";
 import "./ApprovalQueue.sol";
+import "./VotingTokenAuthorisation.sol";
+import "./VotingToken.sol";
 
 
 /**
@@ -13,6 +15,7 @@ contract Institution is ApprovalQueue {
     string constant public adminApprovalRequestType = "adminApprovalRequest";
     string constant public voterApprovalRequestType = "voterApprovalRequest";
 
+    VotingToken _deployedVotingToken;
 
     struct InstitutionAdmin {
         string firstName;
@@ -22,6 +25,18 @@ contract Institution is ApprovalQueue {
         // Allow the mapping _institutionAdmins to be easily queried for admins that exist.
         bool isInitialised;
     }
+
+    // Enable the prevention of duplicate addresses caused by
+    // unforseen, errant client requests.
+    struct ElectionAddressStruct {
+        bool isAddress;
+    }
+
+    // Store Election addresses so they can be accessed without iteration. This
+    // limits gas costs. This also means that we can efficiently keep track of whether
+    // or not an address is stored, because the Struct that is mapped to the address contains
+    // the flag isAddress that can evaulated to see if an address exists.
+    mapping(address => ElectionAddressStruct) public _electionAddressMapping;
 
     // Store authorised institution admins.
     // At some point in the future, they may be come de-authorised, for example
@@ -35,7 +50,7 @@ contract Institution is ApprovalQueue {
     address[] public _adminAddresses;
 
     // Store the address of all prior-purchased elections.
-    address[] public elections;
+    address[] public _electionAddresses;
 
     // Emit an event when a new admin has been added.
     event LogNewAdmin(address newAdmin);
@@ -49,7 +64,7 @@ contract Institution is ApprovalQueue {
      * @param adminSurname surname of the admin who submitted the new institution request
      * @param adminAddress addres of  the admin who submitted the new institution request
      */
-    constructor (string memory institutionName, string memory adminFirstName, string memory adminSurname, address adminAddress)
+    constructor (string memory institutionName, string memory adminFirstName, string memory adminSurname, address adminAddress, VotingToken deployedVotingToken)
     public {
         // Set the institution name.
         _institutionName = institutionName;
@@ -59,6 +74,8 @@ contract Institution is ApprovalQueue {
         _institutionAdmins[adminAddress] = InstitutionAdmin(adminFirstName, adminSurname, adminAddress, true, true);
          // Add address of newly created Institutions to dynamically sized array for quick access.
         _adminAddresses.push(adminAddress);
+        // Give Institution access to the deployed voting token
+        _deployedVotingToken = deployedVotingToken;
     }
 
     // Emit an event on Institution contract creation.
@@ -92,22 +109,35 @@ contract Institution is ApprovalQueue {
         super.submitApprovalRequest(voterApprovalRequestType, requestData);
     }
 
+    // Emit an event on Institution contract creation.
+    event NewElectionCreated(address election);
     /**
     Create a new Election contract which can then be configured by a customer per their requirements. */
-    function createElection()
-    public
-    returns (address newInstitution) {
-        Election election = new Election();
-        address contractAddress = (address(election));
-        emit LogNewElection(contractAddress);
-        elections.push(contractAddress);
-        return contractAddress;
+    function createElection(uint256 openingTime, uint256  closingTime) isAdmin(msg.sender) isAuthorisedAdmin(msg.sender)  public {
+        VotingTokenAuthorisation tokenAuthorisation = new VotingTokenAuthorisation
+            (Institution(this), msg.sender, openingTime, closingTime, _deployedVotingToken);
+        // Let VotingTokenAuthorisation have the role as minter so it can mint tokens for voters upon request.
+        _deployedVotingToken.addMinter(address(tokenAuthorisation));
+        // Create new Election contract.
+        Election election = new Election(address(this), tokenAuthorisation, _deployedVotingToken);
+        // Get the address of the newly created Election contract.
+        address electionContractAddress = (address(election));
+        // Add information about the newly created contract so it can be accessed later.
+        storeNewElection(electionContractAddress, msg.sender);
+        // Emit the creation of the new Election as an event.
+        emit NewElectionCreated(electionContractAddress);
     }
 
-    function isElectionStored(address election)
-    public view
-    returns (bool isStored) {
+    function storeNewElection(address election, address admin) public isAdmin(admin) isAuthorisedAdmin(admin) {
+        // Check for duplicate election address
+        require(!isElectionAddressStored(election),"This election address has already been added");
+        _electionAddressMapping[election] = ElectionAddressStruct(true);
+         // Add address of newly created Institutions to dynamically sized array for quick access.
+        _electionAddresses.push(election);
+    }
 
+    function isElectionAddressStored(address election) public view returns (bool) {
+        return _electionAddressMapping[election].isAddress;
     }
 
     modifier isAdmin(address caller) {
@@ -127,7 +157,6 @@ contract Institution is ApprovalQueue {
         _institutionAdmins[adminAddress] = InstitutionAdmin(adminFirstName, adminSurname, adminAddress, true, true);
          // Add address of newly created Institutions to dynamically sized array for quick access.
         _adminAddresses.push(adminAddress);
-
     }
 
     function unauthoriseAdmin(address admin) public {
@@ -156,7 +185,6 @@ contract Institution is ApprovalQueue {
 
     }
 
-
     function isAdminStored(address admin) public view returns(bool isStored) {
         return _institutionAdmins[admin].isInitialised;
     }
@@ -164,6 +192,14 @@ contract Institution is ApprovalQueue {
 
     function isAdminAuthorised(address admin) public view returns(bool isStored) {
         return _institutionAdmins[admin].isAuthorised;
+    }
+
+    function setVotingTokenAddress(VotingToken votingToken) public {
+        _deployedVotingToken = votingToken;
+    }
+
+    function getVotingTokenAddress() public view returns (VotingToken) {
+        return _deployedVotingToken;
     }
 
 }

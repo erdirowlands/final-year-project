@@ -29,7 +29,7 @@ module.exports = {
 
     rinkeby: {
       provider: function() {
-        return new HDWalletProvider(process.env.DAPP_PRIVATE_KEY, "https://rinkeby.infura.io/v3/82bc3d3749d049248ee3333c6efabc25");
+        return new HDWalletProvider("5D0A44B2F735738D8D121CF8866D45A516582C5DCFACD05E79F431FD3BBE1B98", "https://rinkeby.infura.io/v3/f2c4ebd8ed604600a20a3236bffb51df");
       },
       network_id: '4',
     },
@@ -39,7 +39,7 @@ module.exports = {
 
   compilers: {
     solc: {
-      version: "0.5.2" // ex:  "0.4.20". (Default: Truffle's installed solc)
+      version: "0.5.3" // ex:  "0.4.20". (Default: Truffle's installed solc)
     }
   },
 

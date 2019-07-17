@@ -1,11 +1,14 @@
 const BigNumber = web3.BigNumber;
 
 const truffleAssert = require("truffle-assertions");
-const { expectRevert } = require("openzeppelin-test-helpers");
+const { expectRevert, time } = require("openzeppelin-test-helpers");
 const { asciiToHex } = require("web3-utils");
+
 
 const UniversityVoting = artifacts.require("UniversityVoting");
 const Institution = artifacts.require("Institution");
+const Election = artifacts.require("Election");
+const VotingToken= artifacts.require("VotingToken");
 
 require("chai")
   .use(require("chai-bignumber")(BigNumber))
@@ -14,14 +17,23 @@ require("chai")
 contract("Institution", accounts => {
   // UniversityVoting contract is responsible for deploying Institution, so mimick this flow in tests.
   let universityVoting;
-  // The deployed child institution contract address.
+
+  let votingToken;
+
+  // The deployed child Institution contract address of UnviversityVoting.
   let newInstitutionContractAddress;
+
+  // The deployed child Election contract address of Institution
+  let newElectionContractAddress;
+
+
   // Me, as the owner and deployer of the contract.
   const developerAccount = accounts[0];
   // Account for admin who makes a request for a new Institution (will become approved in the before hook).
   const prospectiveAdmin1 = accounts[1];
   const prospectiveAdmin2 = accounts[2];
 
+  // Admin data
   const institutionName = "Ulster University";
   const adminFirstName = "John";
   const adminSurname = "Francis";
@@ -44,11 +56,14 @@ contract("Institution", accounts => {
   (newAdminRequestDataAsBytes32 = newAdminRequestData.map(
     newAdminRequestData => asciiToHex(newAdminRequestData)
   ));
+
+  // Election Candidate data
+  const candidateFirstName = "Abraham";
+  const candidateSurname = "Lincoln";    
+
     describe("Deploy and use the child institution contract", function() {
       before(async function() {
-        universityVoting = await UniversityVoting.new({
-          from: developerAccount
-        });
+        universityVoting = await UniversityVoting.deployed();
         // Submit the approval from 'prospective admin' addresss
         await universityVoting.submitInstitutionApprovalRequest(
           newRequestDataAsBytes32,
@@ -65,8 +80,8 @@ contract("Institution", accounts => {
         newInstitutionContractAddress = await Institution.at(log.institution);
       });
       after(async function() {
-        await universityVoting.kill();
-        await newInstitutionContractAddress.kill();
+ //       await universityVoting.kill();
+ //       await newInstitutionContractAddress.kill();
       });
       it("submits a new admin aproval request", async function() {
         const transactionReceipt = await newInstitutionContractAddress.submitAdminApprovalRequest(
@@ -92,6 +107,7 @@ contract("Institution", accounts => {
           return prospectiveAdmin2.should.equal(event.newAdmin);
         });
       });
+
       it("stores the new admin address in array", async function() {
         // Check if initialiseInstitutionWithAdmin() called from the beforeEach hook
         // stores the address in the array.
@@ -128,19 +144,32 @@ contract("Institution", accounts => {
           ),
           "Caller is an admin, but not currently authorised!"
         );
-      });
-
-      /*
-    it('stores the election contract address', async function () {
-        const transactionReceipt = await this.institution.createElection()
-        // Get emitted event
+      }); 
+      it("creates a new election.", async function() {
+    //    let date = (new Date()).getTime();
+          await time.advanceBlock();
+          const electionStartTime = await time.latest();
+          const electionEndTime =  await electionStartTime + time.duration.weeks(1);
+    //    let dateInUnixTimestamp = date / 1000;
+          const transactionReceipt = await newInstitutionContractAddress.createElection(
+          electionStartTime, 
+          electionEndTime, 
+          { from: prospectiveAdmin1 }
+        );
         const log = await transactionReceipt.logs[0].args;
-        // Get newly created contract address from event
-        const newContractAddress = await log.election;
-        // Check if the address stored in the elections array matches the newly created 
-        // election.
-        const createdElection = await this.institution.elections(0);
-        createdElection.should.equal(newContractAddress);
-        }) */
+        // Get newly created contract address from event and use truffle-contract to get an instance.
+        newElectionContractAddress = await log.election;
+        truffleAssert.eventEmitted(transactionReceipt, "NewElectionCreated", event => {
+          return newElectionContractAddress.should.equal(event.election);
+        });
+      }); 
+      it("stores the new election address in array", async function() {
+        // Check if initialiseInstitutionWithAdmin() called from the beforeEach hook
+        // stores the address in the array.
+        const electionAddressThatShouldBeStored = await newInstitutionContractAddress._electionAddresses(
+          0
+        );
+        electionAddressThatShouldBeStored.should.equal(newElectionContractAddress);
+      }); 
     });
 });

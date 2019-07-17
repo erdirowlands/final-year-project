@@ -1,8 +1,10 @@
-pragma solidity ^0.5.2;
+pragma solidity ^0.5.3;
 
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 import "./Institution.sol";
 import "./ApprovalQueue.sol";
+import "./VotingToken.sol";
+
 
 // Name in progress - can possible be: ElectionFactory, though the current name indicates that this is the 'main entry point'.
 /** // TODO Change comments based on new functionality - keep notion of factory pattern. Also mention that mappings adhere to storage patters found at: https://ethereum.stackexchange.com/questions/13167/are-there-well-solved-and-simple-storage-patterns-for-solidity
@@ -18,14 +20,19 @@ contract UniversityVoting is Ownable, ApprovalQueue {
     // The payableOwner inherits from Open Zeppelin's Ownable contract
     // which is the deployer of the contract, i.e. the developer.
     // Should this contract need to be self-destructed, the developer will recieve all funds.
-    address payable public payableOwner = address(uint160(owner()));
+    address payable public payableOwner;
     string constant public approvalRequestType = "institutionApprovalRequest";
 
+    VotingToken deployedVotingToken;
 
     // Enable the prevention of duplicate addresses caused by
     // unforseen, errant client requests.
     struct InstitutionAddressStruct {
         bool isAddress;
+    }
+
+    constructor () public {
+        payableOwner = address(uint160(owner()));
     }
 
     // Store Institutions addresses so they can be accessed without iteration. This
@@ -42,7 +49,7 @@ contract UniversityVoting is Ownable, ApprovalQueue {
     // TODO this can be in the superclass I think?
     event NewInstitutionApproved(address institution);
 
-    function approveInstitutionRequest(address submittingAddress) public {
+    function approveInstitutionRequest(address submittingAddress) public onlyOwner {
         super.approveRequest(submittingAddress);
 
         bytes32[] memory data = getRequestData(submittingAddress);
@@ -53,9 +60,11 @@ contract UniversityVoting is Ownable, ApprovalQueue {
         adminFirstName = super.bytes32ToString(data[1]);
         adminSurname = super.bytes32ToString(data[2]);
 
-        Institution institution = new Institution(institutionName, adminFirstName, adminSurname, submittingAddress);
+        Institution institution = new Institution(institutionName, adminFirstName, adminSurname, submittingAddress, deployedVotingToken);
         // Get the address of the newly created contract.
         address contractAddress = (address(institution));
+        // Give the new required role to mint VotingTokens
+        VotingToken(deployedVotingToken).addMinter(contractAddress);
         // Add information about the newly created contract so it can be accessed later.
         storeInstitutionContractInfo(contractAddress);
         // Emit the creation of the new Institution as an event.
@@ -101,6 +110,14 @@ contract UniversityVoting is Ownable, ApprovalQueue {
 
     function isApprovalStored(address adminAddress) public view returns(bool isStored) {
         return _approvalRequestQueue[adminAddress].isInitialised;
+    }
+
+    function setVotingTokenAddress(VotingToken tokenAddress) public {
+        deployedVotingToken = tokenAddress;
+    }
+
+    function getVotingTokenAddress() public view returns (VotingToken) {
+        return deployedVotingToken;
     }
 
     /**
