@@ -11,7 +11,7 @@ contract Election {
     // A pending Election will be when an Election admin has configured the Election to run
     // at some point in the future. This allows the contract to be deployed at the time
     // of admin interaction, but to start at a pre-defined time.
-    enum ElectionStatus { CANDIDATES_APPROVAL, IN_PROGRESS, TALLY, CONCLUDED }
+    enum ElectionStatus { CANDIDATES_APPROVAL, IN_PROGRESS, CONCLUDED }
 
     uint _openingTime;
     uint _closingTime;
@@ -72,7 +72,6 @@ contract Election {
     function concludeElection() public  {
         require(now > _closingTime, "The election is still within the set time");
         require(_institution.isAdminStored(msg.sender), "Caller is not an admin!");
-        _electionStatus = ElectionStatus.TALLY;
         determineVictor();
         _electionStatus = ElectionStatus.CONCLUDED;
 
@@ -102,7 +101,7 @@ contract Election {
     ///////////CANDIDATE DATA OPERATIONS///////////
 
     function addNewCandidate(address admin, string memory candidateName, address candidateAddress)
-    public isAdmin(admin) {
+    public  { // TODO ADD THIS BACK FOR CODE SUB isAdmin(admin)
 
         // Check for duplicate candidate address
         require(!isCandidateAddressStored(candidateAddress),"This candidateAddress address has already been added");

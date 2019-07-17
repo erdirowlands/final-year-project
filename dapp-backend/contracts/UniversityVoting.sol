@@ -116,13 +116,14 @@ contract UniversityVoting is Ownable, ApprovalQueue {
         return deployedVotingToken;
     }
 
+
     /**
      * Self-destruct this contract // TODO expand explanation.
      * Kill() method taken and modified from: https://kalis.me/check-events-solidity-smart-contract-test-truffle/
-     */
+     */ 
     function kill() external onlyOwner {
         selfdestruct(payableOwner);
-    }
+    } 
 
 
 }
