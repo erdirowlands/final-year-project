@@ -12,8 +12,8 @@ An Institution can create Election Smart Contracts exclusivley for themselves. *
 contract Institution is ApprovalQueue {
 
     string public _institutionName;
-    string constant public adminApprovalRequestType = "adminApprovalRequest";
-    string constant public voterApprovalRequestType = "voterApprovalRequest";
+    string constant public ADMIN_APPROVAL_REQUEST_TYPE = "adminApprovalRequest";
+    string constant public VOTER_APPROVAL_REQUEST_TYPE = "voterApprovalRequest";
     VotingTokenAuthorisation tokenAuthorisation;
     VotingToken _deployedVotingToken;
 
@@ -119,7 +119,7 @@ contract Institution is ApprovalQueue {
 
     function submitAdminApprovalRequest(bytes32[] memory requestData) public {
        // institutionName adminFirstName adminSurname adminAddress
-        super.submitApprovalRequest(adminApprovalRequestType, requestData);
+        super.submitApprovalRequest(ADMIN_APPROVAL_REQUEST_TYPE, requestData);
     }
     
 
@@ -203,13 +203,15 @@ contract Institution is ApprovalQueue {
     function approveVoterRequest(address submittingAddress) public isAdmin(msg.sender){
         super.approveRequest(submittingAddress);
 
+        // TODO need to change from hardcoded amount of 1 to customisable
+        tokenAuthorisation.sendVotingToken(submittingAddress, 1);
         // New Institution created sucessfully so set the request to not pending.
         _approvalRequestQueue[submittingAddress].isPending = false;
 
     }
 
     function submitVoterApprovalRequest(bytes32[] memory requestData) public {
-        super.submitApprovalRequest(voterApprovalRequestType, requestData);
+        super.submitApprovalRequest(VOTER_APPROVAL_REQUEST_TYPE, requestData);
     }
 
 
