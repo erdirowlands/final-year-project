@@ -187,11 +187,13 @@ contract("Institution", accounts => {
           voterRequestData => asciiToHex(voterRequestData)
         ));
         const transactionReceipt = await newInstitutionContractAddress.submitVoterApprovalRequest(
-          newAdminRequestDataAsBytes32,
+          voterRequestData,
           { from: prospectiveVoter1 }
         );
+          voterRequestData.should.equal("asd");
       }); 
       it("let admin approve the new voter request and issue 1 VotingToken.", async function() {
+        const electionInstance = await Election.at(newElectionContractAddress);
         const tokenAmount = 1;
         const transactionReceipt = await newInstitutionContractAddress.approveVoterRequest(
           prospectiveVoter1,
@@ -201,6 +203,9 @@ contract("Institution", accounts => {
         truffleAssert.eventEmitted(transactionReceipt, "NewVoterApproved", event => {
           return prospectiveVoter1.should.equal(event.voter);
         });
+       
+        const voterTokenBalance = await electionInstance.getVoterTokenbalance(prospectiveVoter1);
+        tokenAmount.should.equal(voterTokenBalance);
       });
     });
 });

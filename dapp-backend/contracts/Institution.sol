@@ -204,9 +204,15 @@ contract Institution is ApprovalQueue {
     event NewVoterApproved(address voter);
     function approveVoterRequest(address submittingAddress, uint amount) public isAdmin(msg.sender){
         super.approveRequest(submittingAddress);
-
+        bytes32[] memory data = getRequestData(submittingAddress);
+        string memory electionRegisteredForAsString = super.bytes32ToString(data[0]);
+        address electionRegisteredFor = super.parseAddr(electionRegisteredForAsString);
         _tokenAuthorisation.sendVotingToken(submittingAddress, amount, msg.sender);
+        // Store the new admin info in mapping and array.
+        Election(electionRegisteredFor).addNewVoter(submittingAddress, msg.sender, amount);
+
         // New Institution created sucessfully so set the request to not pending.
+
         _approvalRequestQueue[submittingAddress].isPending = false;
         emit NewVoterApproved(submittingAddress);
     }

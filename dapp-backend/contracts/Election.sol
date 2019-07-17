@@ -138,6 +138,10 @@ contract Election {
         return _voterMapping[voter].isInitialised;
     }
 
+    function getVoterTokenbalance(address voter) public view returns(uint) {
+        return _voterMapping[voter].votingTokenBalance;
+    }
+
     function getTotalVoters() public view returns(uint total) {
         return _voterAddressArray.length;
     }
