@@ -41,7 +41,7 @@ contract Election {
     // Store candidate addresses in array for quick acceess and to reveal more information
     // about contract state, such as bow many candidate there are.
 
-    address[] _candidateArray;
+    address[] public _candidateArray;
 
     // Saving gas cost and using a simple counter as opposed to an array which isn't required for small amount of candidates
    // uint _candidateCounter;
@@ -70,21 +70,62 @@ contract Election {
 
     // TODO add isAdmin modifier for code document
     function concludeElection() public  {
-        require(now > _closingTime, "The election is still within the set time");
-        require(_institution.isAdminStored(msg.sender), "Caller is not an admin!");
+   //     require(now > _closingTime, "The election is still within the set time");
+   //     require(_institution.isAdminStored(msg.sender), "Caller is not an admin!");
         determineVictor();
         _electionStatus = ElectionStatus.CONCLUDED;
 
     }
 
+    function determineVictor() public   {
+        address candAddress;
+        uint256 winningVoteCount = 0;
+        for (uint8 i = 0; i < _candidateArray.length; i++)
+            candAddress = _candidateArray[i];
+            if (_votingToken.balanceOf(candAddress) > winningVoteCount) {
+                winningVoteCount = _votingToken.balanceOf(candAddress);
+                _victor = candAddress;
+            }
+    }
+/*
     function determineVictor() internal {
-        uint tokenCounter;
-        for (uint i = 0; i <= _candidateArray.length; i++ ) {
-            if (tokenCounter < _votingToken.balanceOf(_candidateArray[i]))
-            tokenCounter = _votingToken.balanceOf(_candidateArray[i]);
-            _victor = _candidateArray[i];
+        uint256 tokenCounter = 0;
+        address candAddress;
+        for (uint i = 0; i < _candidateArray.length; i++ ) {
+            candAddress = _candidateArray[i];
+            if (tokenCounter < _votingToken.balanceOf(candAddress)) {
+                tokenCounter = _votingToken.balanceOf(candAddress);
+                _victor = candAddress;
+            }
         }
     }
+ */
+/*
+    function determineVictor() internal {
+        address candAddress;
+        _victor = _candidateArray[0];
+        for (uint i = 0; i < _candidateArray.length; i++ ) {
+            candAddress = _candidateArray[i];
+            if (_votingToken.balanceOf(_victor) < _votingToken.balanceOf(candAddress)) {
+                _victor = candAddress;
+            }
+        }
+        
+    } 
+
+    
+
+/* 
+    function determineVictor() internal view {
+        address candAddress;
+        for (uint i = 0; i < _candidateArray.length; i++ ) {
+            candAddress = _candidateArray[i];
+            if (_votingToken.balanceOf(candAddress) < _votingToken.balanceOf(candAddress)) {
+                _votingToken.balanceOf(_victor);
+            }
+        //  _victor = _candidateArray[i];
+        } 
+    } */
     
     modifier isAdmin(address admin) {
         // Make sure caller is an Institution admin
@@ -144,6 +185,10 @@ contract Election {
 
     function getTotalVoters() public view returns(uint total) {
         return _voterAddressArray.length;
+    }
+
+    function getVictor() public view returns(address) {
+        return _victor;
     }
 
 }

@@ -225,6 +225,9 @@ contract("Institution", accounts => {
           prospectiveCandidate1
         );
         isCandidateStored.should.equal(true);
+     //   const candidateArray = newElectionContractInstance._candidateArray(0);
+      //  candidateArray.should.equal(prospectiveCandidate1);
+
       });
       it("lets a second candidate submit a request and get approved", async function() {
         const transactionSubmissionReceipt = await newInstitutionContractAddress.submitCandidateApprovalRequest(
@@ -402,9 +405,9 @@ contract("Institution", accounts => {
           tokenAmount,
           { from: prospectiveVoter3}
         );
-      const concludeElection = await newElectionContractInstance.concludeElection();
-      const winner = newElectionContractInstance._victor;
-      winner.should.equal(prospectiveCandidate1);
+      const concludeElection = await newElectionContractInstance.concludeElection({from: prospectiveAdmin1});
+      const winner = await  newElectionContractInstance.getVictor();
+      winner.should.equal(prospectiveCandidate2);
       });
     }); 
   });
