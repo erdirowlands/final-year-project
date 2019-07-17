@@ -21,7 +21,6 @@ contract UniversityVoting is Ownable, ApprovalQueue {
     // which is the deployer of the contract, i.e. the developer.
     // Should this contract need to be self-destructed, the developer will recieve all funds.
     address payable public payableOwner;
-    string constant public approvalRequestType = "institutionApprovalRequest";
 
     VotingToken deployedVotingToken;
 
@@ -77,7 +76,7 @@ contract UniversityVoting is Ownable, ApprovalQueue {
      * to the approval queue.
      */
     function submitInstitutionApprovalRequest(bytes32[] memory requestData) public {
-        super.submitApprovalRequest(approvalRequestType, requestData);
+        super.submitApprovalRequest("institutionApprovalRequest", requestData);
     }
 
     /**

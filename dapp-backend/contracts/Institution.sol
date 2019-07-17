@@ -12,12 +12,9 @@ An Institution can create Election Smart Contracts exclusivley for themselves. *
 contract Institution is ApprovalQueue {
 
     string public _institutionName;
-    string constant public ADMIN_APPROVAL_REQUEST_TYPE = "adminApprovalRequest";
-    string constant public VOTER_APPROVAL_REQUEST_TYPE = "voterApprovalRequest";
-    string constant public CANDIDATE_APPROVAL_REQUEST_TYPE = "candidateApprovalRequest";
 
-    VotingTokenAuthorisation _tokenAuthorisation;
-    VotingToken _deployedVotingToken;
+    VotingTokenAuthorisation public _tokenAuthorisation;
+    VotingToken public _deployedVotingToken;
 
     struct InstitutionAdmin {
         string name;
@@ -116,7 +113,7 @@ contract Institution is ApprovalQueue {
 
     function submitAdminApprovalRequest(bytes32[] memory requestData) public {
        // institutionName adminFirstName adminSurname adminAddress
-        super.submitApprovalRequest(ADMIN_APPROVAL_REQUEST_TYPE, requestData);
+        super.submitApprovalRequest("adminApprovalRequest", requestData);
     }
     
 
@@ -223,7 +220,7 @@ contract Institution is ApprovalQueue {
         // Initialise new approval request
         newApprovalRequest.submitter = msg.sender;
         newApprovalRequest.isPending = true;
-        newApprovalRequest.approvalType = CANDIDATE_APPROVAL_REQUEST_TYPE;
+        newApprovalRequest.approvalType = "candidateApprovalRequest";
         newApprovalRequest.data = requestData;
         newApprovalRequest.election = electionAddress;
         newApprovalRequest.isInitialised = true;
@@ -258,7 +255,7 @@ contract Institution is ApprovalQueue {
         // Initialise new approval request
         newApprovalRequest.submitter = msg.sender;
         newApprovalRequest.isPending = true;
-        newApprovalRequest.approvalType = VOTER_APPROVAL_REQUEST_TYPE;
+        newApprovalRequest.approvalType = "voterApprovalRequest";
         newApprovalRequest.election = electionAddress;
         newApprovalRequest.isInitialised = true;
 

@@ -9,14 +9,10 @@ import "./UniversityVoting.sol";
 
 contract VotingToken is ERC20Mintable, ERC20Detailed{
 
-    string constant private _name = "Voting Token";
-    string constant private  _symbol = "VTK";
-    uint8 constant private  _decimals = 18;
-
     UniversityVoting universityVoting;
 
-    constructor (address universityVotingAddress)
-    ERC20Detailed(_name, _symbol, _decimals) public {
+    constructor (address universityVotingAddress, string memory name, string memory symbol, uint8 decimals)
+    ERC20Detailed(name, symbol, decimals) public {
         universityVoting = UniversityVoting(universityVotingAddress);
         addMinter(address(universityVoting));
         _mint(address(universityVoting), 1000);
