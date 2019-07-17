@@ -69,28 +69,30 @@ contract("Institution", accounts => {
   const candidateFirstName = "Abraham";
   const candidateSurname = "Lincoln";    
 
-    describe("Deploy the child institution contract and check administrator operations", function() {
-      before(async function() {
-        universityVoting = await UniversityVoting.deployed();
-        // Submit the approval from 'prospective admin' addresss
-        await universityVoting.submitInstitutionApprovalRequest(
-          newRequestDataAsBytes32,
-          { from: prospectiveAdmin1 }
-        );
-        // Developer Approves the request and UniversityVoting contract the new Institution contract.
-        const transactionReceipt = await universityVoting.approveInstitutionRequest(
-          prospectiveAdmin1,
-          { from: developerAccount }
-        );
-        // Get emitted event from initialiseInstitutionWithAdmin()
-        const log = await transactionReceipt.logs[0].args;
-        // Get newly created contract address from event and use truffle-contract to get an instance.
-        newInstitutionContractAddress = await Institution.at(log.institution);
-      });
-      after(async function() {
- //       await universityVoting.kill();
- //       await newInstitutionContractAddress.kill();
-      });
+  context('Deployed contracts', async function () {
+    before(async function() {
+      universityVoting = await UniversityVoting.deployed();
+      // Submit the approval from 'prospective admin' addresss
+      await universityVoting.submitInstitutionApprovalRequest(
+        newRequestDataAsBytes32,
+        { from: prospectiveAdmin1 }
+      );
+      // Developer Approves the request and UniversityVoting contract the new Institution contract.
+      const transactionReceipt = await universityVoting.approveInstitutionRequest(
+        prospectiveAdmin1,
+        { from: developerAccount }
+      );
+      // Get emitted event from initialiseInstitutionWithAdmin()
+      const log = await transactionReceipt.logs[0].args;
+      // Get newly created contract address from event and use truffle-contract to get an instance.
+      newInstitutionContractAddress = await Institution.at(log.institution);
+    });
+    after(async function() {
+//       await universityVoting.kill();
+//       await newInstitutionContractAddress.kill();
+    });
+
+    describe("Administrator actions", function() {
       it("submits a new admin aproval request", async function() {
         const transactionReceipt = await newInstitutionContractAddress.submitAdminApprovalRequest(
           newAdminRequestDataAsBytes32,
@@ -147,6 +149,8 @@ contract("Institution", accounts => {
           "Caller is an admin, but not currently authorised!"
         );
       }); 
+    });
+    describe("Election creation", function() {
       it("creates a new election.", async function() {
     //    let date = (new Date()).getTime();
           const description = "Start of term election"
@@ -196,5 +200,6 @@ contract("Institution", accounts => {
         const voterTokenBalance = (await electionInstance.getVoterTokenbalance(prospectiveVoter1)).toNumber();
         tokenAmount.should.be.bignumber.equal(voterTokenBalance);
       });
-    });
+    }); 
+  });
 });
