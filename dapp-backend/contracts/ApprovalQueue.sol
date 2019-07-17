@@ -24,6 +24,7 @@ contract ApprovalQueue {
         string approvalType;
         bytes32[] data;
         bool isInitialised;
+        address election;
     }
 
     // Store ApprovalRequests mapped by prospective admin addresses so they can be accessed without iteration. This

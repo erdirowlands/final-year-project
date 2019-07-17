@@ -201,7 +201,7 @@ contract("Institution", accounts => {
         truffleAssert.eventEmitted(transactionReceipt, "NewVoterApproved", event => {
           return prospectiveVoter1.should.equal(event.voter);
         });
-       
+        // Check if the voter's token balance matches what was sent to them.
         const voterTokenBalance = (await electionInstance.getVoterTokenbalance(prospectiveVoter1)).toNumber();
         tokenAmount.should.be.bignumber.equal(voterTokenBalance);
       });

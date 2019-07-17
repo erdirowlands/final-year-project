@@ -222,6 +222,22 @@ contract Institution is ApprovalQueue {
         super.submitApprovalRequest(VOTER_APPROVAL_REQUEST_TYPE, requestData);
     }
 
+    // Request data will contain election address they are requesting approval for!!!
+    function submitVoterApprovalRequest2(address electionAddress) public {
+        ApprovalRequest memory newApprovalRequest;
+
+        // Initialise new approval request
+        newApprovalRequest.submitter = msg.sender;
+        newApprovalRequest.isPending = true;
+        newApprovalRequest.approvalType = VOTER_APPROVAL_REQUEST_TYPE;
+        newApprovalRequest.election = electionAddress;
+        newApprovalRequest.isInitialised = true;
+
+        // Add the approval request to the approval queue mapping, mapped by the
+        // prospective admin's address.
+        _approvalRequestQueue[msg.sender] = newApprovalRequest;
+    }
+
 
     function setVotingTokenAddress(VotingToken votingToken) public {
         _deployedVotingToken = votingToken;
