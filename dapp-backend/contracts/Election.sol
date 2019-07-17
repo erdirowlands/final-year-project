@@ -11,7 +11,7 @@ contract Election {
     // A pending Election will be when an Election admin has configured the Election to run
     // at some point in the future. This allows the contract to be deployed at the time
     // of admin interaction, but to start at a pre-defined time.
-    enum ElectionStatus { CANDIDATES_APPROVAL, IN_PROGRESS, CONCLUDED }
+    enum ElectionStatus { CANDIDATES_APPROVAL, IN_PROGRESS, TALLY, CONCLUDED }
 
     uint _openingTime;
     uint _closingTime;
@@ -65,14 +65,17 @@ contract Election {
 
     // TODO add isAdmin modifier for code document
     function beginElection() public {
-        _electionStatus = ElectionStatus.CONCLUDED;
+        _electionStatus = ElectionStatus.IN_PROGRESS;
     }
 
     // TODO add isAdmin modifier for code document
     function concludeElection() public  {
         require(now > _closingTime, "The election is still within the set time");
         require(_institution.isAdminStored(msg.sender), "Caller is not an admin!");
-        _electionStatus = ElectionStatus.IN_PROGRESS;
+        _electionStatus = ElectionStatus.TALLY;
+        determineVictor();
+        _electionStatus = ElectionStatus.CONCLUDED;
+
     }
 
     function determineVictor() internal {
@@ -82,7 +85,6 @@ contract Election {
             tokenCounter = _votingToken.balanceOf(_candidateArray[i]);
             _victor = _candidateArray[i];
         }
-        
     }
     
     modifier isAdmin(address admin) {
