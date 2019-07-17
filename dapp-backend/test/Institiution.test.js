@@ -17,9 +17,6 @@ contract("Institution", accounts => {
   // UniversityVoting contract is responsible for deploying Institution, so mimick this flow in tests.
   let universityVoting;
 
-  // Voting token that gets deployed as part of the truffle migration script
-  let votingToken;
-
   // The deployed child Institution contract address of UnviversityVoting.
   let newInstitutionContractAddress;
 
@@ -283,6 +280,8 @@ contract("Institution", accounts => {
         const voterTokenBalance = (await newElectionContractInstance.getVoterTokenbalance(prospectiveVoter2)).toNumber();
         tokenAmount.should.be.bignumber.equal(voterTokenBalance);
       });
+    });
+    describe("Election voting", function() {
     });
   });
 });
