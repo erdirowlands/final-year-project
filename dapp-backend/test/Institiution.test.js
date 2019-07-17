@@ -69,7 +69,7 @@ contract("Institution", accounts => {
   const candidateFirstName = "Abraham";
   const candidateSurname = "Lincoln";    
 
-  context('Deployed contracts', async function () {
+  context('Institution contract deployed', async function () {
     before(async function() {
       universityVoting = await UniversityVoting.deployed();
       // Submit the approval from 'prospective admin' addresss
@@ -179,26 +179,29 @@ contract("Institution", accounts => {
         );
         electionAddressThatShouldBeStored.should.equal(newElectionContractAddress);
       }); 
-      it("lets a voter submit a request", async function() {
-        const transactionReceipt = await newInstitutionContractAddress.submitVoterApprovalRequest(
-          newElectionContractAddress,
-          { from: prospectiveVoter1 }
-        );
-      }); 
-      it("let admin approve the new voter request and issue 1 VotingToken.", async function() {
-        const electionInstance = await Election.at(newElectionContractAddress);
-        const tokenAmount = 1;
-        const transactionReceipt = await newInstitutionContractAddress.approveVoterRequest(
-          prospectiveVoter1,
-          tokenAmount,
-          { from: prospectiveAdmin1 }
-        );
-        truffleAssert.eventEmitted(transactionReceipt, "NewVoterApproved", event => {
-          return prospectiveVoter1.should.equal(event.voter);
+
+      describe("Voter approval requests", function() {
+        it("lets a voter submit a request", async function() {
+          const transactionReceipt = await newInstitutionContractAddress.submitVoterApprovalRequest(
+            newElectionContractAddress,
+            { from: prospectiveVoter1 }
+          );
+        }); 
+        it("let admin approve the new voter request and issue 1 VotingToken.", async function() {
+          const electionInstance = await Election.at(newElectionContractAddress);
+          const tokenAmount = 1;
+          const transactionReceipt = await newInstitutionContractAddress.approveVoterRequest(
+            prospectiveVoter1,
+            tokenAmount,
+            { from: prospectiveAdmin1 }
+          );
+          truffleAssert.eventEmitted(transactionReceipt, "NewVoterApproved", event => {
+            return prospectiveVoter1.should.equal(event.voter);
+          });
+          // Check if the voter's token balance matches what was sent to them.
+          const voterTokenBalance = (await electionInstance.getVoterTokenbalance(prospectiveVoter1)).toNumber();
+          tokenAmount.should.be.bignumber.equal(voterTokenBalance);
         });
-        // Check if the voter's token balance matches what was sent to them.
-        const voterTokenBalance = (await electionInstance.getVoterTokenbalance(prospectiveVoter1)).toNumber();
-        tokenAmount.should.be.bignumber.equal(voterTokenBalance);
       });
     }); 
   });
