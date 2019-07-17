@@ -69,7 +69,7 @@ contract("Institution", accounts => {
   const candidateFirstName = "Abraham";
   const candidateSurname = "Lincoln";    
 
-    describe("Deploy and use the child institution contract", function() {
+    describe("Deploy the child institution contract and check administrator operations", function() {
       before(async function() {
         universityVoting = await UniversityVoting.deployed();
         // Submit the approval from 'prospective admin' addresss
