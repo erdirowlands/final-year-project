@@ -20,7 +20,7 @@ contract Election {
     VotingTokenAuthorisation public _votingTokenAuthorisation; // The address of the VotingTokenSale contract for this election
     Institution public _institution;
     string public _description;
-   // address public v_ictor;
+    address public _victor;
 
     struct Candidate {
         string name;
