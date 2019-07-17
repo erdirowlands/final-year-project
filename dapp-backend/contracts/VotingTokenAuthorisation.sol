@@ -20,39 +20,16 @@ import "./ApprovalQueue.sol";
  // TODO check ownable is still relevant
 contract VotingTokenAuthorisation is MintedCrowdsale, TimedCrowdsale {
 
-    string constant public voterApprovalRequestType = "voterApprovalRequest";
 
     Institution _institution;
-    VotingToken theToken;
+    VotingToken _theToken;
 
-    // Enable the prevention of duplicate addresses caused by
-    // unforseen, errant client requests.
-    struct VoterRequestStruct {
-        bool isPending;
-        bool isAuthorised;
-        bool isInitialised;
-    }
-
-    mapping(address => VoterRequestStruct) public _voterRequests;
 
     constructor (Institution institution, address admin, uint256 openingTime, uint256 closingTime, VotingToken votingToken)
     Crowdsale(1,  address(uint160(admin)), votingToken)
     TimedCrowdsale(openingTime, closingTime)
     public { //isAdmin(admin) { // CAN'T DO THIS BECAUSE _INSTITUTION NOT INITIALISED YET
         _institution = institution;
-    }
-
-    function approveVoterRequest(address submittingAddress) public isAdmin(msg.sender){
-    //    super.approveRequest(submittingAddress);
-
-        // New Institution created sucessfully so set the request to not pending.
-      //  _approvalRequestQueue[submittingAddress].isPending = false;
-        // Emit the succesfull approval of the new admin.
-    }
-
-    function submitVoterApprovalRequest(bytes32[] memory requestData) public {
-       // institutionName adminFirstName adminSurname adminAddress
-  //      super.submitApprovalRequest(voterApprovalRequestType, requestData);
     }
 
     function sendVotingToken(address voter, uint256 tokenAmount) public isAdmin(msg.sender) {

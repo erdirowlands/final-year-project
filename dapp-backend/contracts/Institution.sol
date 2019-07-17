@@ -200,11 +200,11 @@ contract Institution is ApprovalQueue {
         return _electionAddressMapping[election].isAddress;
     }
 
-    function approveVoterRequest(address submittingAddress) public isAdmin(msg.sender){
+    function approveVoterRequest(address submittingAddress, uint amount) public isAdmin(msg.sender){
         super.approveRequest(submittingAddress);
 
         // TODO need to change from hardcoded amount of 1 to customisable
-        _tokenAuthorisation.sendVotingToken(submittingAddress, 1);
+        _tokenAuthorisation.sendVotingToken(submittingAddress, amount);
         // New Institution created sucessfully so set the request to not pending.
         _approvalRequestQueue[submittingAddress].isPending = false;
 
