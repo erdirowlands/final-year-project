@@ -56,7 +56,7 @@ contract Election {
         _votingTokenAuthorisation = votingTokenAuthorisation;
         _institution = Institution(institution);
         _votingToken = votingToken;
-        _electionStatus = ElectionStatus.IN_PROGRESS;
+        _electionStatus = ElectionStatus.CANDIDATES_APPROVAL;
         _description = description;
     }
 

@@ -14,6 +14,8 @@ contract Institution is ApprovalQueue {
     string public _institutionName;
     string constant public ADMIN_APPROVAL_REQUEST_TYPE = "adminApprovalRequest";
     string constant public VOTER_APPROVAL_REQUEST_TYPE = "voterApprovalRequest";
+    string constant public CANDIDATE_APPROVAL_REQUEST_TYPE = "candidateApprovalRequest";
+
     VotingTokenAuthorisation _tokenAuthorisation;
     VotingToken _deployedVotingToken;
 
@@ -162,7 +164,7 @@ contract Institution is ApprovalQueue {
     }
 
 
-    ///////////ELECTION AND VOTER APPROVAL OPERATIONS///////////
+    ///////////ELECTION OPERATIONS///////////
 
     // Emit an event on Institution contract creation.
     event NewElectionCreated(address election);
@@ -194,11 +196,47 @@ contract Institution is ApprovalQueue {
         return _electionAddressMapping[election].isAddress;
     }
 
+    ///////////CANDIDATE APPROVAL OPERATIONS///////////
+
+    // Emit an event on Institution contract creation.
+    event NewCandidateApproved(address candidate);
+
+    function approveCandidateRequest(address submittingAddress) public {
+        super.approveRequest(submittingAddress);
+
+        bytes32[] memory data = getRequestData(submittingAddress);
+        string memory candidateName;
+        candidateName = super.bytes32ToString(data[0]);
+
+        // New Institution created sucessfully so set the request to not pending.
+        _approvalRequestQueue[submittingAddress].isPending = false;
+        // Emit the succesfull approval of the new admin.
+
+        emit LogNewAdmin(submittingAddress);
+    }
+
+    function submitCandidateApprovalRequest(bytes32[] memory requestData, address electionAddress) public {
+        require(!_approvalRequestQueue[msg.sender].isPending, "You have an outstanding request, please wait for that to be processed");
+        require(!isApprovalStored(msg.sender), "This approval has already been submitted!");
+        ApprovalRequest memory newApprovalRequest;
+        // Initialise new approval request
+        newApprovalRequest.submitter = msg.sender;
+        newApprovalRequest.isPending = true;
+        newApprovalRequest.approvalType = CANDIDATE_APPROVAL_REQUEST_TYPE;
+        newApprovalRequest.data = requestData;
+        newApprovalRequest.election = electionAddress;
+        newApprovalRequest.isInitialised = true;
+
+        // Add the approval request to the approval queue mapping, mapped by the
+        // prospective admin's address.
+        _approvalRequestQueue[msg.sender] = newApprovalRequest;
+    }
+
     // Emit an event on voter approval.
     event NewVoterApproved(address voter);
     function approveVoterRequest(address submittingAddress, uint amount) public isAdmin(msg.sender){
         super.approveRequest(submittingAddress);
-        require(isApprovalStored(submittingAddress), "Approval not found!");
+
         //the comment above should apply about using the array as the inex
         address election = _approvalRequestQueue[submittingAddress].election;
         _tokenAuthorisation.sendVotingToken(submittingAddress, amount, msg.sender);
@@ -213,8 +251,9 @@ contract Institution is ApprovalQueue {
 
     // Request data will contain election address they are requesting approval for!!!
     function submitVoterApprovalRequest(address electionAddress) public {
+        require(!_approvalRequestQueue[msg.sender].isPending, "You have an outstanding request, please wait for that to be processed");
+        require(!isApprovalStored(msg.sender), "This approval has already been submitted!");
         ApprovalRequest memory newApprovalRequest;
-
         // Initialise new approval request
         newApprovalRequest.submitter = msg.sender;
         newApprovalRequest.isPending = true;
