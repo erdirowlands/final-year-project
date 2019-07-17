@@ -66,6 +66,9 @@ contract("Institution", accounts => {
     newCandidateRequestData => asciiToHex(newCandidateRequestData)
   );
 
+  // Token amount for this mock election
+  const tokenAmount = Utils.toWei("1", "ether");
+
   context("Institution contract deployed", async function() {
     before(async function() {
       universityVoting = await UniversityVoting.deployed();
@@ -267,7 +270,6 @@ contract("Institution", accounts => {
         //   let decimals = Utils.toBN(18);
         //  let amount = Utils.toBN(10);
         //  let value = amount.mul(Utils.toBN(1).pow(decimals));
-        const tokenAmount = Utils.toWei("1", "ether");
         const transactionReceipt = await newInstitutionContractAddress.approveVoterRequest(
           prospectiveVoter1,
           tokenAmount,
@@ -298,7 +300,6 @@ contract("Institution", accounts => {
         //let decimals = Utils.toBN(18);
         //let amount = Utils.toBN(10);
         //let value = amount.mul(Utils.toBN(1).pow(decimals));
-        const tokenAmount = Utils.toWei("1", "ether");
         const transactionReceipt = await newInstitutionContractAddress.approveVoterRequest(
           prospectiveVoter2,
           tokenAmount,
@@ -335,7 +336,6 @@ contract("Institution", accounts => {
         //  const voterTokenBalance = await newElectionContractInstance.getVoterTokenbalance(prospectiveVoter1);
         //   const actual  = web3.utils.toBN(voterTokenBalance).toString();
         //   actual.should.equal('1000000000000000000');
-        const tokenAmount = Utils.toWei("1", "ether");
         const transactionReceipt = await newElectionContractInstance.vote(
           prospectiveCandidate1,
           tokenAmount,
@@ -356,6 +356,16 @@ contract("Institution", accounts => {
         const candidateBalanceBigNumber = web3.utils.toBN(candidateTokenBalance).toString();
         const votingAmountBigNumber = web3.utils.toBN(tokenAmount).toString();
         candidateBalanceBigNumber.should.equal(votingAmountBigNumber);
+      });
+      it("reverts if an approved voter tries to vote with no available tokens", async function() {
+        await expectRevert(
+          newElectionContractInstance.vote(
+          prospectiveCandidate1,
+          tokenAmount,
+          { from: prospectiveVoter1 }
+        ),
+          "Voter doesn't have any Voting Tokens!"
+        );
       });
     });
   });
