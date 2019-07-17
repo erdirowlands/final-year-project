@@ -44,16 +44,9 @@ contract("Institution", accounts => {
   const prospectiveCandidate2 = accounts[8];
   const prospectiveCandidate3 = accounts[9];
 
-  // Admin data
-  const institutionName = "Ulster University";
-  const adminName = "John Francis";
-
+  // Institution data
   const newInstitutionRequestData = [
     institutionName,
-    adminName
-  ];
-
-  const newAdminRequestData = [
     adminName
   ];
 
@@ -61,13 +54,26 @@ contract("Institution", accounts => {
     newInstitutionRequestData => asciiToHex(newInstitutionRequestData)
   ));
 
+  // Admin data
+  const institutionName = "Ulster University";
+  const adminName = "John Francis";
+
+  const newAdminRequestData = [
+    adminName
+  ];
+
   (newAdminRequestDataAsBytes32 = newAdminRequestData.map(
     newAdminRequestData => asciiToHex(newAdminRequestData)
   ));
 
-  // Election Candidate data
-  const candidateFirstName = "Abraham";
-  const candidateSurname = "Lincoln";    
+  // Candidate data
+  const newCandidateRequestData = [
+    candidateName
+  ]; 
+
+  (newCandidateRequestDataAsBytes32 = newCandidateRequestData.map(
+    newCandidateRequestData => asciiToHex(newCandidateRequestData)
+  ));
 
   context('Institution contract deployed', async function () {
     before(async function() {
@@ -178,6 +184,14 @@ contract("Institution", accounts => {
           0
         );
         electionAddressThatShouldBeStored.should.equal(newElectionContractAddress);
+      }); 
+    }); 
+    describe("Candidate approval requests", function() {
+      it("lets a candidate submit a request", async function() {
+        const transactionReceipt = await newInstitutionContractAddress.submitVoterCandidateRequest(
+          newElectionContractAddress,
+          { from: prospectiveVoter1 }
+        );
       }); 
     }); 
     describe("Voter approval requests", function() {
