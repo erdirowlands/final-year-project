@@ -5,6 +5,8 @@ import "openzeppelin-solidity/contracts/crowdsale/emission/MintedCrowdsale.sol";
 import "openzeppelin-solidity/contracts/crowdsale/validation/TimedCrowdsale.sol";
 import "./VotingToken.sol";
 import "./Institution.sol";
+import "./ApprovalQueue.sol";
+
 
 // *****TODO Complete Ownable flow for this contract*****
 
@@ -15,26 +17,29 @@ import "./Institution.sol";
  * Open Zeppelin crowdsale contracts are being inherited to provide automatic protection against reentrancy attacks and to
  * provide common crowdsale functionality without having to reinvent the wheel.
  */
-contract VotingTokenAuthorisation is MintedCrowdsale, TimedCrowdsale, Ownable {
+ // TODO check ownable is still relevant
+contract VotingTokenAuthorisation is MintedCrowdsale, TimedCrowdsale {
+
 
     Institution _institution;
-    VotingToken theToken;
+    VotingToken _theToken;
+
 
     constructor (Institution institution, address admin, uint256 openingTime, uint256 closingTime, VotingToken votingToken)
     Crowdsale(1,  address(uint160(admin)), votingToken)
     TimedCrowdsale(openingTime, closingTime)
-    public { //isAdmin(admin) {
+    public { //isAdmin(admin) { // CAN'T DO THIS BECAUSE _INSTITUTION NOT INITIALISED YET
         _institution = institution;
     }
 
-    modifier isAdmin(address admin)  {
-        require(_institution.isAdminStored(admin), "Caller is not an admin!");
-        require(_institution.isAdminAuthorised(admin), "Caller is an admin but not authorised!");
+    function sendVotingToken(address voter, uint256 tokenAmount, address admin) public isAdmin(admin) {
+        super._deliverTokens(voter, tokenAmount);
+    }
 
+    modifier isAdmin(address admin)  {
+        require(_institution.isAdminStored(admin), "VotingTokenAuthorisation: Caller is not an admin!");
+        require(_institution.isAdminAuthorised(admin), "VotingTokenAuthorisation: Caller is an admin but not authorised!");
         _;
     }
 
-    function sendVotingToken(address voter, uint256 tokenAmount) public isAdmin(msg.sender) {
-        super._deliverTokens(voter, tokenAmount);
-    }
 }

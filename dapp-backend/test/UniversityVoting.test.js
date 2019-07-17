@@ -95,8 +95,7 @@ contract("UniversityVoting", accounts => {
         );
         admin[0].should.equal("John");
         admin[1].should.equal("Francis");
-        admin[2].should.equal(prospectiveAdminAccount);
-        admin[3].should.equal(true);
+        admin[2].should.equal(true);
       });
       it("reverts on attempting to approve a non-existent approval", async function() {
         await expectRevert(

@@ -1,6 +1,5 @@
 pragma solidity ^0.5.3;
 
-import "solidity-util/lib/Strings.sol";
 
 /**
 * Initially, each contract that required some sort of approval functionality, whether that was for approving voters, or new institution
@@ -9,8 +8,6 @@ import "solidity-util/lib/Strings.sol";
 * "split" around some basic regex - in this case, a comma.
 */
 contract ApprovalQueue {
-
-    using Strings for string;
 
     // Store a request from a prospective admin who would like to register their Institution.
     // The flag "isPending" is included to stop potential abuse of the approval que - the intent
@@ -24,6 +21,7 @@ contract ApprovalQueue {
         string approvalType;
         bytes32[] data;
         bool isInitialised;
+        address election;
     }
 
     // Store ApprovalRequests mapped by prospective admin addresses so they can be accessed without iteration. This
@@ -52,7 +50,7 @@ contract ApprovalQueue {
      *
      * @dev inherriting contracts must override this based on their requirements.
      */
-    function approveRequest(address submittingAddress) public  {
+    function approveRequest(address submittingAddress) public  view {
         require(isApprovalStored(submittingAddress), "Approval not found");
     }
 
@@ -112,6 +110,7 @@ contract ApprovalQueue {
         }
         return string(bytesStringTrimmed);
     }
+
 
     /**
      * Self-destruct this contract // TODO expand explanation.

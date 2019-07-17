@@ -1,7 +1,6 @@
 const BigNumber = web3.BigNumber;
-
 const truffleAssert = require("truffle-assertions");
-const { expectRevert, time } = require("openzeppelin-test-helpers");
+const { expectRevert, time, BN } = require("openzeppelin-test-helpers");
 const { asciiToHex } = require("web3-utils");
 
 
@@ -18,6 +17,7 @@ contract("Institution", accounts => {
   // UniversityVoting contract is responsible for deploying Institution, so mimick this flow in tests.
   let universityVoting;
 
+  // Voting token that gets deployed as part of the truffle migration script
   let votingToken;
 
   // The deployed child Institution contract address of UnviversityVoting.
@@ -27,11 +27,22 @@ contract("Institution", accounts => {
   let newElectionContractAddress;
 
 
-  // Me, as the owner and deployer of the contract.
+  // My account as the owner and deployer of the contract.
   const developerAccount = accounts[0];
-  // Account for admin who makes a request for a new Institution (will become approved in the before hook).
+  // Admin accounts
   const prospectiveAdmin1 = accounts[1];
   const prospectiveAdmin2 = accounts[2];
+  const prospectiveAdmin3 = accounts[3];
+
+  // Voter accounts
+  const prospectiveVoter1 = accounts[4];
+  const prospectiveVoter2 = accounts[5];
+  const prospectiveVoter3 = accounts[6];
+
+  // Candidate accounts
+  const prospectiveCandidate1 = accounts[7];
+  const prospectiveCandidate2 = accounts[8];
+  const prospectiveCandidate3 = accounts[9];
 
   // Admin data
   const institutionName = "Ulster University";
@@ -126,21 +137,18 @@ contract("Institution", accounts => {
         );
         admin[0].should.equal("John");
         admin[1].should.equal("Francis");
-        admin[2].should.equal(prospectiveAdmin2);
-        admin[3].should.equal(true);
+        admin[2].should.equal(true);
       });
       it("reverts when a currently unauthorised admin tries to add another admin", async function() {
         const newAdminFirstName = "Jim";
         const newAdminSurname = "Holden";
-        const newAdminAddress = accounts[4];
-        // Unauthorise Ben Sisko's account from the previous test to serve as the now unauthorised admin.
-        await newInstitutionContractAddress.unauthoriseAdmin(accounts[2]);
+        await newInstitutionContractAddress.unauthoriseAdmin(prospectiveAdmin2);
         await expectRevert(
           newInstitutionContractAddress.addNewAdmin(
             newAdminFirstName,
             newAdminSurname,
-            newAdminAddress,
-            { from: accounts[2] }
+            prospectiveAdmin3,
+            { from: prospectiveAdmin2 }
           ),
           "Caller is an admin, but not currently authorised!"
         );
@@ -171,5 +179,26 @@ contract("Institution", accounts => {
         );
         electionAddressThatShouldBeStored.should.equal(newElectionContractAddress);
       }); 
+      it("lets a voter submit a request", async function() {
+        const transactionReceipt = await newInstitutionContractAddress.submitVoterApprovalRequest(
+          newElectionContractAddress,
+          { from: prospectiveVoter1 }
+        );
+      }); 
+      it("let admin approve the new voter request and issue 1 VotingToken.", async function() {
+        const electionInstance = await Election.at(newElectionContractAddress);
+        const tokenAmount = 1;
+        const transactionReceipt = await newInstitutionContractAddress.approveVoterRequest(
+          prospectiveVoter1,
+          tokenAmount,
+          { from: prospectiveAdmin1 }
+        );
+        truffleAssert.eventEmitted(transactionReceipt, "NewVoterApproved", event => {
+          return prospectiveVoter1.should.equal(event.voter);
+        });
+        // Check if the voter's token balance matches what was sent to them.
+        const voterTokenBalance = (await electionInstance.getVoterTokenbalance(prospectiveVoter1)).toNumber();
+        tokenAmount.should.be.bignumber.equal(voterTokenBalance);
+      });
     });
 });
