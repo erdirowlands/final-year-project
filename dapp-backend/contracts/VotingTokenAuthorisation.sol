@@ -32,13 +32,13 @@ contract VotingTokenAuthorisation is MintedCrowdsale, TimedCrowdsale {
         _institution = institution;
     }
 
-    function sendVotingToken(address voter, uint256 tokenAmount) public isAdmin(msg.sender) {
+    function sendVotingToken(address voter, uint256 tokenAmount, address admin) public isAdmin(admin) {
         super._deliverTokens(voter, tokenAmount);
     }
 
     modifier isAdmin(address admin)  {
-        require(_institution.isAdminStored(admin), "Caller is not an admin!");
-        require(_institution.isAdminAuthorised(admin), "Caller is an admin but not authorised!");
+        require(_institution.isAdminStored(admin), "VotingTokenAuthorisation: Caller is not an admin!");
+        require(_institution.isAdminAuthorised(admin), "VotingTokenAuthorisation: Caller is an admin but not authorised!");
         _;
     }
 

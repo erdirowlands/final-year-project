@@ -191,5 +191,16 @@ contract("Institution", accounts => {
           { from: prospectiveVoter1 }
         );
       }); 
+      it("let admin approve the new voter request and issue 1 VotingToken.", async function() {
+        const tokenAmount = 1;
+        const transactionReceipt = await newInstitutionContractAddress.approveVoterRequest(
+          prospectiveVoter1,
+          tokenAmount,
+          { from: prospectiveAdmin1 }
+        );
+        truffleAssert.eventEmitted(transactionReceipt, "NewVoterApproved", event => {
+          return prospectiveVoter1.should.equal(event.voter);
+        });
+      });
     });
 });

@@ -200,13 +200,15 @@ contract Institution is ApprovalQueue {
         return _electionAddressMapping[election].isAddress;
     }
 
+    // Emit an event on voter approval.
+    event NewVoterApproved(address voter);
     function approveVoterRequest(address submittingAddress, uint amount) public isAdmin(msg.sender){
         super.approveRequest(submittingAddress);
 
-        _tokenAuthorisation.sendVotingToken(submittingAddress, amount);
+        _tokenAuthorisation.sendVotingToken(submittingAddress, amount, msg.sender);
         // New Institution created sucessfully so set the request to not pending.
         _approvalRequestQueue[submittingAddress].isPending = false;
-
+        emit NewVoterApproved(submittingAddress);
     }
 
     // Request data will contain election address they are requesting approval for!!!
