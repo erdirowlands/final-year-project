@@ -34,9 +34,7 @@ contract Election {
 
     struct Voter {
         bool isInitialised;
-        bool isAuthorised;
-        bool hasVoted;
-        uint vote;
+        uint votingTokenBalance;
     }
 
     // Store Candidate addresses so they can be accessed without iteration. This
@@ -60,7 +58,7 @@ contract Election {
         _electionStatus = ElectionStatus.IN_PROGRESS;
     }
 
-    ///////////VOTER APPROVAL REQUEST FLOW ///////////
+    
 
 
     ///////////VOTING///////////
@@ -108,6 +106,20 @@ contract Election {
     }
 
     ///////////VOTER DATA OPERATIONS///////////
+
+    function addNewVoter(address voter, address admin, uint tokenAmount)
+    public  {
+        // Make sure caller is an Institution admin
+        require(_institution.isAdminStored(admin), "Caller is not an admin!");
+        // If an admin, make sure they are authorised
+        require(_institution.isAdminAuthorised(admin), "Caller is an admin, but not currently authorised!");
+        // Check for duplicate voter address
+        require(!isVoterAddressStored(voter),"This candidateAddress address has already been added");
+        // Add voter to mapping for non-iterable access.
+        _voterMapping[voter] = Voter(true, tokenAmount);
+         // Add address of newly created voter to dynamically sized array for quick access.
+        _voterAddressArray.push(voter);
+    }
 
     modifier ableToVote(address voter) {
         require(isVoterAddressStored(voter), "Voter address isn't stored");

@@ -18,6 +18,7 @@ contract("Institution", accounts => {
   // UniversityVoting contract is responsible for deploying Institution, so mimick this flow in tests.
   let universityVoting;
 
+  // Voting token that gets deployed as part of the truffle migration script
   let votingToken;
 
   // The deployed child Institution contract address of UnviversityVoting.
@@ -27,7 +28,7 @@ contract("Institution", accounts => {
   let newElectionContractAddress;
 
 
-  // Me, as the owner and deployer of the contract.
+  // My account as the owner and deployer of the contract.
   const developerAccount = accounts[0];
   // Admin accounts
   const prospectiveAdmin1 = accounts[1];
