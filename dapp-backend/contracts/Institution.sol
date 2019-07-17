@@ -14,7 +14,7 @@ contract Institution is ApprovalQueue {
     string public _institutionName;
     string constant public ADMIN_APPROVAL_REQUEST_TYPE = "adminApprovalRequest";
     string constant public VOTER_APPROVAL_REQUEST_TYPE = "voterApprovalRequest";
-    VotingTokenAuthorisation tokenAuthorisation;
+    VotingTokenAuthorisation _tokenAuthorisation;
     VotingToken _deployedVotingToken;
 
     struct InstitutionAdmin {
@@ -175,11 +175,11 @@ contract Institution is ApprovalQueue {
     /**
     Create a new Election contract which can then be configured by a customer per their requirements. */
     function createElection(uint256 openingTime, uint256  closingTime) isAdmin(msg.sender) isAuthorisedAdmin(msg.sender)  public {
-        tokenAuthorisation = new VotingTokenAuthorisation(Institution(this), msg.sender, openingTime, closingTime, _deployedVotingToken);
+        _tokenAuthorisation = new VotingTokenAuthorisation(Institution(this), msg.sender, openingTime, closingTime, _deployedVotingToken);
         // Let VotingTokenAuthorisation have the role as minter so it can mint tokens for voters upon request.
-        _deployedVotingToken.addMinter(address(tokenAuthorisation));
+        _deployedVotingToken.addMinter(address(_tokenAuthorisation));
         // Create new Election contract.
-        Election election = new Election(address(this), tokenAuthorisation, _deployedVotingToken);
+        Election election = new Election(address(this), _tokenAuthorisation, _deployedVotingToken);
         // Get the address of the newly created Election contract.
         address electionContractAddress = (address(election));
         // Add information about the newly created contract so it can be accessed later.
@@ -204,7 +204,7 @@ contract Institution is ApprovalQueue {
         super.approveRequest(submittingAddress);
 
         // TODO need to change from hardcoded amount of 1 to customisable
-        tokenAuthorisation.sendVotingToken(submittingAddress, 1);
+        _tokenAuthorisation.sendVotingToken(submittingAddress, 1);
         // New Institution created sucessfully so set the request to not pending.
         _approvalRequestQueue[submittingAddress].isPending = false;
 
