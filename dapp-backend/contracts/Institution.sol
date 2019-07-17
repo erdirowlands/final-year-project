@@ -14,12 +14,13 @@ contract Institution is ApprovalQueue {
     string public _institutionName;
     string constant public ADMIN_APPROVAL_REQUEST_TYPE = "adminApprovalRequest";
     string constant public VOTER_APPROVAL_REQUEST_TYPE = "voterApprovalRequest";
+    string constant public CANDIDATE_APPROVAL_REQUEST_TYPE = "candidateApprovalRequest";
+
     VotingTokenAuthorisation _tokenAuthorisation;
     VotingToken _deployedVotingToken;
 
     struct InstitutionAdmin {
-        string firstName;
-        string surname;
+        string name;
         bool isAuthorised;
         // Allow the mapping _institutionAdmins to be easily queried for admins that exist.
         bool isInitialised;
@@ -70,18 +71,17 @@ contract Institution is ApprovalQueue {
 
     /**
      * @param institutionName the name of the new Institution
-     * @param adminFirstName first name of the admin who submitted the new institution request
-     * @param adminSurname surname of the admin who submitted the new institution request
+     * @param adminName full name of the admin who submitted the new institution request
      * @param adminAddress addres of  the admin who submitted the new institution request
      */
-    constructor (string memory institutionName, string memory adminFirstName, string memory adminSurname, address adminAddress, VotingToken deployedVotingToken)
+    constructor (string memory institutionName, string memory adminName, address adminAddress, VotingToken deployedVotingToken)
     public {
         // Set the institution name.
         _institutionName = institutionName;
 
         // Store details of the first admin to be approved
         require(!isAdminStored(adminAddress),"This admin address has already been added");
-        _institutionAdmins[adminAddress] = InstitutionAdmin(adminFirstName, adminSurname, true, true);
+        _institutionAdmins[adminAddress] = InstitutionAdmin(adminName, true, true);
          // Add address of newly created Institutions to dynamically sized array for quick access.
         _adminAddresses.push(adminAddress);
         // Give Institution access to the deployed voting token
@@ -102,12 +102,10 @@ contract Institution is ApprovalQueue {
         super.approveRequest(submittingAddress);
 
         bytes32[] memory data = getRequestData(submittingAddress);
-        string memory adminFirstName;
-        string memory adminSurname;
-        adminFirstName = super.bytes32ToString(data[0]);
-        adminSurname = super.bytes32ToString(data[1]);
+        string memory adminName;
+        adminName = super.bytes32ToString(data[0]);
         // Store the new admin info in mapping and array.
-        addNewAdmin(adminFirstName, adminSurname, submittingAddress);
+        addNewAdmin(adminName, submittingAddress);
 
         // New Institution created sucessfully so set the request to not pending.
         _approvalRequestQueue[submittingAddress].isPending = false;
@@ -122,11 +120,11 @@ contract Institution is ApprovalQueue {
     }
     
 
-    function addNewAdmin(string memory adminFirstName, string memory adminSurname, address adminAddress)
+    function addNewAdmin(string memory adminName, address adminAddress)
     public isAdmin(msg.sender) isAuthorisedAdmin(msg.sender) {
         // Check for duplicate admin address
         require(!isAdminStored(adminAddress),"This admin address has already been added");
-        _institutionAdmins[adminAddress] = InstitutionAdmin(adminFirstName, adminSurname, true, true);
+        _institutionAdmins[adminAddress] = InstitutionAdmin(adminName, true, true);
          // Add address of newly created Institutions to dynamically sized array for quick access.
         _adminAddresses.push(adminAddress);
     }
@@ -147,12 +145,11 @@ contract Institution is ApprovalQueue {
         _;
     }
 
-    function getAdmin(address storedAdmin) public view returns(string memory, string memory, bool) {
+    function getAdmin(address storedAdmin) public view returns(string memory, bool) {
         // require(isAdminStored(storedAdmin), "Admin address not found"); // TODO shouldn't need this, as we'll be using the array as the index.
         if (isAdminStored(storedAdmin)) { // TODO this might not be reachable as the return is in the if if it's anything like Java and
         //the comment above should apply about using the array as the inex
-            return (_institutionAdmins[storedAdmin].firstName, _institutionAdmins[storedAdmin].surname,
-            _institutionAdmins[storedAdmin].isAuthorised);
+            return (_institutionAdmins[storedAdmin].name, _institutionAdmins[storedAdmin].isAuthorised);
         }
 
     }
@@ -167,18 +164,18 @@ contract Institution is ApprovalQueue {
     }
 
 
-    ///////////ELECTION AND VOTER APPROVAL OPERATIONS///////////
+    ///////////ELECTION OPERATIONS///////////
 
     // Emit an event on Institution contract creation.
     event NewElectionCreated(address election);
     /**
     Create a new Election contract which can then be configured by a customer per their requirements. */
-    function createElection(uint256 openingTime, uint256  closingTime) public isAdmin(msg.sender) isAuthorisedAdmin(msg.sender) {
+    function createElection(uint256 openingTime, uint256  closingTime, string memory description) public isAdmin(msg.sender) isAuthorisedAdmin(msg.sender) {
         _tokenAuthorisation = new VotingTokenAuthorisation(Institution(this), msg.sender, openingTime, closingTime, _deployedVotingToken);
         // Let VotingTokenAuthorisation have the role as minter so it can mint tokens for voters upon request.
         _deployedVotingToken.addMinter(address(_tokenAuthorisation));
         // Create new Election contract.
-        Election election = new Election(address(this), _tokenAuthorisation, _deployedVotingToken);
+        Election election = new Election(address(this), _tokenAuthorisation, _deployedVotingToken, description);
         // Get the address of the newly created Election contract.
         address electionContractAddress = (address(election));
         // Add information about the newly created contract so it can be accessed later.
@@ -199,11 +196,48 @@ contract Institution is ApprovalQueue {
         return _electionAddressMapping[election].isAddress;
     }
 
+    ///////////CANDIDATE APPROVAL OPERATIONS///////////
+
+    // Emit an event on Institution contract creation.
+    event NewCandidateApproved(address candidate);
+
+    function approveCandidateRequest(address submittingAddress) public {
+        super.approveRequest(submittingAddress);
+
+        bytes32[] memory data = getRequestData(submittingAddress);
+        string memory candidateName;
+        candidateName = super.bytes32ToString(data[0]);
+        address election = _approvalRequestQueue[submittingAddress].election;
+        Election(election).addNewCandidate(msg.sender, candidateName, submittingAddress);
+        // New Institution created sucessfully so set the request to not pending.
+        _approvalRequestQueue[submittingAddress].isPending = false;
+        // Emit the succesfull approval of the new admin.
+
+        emit NewCandidateApproved(submittingAddress);
+    }
+
+    function submitCandidateApprovalRequest(bytes32[] memory requestData, address electionAddress) public {
+        require(!_approvalRequestQueue[msg.sender].isPending, "You have an outstanding request, please wait for that to be processed");
+        require(!isApprovalStored(msg.sender), "This approval has already been submitted!");
+        ApprovalRequest memory newApprovalRequest;
+        // Initialise new approval request
+        newApprovalRequest.submitter = msg.sender;
+        newApprovalRequest.isPending = true;
+        newApprovalRequest.approvalType = CANDIDATE_APPROVAL_REQUEST_TYPE;
+        newApprovalRequest.data = requestData;
+        newApprovalRequest.election = electionAddress;
+        newApprovalRequest.isInitialised = true;
+
+        // Add the approval request to the approval queue mapping, mapped by the
+        // prospective admin's address.
+        _approvalRequestQueue[msg.sender] = newApprovalRequest;
+    }
+
     // Emit an event on voter approval.
     event NewVoterApproved(address voter);
     function approveVoterRequest(address submittingAddress, uint amount) public isAdmin(msg.sender){
         super.approveRequest(submittingAddress);
-        require(isApprovalStored(submittingAddress), "Approval not found!");
+
         //the comment above should apply about using the array as the inex
         address election = _approvalRequestQueue[submittingAddress].election;
         _tokenAuthorisation.sendVotingToken(submittingAddress, amount, msg.sender);
@@ -218,8 +252,9 @@ contract Institution is ApprovalQueue {
 
     // Request data will contain election address they are requesting approval for!!!
     function submitVoterApprovalRequest(address electionAddress) public {
+        require(!_approvalRequestQueue[msg.sender].isPending, "You have an outstanding request, please wait for that to be processed");
+        require(!isApprovalStored(msg.sender), "This approval has already been submitted!");
         ApprovalRequest memory newApprovalRequest;
-
         // Initialise new approval request
         newApprovalRequest.submitter = msg.sender;
         newApprovalRequest.isPending = true;

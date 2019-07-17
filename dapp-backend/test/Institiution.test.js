@@ -25,7 +25,7 @@ contract("Institution", accounts => {
 
   // The deployed child Election contract address of Institution
   let newElectionContractAddress;
-
+  let newElectionContractInstance;
 
   // My account as the owner and deployer of the contract.
   const developerAccount = accounts[0];
@@ -44,56 +44,61 @@ contract("Institution", accounts => {
   const prospectiveCandidate2 = accounts[8];
   const prospectiveCandidate3 = accounts[9];
 
-  // Admin data
+  // Institution data
   const institutionName = "Ulster University";
-  const adminFirstName = "John";
-  const adminSurname = "Francis";
-
+  const adminName = "John Francis"; // An admin must be initialised with an Institution
   const newInstitutionRequestData = [
     institutionName,
-    adminFirstName,
-    adminSurname
-  ];
-
-  const newAdminRequestData = [
-    adminFirstName,
-    adminSurname
+    adminName
   ];
 
   (newRequestDataAsBytes32 = newInstitutionRequestData.map(
     newInstitutionRequestData => asciiToHex(newInstitutionRequestData)
   ));
 
+  // Admin data
+  const newAdminRequestData = [
+    adminName
+  ];
+
   (newAdminRequestDataAsBytes32 = newAdminRequestData.map(
     newAdminRequestData => asciiToHex(newAdminRequestData)
   ));
 
-  // Election Candidate data
-  const candidateFirstName = "Abraham";
-  const candidateSurname = "Lincoln";    
+  // Candidate data
+  let candidateName = "Jeff James"
+  const newCandidateRequestData = [
+    candidateName
+  ]; 
 
-    describe("Deploy and use the child institution contract", function() {
-      before(async function() {
-        universityVoting = await UniversityVoting.deployed();
-        // Submit the approval from 'prospective admin' addresss
-        await universityVoting.submitInstitutionApprovalRequest(
-          newRequestDataAsBytes32,
-          { from: prospectiveAdmin1 }
-        );
-        // Developer Approves the request and UniversityVoting contract the new Institution contract.
-        const transactionReceipt = await universityVoting.approveInstitutionRequest(
-          prospectiveAdmin1,
-          { from: developerAccount }
-        );
-        // Get emitted event from initialiseInstitutionWithAdmin()
-        const log = await transactionReceipt.logs[0].args;
-        // Get newly created contract address from event and use truffle-contract to get an instance.
-        newInstitutionContractAddress = await Institution.at(log.institution);
-      });
-      after(async function() {
- //       await universityVoting.kill();
- //       await newInstitutionContractAddress.kill();
-      });
+  (newCandidateRequestDataAsBytes32 = newCandidateRequestData.map(
+    newCandidateRequestData => asciiToHex(newCandidateRequestData)
+  ));
+
+  context('Institution contract deployed', async function () {
+    before(async function() {
+      universityVoting = await UniversityVoting.deployed();
+      // Submit the approval from 'prospective admin' addresss
+      await universityVoting.submitInstitutionApprovalRequest(
+        newRequestDataAsBytes32,
+        { from: prospectiveAdmin1 }
+      );
+      // Developer Approves the request and UniversityVoting contract the new Institution contract.
+      const transactionReceipt = await universityVoting.approveInstitutionRequest(
+        prospectiveAdmin1,
+        { from: developerAccount }
+      );
+      // Get emitted event from initialiseInstitutionWithAdmin()
+      const log = await transactionReceipt.logs[0].args;
+      // Get newly created contract address from event and use truffle-contract to get an instance.
+      newInstitutionContractAddress = await Institution.at(log.institution);
+    });
+    after(async function() {
+//       await universityVoting.kill();
+//       await newInstitutionContractAddress.kill();
+    });
+
+    describe("Administrator actions", function() {
       it("submits a new admin aproval request", async function() {
         const transactionReceipt = await newInstitutionContractAddress.submitAdminApprovalRequest(
           newAdminRequestDataAsBytes32,
@@ -135,26 +140,26 @@ contract("Institution", accounts => {
         const admin = await newInstitutionContractAddress.getAdmin(
           prospectiveAdmin2
         );
-        admin[0].should.equal("John");
-        admin[1].should.equal("Francis");
-        admin[2].should.equal(true);
+        admin[0].should.equal("John Francis");
+        admin[1].should.equal(true);
       });
       it("reverts when a currently unauthorised admin tries to add another admin", async function() {
-        const newAdminFirstName = "Jim";
-        const newAdminSurname = "Holden";
+        const newAdminName = "JimHolden ";
         await newInstitutionContractAddress.unauthoriseAdmin(prospectiveAdmin2);
         await expectRevert(
           newInstitutionContractAddress.addNewAdmin(
-            newAdminFirstName,
-            newAdminSurname,
+            newAdminName,
             prospectiveAdmin3,
             { from: prospectiveAdmin2 }
           ),
           "Caller is an admin, but not currently authorised!"
         );
       }); 
+    });
+    describe("Election creation", function() {
       it("creates a new election.", async function() {
     //    let date = (new Date()).getTime();
+          const description = "Start of term election"
           await time.advanceBlock();
           const electionStartTime = await time.latest();
           const electionEndTime =  await electionStartTime + time.duration.weeks(1);
@@ -162,6 +167,7 @@ contract("Institution", accounts => {
           const transactionReceipt = await newInstitutionContractAddress.createElection(
           electionStartTime, 
           electionEndTime, 
+          description,
           { from: prospectiveAdmin1 }
         );
         const log = await transactionReceipt.logs[0].args;
@@ -170,6 +176,7 @@ contract("Institution", accounts => {
         truffleAssert.eventEmitted(transactionReceipt, "NewElectionCreated", event => {
           return newElectionContractAddress.should.equal(event.election);
         });
+        newElectionContractInstance = await Election.at(newElectionContractAddress);
       }); 
       it("stores the new election address in array", async function() {
         // Check if initialiseInstitutionWithAdmin() called from the beforeEach hook
@@ -179,14 +186,72 @@ contract("Institution", accounts => {
         );
         electionAddressThatShouldBeStored.should.equal(newElectionContractAddress);
       }); 
+    }); 
+    describe("Candidate approval requests", function() {
+      it("lets a candidate submit a request", async function() {
+        const transactionReceipt = await newInstitutionContractAddress.submitCandidateApprovalRequest(
+          newCandidateRequestDataAsBytes32,
+          newElectionContractAddress,
+          { from: prospectiveCandidate1 }
+        );
+      }); 
+      it("reverts on second candidate approval request while original pending", async function() {
+        await expectRevert(
+          newInstitutionContractAddress.submitCandidateApprovalRequest(
+            newCandidateRequestDataAsBytes32,
+            newElectionContractAddress,
+            { from: prospectiveCandidate1 }
+          ),
+          "You have an outstanding request, please wait for that to be processed"
+        );
+      });
+      it("lets admin approve the new candidate request", async function() {
+        const transactionReceipt = await newInstitutionContractAddress.approveCandidateRequest(
+          prospectiveCandidate1,
+          { from: prospectiveAdmin1 }
+        );
+        truffleAssert.eventEmitted(transactionReceipt, "NewCandidateApproved", event => {
+          return prospectiveCandidate1.should.equal(event.candidate);
+        });
+        // Check if candidate has been added to the Election created earlier.
+        const isCandidateStored = await newElectionContractInstance.isCandidateAddressStored(prospectiveCandidate1);
+        isCandidateStored.should.equal(true);
+      });
+      it("lets a second candidate submit a request and get approved", async function() {
+        const transactionSubmissionReceipt = await newInstitutionContractAddress.submitCandidateApprovalRequest(
+          newCandidateRequestDataAsBytes32,
+          newElectionContractAddress,
+          { from: prospectiveCandidate2 }
+        );
+        const transactionApprovalReceipt = await newInstitutionContractAddress.approveCandidateRequest(
+          prospectiveCandidate2,
+          { from: prospectiveAdmin1 }
+        );
+        truffleAssert.eventEmitted(transactionApprovalReceipt, "NewCandidateApproved", event => {
+          return prospectiveCandidate2.should.equal(event.candidate);
+        });
+        // Check if candidate has been added to the Election created earlier.
+        const isCandidateStored = await newElectionContractInstance.isCandidateAddressStored(prospectiveCandidate2);
+        isCandidateStored.should.equal(true);
+      }); 
+    }); 
+    describe("Voter approval requests", function() {
       it("lets a voter submit a request", async function() {
         const transactionReceipt = await newInstitutionContractAddress.submitVoterApprovalRequest(
           newElectionContractAddress,
           { from: prospectiveVoter1 }
         );
       }); 
-      it("let admin approve the new voter request and issue 1 VotingToken.", async function() {
-        const electionInstance = await Election.at(newElectionContractAddress);
+      it("reverts on second voter approval request while original pending", async function() {
+        await expectRevert(
+          newInstitutionContractAddress.submitVoterApprovalRequest(
+            newElectionContractAddress,
+            { from: prospectiveVoter1 }
+          ),
+          "You have an outstanding request, please wait for that to be processed"
+        );
+      });
+      it("lets admin approve the new voter request and issue 1 VotingToken", async function() {
         const tokenAmount = 1;
         const transactionReceipt = await newInstitutionContractAddress.approveVoterRequest(
           prospectiveVoter1,
@@ -197,8 +262,27 @@ contract("Institution", accounts => {
           return prospectiveVoter1.should.equal(event.voter);
         });
         // Check if the voter's token balance matches what was sent to them.
-        const voterTokenBalance = (await electionInstance.getVoterTokenbalance(prospectiveVoter1)).toNumber();
+        const voterTokenBalance = (await newElectionContractInstance.getVoterTokenbalance(prospectiveVoter1)).toNumber();
+        tokenAmount.should.be.bignumber.equal(voterTokenBalance);
+      });
+      it("lets a second voter submit a request and get approved with 1 token", async function() {
+        const transactionSubmissionReceipt = await newInstitutionContractAddress.submitVoterApprovalRequest(
+          newElectionContractAddress,
+          { from: prospectiveVoter2 }
+        );
+        const tokenAmount = 1;
+        const transactionApprovalReceipt = await newInstitutionContractAddress.approveVoterRequest(
+          prospectiveVoter2,
+          tokenAmount,
+          { from: prospectiveAdmin1 }
+        );
+        truffleAssert.eventEmitted(transactionApprovalReceipt, "NewVoterApproved", event => {
+          return prospectiveVoter2.should.equal(event.voter);
+        });
+        // Check if the voter's token balance matches what was sent to them.
+        const voterTokenBalance = (await newElectionContractInstance.getVoterTokenbalance(prospectiveVoter2)).toNumber();
         tokenAmount.should.be.bignumber.equal(voterTokenBalance);
       });
     });
+  });
 });
