@@ -41,8 +41,10 @@ contract Election {
     // Store candidate addresses in array for quick acceess and to reveal more information
     // about contract state, such as bow many candidate there are.
 
+    address[] _candidateArray;
+
     // Saving gas cost and using a simple counter as opposed to an array which isn't required for small amount of candidates
-    uint _candidateCounter;
+   // uint _candidateCounter;
 
     mapping(address => Voter) public _voterMapping;
 
@@ -67,21 +69,21 @@ contract Election {
     }
 
     // TODO add isAdmin modifier for code document
-    function concludeElection() public {
+    function concludeElection() public  {
         require(now > _closingTime, "The election is still within the set time");
+        require(_institution.isAdminStored(msg.sender), "Caller is not an admin!");
         _electionStatus = ElectionStatus.IN_PROGRESS;
     }
 
-    // TODO add isAdmin modifier for code document
-    function determineVictor() public {
-        
+    function determineVictor() internal {
+        for (uint i = 0; i <= _candidateArray.length; i++ ) {
+            
+        }
     }
     
     modifier isAdmin(address admin) {
         // Make sure caller is an Institution admin
         require(_institution.isAdminStored(admin), "Caller is not an admin!");
-        // If an admin, make sure they are authorised
-        require(_institution.isAdminAuthorised(admin), "Caller is an admin, but not currently authorised!");
         _;
     }
 
@@ -101,7 +103,7 @@ contract Election {
         // Add candidate to mapping for non-iterable access.
         _candidateMapping[candidateAddress] = Candidate(candidateName, true);
         // Keep track of total candidates for later usage, especially when tallying votes.
-        _candidateCounter++;
+        _candidateArray.push(candidateAddress);
     }
 
     function isCandidateAddressStored(address candidate) public view returns(bool) {
