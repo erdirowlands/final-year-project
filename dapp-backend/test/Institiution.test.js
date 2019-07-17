@@ -35,7 +35,7 @@ contract("Institution", accounts => {
   // Voter accounts
   const prospectiveVoter1 = accounts[4];
   const prospectiveVoter2 = accounts[5];
-  const prospectiveVoter3 = accounts[6];
+  const fakeVoter = accounts[6];
 
   // Candidate accounts
   const prospectiveCandidate1 = accounts[7];
@@ -365,6 +365,16 @@ contract("Institution", accounts => {
           { from: prospectiveVoter1 }
         ),
           "Voter doesn't have any Voting Tokens!"
+        );
+      });
+      it("reverts if an unapproved address tries to vote ", async function() {
+        await expectRevert(
+          newElectionContractInstance.vote(
+          prospectiveCandidate1,
+          tokenAmount,
+          { from: fakeVoter }
+        ),
+          "Voter address isn't stored"
         );
       });
     });
