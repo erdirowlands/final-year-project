@@ -203,13 +203,13 @@ contract Institution is ApprovalQueue {
     function approveVoterRequest(address submittingAddress, uint amount) public isAdmin(msg.sender){
         super.approveRequest(submittingAddress);
 
-        // TODO need to change from hardcoded amount of 1 to customisable
         _tokenAuthorisation.sendVotingToken(submittingAddress, amount);
         // New Institution created sucessfully so set the request to not pending.
         _approvalRequestQueue[submittingAddress].isPending = false;
 
     }
 
+    // Request data will contain election address they are requesting approval for!!!
     function submitVoterApprovalRequest(bytes32[] memory requestData) public {
         super.submitApprovalRequest(VOTER_APPROVAL_REQUEST_TYPE, requestData);
     }

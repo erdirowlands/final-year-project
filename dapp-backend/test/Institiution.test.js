@@ -182,12 +182,14 @@ contract("Institution", accounts => {
         electionAddressThatShouldBeStored.should.equal(newElectionContractAddress);
       }); 
       it("lets a voter submit a request", async function() {
-        let voterRequestData = []; 
-        voterRequestData = asciiToHex(voterRequestData);
-        const electionAddressThatShouldBeStored = await newInstitutionContractAddress._electionAddresses(
-          0
+        let voterRequestData = [newElectionContractAddress]; 
+        (voterRequestData = newInstitutionRequestData.map(
+          voterRequestData => asciiToHex(voterRequestData)
+        ));
+        const transactionReceipt = await newInstitutionContractAddress.submitVoterApprovalRequest(
+          newAdminRequestDataAsBytes32,
+          { from: prospectiveVoter1 }
         );
-        electionAddressThatShouldBeStored.should.equal(newElectionContractAddress);
       }); 
     });
 });
