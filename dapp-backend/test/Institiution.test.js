@@ -270,25 +270,30 @@ contract("Institution", accounts => {
         const before = web3.utils.toBN(tokenAmount).toString();
         actual.should.equal(before);
     //    usefulBalance.should.be.bignumber.equal(voterTokenBalance);
-      }); /*
+      }); 
       it("lets a second voter submit a request and get approved with 1 token", async function() {
         const transactionSubmissionReceipt = await newInstitutionContractAddress.submitVoterApprovalRequest(
           newElectionContractAddress,
           { from: prospectiveVoter2 }
         );
-        const tokenAmount = 1;
-        const transactionApprovalReceipt = await newInstitutionContractAddress.approveVoterRequest(
+      //let decimals = Utils.toBN(18);
+      //let amount = Utils.toBN(10);
+      //let value = amount.mul(Utils.toBN(1).pow(decimals));
+        const tokenAmount = Utils.toWei('1', 'ether');
+        const transactionReceipt = await newInstitutionContractAddress.approveVoterRequest(
           prospectiveVoter2,
           tokenAmount,
           { from: prospectiveAdmin1 }
         );
-        truffleAssert.eventEmitted(transactionApprovalReceipt, "NewVoterApproved", event => {
+        truffleAssert.eventEmitted(transactionReceipt, "NewVoterApproved", event => {
           return prospectiveVoter2.should.equal(event.voter);
         });
         // Check if the voter's token balance matches what was sent to them.
-        const voterTokenBalance = (await newElectionContractInstance.getVoterTokenbalance(prospectiveVoter2)).toNumber();
-        tokenAmount.should.be.bignumber.equal(voterTokenBalance);
-      }); */
+        const voterTokenBalance = await newElectionContractInstance.getVoterTokenbalance({from: prospectiveVoter2 });
+       // const usefulBalance = Utils.toWei(voterTokenBalance, 'ether');
+        const actual  = web3.utils.toBN(voterTokenBalance).toString();
+        const before = web3.utils.toBN(tokenAmount).toString();
+      }); 
     }); 
     describe("Election voting", function() {
       it("lets a voter vote for a candidate by sending one voting token", async function() {
@@ -304,7 +309,7 @@ contract("Institution", accounts => {
       //  const voterTokenBalance = await newElectionContractInstance.getVoterTokenbalance(prospectiveVoter1);
      //   const actual  = web3.utils.toBN(voterTokenBalance).toString();
      //   actual.should.equal('1000000000000000000');
-      let tokenAmountAfter =  Utils.toWei('1', 'ether');
+      let tokenAmountAfter =  Utils.toWei('1', 'ether')
         const transactionReceipt = await newElectionContractInstance.vote(
         prospectiveCandidate1,
         tokenAmountAfter,
