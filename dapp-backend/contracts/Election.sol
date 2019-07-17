@@ -45,7 +45,6 @@ contract Election {
     mapping(address => Candidate) public _candidateMapping;
     // Store candidate addresses in array for quick acceess and to reveal more information
     // about contract state, such as bow many candidate there are.
-    address[] public _candidateAddressArray;
 
     mapping(address => Voter) public _voterMapping;
 
@@ -71,9 +70,7 @@ contract Election {
 
     ///////////VOTING///////////
 
-    function vote(address candidate,  uint weight) public  {
-        require(isVoterAddressStored(msg.sender), "Voter address isn't stored");
-        require(isVoterATokenHolder(msg.sender), "Voter doesn't have any Voting Tokens!");
+    function vote(address candidate,  uint weight) public ableToVote(msg.sender) {
         _votingToken.vote(msg.sender, candidate, weight);
     }
 
@@ -86,8 +83,6 @@ contract Election {
         require(!isCandidateAddressStored(candidateAddress),"This candidateAddress address has already been added");
         // Add candidate to mapping for non-iterable access.
         _candidateMapping[candidateAddress] = Candidate(candidateName, 0, false,  true, true);
-         // Add address of newly created candidate to dynamically sized array for quick access.
-        _candidateAddressArray.push(candidateAddress);
     }
 
     function isCandidateAVictor(address candidate) public view returns(bool) {
@@ -118,6 +113,12 @@ contract Election {
         _voterAddressArray.push(voter);
     }
 
+    modifier ableToVote(address voter) {
+        require(isVoterAddressStored(voter), "Voter address isn't stored");
+        require(isVoterATokenHolder(voter), "Voter doesn't have any Voting Tokens!");
+        _;
+    }
+
     function isVoterATokenHolder(address voter) public view returns(bool) {
         if ( _voterMapping[voter].votingTokenBalance == 0) {
             return false;
@@ -132,7 +133,10 @@ contract Election {
     function getTokenBalance() public view returns(uint) {
    //     return _voterMapping[voter].votingTokenBalance;
         return _votingToken.balanceOf(msg.sender);
-    }
+    } 
 
+    function getTotalVoters() public view returns(uint total) {
+        return _voterAddressArray.length;
+    }
 
 }
