@@ -17,6 +17,7 @@ import "./ApprovalQueue.sol";
  * Open Zeppelin crowdsale contracts are being inherited to provide automatic protection against reentrancy attacks and to
  * provide common crowdsale functionality without having to reinvent the wheel.
  */
+ // TODO check ownable is still relevant
 contract VotingTokenAuthorisation is MintedCrowdsale, TimedCrowdsale, Ownable, ApprovalQueue {
 
     string constant public voterApprovalRequestType = "voterApprovalRequest";
@@ -41,19 +42,23 @@ contract VotingTokenAuthorisation is MintedCrowdsale, TimedCrowdsale, Ownable, A
         _institution = institution;
     }
 
+    function approveVoterRequest(address submittingAddress) public {
+        super.approveRequest(submittingAddress);
+    }
+
     function submitVoterApprovalRequest(bytes32[] memory requestData) public {
        // institutionName adminFirstName adminSurname adminAddress
         super.submitApprovalRequest(voterApprovalRequestType, requestData);
     }
 
-    modifier isAdmin(address admin)  {
-        require(_institution.isAdminStored(admin), "Caller is not an admin!");
-        require(_institution.isAdminAuthorised(admin), "Caller is an admin but not authorised!");
-
-        _;
-    }
-
     function sendVotingToken(address voter, uint256 tokenAmount) public isAdmin(msg.sender) {
         super._deliverTokens(voter, tokenAmount);
     }
+
+    modifier isAdmin(address admin)  {
+        require(_institution.isAdminStored(admin), "Caller is not an admin!");
+        require(_institution.isAdminAuthorised(admin), "Caller is an admin but not authorised!");
+        _;
+    }
+
 }
