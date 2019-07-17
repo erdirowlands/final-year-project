@@ -265,6 +265,24 @@ contract("Institution", accounts => {
         const voterTokenBalance = (await newElectionContractInstance.getVoterTokenbalance(prospectiveVoter1)).toNumber();
         tokenAmount.should.be.bignumber.equal(voterTokenBalance);
       });
+      it("lets a second voter submit a request and get approved with 1 token", async function() {
+        const transactionSubmissionReceipt = await newInstitutionContractAddress.submitVoterApprovalRequest(
+          newElectionContractAddress,
+          { from: prospectiveVoter2 }
+        );
+        const tokenAmount = 1;
+        const transactionApprovalReceipt = await newInstitutionContractAddress.approveVoterRequest(
+          prospectiveVoter2,
+          tokenAmount,
+          { from: prospectiveAdmin1 }
+        );
+        truffleAssert.eventEmitted(transactionApprovalReceipt, "NewVoterApproved", event => {
+          return prospectiveVoter2.should.equal(event.voter);
+        });
+        // Check if the voter's token balance matches what was sent to them.
+        const voterTokenBalance = (await newElectionContractInstance.getVoterTokenbalance(prospectiveVoter2)).toNumber();
+        tokenAmount.should.be.bignumber.equal(voterTokenBalance);
+      });
     });
   });
 });
