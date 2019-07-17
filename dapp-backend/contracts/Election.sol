@@ -123,6 +123,7 @@ contract Election {
 
     modifier ableToVote(address voter) {
         require(isVoterAddressStored(voter), "Voter address isn't stored");
+        require(isVoterATokenHolder(voter), "Voter doesn't have any Voting Tokens!");
         _;
     }
 
