@@ -1,4 +1,6 @@
 const BigNumber = web3.BigNumber;
+const Utils = web3.utils;
+
 const truffleAssert = require("truffle-assertions");
 const { expectRevert, time, BN } = require("openzeppelin-test-helpers");
 const { asciiToHex } = require("web3-utils");
@@ -282,6 +284,13 @@ contract("Institution", accounts => {
       });
     });
     describe("Election voting", function() {
+      it("lets a voter vote for a candidate by sending one voting token", async function() {
+        const transactionReceipt = await newElectionContractInstance.vote(
+          prospectiveCandidate1,
+           Utils.toWei('1'),
+          { from: prospectiveVoter1 }
+        );
+      }); 
     });
   });
 });
