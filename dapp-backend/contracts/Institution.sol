@@ -207,7 +207,8 @@ contract Institution is ApprovalQueue {
         bytes32[] memory data = getRequestData(submittingAddress);
         string memory candidateName;
         candidateName = super.bytes32ToString(data[0]);
-
+        address election = _approvalRequestQueue[submittingAddress].election;
+        Election(election).addNewCandidate(msg.sender, candidateName, submittingAddress);
         // New Institution created sucessfully so set the request to not pending.
         _approvalRequestQueue[submittingAddress].isPending = false;
         // Emit the succesfull approval of the new admin.
