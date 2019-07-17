@@ -15,20 +15,15 @@ contract Election {
 
     //uint startTime;
    // uint runningTime;
-    ElectionStatus _electionStatus;
-    VotingToken _votingToken;
-    VotingTokenAuthorisation _votingTokenAuthorisation; // The address of the VotingTokenSale contract for this election
-    Institution _institution;
-    string _description;
+    ElectionStatus public _electionStatus;
+    VotingToken public _votingToken;
+    VotingTokenAuthorisation public _votingTokenAuthorisation; // The address of the VotingTokenSale contract for this election
+    Institution public _institution;
+    string public _description;
+    address public v_ictor;
 
     struct Candidate {
         string name;
-     //   string surname;
-        // TODO change name to reflect this could be fractional voting
-        uint totalVotes;
-        bool isVictor;
-        // Allows a candidate to step down.
-        bool isActive;
         // Allow the candidates mapping to be easily queried for admins that exist.
         bool isInitialised;
     }
@@ -99,25 +94,13 @@ contract Election {
         // Check for duplicate candidate address
         require(!isCandidateAddressStored(candidateAddress),"This candidateAddress address has already been added");
         // Add candidate to mapping for non-iterable access.
-        _candidateMapping[candidateAddress] = Candidate(candidateName, 0, false,  true, true);
+        _candidateMapping[candidateAddress] = Candidate(candidateName, true);
         // Keep track of total candidates for later usage, especially when tallying votes.
         _candidateCounter++;
     }
 
-    function isCandidateAVictor(address candidate) public view returns(bool) {
-        return _candidateMapping[candidate].isVictor;
-    }
-
-    function isCandidateActive(address candidate) public view returns(bool) {
-        return _candidateMapping[candidate].isActive;
-    }
-
     function isCandidateAddressStored(address candidate) public view returns(bool) {
         return _candidateMapping[candidate].isInitialised;
-    }
-
-    function getTotalCandidateVotes(address candidate) public view returns(uint) {
-        return _candidateMapping[candidate].totalVotes;
     }
 
     ///////////VOTER DATA OPERATIONS///////////
