@@ -137,7 +137,7 @@ contract Election {
         return _voterMapping[voter].isInitialised;
     }
 
-    function getVoterTokenbalance() public view returns(uint) {
+    function getTokenBalance() public view returns(uint) {
    //     return _voterMapping[voter].votingTokenBalance;
         return _votingToken.balanceOf(msg.sender);
     } 
