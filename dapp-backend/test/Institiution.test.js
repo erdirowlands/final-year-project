@@ -242,6 +242,15 @@ contract("Institution", accounts => {
           { from: prospectiveVoter1 }
         );
       }); 
+      it("reverts on second voter approval request while original pending", async function() {
+        await expectRevert(
+          newInstitutionContractAddress.submitVoterApprovalRequest(
+            newElectionContractAddress,
+            { from: prospectiveVoter1 }
+          ),
+          "You have an outstanding request, please wait for that to be processed"
+        );
+      });
       it("lets admin approve the new voter request and issue 1 VotingToken", async function() {
         const tokenAmount = 1;
         const transactionReceipt = await newInstitutionContractAddress.approveVoterRequest(
