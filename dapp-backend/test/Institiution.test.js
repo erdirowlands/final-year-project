@@ -264,7 +264,7 @@ contract("Institution", accounts => {
           return prospectiveVoter1.should.equal(event.voter);
         });
         // Check if the voter's token balance matches what was sent to them.
-        const voterTokenBalance = await newElectionContractInstance.getVoterTokenbalance({from: prospectiveAdmin1 });
+        const voterTokenBalance = await newElectionContractInstance.getVoterTokenbalance({from: prospectiveVoter1 });
        // const usefulBalance = Utils.toWei(voterTokenBalance, 'ether');
         const actual  = web3.utils.toBN(voterTokenBalance).toString();
         const before = web3.utils.toBN(tokenAmount).toString();
