@@ -76,18 +76,7 @@ contract Election {
         _electionStatus = ElectionStatus.CONCLUDED;
 
     }
-/*
-    function determineVictor() public   {
-        address candAddress;
-        uint256 winningVoteCount = 0;
-        for (uint8 i = 0; i < _candidateArray.length; i++)
-            candAddress = _candidateArray[i];
-            if (_votingToken.balanceOf(candAddress) > winningVoteCount) {
-                winningVoteCount = _votingToken.balanceOf(candAddress);
-                _victor = candAddress;
-            }
-    } 
-/* */
+
     function determineVictor() internal {
         uint256 tokenCounter = 0;
         address candAddress;
@@ -100,33 +89,6 @@ contract Election {
         }
     }
  
-/*
-    function determineVictor() internal {
-        address candAddress;
-        _victor = _candidateArray[0];
-        for (uint i = 0; i < _candidateArray.length; i++ ) {
-            candAddress = _candidateArray[i];
-            if (_votingToken.balanceOf(_victor) < _votingToken.balanceOf(candAddress)) {
-                _victor = candAddress;
-            }
-        }
-        
-    } 
-
-    
-
-/* 
-    function determineVictor() internal view {
-        address candAddress;
-        for (uint i = 0; i < _candidateArray.length; i++ ) {
-            candAddress = _candidateArray[i];
-            if (_votingToken.balanceOf(candAddress) < _votingToken.balanceOf(candAddress)) {
-                _votingToken.balanceOf(_victor);
-            }
-        //  _victor = _candidateArray[i];
-        } 
-    } */
-    
     modifier isAdmin(address admin) {
         // Make sure caller is an Institution admin
         require(_institution.isAdminStored(admin), "Caller is not an admin!");

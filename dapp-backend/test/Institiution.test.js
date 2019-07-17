@@ -382,7 +382,7 @@ contract("Institution", accounts => {
       });
     });
     describe("Election Conclusion", function() {
-      it("gets the election results", async function() {
+      it("tallys the election and returns the correct winner", async function() {
         const transactionSubmissionReceipt = await newInstitutionContractAddress.submitVoterApprovalRequest(
           newElectionContractAddress,
           { from: prospectiveVoter3 }
