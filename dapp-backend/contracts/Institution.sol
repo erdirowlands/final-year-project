@@ -13,6 +13,8 @@ contract Institution is ApprovalQueue {
 
     string public _institutionName;
     string constant public adminApprovalRequestType = "adminApprovalRequest";
+    string constant public voterApprovalRequestType = "voterApprovalRequest";
+
 
     VotingToken _deployedVotingToken;
 
@@ -22,6 +24,14 @@ contract Institution is ApprovalQueue {
         address adminAddress;
         bool isAuthorised;
         // Allow the mapping _institutionAdmins to be easily queried for admins that exist.
+        bool isInitialised;
+    }
+
+    // Enable the prevention of duplicate addresses caused by
+    // unforseen, errant client requests.
+    struct VoterRequestStruct {
+        bool isPending;
+        bool isAuthorised;
         bool isInitialised;
     }
 
@@ -43,6 +53,9 @@ contract Institution is ApprovalQueue {
     // Crucially, however, this mapping will only store owners that have been authorised in
     // the first instance.
     mapping(address => InstitutionAdmin) public _institutionAdmins;
+
+    // Authorised voters
+    mapping(address => VoterRequestStruct) public _voterRequests;
 
     // Store admin addresses in array for quick acceess and to reveal more information
     // about contract state, such as bow many admins there are.
@@ -190,16 +203,15 @@ contract Institution is ApprovalQueue {
     }
 
     function approveVoterRequest(address submittingAddress) public isAdmin(msg.sender){
-    //    super.approveRequest(submittingAddress);
+        super.approveRequest(submittingAddress);
 
         // New Institution created sucessfully so set the request to not pending.
-      //  _approvalRequestQueue[submittingAddress].isPending = false;
-        // Emit the succesfull approval of the new admin.
+        _approvalRequestQueue[submittingAddress].isPending = false;
+
     }
 
     function submitVoterApprovalRequest(bytes32[] memory requestData) public {
-       // institutionName adminFirstName adminSurname adminAddress
-  //      super.submitApprovalRequest(voterApprovalRequestType, requestData);
+        super.submitApprovalRequest(voterApprovalRequestType, requestData);
     }
 
 

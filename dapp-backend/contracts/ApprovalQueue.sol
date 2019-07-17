@@ -52,7 +52,7 @@ contract ApprovalQueue {
      *
      * @dev inherriting contracts must override this based on their requirements.
      */
-    function approveRequest(address submittingAddress) public  {
+    function approveRequest(address submittingAddress) public  view {
         require(isApprovalStored(submittingAddress), "Approval not found");
     }
 
