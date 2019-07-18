@@ -21,6 +21,7 @@ export class WalletService {
 
 
   // TODO the loading of the wallet logic might be better servied in the login/registration component! Or maybe not?
+  // Well, we can provide this service to auth/login!!
   constructor(private web3ProviderService: Web3ProviderService) {
     this.web3Instance = this.web3ProviderService.getWeb3();
     this.wallet = this.web3Instance.eth.accounts.wallet;
@@ -32,11 +33,12 @@ export class WalletService {
     // Load the wallet if not in memory already.
     if (walletName !== null) {
       this.loadWallet('password', this.electionWalletName);
-      console.log(await this.web3Instance.eth.accounts.wallet);
       console.log('Wallet Found! So not creating one.');
+      this.wallet.clear();
     } else {
       console.log('No wallet found, would you like to create one?');
       this.createWallet('password');
+      this.wallet.clear();
     }
   }
 
