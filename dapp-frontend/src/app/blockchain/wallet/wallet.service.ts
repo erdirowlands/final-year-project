@@ -1,15 +1,14 @@
-import { Injectable } from '@angular/core';
-import { Web3ProviderService } from '../provider/web3provider.service';
+import { Injectable } from "@angular/core";
+import { Web3ProviderService } from "../provider/web3provider.service";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class WalletService {
-
   // TOTO Create auth service that should use fingerprint or password to provide password for loading wallet (or creating)
 
   private web3Instance: any;
-  private electionWalletName = 'university_voting_wallet';
+  private electionWalletName = "university_voting_wallet";
 
   // Hold all of the private keys for the user. One private key is used per election,
   // Dev might have to check if wallet has a value before using it, if not,
@@ -22,17 +21,17 @@ export class WalletService {
     this.initialiseWallet("password");
   }
 
-
   public initialiseWallet(password: string) {
-       // Load the wallet if not in memory already.
-       if (this.wallet === undefined) {
-        this.loadWallet("password", this.electionWalletName);
-        console.log(this.wallet);
-      }
-      else {
-         console.log('No wallet found, would you like to create one?');
-         this.createWallet("password");
-      }
+    this.wallet = localStorage.getItem(this.electionWalletName);
+    // Load the wallet if not in memory already.
+    if (this.wallet !== null) {
+      this. wallet = this.loadWallet('password', this.electionWalletName);
+      console.log("Wallet Found! So not creating one.");
+      console.log(this.wallet);
+    } else {
+      console.log('No wallet found, would you like to create one?');
+      this.createWallet('password');
+    }
   }
 
   /**
@@ -40,25 +39,28 @@ export class WalletService {
    * @param password the user's password which encrypts the wallet.
    */
   private createWallet(password: string) {
-   this.wallet  = this.web3Instance.eth.accounts.wallet.create(1);
-   this.wallet.save(password, this.electionWalletName);
-   //this.wallet = this.web3Instance.eth.accounts.wallet.load("password", "university_voting_wallet");
-   console.log(this.wallet);
+    this.wallet = this.web3Instance.eth.accounts.wallet.create(1);
+    this.wallet.save(password, this.electionWalletName);
+    //this.wallet = this.web3Instance.eth.accounts.wallet.load("password", "university_voting_wallet");
+    console.log(this.wallet);
 
-  // let accounts;
-   // This will return either the accounts from the node, or if present and in that
-   // case preferentially, the accounts in the "Web 3" wallet, i.e. if I've loaded
-   // a wallet from local storage or created a new one. WIll be handy for getting
-   // all private keys for elections, to show which elections a user if verified for.
-  // accounts = await this.web3Instance.eth.getAccounts();
-  // console.log(accounts);
+    // let accounts;
+    // This will return either the accounts from the node, or if present and in that
+    // case preferentially, the accounts in the "Web 3" wallet, i.e. if I've loaded
+    // a wallet from local storage or created a new one. WIll be handy for getting
+    // all private keys for elections, to show which elections a user if verified for.
+    // accounts = await this.web3Instance.eth.getAccounts();
+    // console.log(accounts);
   }
 
   // TODO Change .load() to use function params.
   // TODO Should I return the wallet and pass value to caller, or set the class member wallet
   // directly here? - Think we'll go with the second option, and make this private.
   private loadWallet(password: string, walletName: string) {
-    this.wallet = this.web3Instance.eth.accounts.wallet.load(password, walletName);
+    return this.web3Instance.eth.accounts.wallet.load(
+      password,
+      walletName
+    );
   }
 
   /**
@@ -69,20 +71,24 @@ export class WalletService {
     const newAccount = this.web3Instance.eth.accounts.create();
   }
 
-  public async signVotingTransaction(candidateAddress: string, password: string) {
-    // const wallet: 
-    if (this.wallet !== undefined) {  // Shouldn't be undefined as the user will be logged in!
-  //    const loadedWallet = this.loadWallet(password);
+  public async signVotingTransaction(
+    candidateAddress: string,
+    password: string
+  ) {
+    // const wallet:
+    if (this.wallet !== undefined) {
+      // Shouldn't be undefined as the user will be logged in!
+      //    const loadedWallet = this.loadWallet(password);
     }
     // this.wallet
     const transactionParameters = {
       to: candidateAddress,
       // from: this.accountAddress,
       gasPrice: 5000000000,
-      gasLimit: 21000,
+      gasLimit: 21000
       // chainId: 3
     };
 
-   // this.web3Instance.signVotingTransaction();
+    // this.web3Instance.signVotingTransaction();
   }
 }
