@@ -30,7 +30,7 @@ contract UniversityVoting is Ownable, ApprovalQueue {
         bool isAddress;
     }
 
-    constructor () public {
+    constructor () payable public {
         payableOwner = address(uint160(owner()));
     }
 
@@ -125,5 +125,10 @@ contract UniversityVoting is Ownable, ApprovalQueue {
         selfdestruct(payableOwner);
     } 
 
-
+    /**
+     * Allow contract to receive ether after it has been deployed, if required.
+     * This means that Institution holds ether and can pass it to admins and voters once approved.
+     */
+    function () external payable {
+    }
 }

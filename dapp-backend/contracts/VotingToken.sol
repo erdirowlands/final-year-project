@@ -9,11 +9,15 @@ import "./UniversityVoting.sol";
 
 contract VotingToken is ERC20Mintable, ERC20Detailed{
 
+    
     UniversityVoting universityVoting;
+
+    
 
     constructor (address universityVotingAddress, string memory name, string memory symbol, uint8 decimals)
     ERC20Detailed(name, symbol, decimals) public {
-        universityVoting = UniversityVoting(universityVotingAddress);
+        address payable payableUniversityVoting = address(uint160(universityVotingAddress));
+        universityVoting = UniversityVoting(payableUniversityVoting);
         addMinter(address(universityVoting));
         _mint(address(universityVoting), 1000);
     }
