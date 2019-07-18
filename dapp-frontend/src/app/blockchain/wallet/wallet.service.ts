@@ -28,6 +28,9 @@ export class WalletService {
       this. wallet = this.loadWallet('password', this.electionWalletName);
       console.log("Wallet Found! So not creating one.");
       console.log(this.wallet);
+      // This will clear all wallets from memory - TODO use in auth flow when logged out.
+      this.web3Instance.eth.accounts.wallet.clear();
+      console.log(this.wallet);
     } else {
       console.log('No wallet found, would you like to create one?');
       this.createWallet('password');
