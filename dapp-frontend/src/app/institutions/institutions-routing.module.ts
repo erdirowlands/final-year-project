@@ -19,21 +19,22 @@ const routes: Routes = [
             path: ':institutionId',
             loadChildren:
               './select-institution/institution-details/institution-details.module#InstitutionDetailsPageModule'
-          }
-        ]
-      }
-    ]
-  },
-  {
-    path: 'submit-institution',
-    loadChildren:
-      './submit-institution/submit-institution.module#SubmitInstitutionPageModule'
-  },
-  {
-    path: '',
-    redirectTo: '/institutions/institutions-tabs/select-institution',
-    pathMatch: 'full'
-  }
+            }
+          ]
+        },
+        {
+          path: 'submit-institution',
+          loadChildren:
+            './submit-institution/submit-institution.module#SubmitInstitutionPageModule'
+        },
+        {
+          path: '',
+          redirectTo: '/institutions/institutions-tabs/select-institution',
+          pathMatch: 'full'
+        }
+      ]
+    }
+      
 ];
 
 @NgModule({
