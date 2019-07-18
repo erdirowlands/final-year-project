@@ -14,7 +14,8 @@ const routes: Routes = [
     path: 'elections',
     loadChildren: './elections/elections.module#ElectionsPageModule',
     canLoad: [AuthGuard]
-  }
+  },
+  { path: 'election-details', loadChildren: './elections/all-elections/election-details/election-details.module#ElectionDetailsPageModule' }
 ];
 @NgModule({
   imports: [
