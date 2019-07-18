@@ -16,7 +16,7 @@ export class Web3ProviderService {
   // of webjs 'accounts' package as possible; and have opted not to use the Typescript definitions.
   public web3: any;
 
-  constructor() { 
+  constructor() {
     this.createWeb3();
   }
 
