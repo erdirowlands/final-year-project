@@ -3,7 +3,8 @@ import {
   ActivatedRouteSnapshot,
   RouterStateSnapshot,
   UrlTree,
-  CanLoad
+  CanLoad,
+  Router
 } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
@@ -13,12 +14,14 @@ import { AuthService } from './auth.service';
 })
 export class AuthGuard implements CanLoad {
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   canLoad(
     route: import('@angular/router').Route,
     segments: import('@angular/router').UrlSegment[]
   ): boolean | Observable<boolean> | Promise<boolean> {
-    return this.authService.userIsAuthenticated;
+    if (!this.authService.isUserAuthenticated) {
+      this.router.navigateByUrl('/auth');
+    } else { return this.authService.isUserAuthenticated; }
   }
 }
