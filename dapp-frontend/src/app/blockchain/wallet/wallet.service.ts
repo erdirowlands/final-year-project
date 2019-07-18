@@ -77,10 +77,7 @@ export class WalletService {
     const newAccount = this.web3Instance.eth.accounts.create();
   }
 
-  public async signVotingTransaction(
-    candidateAddress: string,
-    password: string
-  ) {
+  public async signTransaction(candidateAddress: string, password: string, params: string[]) {
     // const wallet:
     if (this.wallet !== undefined) {
       // Shouldn't be undefined as the user will be logged in!
@@ -99,7 +96,7 @@ export class WalletService {
   /**
    * Initialise web3 with the user's admin private key key.
    */
-  public async createWeb3Admin() {
+  public createWeb3Admin() {
     // this.web3 = new Web3(new Web3.providers.HttpProvider(environment.ethereum.provider));
     this.web3Instance = new Web3(new Web3.providers.HttpProvider(this.wallet[0]));
     console.log(this.web3Instance);
@@ -108,7 +105,7 @@ export class WalletService {
   /**
    * Initialise web3 with the user's voter private key.
    */
-  public async createWeb3Voter() {
+  public createWeb3Voter() {
     // this.web3 = new Web3(new Web3.providers.HttpProvider(environment.ethereum.provider));
     this.web3Instance = new Web3(new Web3.providers.HttpProvider(this.wallet[1].privateKey));
     console.log(this.web3Instance);
