@@ -14,19 +14,19 @@ const routes: Routes = [
             path: '',
             loadChildren:
               './all-institutions/all-institutions.module#AllInstitutionsPageModule'
-          }
+          },
           {
-              path: ''
+              path: ':institutionId',
+              loadChildren: './all-institutions/institution-details/institution-details.module#InstitutionDetailsPageModule'
           }
         ]
       }
     ]
-  },
-  { path: 'institution-details', loadChildren: './all-institutions/institution-details/institution-details.module#InstitutionDetailsPageModule' }
+  }
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild()],
+  imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
 export class InstitutionsRoutingModule {}
