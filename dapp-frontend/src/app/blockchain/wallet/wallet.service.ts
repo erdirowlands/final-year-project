@@ -52,9 +52,9 @@ export class WalletService {
 
   /**
    * Create an Ethereum wallet file encrypted by a password which is then saved to local storage.
-   * Two public-private key pairs are generated. The pair at index 0 is used by users when acting as 
+   * Two public-private key pairs are generated. The pair at index 0 is for users when acting as
    * Institution admins. The pair at index 1 is for users acting as voters in an election. Both pairs are stored
-   * in the same wallet because a user can be an admin and a voter, and this drastically simplifies
+   * in the same wallet because a user can be an admin and a voter, and this also drastically simplifies
    * wallet management in that the user doesn't have to remember two passwords.
    * @param password the user's password which encrypts the wallet.
    */
