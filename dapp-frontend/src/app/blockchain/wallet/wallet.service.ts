@@ -14,6 +14,7 @@ export class WalletService {
   // Hold all of the private keys for the user. One private key is used per election,
   // Dev might have to check if wallet has a value before using it, if not,
   // call wallet.load() on it if it has been cleared from memory.
+  // Can provide this instance to the rest of the app :) 
   private wallet: any;
 
   private electionWalletName = 'university_voting_wallet';
@@ -40,6 +41,10 @@ export class WalletService {
       this.createWallet('password');
       this.wallet.clear();
     }
+  }
+
+  public purgeWalletFromMemory() {
+    this.wallet.clear();
   }
 
   /**
