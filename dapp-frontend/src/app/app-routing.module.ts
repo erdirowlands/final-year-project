@@ -9,7 +9,9 @@ const routes: Routes = [
   { path: 'discover', loadChildren: './elections/discover/discover.module#DiscoverPageModule' },
   { path: 'discover', loadChildren: './institutions/discover/discover.module#DiscoverPageModule' },
   { path: 'create-institution', loadChildren: './institutions/create-institution/create-institution.module#CreateInstitutionPageModule' },
-  { path: 'create-election', loadChildren: './elections/create-election/create-election.module#CreateElectionPageModule' }
+  { path: 'create-election', loadChildren: './elections/create-election/create-election.module#CreateElectionPageModule' },
+  { path: 'account', loadChildren: './account/account.module#AccountPageModule' },
+  { path: 'election-details', loadChildren: './elections/discover/election-details/election-details.module#ElectionDetailsPageModule' },
 ];
 @NgModule({
   imports: [
