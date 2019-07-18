@@ -7,7 +7,9 @@ const routes: Routes = [
   { path: 'institutions', loadChildren: './institutions/institutions.module#InstitutionsPageModule' },
   { path: 'elections', loadChildren: './elections/elections.module#ElectionsPageModule' },
   { path: 'discover', loadChildren: './elections/discover/discover.module#DiscoverPageModule' },
-  { path: 'discover', loadChildren: './institutions/discover/discover.module#DiscoverPageModule' }
+  { path: 'discover', loadChildren: './institutions/discover/discover.module#DiscoverPageModule' },
+  { path: 'create-institution', loadChildren: './institutions/create-institution/create-institution.module#CreateInstitutionPageModule' },
+  { path: 'create-election', loadChildren: './elections/create-election/create-election.module#CreateElectionPageModule' }
 ];
 @NgModule({
   imports: [
