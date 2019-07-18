@@ -29,7 +29,6 @@ export class WalletService {
     // Web3 doesn't require a provider for wallet initialisation
     this.wallet = this.web3Instance.eth.accounts.wallet;
     this.initialiseWallet('password');
-
   }
 
   public initialiseWallet(password: string) {
