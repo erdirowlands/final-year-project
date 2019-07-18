@@ -1,5 +1,6 @@
 pragma solidity ^0.5.3;
 
+import "tabookey-gasless/contracts/RelayRecipient.sol";
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 import "./Institution.sol";
 import "./ApprovalQueue.sol";
@@ -15,7 +16,7 @@ import "./VotingToken.sol";
  * for the Election to be fully created, the customer will have to manually fund their address (or Voting System) with Ether? Or should it be for the purposes of this project, if a university
  * has access to this smart contract, then we can assume they've paid me with a debit card, or something, and I've authorised an account creation and added it to a list of approved addresses?  
 */
-contract UniversityVoting is Ownable, ApprovalQueue {
+contract UniversityVoting is Ownable, ApprovalQueue, RelayRecipient {
 
     // The payableOwner inherits from Open Zeppelin's Ownable contract
     // which is the deployer of the contract, i.e. the developer.
@@ -127,8 +128,17 @@ contract UniversityVoting is Ownable, ApprovalQueue {
 
     /**
      * Allow contract to receive ether after it has been deployed, if required.
-     * This means that Institution holds ether and can pass it to admins and voters once approved.
+     * 
      */
     function () external payable {
+    }
+
+
+    /////// GASSLESS ////////
+    function accept_relayed_call(address relay, address from, bytes encoded_function, uint gas_price, uint transaction_fee )
+    external view returns(uint32) {
+        // we simply trust all our known users.
+        if ( !my_users[from] ) return 10;
+        return 0;
     }
 }
