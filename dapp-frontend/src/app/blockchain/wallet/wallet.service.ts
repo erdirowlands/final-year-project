@@ -13,7 +13,7 @@ export class WalletService {
   // Hold all of the private keys for the user. One private key is used per election,
   // Dev might have to check if wallet has a value before using it, if not,
   // call wallet.load() on it if it has been cleared from memory.
-  private wallet: any;
+  // private wallet: any;
 
   // TODO the loading of the wallet logic might be better servied in the login/registration component! Or maybe not?
   constructor(private web3ProviderService: Web3ProviderService) {
@@ -21,16 +21,18 @@ export class WalletService {
     this.initialiseWallet("password");
   }
 
-  public initialiseWallet(password: string) {
-    this.wallet = localStorage.getItem(this.electionWalletName);
+  public async initialiseWallet(password: string) {
+    const walletName = localStorage.getItem(this.electionWalletName);
     // Load the wallet if not in memory already.
-    if (this.wallet !== null) {
-      this. wallet = this.loadWallet('password', this.electionWalletName);
+    if (walletName !== null) {
+      this.loadWallet('password', this.electionWalletName);
       console.log("Wallet Found! So not creating one.");
-      console.log(this.wallet);
-      // This will clear all wallets from memory - TODO use in auth flow when logged out.
+      console.log(await this.web3Instance.eth.accounts.wallet);
+      console.log(await this.web3Instance.eth.getAccounts());
+      // tslint:disable-next-line: max-line-length
+      // This doesn't clear variables I've set to wallet, only the Web3Wallet, so change to that flow - TODO use in auth flow when logged out.
       this.web3Instance.eth.accounts.wallet.clear();
-      console.log(this.wallet);
+      console.log(await this.web3Instance.eth.getAccounts());
     } else {
       console.log('No wallet found, would you like to create one?');
       this.createWallet('password');
@@ -60,7 +62,7 @@ export class WalletService {
   // TODO Should I return the wallet and pass value to caller, or set the class member wallet
   // directly here? - Think we'll go with the second option, and make this private.
   private loadWallet(password: string, walletName: string) {
-    return this.web3Instance.eth.accounts.wallet.load(
+      this.web3Instance.eth.accounts.wallet.load(
       password,
       walletName
     );
