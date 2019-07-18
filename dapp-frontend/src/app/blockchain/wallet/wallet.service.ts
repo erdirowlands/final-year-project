@@ -70,18 +70,16 @@ export class WalletService {
   }
 
   public async signVotingTransaction(candidateAddress: string, password: string) {
-
-    //const wallet: 
     if (this.wallet !== undefined) {
-  //    const loadedWallet = this.loadWallet(password);
+       const loadedWallet = this.loadWallet(password);
     }
-    //this.wallet
+    // this.wallet
     const transactionParameters = {
       to: candidateAddress,
-      //from: this.accountAddress,
+      // from: this.accountAddress,
       gasPrice: 5000000000,
       gasLimit: 21000,
-      //chainId: 3
+      // chainId: 3
     };
 
    // this.web3Instance.signVotingTransaction();
