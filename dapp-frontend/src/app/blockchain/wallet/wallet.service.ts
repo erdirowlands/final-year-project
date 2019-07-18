@@ -18,7 +18,7 @@ export class WalletService {
   // Can provide this instance to the rest of the app :) 
   private wallet: any;
 
-  private electionWalletName = 'university_voting_wallet';
+  private electionWalletName = 'university_voting_system_wallet';
 
 
 
@@ -52,10 +52,14 @@ export class WalletService {
 
   /**
    * Create an Ethereum wallet file encrypted by a password which is then saved to local storage.
+   * Two public-private key pairs are generated. The pair at index 0 is used by users when acting as 
+   * Institution admins. The pair at index 1 is for users acting as voters in an election. Both pairs are stored
+   * in the same wallet because a user can be an admin and a voter, and this drastically simplifies
+   * wallet management in that the user doesn't have to remember two passwords.
    * @param password the user's password which encrypts the wallet.
    */
   private createWallet(password: string) {
-    this.wallet.create(1);
+    this.wallet.create(2);
     this.wallet.save(password, this.electionWalletName);
   }
 
@@ -98,7 +102,7 @@ export class WalletService {
    */
   public async createWeb3Admin() {
     // this.web3 = new Web3(new Web3.providers.HttpProvider(environment.ethereum.provider));
-    this.web3Instance = new Web3(new Web3.providers.HttpProvider(this.wallet[1]));
+    this.web3Instance = new Web3(new Web3.providers.HttpProvider(this.wallet[0]));
     console.log(this.web3Instance);
   }
 
@@ -107,7 +111,7 @@ export class WalletService {
    */
   public async createWeb3Voter() {
     // this.web3 = new Web3(new Web3.providers.HttpProvider(environment.ethereum.provider));
-    this.web3Instance = new Web3(new Web3.providers.HttpProvider(this.wallet[0].privateKey));
+    this.web3Instance = new Web3(new Web3.providers.HttpProvider(this.wallet[1].privateKey));
     console.log(this.web3Instance);
   }
 
