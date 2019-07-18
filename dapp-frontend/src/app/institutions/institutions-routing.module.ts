@@ -8,21 +8,22 @@ const routes: Routes = [
     component: InstitutionsPage,
     children: [
       {
-        path: ' all-instiutions',
+        path: ' select-institution',
         children: [
           {
             path: '',
             loadChildren:
-              './all-institutions/all-institutions.module#AllInstitutionsPageModule'
+              './select-institution/select-institution.module#SelectInstitutionPageModule'
           },
           {
               path: ':institutionId',
-              loadChildren: './all-institutions/institution-details/institution-details.module#InstitutionDetailsPageModule'
+              loadChildren: './select-institution/institution-details/institution-details.module#InstitutionDetailsPageModule'
           }
         ]
       }
     ]
-  }
+  },
+  { path: 'submit-institution', loadChildren: './submit-institution/submit-institution.module#SubmitInstitutionPageModule' }
 ];
 
 @NgModule({
