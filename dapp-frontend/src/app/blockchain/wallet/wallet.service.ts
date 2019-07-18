@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Web3ProviderService } from '../provider/web3provider.service';
+import Web3 from 'web3';
 
 @Injectable({
   providedIn: 'root'
@@ -24,9 +25,11 @@ export class WalletService {
   // TODO the loading of the wallet logic might be better servied in the login/registration component! Or maybe not?
   // Well, we can provide this service to auth/login!!
   constructor(private web3ProviderService: Web3ProviderService) {
-    this.web3Instance = this.web3ProviderService.getWeb3();
+    // this.web3Instance = this.web3ProviderService.getWeb3();
+    // Web3 doesn't require a provider for wallet initialisation
     this.wallet = this.web3Instance.eth.accounts.wallet;
     this.initialiseWallet('password');
+
   }
 
   public initialiseWallet(password: string) {
@@ -88,7 +91,30 @@ export class WalletService {
       gasLimit: 21000
       // chainId: 3
     };
-
-    // this.web3Instance.signVotingTransaction();
   }
+
+  /**
+   * Initialise web3 with the user's admin private key key.
+   */
+  public async createWeb3Admin() {
+    // this.web3 = new Web3(new Web3.providers.HttpProvider(environment.ethereum.provider));
+    this.web3Instance = new Web3(new Web3.providers.HttpProvider(this.wallet[1]));
+    console.log(this.web3Instance);
+  }
+
+  /**
+   * Initialise web3 with the user's voter private key.
+   */
+  public async createWeb3Voter() {
+    // this.web3 = new Web3(new Web3.providers.HttpProvider(environment.ethereum.provider));
+    this.web3Instance = new Web3(new Web3.providers.HttpProvider(this.wallet[0].privateKey));
+    console.log(this.web3Instance);
+  }
+
+  public getWeb3() {
+    return this.web3Instance;
+  }
+
+  // this.web3Instance.signVotingTransaction();
+}
 }
