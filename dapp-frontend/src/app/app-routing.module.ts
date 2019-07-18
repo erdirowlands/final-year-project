@@ -12,6 +12,7 @@ const routes: Routes = [
   { path: 'create-election', loadChildren: './elections/create-election/create-election.module#CreateElectionPageModule' },
   { path: 'account', loadChildren: './account/account.module#AccountPageModule' },
   { path: 'election-details', loadChildren: './elections/discover/election-details/election-details.module#ElectionDetailsPageModule' },
+  { path: 'institution-details', loadChildren: './institutions/discover/institution-details/institution-details.module#InstitutionDetailsPageModule' },
 ];
 @NgModule({
   imports: [
