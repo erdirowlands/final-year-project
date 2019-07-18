@@ -70,8 +70,9 @@ export class WalletService {
   }
 
   public async signVotingTransaction(candidateAddress: string, password: string) {
-    if (this.wallet !== undefined) {
-       const loadedWallet = this.loadWallet(password);
+    // const wallet: 
+    if (this.wallet !== undefined) {  // Shouldn't be undefined as the user will be logged in!
+  //    const loadedWallet = this.loadWallet(password);
     }
     // this.wallet
     const transactionParameters = {
