@@ -7,13 +7,18 @@ import { Web3ProviderService } from '../provider/web3provider.service';
 export class WalletService {
   // TOTO Create auth service that should use fingerprint or password to provide password for loading wallet (or creating)
 
+  // Provide access to the web3js API and provides a connection to the Ethereum blockchain.
+  // The instance is injected by the web3Provider service as can be seen in the constructor.
   private web3Instance: any;
-  private electionWalletName = 'university_voting_wallet';
 
   // Hold all of the private keys for the user. One private key is used per election,
   // Dev might have to check if wallet has a value before using it, if not,
   // call wallet.load() on it if it has been cleared from memory.
   private wallet: any;
+
+  private electionWalletName = 'university_voting_wallet';
+
+
 
   // TODO the loading of the wallet logic might be better servied in the login/registration component! Or maybe not?
   constructor(private web3ProviderService: Web3ProviderService) {
