@@ -6,7 +6,8 @@ import { Injectable } from '@angular/core';
 export class AuthService {
 
   private _isUserAuthenticated = false;
-  private _logoutTimer: number;
+  private _logoutTimer: any;
+  private _duration = 60;
 
 
   constructor() { }
@@ -24,13 +25,13 @@ export class AuthService {
   }
 
 
-  private autoLogout(duration: number) {
-    if (this.activeLogoutTimer) {
-      clearTimeout(this.activeLogoutTimer);
+  private autoLogout() {
+    if (this._logoutTimer) {
+      clearTimeout(this._logoutTimer);
     }
-    this.activeLogoutTimer = setTimeout(() => {
+    this._logoutTimer = setTimeout(() => {
       this.logout();
-    }, duration);
+    }, this._duration);
   }
 
   public get isUserAuthenticated() {
