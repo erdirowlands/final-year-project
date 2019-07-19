@@ -17,15 +17,8 @@ export class AuthService {
   constructor(private walletService: WalletService) {}
 
   get isWalletDecrypted() {
-    return this.walletService.wallet.asObservable().pipe(
-      map(wallet => {
-        if (wallet) {
-          return true;
-        } else {
-          return false;
-        }
-      })
-    );
+    return this.walletService.walletObservable;
+    
   }
 
   login(password: string) {
