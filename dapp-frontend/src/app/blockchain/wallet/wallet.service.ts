@@ -23,7 +23,7 @@ export class WalletService {
   // Can provide this instance to the rest of the app :) 
   private _wallet: any;
 
-  private _keypairObservable = new BehaviorSubject<KeyPair>(null);
+  private _keypairObservable = new BehaviorSubject<string[]>(null);
 
   private _keypair: KeyPair;
 
@@ -42,12 +42,37 @@ export class WalletService {
     // Load the wallet if not in memory already.
     if (walletName !== null) {
       this.loadWallet('password', this._electionWalletName);
+      this.wallet[0].address
       console.log('Wallet Found! So not creating one.');
       //this._usefr = this.wallet;
     } else {
       console.log('No wallet found, would you like to create one?');
       this.createWallet('password');
     }
+  }
+
+  private getWalletKey() {
+    this._web3Instance.eth.getAccounts((err, accs) => {
+     
+     /* Could implement some error handling here - not sure what yet, wrong password? Think that''ll be for initialise wallet
+      if (err != null) {
+        alert(`There was an error fetching your accounts.`);
+        return;
+      }
+
+      // Get the initial account balance so it can be displayed.
+      if (accs.length == 0) {
+        alert(`Couldn't get any accounts! Make sure your Ethereum client is configured correctly.`);
+        return;
+      }
+      */
+      if (this._keypair.address != accs[0] || this._keypair.privateKey != accs[1] ) {
+        console.log(`Observed new accounts`);
+        this._keypairObservable.next(accs);
+        this._keypair.address = accs[0];
+        this._keypair.privateKey = accs[1];
+      }
+    });
   }
 
   /**
