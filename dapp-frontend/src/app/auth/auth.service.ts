@@ -17,9 +17,9 @@ export class AuthService {
   private _user = new BehaviorSubject<string>(null);
 
   constructor(private walletService: WalletService) {}
-/*
+
   get isWalletDecrypted() {
-    return this._user.asObservable().pipe(
+    return this.walletService._keypairObservable.asObservable().pipe(
       map(wallet => {
         if (wallet) {
           return true;
@@ -28,7 +28,7 @@ export class AuthService {
         }
       })
     );
-  } */
+  } 
 
   login(password: string) {
     this.isUserAuthenticated = true;

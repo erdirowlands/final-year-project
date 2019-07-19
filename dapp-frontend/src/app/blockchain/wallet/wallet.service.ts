@@ -23,7 +23,7 @@ export class WalletService {
   // Can provide this instance to the rest of the app :) 
   private _wallet: any;
 
-  private _keypairObservable = new BehaviorSubject<string[]>(null);
+  public _keypairObservable = new BehaviorSubject<string[]>(null);
 
   private _keypair: KeyPair;
 
