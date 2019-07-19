@@ -34,15 +34,14 @@ export class WalletService {
   constructor(private web3ProviderService: Web3ProviderService) {
     this._web3Instance = this.web3ProviderService.getWeb3();
     this._wallet = this._web3Instance.eth.accounts.wallet;
-    this.initialiseWallet('password');
   }
 
   public initialiseWallet(password: string) {
     const walletName = localStorage.getItem(this._electionWalletName);
     // Load the wallet if not in memory already.
     if (walletName !== null) {
-      this.loadWallet('password', this._electionWalletName);
-      this.getKeyPair();
+      this.getKeyPair(password);
+      console.log(this._wallet);
       console.log('Wallet Found! So not creating one.');
       //this._usefr = this.wallet;
     } else {
@@ -51,8 +50,8 @@ export class WalletService {
     }
   }
 
-  private getKeyPair() {
-    let accs = this.loadWallet('password', this._electionWalletName);
+  public getKeyPair(password: string) {
+    let accs = this.loadWallet(password, this._electionWalletName);
 
      console.log("ACCS:",accs);
       if (this._keypair == null   ) {
@@ -68,24 +67,30 @@ export class WalletService {
       }
   }
 
+  public secureWallet() {
+    this.secureWeb3Wallet();
+    this.secureObservableKeyPair();
+    this.secureKeyPair();
+  }
+
   /**
    * Sets the Web3 wallet's keypairs at all indexes to null.
    */
-  public secureWeb3Wallet() {
+  private secureWeb3Wallet() {
     this._wallet.clear();
   }
 
   /**
    * Sets the Web3 wallet's keypairs at all indexes to null.
    */
-  public secureObservableKeyPair() {
+  private secureObservableKeyPair() {
     this._keypairObservable = null;
   }
 
   /**
    * Sets the key-pair model's properties to null..
    */
-  public secureKeyPair() {
+  private secureKeyPair() {
     this._keypair.adminAddress = null;
     this._keypair.adminPrivateKey = null;
     this._keypair.voterAddress = null;

@@ -23,6 +23,15 @@ export class AuthGuard implements CanLoad {
     segments: UrlSegment[]
   ): Observable<boolean> | Promise<boolean> | boolean {
     return this.authService.isWalletDecrypted.pipe(
+      take(1),
+      switchMap(isDecrypted => {
+        if (isDecrypted) {
+          this.router.navigateByUrl(
+            '/institutions/institution-tabs/select-institution');
+        }
+        else return of(isDecrypted)
+
+      }),
       tap(isDecrypted => {
         if (!isDecrypted) {
           this.router.navigateByUrl('/auth');
@@ -30,7 +39,7 @@ export class AuthGuard implements CanLoad {
       })
     );
   }
-  }
+}
 
     /*
     if (!this.authService.isWalletDecrypted) {

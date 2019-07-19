@@ -18,6 +18,10 @@ export class AuthService {
 
   constructor(private walletService: WalletService) {}
 
+  public authenticateWallet(password: string) {
+    this.walletService.getKeyPair(password);
+  }
+
   get isWalletDecrypted() {
     return this.walletService._keypairObservable.asObservable().pipe(
       map(wallet => {
@@ -37,8 +41,7 @@ export class AuthService {
 
   logout() {
     this.isUserAuthenticated = false;
-    this.walletService.secureWeb3Wallet();
-    this.walletService.secureKeyPair();
+    this.walletService.secureWallet();
   }
 
   autoLogin() {

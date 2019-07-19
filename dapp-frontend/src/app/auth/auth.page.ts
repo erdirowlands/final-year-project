@@ -17,7 +17,12 @@ export class AuthPage implements OnInit {
   ngOnInit() {}
 
   login(password: string) {
-    this.authService.login(password);
+    try {
+      this.authService.authenticateWallet("passwsord");
+    } catch (error) {
+      alert("Wrong password")
+      
+    } //ERROR Error: Key derivation failed - possibly wrong password
     this.router.navigateByUrl(
       '/institutions/institution-tabs/select-institution'
     );
