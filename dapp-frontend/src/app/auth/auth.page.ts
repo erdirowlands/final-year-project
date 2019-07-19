@@ -18,19 +18,27 @@ export class AuthPage implements OnInit {
 
   constructor(private authService: AuthService, private router: Router) {}
 
+  private loadingCtrl: LoadingController;
+
   ngOnInit() {}
 
   
   login(password: string) {
-      try {
-      this.isLoading = true;
-      this.authService.authenticateWallet("password");
-     } catch (error) {
-     alert("Wrong password") //ERROR Error: Key derivation failed - possibly wrong password     
-    } 
+    this.isLoading = true;
+    this.loadingCtrl
+    .create({ keyboardClose: true, message: 'Logging in...' })
+    .then(loadingEl => {
+      loadingEl.present();
+      this.authService.authenticateWallet(password); 
     this.router.navigateByUrl(
       '/institutions/institution-tabs/select-institution'
-    ); 
+    );
+    errRes => {
+      loadingEl.dismiss();
+
+     //this.showAlert(message);
+    } 
+  });
   }
 
   onSubmit(form: NgForm) {
