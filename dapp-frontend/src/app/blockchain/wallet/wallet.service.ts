@@ -53,19 +53,7 @@ export class WalletService {
 
   private getKeyPair() {
     let accs = this.loadWallet('password', this._electionWalletName);
-     
-     /* Could implement some error handling here - not sure what yet, wrong password? Think that''ll be for initialise wallet
-      if (err != null) {
-        alert(`There was an error fetching your accounts.`);
-        return;
-      }
 
-      // Get the initial account balance so it can be displayed.
-      if (accs.length == 0) {
-        alert(`Couldn't get any accounts! Make sure your Ethereum client is configured correctly.`);
-        return;
-      }
-      */
      console.log("ACCS:",accs);
       if (this._keypair == null   ) {
         console.log(`Observed new accounts`);
@@ -88,11 +76,20 @@ export class WalletService {
   }
 
   /**
+   * Sets the Web3 wallet's keypairs at all indexes to null.
+   */
+  public secureObservableKeyPair() {
+    this._keypairObservable = null;
+  }
+
+  /**
    * Sets the key-pair model's properties to null..
    */
   public secureKeyPair() {
-    this._keypair.address = null;
-    this._keypair.privateKey = null;
+    this._keypair.adminAddress = null;
+    this._keypair.adminPrivateKey = null;
+    this._keypair.voterAddress = null;
+    this._keypair.voterPrivateKey = null;
   }
 
   /**
