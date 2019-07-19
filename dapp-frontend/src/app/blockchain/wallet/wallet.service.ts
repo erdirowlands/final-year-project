@@ -52,7 +52,7 @@ export class WalletService {
   }
 
   private async getKeyPair() {
-    let accs = await this._web3Instance.eth.getAccounts();
+    let accs = await this.loadWallet('password', this._electionWalletName);
      
      /* Could implement some error handling here - not sure what yet, wrong password? Think that''ll be for initialise wallet
       if (err != null) {
@@ -111,6 +111,7 @@ export class WalletService {
   // directly here? - Think we'll go with the second option, and make this private.
   private loadWallet(password: string, walletName: string) {
     this._wallet.load(password, walletName);
+    return this._wallet;
   }
 
   /**
