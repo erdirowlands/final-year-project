@@ -16,7 +16,7 @@ export class AuthService {
 
   constructor(private walletService: WalletService) {}
 
-  get userIsAuthenticated() {
+  get isWalletDecrypted() {
     return this.walletService.wallet().asObservable().pipe(
       map(wallet => {
         if (wallet) {
