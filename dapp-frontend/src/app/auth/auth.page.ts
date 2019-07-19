@@ -16,29 +16,31 @@ export class AuthPage implements OnInit {
   isLogin = true;
 
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router, private loadingCtrl: LoadingController, private alertCtrl: AlertController
+  ) { }
 
-  private loadingCtrl: LoadingController;
 
-  ngOnInit() {}
 
-  
+  ngOnInit() { }
+
+
   login(password: string) {
     this.isLoading = true;
     this.loadingCtrl
-    .create({ keyboardClose: true, message: 'Logging in...' })
-    .then(loadingEl => {
-      loadingEl.present();
-      this.authService.authenticateWallet(password); 
-    this.router.navigateByUrl(
-      '/institutions/institution-tabs/select-institution'
-    );
-    errRes => {
-      loadingEl.dismiss();
+      .create({ keyboardClose: true, message: 'Logging in...' })
+      .then(loadingEl => {
+        loadingEl.present();
+        this.authService.authenticateWallet(password);
+        loadingEl.dismiss();
+        this.router.navigateByUrl(
+          '/institutions/institution-tabs/select-institution'
+        );
+        errRes => {
+          loadingEl.dismiss();
 
-     //this.showAlert(message);
-    } 
-  });
+          this.showAlert("Wrong password");
+        }
+      });
   }
 
   onSubmit(form: NgForm) {
@@ -51,7 +53,16 @@ export class AuthPage implements OnInit {
     form.reset();
   }
 
-
-
+  private showAlert(message: string) {
+    this.alertCtrl
+      .create({
+        header: 'Authentication failed',
+        message: message,
+        buttons: ['Okay']
+      })
+      .then(alertEl => alertEl.present());
   }
+
+
+}
 
