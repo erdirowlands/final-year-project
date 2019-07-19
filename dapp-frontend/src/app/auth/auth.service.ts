@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { WalletService } from '../blockchain/wallet/wallet.service';
+
 
 @Injectable({
   providedIn: 'root'
@@ -10,10 +12,11 @@ export class AuthService {
   private _duration = 60;
 
 
-  constructor() { }
+  constructor(private walletService: WalletService) {}
 
-  login() {
+  login(password: string) {
     this.isUserAuthenticated = true;
+    this.walletService.initialiseWallet(password);
   }
 
   logout() {
