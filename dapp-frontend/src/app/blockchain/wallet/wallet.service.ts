@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Web3ProviderService } from '../provider/web3provider.service';
+import { BehaviorSubject } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +18,9 @@ export class WalletService {
   // call wallet.load() on it if it has been cleared from memory.
   // Can provide this instance to the rest of the app :) 
   private _wallet: any;
+
+  private _walletObservable = new BehaviorSubject<any>(null);
+
 
 
   private _electionWalletName = 'university_voting_system_wallet';
@@ -81,6 +86,21 @@ export class WalletService {
   }
   public set wallet(value: any) {
     this._wallet = value;
+  }
+
+  public get walletObservable() {
+    return this._walletObservable.asObservable().pipe(
+      map(user => {
+        if (user) {
+          return !!user.token;
+        } else {
+          return false;
+        }
+      })
+    );
+  }
+  public set walletObservable(value) {
+    this._walletObservable = value;
   }
 
   public async signTransaction(candidateAddress: string, password: string, params: string[]) {
