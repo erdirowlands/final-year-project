@@ -1,6 +1,7 @@
 export class Admin {
     constructor(
       public name: string,
-      public isAuthorised: boolean
+      public address: string,
+      public isAuthorised: boolean,
     ) {}
 }
