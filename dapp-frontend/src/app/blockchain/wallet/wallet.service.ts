@@ -66,7 +66,8 @@ export class WalletService {
         return;
       }
       */
-      if (this._keypair.address != accs[0] || this._keypair.privateKey != accs[1] ) {
+     console.log(accs);
+      if (this._keypair == null   ) {
         console.log(`Observed new accounts`);
         this._keypairObservable.next(accs);
         this._keypair.address = accs[0];
@@ -121,7 +122,7 @@ export class WalletService {
   get userIsAuthenticated() {
     return this._keypairObservable.asObservable().pipe(
       map(keypair => {
-        return !!keypair.address;
+        return !!keypair[0];
       })
     );
   }
