@@ -21,6 +21,7 @@ export class AuthService {
 
   logout() {
     this.isUserAuthenticated = false;
+    this.walletService.purgeWalletFromMemory(password);
   }
 
   autoLogin() {
