@@ -23,10 +23,6 @@ export class AuthGuard implements CanLoad {
     segments: UrlSegment[]
   ): Observable<boolean> | Promise<boolean> | boolean {
     return this.authService.isWalletDecrypted.pipe(
-      take(1),
-      switchMap(isDecrypted => {
-      return of(isDecrypted); 
-      }),
       tap(isDecrypted => {
         if (!isDecrypted) {
           this.router.navigateByUrl('/auth');
