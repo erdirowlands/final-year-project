@@ -42,7 +42,7 @@ export class WalletService {
     // Load the wallet if not in memory already.
     if (walletName !== null) {
       this.loadWallet('password', this._electionWalletName);
-      this.wallet[0].address
+      this.getKeyPair();
       console.log('Wallet Found! So not creating one.');
       //this._usefr = this.wallet;
     } else {
@@ -51,7 +51,7 @@ export class WalletService {
     }
   }
 
-  private getWalletKey() {
+  private getKeyPair() {
     this._web3Instance.eth.getAccounts((err, accs) => {
      
      /* Could implement some error handling here - not sure what yet, wrong password? Think that''ll be for initialise wallet
