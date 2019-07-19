@@ -5,8 +5,9 @@ import { Injectable } from '@angular/core';
 })
 export class AuthService {
 
-  // tslint:disable-next-line: variable-name
   private _isUserAuthenticated = false;
+  private _logoutTimer: number;
+
 
   constructor() { }
 
@@ -18,6 +19,20 @@ export class AuthService {
     this.isUserAuthenticated = false;
   }
 
+  autoLogin() {
+
+  }
+
+
+  private autoLogout(duration: number) {
+    if (this.activeLogoutTimer) {
+      clearTimeout(this.activeLogoutTimer);
+    }
+    this.activeLogoutTimer = setTimeout(() => {
+      this.logout();
+    }, duration);
+  }
+
   public get isUserAuthenticated() {
     return this._isUserAuthenticated;
   }
@@ -25,5 +40,12 @@ export class AuthService {
     this._isUserAuthenticated = value;
   }
 
+
+  public get logoutTimer(): number {
+    return this._logoutTimer;
+  }
+  public set logoutTimer(value: number) {
+    this._logoutTimer = value;
+  }
 
 }
