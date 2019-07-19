@@ -25,9 +25,8 @@ export class AuthGuard implements CanLoad {
     return this.authService.isWalletDecrypted.pipe(
       take(1),
       switchMap(isDecrypted => {
-        if (isDecrypted) {
-          this.router.navigateByUrl(
-            '/institutions/institution-tabs/select-institution');
+        if (!isDecrypted) {
+          return this.authService.isWalletDecrypted
         }
         else return of(isDecrypted)
 
