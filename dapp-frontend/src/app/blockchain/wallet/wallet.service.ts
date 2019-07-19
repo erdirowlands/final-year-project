@@ -23,7 +23,9 @@ export class WalletService {
   // Can provide this instance to the rest of the app :) 
   private _wallet: any;
 
-  private _keypair = new BehaviorSubject<KeyPair>(null);
+  private _keypairObservable = new BehaviorSubject<KeyPair>(null);
+
+  private keypair: KeyPair;
 
   private _electionWalletName = 'university_voting_system_wallet';
 
@@ -48,8 +50,19 @@ export class WalletService {
     }
   }
 
-  public purgeWalletFromMemory() {
+  /**
+   * Sets the Web3 wallet's keypairs at all indexes to null.
+   */
+  public secureWeb3Wallet() {
     this._wallet.clear();
+  }
+
+  /**
+   * Sets the key-pair model's properties to null..
+   */
+  public secureKeyPair() {
+    this._keypair.address = null;
+
   }
 
   /**
@@ -80,8 +93,12 @@ export class WalletService {
     const newAccount = this._web3Instance.eth.accounts.create();
   }
 
-  public get web3Instance(): any {
-    return this._web3Instance;
+  get userIsAuthenticated() {
+    return this._keypairObservable.asObservable().pipe(
+      map(keypair => {
+        return !!keypair.address;
+      })
+    );
   }
 
   public get wallet(): any {
@@ -91,13 +108,8 @@ export class WalletService {
     this._wallet = value;
   }
 
-  get userIsAuthenticated() {
-    return this._keypair.asObservable().pipe(
-      map(keypair => {
-       
-        return !!keypair.address;
-      })
-    );
+  public get web3Instance(): any {
+    return this._web3Instance;
   }
 
   public async signTransaction(candidateAddress: string, password: string, params: string[]) {
