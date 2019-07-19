@@ -23,9 +23,7 @@ export class WalletService {
   // Can provide this instance to the rest of the app :) 
   private _wallet: any;
 
-  private _usefr = new BehaviorSubject<any>(null);
-
-
+  private _keypair = new BehaviorSubject<KeyPair>(null);
 
   private _electionWalletName = 'university_voting_system_wallet';
 
@@ -94,10 +92,10 @@ export class WalletService {
   }
 
   get userIsAuthenticated() {
-    return this._usefr.asObservable().pipe(
-      map(user => {
-        console.log(user);
-        return !!user;
+    return this._keypair.asObservable().pipe(
+      map(keypair => {
+       
+        return !!keypair.address;
       })
     );
   }
