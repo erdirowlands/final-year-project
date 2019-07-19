@@ -19,7 +19,7 @@ export class AuthService {
   constructor(private walletService: WalletService) {}
 
   public authenticateWallet(password: string) {
-    return this.walletService.getKeyPair(password);
+    this.walletService.getKeyPair(password);
   }
 
   get isWalletDecrypted() {

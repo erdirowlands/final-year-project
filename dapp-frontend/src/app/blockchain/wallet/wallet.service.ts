@@ -34,7 +34,7 @@ export class WalletService {
   constructor(private web3ProviderService: Web3ProviderService) {
     this._web3Instance = this.web3ProviderService.getWeb3();
     this._wallet = this._web3Instance.eth.accounts.wallet;
-  //  this.initialiseWallet("password");
+    this.createWallet("password")
   }
 
   public initialiseWallet(password: string) {
@@ -65,7 +65,6 @@ export class WalletService {
           accs[1].privateKey,
         );
         console.log(this._keypair);
-        return this._keypairObservable;
       }
   }
 
