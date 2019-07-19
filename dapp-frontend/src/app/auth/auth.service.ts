@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { WalletService } from '../blockchain/wallet/wallet.service';
 
+import { map, tap } from 'rxjs/operators';
+
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +16,18 @@ export class AuthService {
 
   constructor(private walletService: WalletService) {}
 
+  get userIsAuthenticated() {
+    return this.walletService.wallet().asObservable().pipe(
+      map(wallet => {
+        if (wallet) {
+          return true;
+        } else {
+          return false;
+        }
+      })
+    );
+  }
+
   login(password: string) {
     this.isUserAuthenticated = true;
     this.walletService.initialiseWallet(password);
@@ -21,7 +35,7 @@ export class AuthService {
 
   logout() {
     this.isUserAuthenticated = false;
-    this.walletService.purgeWalletFromMemory(password);
+    this.walletService.purgeWalletFromMemory();
   }
 
   autoLogin() {
