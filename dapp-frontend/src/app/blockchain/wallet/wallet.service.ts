@@ -51,8 +51,8 @@ export class WalletService {
     }
   }
 
-  private getKeyPair() {
-    this._web3Instance.eth.getAccounts((err, accs) => {
+  private async getKeyPair() {
+    let accs = await this._web3Instance.eth.getAccounts();
      
      /* Could implement some error handling here - not sure what yet, wrong password? Think that''ll be for initialise wallet
       if (err != null) {
@@ -70,10 +70,12 @@ export class WalletService {
       if (this._keypair == null   ) {
         console.log(`Observed new accounts`);
         this._keypairObservable.next(accs);
-        this._keypair.address = accs[0];
-        this._keypair.privateKey = accs[1];
+        this._keypair= new KeyPair(
+          accs[0],
+          accs[1],
+        );
+        console.log(this._keypair);
       }
-    });
   }
 
   /**
