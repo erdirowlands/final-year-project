@@ -71,10 +71,10 @@ export class WalletService {
         console.log(`Observed new accounts`);
         this._keypairObservable.next(accs);
         this._keypair= new KeyPair(
-          accs[0].adminAddress,
-          accs[0].adminPrivateKey,
-          accs[1].voterAddress,
-          accs[1].voterPrivateKey,
+          accs[0].address,
+          accs[0].privateKey,
+          accs[1].address,
+          accs[1].privateKey,
         );
         console.log(this._keypair);
       }
