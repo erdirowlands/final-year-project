@@ -26,7 +26,7 @@ const routes: Routes = [
         children: [
           {
             path: '',
-            loadChildren: './submit-institution/submit-institution.module#SubmitInstitutionPageModule'
+            loadChildren: './institution-approval-request/institution-approval-request.module#InstitutionApprovalRequestPageModule'
           }
         ]
       },
@@ -41,7 +41,7 @@ const routes: Routes = [
     path: '',
     redirectTo: '/institutions/institution-tabs/select-institution',
     pathMatch: 'full'
-  }
+  },
 ];
 
 @NgModule({
