@@ -1,9 +1,11 @@
 /**
- * A given address and private key found in the Web3 wallet file.
+ * A user's collection of admin and voter keys.
  */
 export class KeyPair {
     constructor(
-      public address: string,
-      public privateKey: string,
+      public adminAddress: string,
+      public adminPrivateKey: string,
+      public voterAddress: string,
+      public voterPrivateKey: string,
     ) {}
 }

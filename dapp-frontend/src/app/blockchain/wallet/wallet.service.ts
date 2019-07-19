@@ -51,8 +51,8 @@ export class WalletService {
     }
   }
 
-  private async getKeyPair() {
-    let accs = await this.loadWallet('password', this._electionWalletName);
+  private getKeyPair() {
+    let accs = this.loadWallet('password', this._electionWalletName);
      
      /* Could implement some error handling here - not sure what yet, wrong password? Think that''ll be for initialise wallet
       if (err != null) {
@@ -66,13 +66,15 @@ export class WalletService {
         return;
       }
       */
-     console.log(accs);
+     console.log("ACCS:",accs);
       if (this._keypair == null   ) {
         console.log(`Observed new accounts`);
         this._keypairObservable.next(accs);
         this._keypair= new KeyPair(
-          accs[0],
-          accs[1],
+          accs[0].adminAddress,
+          accs[0].adminPrivateKey,
+          accs[1].voterAddress,
+          accs[1].voterPrivateKey,
         );
         console.log(this._keypair);
       }
