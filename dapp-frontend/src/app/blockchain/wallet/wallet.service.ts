@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Web3ProviderService } from '../provider/web3provider.service';
+
 import { BehaviorSubject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
+
+import { KeyPair } from './key-pair.model';
+
 
 @Injectable({
   providedIn: 'root'
