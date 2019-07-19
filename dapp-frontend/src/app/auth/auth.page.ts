@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from './auth.service';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { WalletService } from '../blockchain/wallet/wallet.service';
 
 @Component({
   selector: 'app-auth',
@@ -13,7 +14,7 @@ export class AuthPage implements OnInit {
   isLogin = true;
 
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router, private walletSerivce: WalletService) {}
 
   ngOnInit() {}
 
@@ -30,20 +31,25 @@ export class AuthPage implements OnInit {
     ); */
 
     autoLogin(password: string) {
-      let authObs: Observable<string[]>;
-      authObs = this.authService.authenticateWallet(password);
-      authObs.subscribe(
+      try {
+        this.authService.authenticateWallet("passworsd");
+      } catch (error) {
+        alert("Wrong password")
+        
+      }          this.router.navigateByUrl('/institutions/institution-tabs/select-institution');
+
+      this.walletSerivce._keypairObservable.subscribe(
         resData => {
-          console.log("LOGGED IN");
-         // this.isLoading = false;
-         // loadingEl.dismiss();
-          this.router.navigateByUrl('/places/tabs/discover');
+          console.log("SUCCESS " + resData);
+          this.router.navigateByUrl('/institutions/institution-tabs/select-institution');
         },
         errRes => {
-          console.log("DENIED :()");
+          console.log("ERROR: " + errRes);
+        }
+      );
+    }
 
-        });
-    } 
+
 
     login(password: string) {
       return this.authService.authenticateWallet(password);
