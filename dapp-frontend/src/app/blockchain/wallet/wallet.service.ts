@@ -25,7 +25,7 @@ export class WalletService {
 
   private _keypairObservable = new BehaviorSubject<KeyPair>(null);
 
-  private keypair: KeyPair;
+  private _keypair: KeyPair;
 
   private _electionWalletName = 'university_voting_system_wallet';
 
@@ -62,7 +62,7 @@ export class WalletService {
    */
   public secureKeyPair() {
     this._keypair.address = null;
-
+    this._keypair.privateKey = null;
   }
 
   /**
