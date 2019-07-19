@@ -19,7 +19,7 @@ export class AuthService {
   constructor(private walletService: WalletService) {}
 
   public authenticateWallet(password: string) {
-    this.walletService.getKeyPair(password);
+    return this.walletService.getKeyPair(password);
   }
 
   get isWalletDecrypted() {
@@ -35,7 +35,7 @@ export class AuthService {
   } 
 
   login(password: string) {
-    this.isUserAuthenticated = true;
+  //  this.isUserAuthenticated = true;
     this.walletService.initialiseWallet(password);
   }
 
