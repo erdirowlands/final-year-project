@@ -1,8 +1,5 @@
 import { Injectable } from '@angular/core';
 import {
-  ActivatedRouteSnapshot,
-  RouterStateSnapshot,
-  UrlTree,
   CanLoad,
   Route,
   UrlSegment, 
@@ -19,14 +16,29 @@ import { WalletService } from '../blockchain/wallet/wallet.service';
 })
 export class AuthGuard implements CanLoad {
 
-  constructor(private authService: AuthService, private router: Router, private walletService: WalletService) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   canLoad(
     route: Route,
     segments: UrlSegment[]
-  ): boolean | Observable<boolean> | Promise<boolean> {
-    if (this.walletService.userIsAuthenticated === null) {
+  ): Observable<boolean> | Promise<boolean> | boolean {
+    return this.authService.isWalletDecrypted.pipe(
+      take(1),
+      switchMap(isDecrypted => {
+      return of(isDecrypted); 
+      }),
+      tap(isDecrypted => {
+        if (!isDecrypted) {
+          this.router.navigateByUrl('/auth');
+        }
+      })
+    );
+  }
+  }
+
+    /*
+    if (!this.authService.isWalletDecrypted) {
       this.router.navigateByUrl('/auth');
     } else { return this.authService.isUserAuthenticated; }
-  }
-}
+  } */
+
