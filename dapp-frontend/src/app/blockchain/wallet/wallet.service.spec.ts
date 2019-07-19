@@ -1,6 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 
 import { WalletService } from './wallet.service';
+import { BehaviorSubject } from 'rxjs';
+
 
 describe('WalletService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));

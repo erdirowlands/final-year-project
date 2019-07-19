@@ -11,19 +11,21 @@ import {
 import { Observable, of } from 'rxjs';
 import { take, tap, switchMap } from 'rxjs/operators';
 import { AuthService } from './auth.service';
+import { WalletService } from '../blockchain/wallet/wallet.service';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthGuard implements CanLoad {
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router, private walletService: WalletService) {}
 
   canLoad(
     route: Route,
     segments: UrlSegment[]
   ): boolean | Observable<boolean> | Promise<boolean> {
-    if (!this.authService.isWalletDecrypted) {
+    if (this.walletService.userIsAuthenticated === null) {
       this.router.navigateByUrl('/auth');
     } else { return this.authService.isUserAuthenticated; }
   }

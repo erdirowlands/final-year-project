@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { WalletService } from '../blockchain/wallet/wallet.service';
 
 import { map, tap } from 'rxjs/operators';
+import { BehaviorSubject } from 'rxjs';
 
 
 @Injectable({
@@ -13,13 +14,21 @@ export class AuthService {
   private _logoutTimer: any;
   private _duration = 60;
 
+  private _user = new BehaviorSubject<string>(null);
 
   constructor(private walletService: WalletService) {}
-
+/*
   get isWalletDecrypted() {
-    return this.walletService.walletObservable;
-    
-  }
+    return this._user.asObservable().pipe(
+      map(wallet => {
+        if (wallet) {
+          return true;
+        } else {
+          return false;
+        }
+      })
+    );
+  } */
 
   login(password: string) {
     this.isUserAuthenticated = true;

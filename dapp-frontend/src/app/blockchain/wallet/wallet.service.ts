@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Web3ProviderService } from '../provider/web3provider.service';
 import { BehaviorSubject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +19,7 @@ export class WalletService {
   // Can provide this instance to the rest of the app :) 
   private _wallet: any;
 
-  private _walletObservable = new BehaviorSubject<any>(null);
+  private _usefr = new BehaviorSubject<any>(null);
 
 
 
@@ -39,6 +39,7 @@ export class WalletService {
     if (walletName !== null) {
       this.loadWallet('password', this._electionWalletName);
       console.log('Wallet Found! So not creating one.');
+      //this._usefr = this.wallet;
     } else {
       console.log('No wallet found, would you like to create one?');
       this.createWallet('password');
@@ -88,19 +89,13 @@ export class WalletService {
     this._wallet = value;
   }
 
-  public get walletObservable() {
-    return this._walletObservable.asObservable().pipe(
+  get userIsAuthenticated() {
+    return this._usefr.asObservable().pipe(
       map(user => {
-        if (user) {
-          return !!user.token;
-        } else {
-          return false;
-        }
+        console.log(user);
+        return !!user;
       })
     );
-  }
-  public set walletObservable(value) {
-    this._walletObservable = value;
   }
 
   public async signTransaction(candidateAddress: string, password: string, params: string[]) {
