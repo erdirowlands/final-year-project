@@ -11,7 +11,9 @@ export class UniversityVotingService {
 
   public Institution: any;
 
-  constructor(private web3Provider: Web3ProviderService) { }
+  constructor(private web3Provider: Web3ProviderService) { 
+    this.initialiseUniversityVotingContract();
+  }
 
   private initialiseUniversityVotingContract() {
     this.Institution = contract(universityVotingArtifact);

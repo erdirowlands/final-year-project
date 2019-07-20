@@ -11,7 +11,9 @@ export class InstitutionContractService {
 
   public Institution: any;
 
-  constructor(private web3Provider: Web3ProviderService) { }
+  constructor(private web3Provider: Web3ProviderService) { 
+    this.initialiseInstitutionContract();
+  }
 
   private initialiseInstitutionContract() {
     this.Institution = contract(institutionArtifact);
