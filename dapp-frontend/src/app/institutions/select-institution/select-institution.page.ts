@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { UniversityVotingService } from 'src/app/blockchain/contracts/university-voting/university-voting.service';
 import { InstitutionContractService } from 'src/app/blockchain/contracts/institution-contract/institution-contract.service';
 import { Institution } from './institution-details/institution.model';
+import { WalletService } from 'src/app/blockchain/wallet/wallet.service';
+
+const { asciiToHex } = require("web3-utils");
 
 
 @Component({
@@ -15,6 +18,7 @@ export class SelectInstitutionPage implements OnInit {
   institutions: Institution[];
 
   constructor(
+    private wallet: WalletService,
     private universityVotingContract: UniversityVotingService,
     private institutionContract: InstitutionContractService
   ) {}
@@ -25,11 +29,28 @@ export class SelectInstitutionPage implements OnInit {
    */
   async ngOnInit() {
     this.deployedUniversityVotingContract = await this.universityVotingContract.universityVoting.deployed();
-  //  this.getCreatedInstitutions(); 
-  console.log(this.deployedUniversityVotingContract);
+  //  this.deployedUniversityVotingContract.getInstitutionAddresses();
+    const test = this.getInstitutionLength();
+    console.log(test);
+    console.log(this.deployedUniversityVotingContract);
   }
 
   async getCreatedInstitutions() {
-    this.deployedUniversityVotingContract.getInstitutionAddresses.call();
+    // Institution data
+    const institutionName = 'Ulster University';
+    const adminName = 'John Francis'; // An admin must be initialised with an Institution
+    const newInstitutionRequestData = [institutionName, adminName];
+    let newRequestDataAsBytes32;
+    newRequestDataAsBytes32 = newInstitutionRequestData.map(
+      newInstitutionRequestData => asciiToHex(newInstitutionRequestData)
+    );
+    await this.deployedUniversityVotingContract.submitInstitutionApprovalRequest(newRequestDataAsBytes32, {
+      from: "0x5465340976b69551613Aa544D8beD5DdF7343A62"
+    });
   }
+
+  async getInstitutionLength() {
+    await this.deployedUniversityVotingContract.getInstitutionsTotal.call();
+  }
+
 }

@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Web3ProviderService } from '../../provider/web3provider.service';
 
-import contract from 'truffle-contract';
+import TruffleContract from 'truffle-contract';
 
-const universityVotingArtifact = require('../artifacts/universityVoting.json');
+declare var require: any;
+
+var universityVotingArtifact = require('../artifacts/UniversityVoting.json');
 
 @Injectable({
   providedIn: 'root'
@@ -16,10 +18,12 @@ export class UniversityVotingService {
     this.initialiseUniversityVotingContract();
   }
 
-  private initialiseUniversityVotingContract() {
-
-    this.universityVoting = contract(universityVotingArtifact);
-    this.universityVoting.setProvider(this.web3Provider.getWeb3);
+  private async  initialiseUniversityVotingContract() {
+    const web3 = this.web3Provider.getWeb3();
+    this.universityVoting = TruffleContract(universityVotingArtifact);
+    this.universityVoting.setProvider(web3.currentProvider);
+    await this.universityVoting.deployed();
+    console.log(this.universityVoting);
   }
 
 
