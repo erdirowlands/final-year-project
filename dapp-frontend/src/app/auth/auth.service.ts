@@ -10,11 +10,8 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class AuthService {
 
-  private _isUserAuthenticated = false;
   private _logoutTimer: any;
   private _duration = 60;
-
-  private _user = new BehaviorSubject<string>(null);
 
   constructor(private walletService: WalletService) {}
 
@@ -43,12 +40,10 @@ export class AuthService {
   } 
 
   login(password: string) {
-  //  this.isUserAuthenticated = true;
     this.walletService.initialiseWallet(password);
   }
 
   logout() {
-    this.isUserAuthenticated = false;
     this.walletService.secureWallet();
   }
 
@@ -64,13 +59,6 @@ export class AuthService {
     this._logoutTimer = setTimeout(() => {
       this.logout();
     }, this._duration);
-  }
-
-  public get isUserAuthenticated() {
-    return this._isUserAuthenticated;
-  }
-  public set isUserAuthenticated(value) {
-    this._isUserAuthenticated = value;
   }
 
 
