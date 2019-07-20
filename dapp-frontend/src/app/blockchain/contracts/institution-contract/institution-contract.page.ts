@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { InstitutionContractService } from './institution-contract.service';
 
 @Component({
   selector: 'app-institution-contract',
@@ -7,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class InstitutionContractPage implements OnInit {
 
-  constructor() { }
+  constructor(private institutionContract: InstitutionContractService) { }
 
   ngOnInit() {
   }
