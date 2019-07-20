@@ -15,7 +15,7 @@ export class InstitutionContractPage implements OnInit {
   deployedInstitutionContract: any;
 
   async ngOnInit() {
-    this.deployedInstitutionContract = await this.institutionContract.Institution.deployed();
+    this.deployedInstitutionContract = await this.institutionContract.institution.deployed();
 
   }
 
