@@ -5,6 +5,7 @@
   "npmClient": "npm",
   "webDir": "www",
   "server": {
-    "url": "http://localhost:8101"
+    "url": "http://192.168.1.71:8100",
+    "originalUrl": "http://192.168.1.71:8100"
   }
 }

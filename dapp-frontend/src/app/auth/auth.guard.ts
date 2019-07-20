@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
 import {
-  ActivatedRouteSnapshot,
-  RouterStateSnapshot,
-  UrlTree,
   CanLoad,
+  Route,
+  UrlSegment, 
   Router
 } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { take, tap, switchMap } from 'rxjs/operators';
 import { AuthService } from './auth.service';
+import { WalletService } from '../blockchain/wallet/wallet.service';
+
 
 @Injectable({
   providedIn: 'root'
@@ -17,11 +19,30 @@ export class AuthGuard implements CanLoad {
   constructor(private authService: AuthService, private router: Router) {}
 
   canLoad(
-    route: import('@angular/router').Route,
-    segments: import('@angular/router').UrlSegment[]
-  ): boolean | Observable<boolean> | Promise<boolean> {
-    if (!this.authService.isUserAuthenticated) {
-      this.router.navigateByUrl('/auth');
-    } else { return this.authService.isUserAuthenticated; }
+    route: Route,
+    segments: UrlSegment[]
+  ): Observable<boolean> | Promise<boolean> | boolean {
+    return this.authService.isWalletDecrypted.pipe(
+      take(1),
+      switchMap(isDecrypted => {
+        if (!isDecrypted) {
+          return this.authService.isWalletDecrypted
+        }
+        else return of(isDecrypted)
+
+      }),
+      tap(isDecrypted => {
+        if (!isDecrypted) {
+          this.router.navigateByUrl('/auth');
+        }
+      })
+    );
   }
 }
+
+    /*
+    if (!this.authService.isWalletDecrypted) {
+      this.router.navigateByUrl('/auth');
+    } else { return this.authService.isUserAuthenticated; }
+  } */
+
