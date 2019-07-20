@@ -25,9 +25,11 @@ export class SelectInstitutionPage implements OnInit {
    */
   async ngOnInit() {
     this.deployedUniversityVotingContract = await this.universityVotingContract.universityVoting.deployed();
+  //  this.getCreatedInstitutions(); 
+  console.log(this.deployedUniversityVotingContract);
   }
 
   async getCreatedInstitutions() {
-    this.deployedUniversityVotingContract.getInstitutionAddresses()
+    this.deployedUniversityVotingContract.getInstitutionAddresses.call();
   }
 }

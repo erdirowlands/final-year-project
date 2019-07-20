@@ -16,8 +16,8 @@ export class InstitutionContractService {
   }
 
   private initialiseInstitutionContract() {
-    this._institution = contract(institutionArtifact);
-    this._institution.setProvider(this.web3Provider.getWeb3);
+   // this._institution = contract(institutionArtifact);
+  //  this._institution.setProvider(this.web3Provider.getWeb3);
   }
 
   public get institution(): any {
