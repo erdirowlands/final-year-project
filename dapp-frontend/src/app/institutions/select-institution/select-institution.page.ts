@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UniversityVotingService } from 'src/app/blockchain/contracts/university-voting/university-voting.service';
 import { InstitutionContractService } from 'src/app/blockchain/contracts/institution-contract/institution-contract.service';
+import { Institution } from './institution-details/institution.model';
 
 
 @Component({
@@ -10,6 +11,8 @@ import { InstitutionContractService } from 'src/app/blockchain/contracts/institu
 })
 export class SelectInstitutionPage implements OnInit {
   deployedUniversityVotingContract: any;
+
+  institutions: Institution[];
 
   constructor(
     private universityVotingContract: UniversityVotingService,
@@ -24,5 +27,7 @@ export class SelectInstitutionPage implements OnInit {
     this.deployedUniversityVotingContract = await this.universityVotingContract.universityVoting.deployed();
   }
 
-  async getCreatedInstitutions() {}
+  async getCreatedInstitutions() {
+    this.deployedUniversityVotingContract.getInstitutionAddresses()
+  }
 }
