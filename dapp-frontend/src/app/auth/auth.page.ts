@@ -19,27 +19,33 @@ export class AuthPage implements OnInit {
   constructor(private authService: AuthService, private router: Router, private loadingCtrl: LoadingController, private alertCtrl: AlertController
   ) { }
 
-
+ // ionViewWillEnter() {
+ //   this.authService.secureWallet();
+ //   this.authService.initialiseWallet()
+//  }
 
   ngOnInit() { }
 
 
-  login(password: string) {
+    login(password: string) {
     this.isLoading = true;
     this.loadingCtrl
       .create({ keyboardClose: true, message: 'Logging in...' })
-      .then(loadingEl => {
-        loadingEl.present();
-        this.authService.authenticateWallet(password);
+      .then(async loadingEl => {
+        try {
+          loadingEl.present();
+          await this.delay(100); 
+          await this.authService.authenticateWallet(password);
+          this.isLoading = false;
+        }
+        catch(err) {
+          loadingEl.dismiss();
+          this.showAlert(err);
+        }
         loadingEl.dismiss();
         this.router.navigateByUrl(
           '/institutions/institution-tabs/select-institution'
         );
-        errRes => {
-          loadingEl.dismiss();
-
-          this.showAlert("Wrong password");
-        }
       });
   }
 
@@ -62,7 +68,9 @@ export class AuthPage implements OnInit {
       })
       .then(alertEl => alertEl.present());
   }
-
+  private delay(ms: number) {
+    return new Promise( resolve => setTimeout(resolve, ms) );
+}
 
 }
 

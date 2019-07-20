@@ -85,7 +85,7 @@ export class WalletService {
    * Sets the Web3 wallet's keypairs at all indexes to null.
    */
   private secureObservableKeyPair() {
-    this._keypairObservable = null;
+    this._keypairObservable.next(null);
   }
 
   /**
@@ -133,6 +133,10 @@ export class WalletService {
         return !!keypair[0];
       })
     );
+  }
+
+  public initialiseWeb3Wallet() {
+    this._web3Instance = this.web3ProviderService.getWeb3();
   }
 
   public get wallet(): any {

@@ -22,6 +22,14 @@ export class AuthService {
     this.walletService.getKeyPair(password);
   }
 
+  public secureWallet() {
+    this.walletService.secureWallet();
+  }
+
+  public initialiseWallet() {
+    this.walletService.initialiseWeb3Wallet();
+  }
+
   get isWalletDecrypted() {
     return this.walletService._keypairObservable.asObservable().pipe(
       map(wallet => {
