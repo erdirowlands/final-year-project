@@ -15,7 +15,10 @@ export class UniversityVotingPage implements OnInit {
 
     async ngOnInit() {
       this.deployedUniversityVotingContract = await this.universityVotingContract.universityVoting.deployed();
-  
+    }
+
+    private async getInstitutions() {
+
     }
 
 }
