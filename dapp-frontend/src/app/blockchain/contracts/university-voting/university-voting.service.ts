@@ -9,15 +9,19 @@ const universityVotingArtifact = require('../artifacts/UniversityVoting.json');
 })
 export class UniversityVotingService {
 
-  public Institution: any;
+  private _universityVoting: any;
 
   constructor(private web3Provider: Web3ProviderService) { 
     this.initialiseUniversityVotingContract();
   }
 
   private initialiseUniversityVotingContract() {
-    this.Institution = contract(universityVotingArtifact);
-    this.Institution.setProvider(this.web3Provider.getWeb3);
+    this._universityVoting = contract(universityVotingArtifact);
+    this._universityVoting.setProvider(this.web3Provider.getWeb3);
+  }
+
+  public get universityVoting(): any {
+    return this._universityVoting;
   }
 
 }

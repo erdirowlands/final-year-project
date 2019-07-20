@@ -9,15 +9,19 @@ const institutionArtifact = require('../artifacts/Institution.json');
 })
 export class InstitutionContractService {
 
-  public Institution: any;
+  private _institution: any;
 
   constructor(private web3Provider: Web3ProviderService) { 
     this.initialiseInstitutionContract();
   }
 
   private initialiseInstitutionContract() {
-    this.Institution = contract(institutionArtifact);
-    this.Institution.setProvider(this.web3Provider.getWeb3);
+    this._institution = contract(institutionArtifact);
+    this._institution.setProvider(this.web3Provider.getWeb3);
+  }
+
+  public get institution(): any {
+    return this._institution;
   }
 
 }
