@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { UniversityVotingService } from './university-voting.service';
 
 @Component({
   selector: 'app-university-voting',
@@ -7,9 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UniversityVotingPage implements OnInit {
 
-  constructor() { }
+  constructor(private universityVotingContract: UniversityVotingService) { }
 
-  ngOnInit() {
-  }
+  deployedUniversityVotingContract: any;
+
+
+    async ngOnInit() {
+      this.deployedUniversityVotingContract = await this.universityVotingContract.universityVoting.deployed();
+  
+    }
 
 }
