@@ -28,18 +28,18 @@ export class SelectInstitutionPage implements OnInit {
    */
   async ngOnInit() {
     this.universityVotingDeployed = await this.universityVotingContract.universityVotingAbstraction.at(
-      '0xdb221B5Bb37AA679C58D05b65C368B729D7757De'
+      '0x69888797C2472C54340003525B7692b2608b0C7e'
     );
     //  this.universityVotingDeployed.getInstitutionAddresses();
     //  const test = this.newInstitutionRequest();
-    this.getInstitutionLength();
+    this.approveRequest();
     //  console.log(this.universityVotingDeployed);
   }
 
   async approveRequest() {
     const result = await this.universityVotingDeployed.approveInstitutionRequest(
-      '0x38e15764EeD3c197577F9f42c3F40A2c51AD4f88',
-      { from: '0x5465340976b69551613Aa544D8beD5DdF7343A62' }
+      '0xBEF3a23a6ac01b16F601D1620681cf207ff55aF0',
+      { from: '0x5b9bA5f0b6ef3E8D90304D8A9C7318c8226fe372' }
     );
     console.log(result.logs[0]);
   }
@@ -56,7 +56,7 @@ export class SelectInstitutionPage implements OnInit {
     const result = await this.universityVotingDeployed.submitInstitutionApprovalRequest(
       newRequestDataAsBytes32,
       {
-        from: '0x38e15764EeD3c197577F9f42c3F40A2c51AD4f88'
+        from: '0xBEF3a23a6ac01b16F601D1620681cf207ff55aF0'
       }
     );
     console.log(result);
