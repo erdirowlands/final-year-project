@@ -46,6 +46,9 @@ export class SelectInstitutionPage implements OnInit {
       );
       console.log(result.logs[0]);
     } catch (error) {
+      if (error == "Error: Returned error: VM Exception while processing transaction: revert Approval not found -- Reason given: Approval not found.") {
+        console.log("HI");
+      }
       console.log(error);
 
     }
