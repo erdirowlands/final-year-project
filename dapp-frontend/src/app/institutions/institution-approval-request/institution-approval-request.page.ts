@@ -4,13 +4,14 @@ import { InstitutionContractService } from 'src/app/blockchain/contracts/institu
 import { WalletService } from 'src/app/blockchain/wallet/wallet.service';
 import { InstitutionApprovalRequest } from './institution-approval-request.model';
 
+const { asciiToHex } = require('web3-utils');
+
 @Component({
   selector: 'app-institution-approval-request',
   templateUrl: './institution-approval-request.page.html',
   styleUrls: ['./institution-approval-request.page.scss']
 })
 export class InstitutionApprovalRequestPage implements OnInit {
-  
   universityVotingDeployed: any;
 
   constructor(
@@ -37,21 +38,21 @@ export class InstitutionApprovalRequestPage implements OnInit {
     // Institution data
     const institutionRequest = new InstitutionApprovalRequest(
       institutionName,
-      adminName,
+      adminName
     );
 
     // Create array to use the convenient map function when converting to hex.
-    const requestArray = [institutionRequest.adminName, institutionRequest.institutionName];
-
-    const newInstitutionRequestData = [institutionName, adminName];
-    let newRequestDataAsBytes32;
-    newRequestDataAsBytes32 = newInstitutionRequestData.map(
-      newInstitutionRequestData => asciiToHex(newInstitutionRequestData)
+    const requestArray = [
+      institutionRequest.adminName,
+      institutionRequest.institutionName
+    ];
+    let newRequestDataAsBytes32 = requestArray.map(requestArray =>
+      asciiToHex(requestArray)
     );
     const result = await this.universityVotingDeployed.submitInstitutionApprovalRequest(
       newRequestDataAsBytes32,
       {
-        from: '0xBEF3a23a6ac01b16F601D1620681cf207ff55aF0'
+        from: this.wallet.keypair[0]
       }
     );
     console.log(result);
