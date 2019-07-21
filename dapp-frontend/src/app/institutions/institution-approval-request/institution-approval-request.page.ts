@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { UniversityVotingService } from 'src/app/blockchain/contracts/university-voting/university-voting.service';
 import { InstitutionContractService } from 'src/app/blockchain/contracts/institution-contract/institution-contract.service';
 import { WalletService } from 'src/app/blockchain/wallet/wallet.service';
@@ -22,12 +23,13 @@ export class InstitutionApprovalRequestPage implements OnInit {
     private universityVotingContract: UniversityVotingService,
     private institutionContract: InstitutionContractService,
     private loadingCtrl: LoadingController,
-    private alertCtrl: AlertController
+    private alertCtrl: AlertController,
+    private router: Router,
   ) {}
 
   async ngOnInit() {
     this.universityVotingDeployed = await this.universityVotingContract.universityVotingAbstraction.at(
-      '0xA5cb9ECa6B6dC9dcB35Aa63f2a65D8565F41B3c0'
+      '0x75A4DCC4cb23cE07dBBb88eC6d735f2B061E1DbC'
     );
   }
 
@@ -35,7 +37,7 @@ export class InstitutionApprovalRequestPage implements OnInit {
   async approveRequest() {
     const result = await this.universityVotingDeployed.newInstitutionRequest(
       '0xBEF3a23a6ac01b16F601D1620681cf207ff55aF0',
-      { from: '0x5b9bA5f0b6ef3E8D90304D8A9C7318c8226fe372' }
+      { from: '0xBEF3a23a6ac01b16F601D1620681cf207ff55aF0' }
     );
     console.log(result.logs[0]);
   }
@@ -75,12 +77,13 @@ export class InstitutionApprovalRequestPage implements OnInit {
             {
               // TODO THIS WILL BE FOR INFURA _ AS ADDRESS NOT FOUND ON GANACHE (would work with metamask though)
               // from: this.wallet.keypair.adminAddress
-              from: '0xb14Dfc4C1a88be9a38271EDb81A0141259ac9B8a'
+              from: '0x4d220007930cf3FaC24358c387531eC5A18F3116'
             }
           );
           console.log(result);
           loadingEl.dismiss();
-          this.showSucessfulAlert()
+          this.router.navigate(['/institutions/tabs/view']);
+          this.showSucessfulAlert();
         } catch (err) { 
           console.log(err);
           const errorString = err.toString();
