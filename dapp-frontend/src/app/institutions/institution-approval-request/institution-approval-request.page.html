@@ -65,14 +65,14 @@
                     </ion-label>
                   </ion-item>
                 </ion-list>
+                <ion-buttons >
                 <ion-button
                 type="submit"
-                color="primary"
-                expand="block"
-                [disabled]="!f.valid"
-              >
-                {{ isLogin ? 'Login' : 'Signup' }}
+                slot="primary">
+                <ion-icon name="checkmark" slot="icon-only"></ion-icon>
+
               </ion-button>
+            </ion-buttons>
               </ion-col>
 
         </ion-row>
