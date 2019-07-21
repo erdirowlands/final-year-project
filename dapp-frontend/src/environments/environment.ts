@@ -5,7 +5,8 @@
 export const environment = {
   production: false,
   ethereum: {
-    provider: 'http://192.168.1.71:7545'
+    provider: 'http://192.168.1.71:7545',
+    universityVotingContractAddress: '0x75A4DCC4cb23cE07dBBb88eC6d735f2B061E1DbC'
   }
 
 };

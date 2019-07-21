@@ -5,6 +5,7 @@ import { InstitutionContractService } from 'src/app/blockchain/contracts/institu
 import { WalletService } from 'src/app/blockchain/wallet/wallet.service';
 import { NgForm } from '@angular/forms';
 import { LoadingController, AlertController } from '@ionic/angular';
+import { environment } from 'src/environments/environment';
 
 import { InstitutionApprovalRequest } from './institution-approval-request.model';
 
@@ -29,7 +30,7 @@ export class InstitutionApprovalRequestPage implements OnInit {
 
   async ngOnInit() {
     this.universityVotingDeployed = await this.universityVotingContract.universityVotingAbstraction.at(
-      '0x75A4DCC4cb23cE07dBBb88eC6d735f2B061E1DbC'
+      environment.ethereum.universityVotingContractAddress
     );
   }
 
@@ -102,6 +103,7 @@ export class InstitutionApprovalRequestPage implements OnInit {
               break;
           } 
           loadingEl.dismiss();
+          this.router.navigate(['/institutions/tabs/view']);
           this.showDeniedAlert(sanitisedError);
         }
       });
