@@ -15,18 +15,23 @@ const routes: Routes = [
             loadChildren: './select-institution/select-institution.module#SelectInstitutionPageModule'
           },
           {
-            path: ':institutionId',
+            path: 'new-institution',
             loadChildren:
-              './select-institution/institution-details/institution-details.module#InstitutionDetailsPageModule'
+              './institution-approval-request/institution-approval-request.module#InstitutionApprovalRequestPageModule'
           }
         ]
       },
       {
-        path: 'submit-institution',
+        path: 'elections',
         children: [
           {
             path: '',
-            loadChildren: './institution-approval-request/institution-approval-request.module#InstitutionApprovalRequestPageModule'
+            loadChildren: '../elections/elections.module#ElectionsPageModule'
+          },
+          {
+            path: 'new-election',
+            redirectTo: '../elections/create-election/create-election.module/CreateElectionPageModule',
+            pathMatch: 'full'
           }
         ]
       },
