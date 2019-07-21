@@ -27,6 +27,8 @@ export class WalletService {
 
   private _keypair: KeyPair;
 
+
+
   private _electionWalletName = 'university_voting_system_wallet';
 
   // TODO the loading of the wallet logic might be better servied in the login/registration component! Or maybe not?
@@ -35,6 +37,7 @@ export class WalletService {
     this._web3Instance = this.web3ProviderService.getWeb3();
     this._wallet = this._web3Instance.eth.accounts.wallet;
     this.createWallet("password")
+    this.getKeyPair("password");
   }
 
   public initialiseWallet(password: string) {
@@ -148,6 +151,10 @@ export class WalletService {
 
   public get web3Instance(): any {
     return this._web3Instance;
+  }
+
+  public get keypair(): KeyPair {
+    return this._keypair;
   }
 
   public async signTransaction(candidateAddress: string, password: string, params: string[]) {

@@ -1,0 +1,180 @@
+{
+  "contractName": "approvalQueueInterface",
+  "abi": [],
+  "metadata": "{\"compiler\":{\"version\":\"0.5.2+commit.1df8f40c\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/Users/erdi/git/final-year-project/dapp-backend/contracts/InterfaceApprovalQueue.sol\":\"approvalQueueInterface\"},\"evmVersion\":\"byzantium\",\"libraries\":{},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"/Users/erdi/git/final-year-project/dapp-backend/contracts/InterfaceApprovalQueue.sol\":{\"keccak256\":\"0x090992dab6483dadd199497e9bb4361f7698f231e595fb35437e2a4fb8380e72\",\"urls\":[\"bzzr://ebd90d8ed6a124a2ce4829a4adcc63bcee92d5e5626b5abc86976a71767e4525\"]}},\"version\":1}",
+  "bytecode": "0x6080604052348015600f57600080fd5b50603580601d6000396000f3fe6080604052600080fdfea165627a7a7230582062e9150449a05549b5ae75a97254129b6ecbcc26e997a11ef93cc2fcf6a1a3a80029",
+  "deployedBytecode": "0x6080604052600080fdfea165627a7a7230582062e9150449a05549b5ae75a97254129b6ecbcc26e997a11ef93cc2fcf6a1a3a80029",
+  "sourceMap": "77:79:2:-;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;77:79:2;;;;;;;",
+  "deployedSourceMap": "77:79:2:-;;;;;",
+  "source": "pragma solidity ^0.5.2;\n\n// Not adapted from any outside code - my own work.\ninterface approvalQueueInterface {\n    struct test {\n        string hi;\n    }\n}",
+  "sourcePath": "/Users/erdi/git/final-year-project/dapp-backend/contracts/InterfaceApprovalQueue.sol",
+  "ast": {
+    "absolutePath": "/Users/erdi/git/final-year-project/dapp-backend/contracts/InterfaceApprovalQueue.sol",
+    "exportedSymbols": {
+      "approvalQueueInterface": [
+        312
+      ]
+    },
+    "id": 313,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 308,
+        "literals": [
+          "solidity",
+          "^",
+          "0.5",
+          ".2"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:23:2"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": null,
+        "fullyImplemented": true,
+        "id": 312,
+        "linearizedBaseContracts": [
+          312
+        ],
+        "name": "approvalQueueInterface",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "canonicalName": "approvalQueueInterface.test",
+            "id": 311,
+            "members": [
+              {
+                "constant": false,
+                "id": 310,
+                "name": "hi",
+                "nodeType": "VariableDeclaration",
+                "scope": 311,
+                "src": "138:9:2",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_string_storage_ptr",
+                  "typeString": "string"
+                },
+                "typeName": {
+                  "id": 309,
+                  "name": "string",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "138:6:2",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_storage_ptr",
+                    "typeString": "string"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              }
+            ],
+            "name": "test",
+            "nodeType": "StructDefinition",
+            "scope": 312,
+            "src": "116:38:2",
+            "visibility": "public"
+          }
+        ],
+        "scope": 313,
+        "src": "77:79:2"
+      }
+    ],
+    "src": "0:156:2"
+  },
+  "legacyAST": {
+    "absolutePath": "/Users/erdi/git/final-year-project/dapp-backend/contracts/InterfaceApprovalQueue.sol",
+    "exportedSymbols": {
+      "approvalQueueInterface": [
+        312
+      ]
+    },
+    "id": 313,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 308,
+        "literals": [
+          "solidity",
+          "^",
+          "0.5",
+          ".2"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:23:2"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": null,
+        "fullyImplemented": true,
+        "id": 312,
+        "linearizedBaseContracts": [
+          312
+        ],
+        "name": "approvalQueueInterface",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "canonicalName": "approvalQueueInterface.test",
+            "id": 311,
+            "members": [
+              {
+                "constant": false,
+                "id": 310,
+                "name": "hi",
+                "nodeType": "VariableDeclaration",
+                "scope": 311,
+                "src": "138:9:2",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_string_storage_ptr",
+                  "typeString": "string"
+                },
+                "typeName": {
+                  "id": 309,
+                  "name": "string",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "138:6:2",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_storage_ptr",
+                    "typeString": "string"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              }
+            ],
+            "name": "test",
+            "nodeType": "StructDefinition",
+            "scope": 312,
+            "src": "116:38:2",
+            "visibility": "public"
+          }
+        ],
+        "scope": 313,
+        "src": "77:79:2"
+      }
+    ],
+    "src": "0:156:2"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.5.2+commit.1df8f40c.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.0.11",
+  "updatedAt": "2019-07-12T12:46:48.141Z",
+  "devdoc": {
+    "methods": {}
+  },
+  "userdoc": {
+    "methods": {}
+  }
+}

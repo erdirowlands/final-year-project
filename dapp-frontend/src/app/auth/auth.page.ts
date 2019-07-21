@@ -5,7 +5,6 @@ import { Router } from '@angular/router';
 import { LoadingController, AlertController } from '@ionic/angular';
 import { NgForm } from '@angular/forms';
 
-
 @Component({
   selector: 'app-auth',
   templateUrl: './auth.page.html',
@@ -15,30 +14,31 @@ export class AuthPage implements OnInit {
   isLoading = true;
   isLogin = true;
 
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private loadingCtrl: LoadingController,
+    private alertCtrl: AlertController
+  ) {}
 
-  constructor(private authService: AuthService, private router: Router, private loadingCtrl: LoadingController, private alertCtrl: AlertController
-  ) { }
+  // ionViewWillEnter() {
+  //   this.authService.secureWallet();
+  //   this.authService.initialiseWallet()
+  //  }
 
- // ionViewWillEnter() {
- //   this.authService.secureWallet();
- //   this.authService.initialiseWallet()
-//  }
+  ngOnInit() {}
 
-  ngOnInit() { }
-
-
-    login(password: string) {
+  login(password: string) {
     this.isLoading = true;
     this.loadingCtrl
       .create({ keyboardClose: true, message: 'Logging in...' })
       .then(async loadingEl => {
         try {
           loadingEl.present();
-          await this.delay(100); 
+          await this.delay(100);
           await this.authService.authenticateWallet(password);
           this.isLoading = false;
-        }
-        catch(err) {
+        } catch (err) {
           loadingEl.dismiss();
           this.showAlert(err);
         }
@@ -63,14 +63,12 @@ export class AuthPage implements OnInit {
     this.alertCtrl
       .create({
         header: 'Authentication failed',
-        message: message,
+        message,
         buttons: ['Okay']
       })
       .then(alertEl => alertEl.present());
   }
   private delay(ms: number) {
-    return new Promise( resolve => setTimeout(resolve, ms) );
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
 }
-
-}
-
