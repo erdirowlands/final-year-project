@@ -4,18 +4,18 @@ import { InstitutionsPage } from './institutions.page';
 
 const routes: Routes = [
   {
-    path: 'institution-tabs',
+    path: 'tabs',
     component: InstitutionsPage,
     children: [
       {
-        path: 'select-institution',
+        path: 'view',
         children: [
           {
             path: '',
             loadChildren: './select-institution/select-institution.module#SelectInstitutionPageModule'
           },
           {
-            path: 'new-institution',
+            path: 'new',
             loadChildren: './institution-approval-request/institution-approval-request.module#InstitutionApprovalRequestPageModule',
           }
         ]
@@ -35,14 +35,14 @@ const routes: Routes = [
       },
       {
         path: '',
-        redirectTo: '/institutions/institution-tabs/select-institution',
+        redirectTo: '/institutions/tabs/view',
         pathMatch: 'full'
       }
     ]
   },
   {
     path: '',
-    redirectTo: '/institutions/institution-tabs/select-institution',
+    redirectTo: '/institutions/tabs/view',
     pathMatch: 'full'
   },
 ];
