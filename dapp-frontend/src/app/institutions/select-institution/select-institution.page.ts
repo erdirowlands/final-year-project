@@ -33,16 +33,22 @@ export class SelectInstitutionPage implements OnInit {
     //  this.universityVotingDeployed.getInstitutionAddresses();
     //  const test = this.newInstitutionRequest();
     this.approveRequest();
-  //  this.approveRequest();
+    //  this.approveRequest();
     //  console.log(this.universityVotingDeployed);
   }
 
   async approveRequest() {
-    const result = await this.universityVotingDeployed.approveInstitutionRequest(
-      '0xBEF3a23a6ac01b16F601D1620681cf207ff55aF0',
-      { from: '0x5b9bA5f0b6ef3E8D90304D8A9C7318c8226fe372' }
-    );
-    console.log(result.logs[0]);
+    let result;
+    try {
+      result = await this.universityVotingDeployed.approveInstitutionRequest(
+        '0xBEF3a23a6ac01b16F601D1620681cf207ff55aF0',
+        { from: '0x5b9bA5f0b6ef3E8D90304D8A9C7318c8226fe372' }
+      );
+      console.log(result.logs[0]);
+    } catch (error) {
+      console.log(error);
+
+    }
   }
 
   async newInstitutionRequest() {
@@ -64,6 +70,8 @@ export class SelectInstitutionPage implements OnInit {
   }
 
   async getInstitutionLength() {
-    console.log(await this.universityVotingDeployed.getInstitutionsTotal.call());
+    console.log(
+      await this.universityVotingDeployed.getInstitutionsTotal.call()
+    );
   }
 }
