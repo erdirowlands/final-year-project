@@ -45,7 +45,7 @@ export class InstitutionApprovalRequestPage implements OnInit {
       return;
     }
     const institutionName = form.value.institutionName;
-    const adminName = form.value.institutionName;
+    const adminName = form.value.adminName;
 
     this.submitInstitutionApproval(institutionName, adminName);
     form.reset();
@@ -79,13 +79,13 @@ export class InstitutionApprovalRequestPage implements OnInit {
             }
           );
           console.log(result);
-        } catch (err) {
+        } catch (err) { 
           console.log(err);
           const errorString = err.toString();
-          let sanitisedError;
-          switch (errorString) {
+          let sanitisedError; 
+          switch (errorString) { 
             // tslint:disable-next-line: max-line-length
-            case 'Error: Returned error: VM Exception while processing transaction: revert You have an outstanding request, please wait for that to be processed':
+            case 'Error: Returned error: VM Exception while processing transaction: revert You have an outstanding request, please wait for that to be processed -- Reason given: You have an outstanding request, please wait for that to be processed.':
               sanitisedError =
                 'You have an outstanding request, please wait for that to be processed';
               break;
@@ -95,7 +95,7 @@ export class InstitutionApprovalRequestPage implements OnInit {
             default:
               sanitisedError = errorString;
               break;
-          }
+          } 
           loadingEl.dismiss();
           this.showAlert(sanitisedError);
         }
@@ -105,7 +105,7 @@ export class InstitutionApprovalRequestPage implements OnInit {
   private showAlert(message: string) {
     this.alertCtrl
       .create({
-        header: 'New institution request failed',
+        header: 'New institution request denied',
         message,
         buttons: ['Okay']
       })
