@@ -3,6 +3,7 @@ import { UniversityVotingService } from 'src/app/blockchain/contracts/university
 import { InstitutionContractService } from 'src/app/blockchain/contracts/institution-contract/institution-contract.service';
 import { WalletService } from 'src/app/blockchain/wallet/wallet.service';
 import { InstitutionApprovalRequest } from './institution-approval-request.model';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 const { asciiToHex } = require('web3-utils');
 
@@ -13,6 +14,8 @@ const { asciiToHex } = require('web3-utils');
 })
 export class InstitutionApprovalRequestPage implements OnInit {
   universityVotingDeployed: any;
+  form: FormGroup;
+
 
   constructor(
     private wallet: WalletService,
@@ -24,6 +27,17 @@ export class InstitutionApprovalRequestPage implements OnInit {
     this.universityVotingDeployed = await this.universityVotingContract.universityVotingAbstraction.at(
       '0xA5cb9ECa6B6dC9dcB35Aa63f2a65D8565F41B3c0'
     );
+
+    this.form = new FormGroup({
+      institutionName: new FormControl(null, {
+        updateOn: 'blur',
+        validators: [Validators.required]
+      }),
+      adminName: new FormControl(null, {
+        updateOn: 'blur',
+        validators: [Validators.required]
+      }),
+    });
   }
 
   async approveRequest() {
@@ -34,7 +48,7 @@ export class InstitutionApprovalRequestPage implements OnInit {
     console.log(result.logs[0]);
   }
 
-  async newInstitutionRequest(institutionName: string, adminName: string) {
+  async onSubmitInstitutionApproval(institutionName: string, adminName: string) {
     // Institution data
     const institutionRequest = new InstitutionApprovalRequest(
       institutionName,
