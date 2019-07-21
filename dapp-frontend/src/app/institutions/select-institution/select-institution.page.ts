@@ -3,6 +3,9 @@ import { UniversityVotingService } from 'src/app/blockchain/contracts/university
 import { InstitutionContractService } from 'src/app/blockchain/contracts/institution-contract/institution-contract.service';
 import { Institution } from './institution-details/institution.model';
 import { WalletService } from 'src/app/blockchain/wallet/wallet.service';
+import { environment } from 'src/environments/environment';
+import { Subject } from 'rxjs';
+
 
 
 @Component({
@@ -21,13 +24,16 @@ export class SelectInstitutionPage implements OnInit {
     private institutionContract: InstitutionContractService
   ) {}
 
+  public institutionsObservable = new Subject<string[]>();
+
+
   /**
    * Get an instance of the University Voting contract which is responsible for
    * showing Institutions that have been created.
    */
   async ngOnInit() {
     this.universityVotingDeployed = await this.universityVotingContract.universityVotingAbstraction.at(
-      '0x9eEf1e027dc0DECF5a73b7D83c93010A091a0a7e'
+      environment.ethereum.universityVotingContractAddress
     );
   }
 
