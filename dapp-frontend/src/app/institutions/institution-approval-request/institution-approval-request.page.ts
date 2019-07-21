@@ -46,13 +46,15 @@ export class InstitutionApprovalRequestPage implements OnInit {
       institutionRequest.adminName,
       institutionRequest.institutionName
     ];
-    let newRequestDataAsBytes32 = requestArray.map(requestArray =>
+    const newRequestDataAsBytes32 = requestArray.map(requestArray =>
       asciiToHex(requestArray)
     );
     const result = await this.universityVotingDeployed.submitInstitutionApprovalRequest(
       newRequestDataAsBytes32,
       {
-        from: this.wallet.keypair[0]
+        // TODO THIS WILL BE FOR INFURA _ AS ADDRESS NOT FOUND ON GANACHE (would work with metamask though)
+        // from: this.wallet.keypair.adminAddress
+        from: '0xE0f2A9E9e7c456a6806cae0a621fC4FDe4A46b9F'
       }
     );
     console.log(result);

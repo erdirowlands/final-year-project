@@ -3,6 +3,8 @@ import { UniversityVotingService } from 'src/app/blockchain/contracts/university
 import { InstitutionContractService } from 'src/app/blockchain/contracts/institution-contract/institution-contract.service';
 import { Institution } from './institution-details/institution.model';
 import { WalletService } from 'src/app/blockchain/wallet/wallet.service';
+import { InstitutionApprovalRequest } from '../institution-approval-request/institution-approval-request.model';
+
 
 const { asciiToHex } = require('web3-utils');
 
@@ -32,7 +34,7 @@ export class SelectInstitutionPage implements OnInit {
     );
     //  this.universityVotingDeployed.getInstitutionAddresses();
     //  const test = this.newInstitutionRequest();
-    this.approveRequest();
+    this.newInstitutionRequest("Ulster", "Jacob's Creek");
     //  this.approveRequest();
     //  console.log(this.universityVotingDeployed);
   }
@@ -54,7 +56,8 @@ export class SelectInstitutionPage implements OnInit {
     }
   }
 
-  async newInstitutionRequest() {
+  async newInstitutionRequest(institutionName: string, adminName: string) {
+    /*
     // Institution data
     const institutionName = 'Ulster University';
     const adminName = 'John Francis'; // An admin must be initialised with an Institution
@@ -69,7 +72,30 @@ export class SelectInstitutionPage implements OnInit {
         from: '0xBEF3a23a6ac01b16F601D1620681cf207ff55aF0'
       }
     );
-    console.log(result);
+    console.log(result); */
+        // Institution data
+        const institutionRequest = new InstitutionApprovalRequest(
+          institutionName,
+          adminName
+        );
+    
+        // Create array to use the convenient map function when converting to hex.
+        const requestArray = [
+          institutionRequest.adminName,
+          institutionRequest.institutionName
+        ];
+        let newRequestDataAsBytes32 = requestArray.map(requestArray =>
+          asciiToHex(requestArray)
+        );
+        const result = await this.universityVotingDeployed.submitInstitutionApprovalRequest(
+          newRequestDataAsBytes32,
+          {
+            // TODO THIS WILL BE FOR INFURA _ AS ADDRESS NOT FOUND ON GANACHE (would work with metamask though)
+            // from: this.wallet.keypair.adminAddress
+            from: "0xE0f2A9E9e7c456a6806cae0a621fC4FDe4A46b9F"
+          }
+        );
+        console.log(result);
   }
 
   async getInstitutionLength() {

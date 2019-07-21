@@ -15,9 +15,11 @@ export class OwnerPage implements OnInit {
     private universityVotingContract: UniversityVotingService
   ) {}
 
-  ngOnInit() {    this.universityVotingDeployed = await this.universityVotingContract.universityVotingAbstraction.at(
-    '0x9eEf1e027dc0DECF5a73b7D83c93010A091a0a7e'
-  );}
+  async ngOnInit() {
+    this.universityVotingDeployed = await this.universityVotingContract.universityVotingAbstraction.at(
+      '0x9eEf1e027dc0DECF5a73b7D83c93010A091a0a7e'
+    );
+  }
 
   async approveRequest() {
     let result;
