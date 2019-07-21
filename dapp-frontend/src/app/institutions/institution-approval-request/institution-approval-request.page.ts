@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UniversityVotingService } from 'src/app/blockchain/contracts/university-voting/university-voting.service';
 import { InstitutionContractService } from 'src/app/blockchain/contracts/institution-contract/institution-contract.service';
 import { WalletService } from 'src/app/blockchain/wallet/wallet.service';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { NgForm } from '@angular/forms';
 import { LoadingController, AlertController } from '@ionic/angular';
 
 import { InstitutionApprovalRequest } from './institution-approval-request.model';
@@ -16,7 +16,6 @@ const { asciiToHex } = require('web3-utils');
 })
 export class InstitutionApprovalRequestPage implements OnInit {
   universityVotingDeployed: any;
-  form: FormGroup;
 
   constructor(
     private wallet: WalletService,
@@ -30,19 +29,9 @@ export class InstitutionApprovalRequestPage implements OnInit {
     this.universityVotingDeployed = await this.universityVotingContract.universityVotingAbstraction.at(
       '0xA5cb9ECa6B6dC9dcB35Aa63f2a65D8565F41B3c0'
     );
-
-    this.form = new FormGroup({
-      institutionName: new FormControl(null, {
-        updateOn: 'blur',
-        validators: [Validators.required]
-      }),
-      adminName: new FormControl(null, {
-        updateOn: 'blur',
-        validators: [Validators.required]
-      })
-    });
   }
 
+  // TODO REMOVE
   async approveRequest() {
     const result = await this.universityVotingDeployed.newInstitutionRequest(
       '0xBEF3a23a6ac01b16F601D1620681cf207ff55aF0',
@@ -51,10 +40,18 @@ export class InstitutionApprovalRequestPage implements OnInit {
     console.log(result.logs[0]);
   }
 
-  onSubmitInstitutionApproval() {
-    if (!this.form.valid || !this.form.get('image').value) {
+  onSubmit(form: NgForm) {
+   if (!form.valid) {
       return;
     }
+    const institutionName = form.value.institutionName;
+    const adminName = form.value.institutionName;
+
+    this.submitInstitutionApproval(institutionName, adminName);
+    form.reset();
+  }
+
+  private submitInstitutionApproval(institutionName: string, adminName: string) {
     this.loadingCtrl
       .create({ keyboardClose: true, message: 'Logging in...' })
       .then(async loadingEl => {
@@ -62,8 +59,8 @@ export class InstitutionApprovalRequestPage implements OnInit {
           loadingEl.present();
           // Institution data
           const institutionRequest = new InstitutionApprovalRequest(
-            this.form.value.institutionName,
-            this.form.value.adminName
+            institutionName,
+            adminName
           );
           // Create array to use the convenient map function when converting to hex.
           const requestArray = [
@@ -83,9 +80,11 @@ export class InstitutionApprovalRequestPage implements OnInit {
           );
           console.log(result);
         } catch (err) {
+          console.log(err);
           const errorString = err.toString();
           let sanitisedError;
           switch (errorString) {
+            // tslint:disable-next-line: max-line-length
             case 'Error: Returned error: VM Exception while processing transaction: revert You have an outstanding request, please wait for that to be processed':
               sanitisedError =
                 'You have an outstanding request, please wait for that to be processed';
