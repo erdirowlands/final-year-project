@@ -2,8 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { UniversityVotingService } from 'src/app/blockchain/contracts/university-voting/university-voting.service';
 import { InstitutionContractService } from 'src/app/blockchain/contracts/institution-contract/institution-contract.service';
 import { WalletService } from 'src/app/blockchain/wallet/wallet.service';
-import { InstitutionApprovalRequest } from './institution-approval-request.model';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { LoadingController, AlertController } from '@ionic/angular';
+
+import { InstitutionApprovalRequest } from './institution-approval-request.model';
 
 const { asciiToHex } = require('web3-utils');
 
@@ -20,7 +22,9 @@ export class InstitutionApprovalRequestPage implements OnInit {
   constructor(
     private wallet: WalletService,
     private universityVotingContract: UniversityVotingService,
-    private institutionContract: InstitutionContractService
+    private institutionContract: InstitutionContractService,
+    private loadingCtrl: LoadingController,
+    private alertCtrl: AlertController
   ) {}
 
   async ngOnInit() {
@@ -49,6 +53,10 @@ export class InstitutionApprovalRequestPage implements OnInit {
   }
 
   async onSubmitInstitutionApproval(institutionName: string, adminName: string) {
+    if (!this.form.valid || !this.form.get('image').value) {
+      return;
+    }
+    
     // Institution data
     const institutionRequest = new InstitutionApprovalRequest(
       institutionName,
