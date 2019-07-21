@@ -30,6 +30,8 @@ contract ApprovalQueue {
     // a flag that can evaulated to see if an address exists.
     mapping(address => ApprovalRequest) _approvalRequestQueue;
 
+    event NewApprovalSubmitted(address institution);
+
     function submitApprovalRequest(string memory approvalRequestType, bytes32[] memory requestData)
     public onlyOneRequest(msg.sender) isDuplicateApproval(msg.sender) {
         ApprovalRequest memory newApprovalRequest;
@@ -44,6 +46,7 @@ contract ApprovalQueue {
         // Add the approval request to the approval queue mapping, mapped by the
         // prospective admin's address.
         _approvalRequestQueue[msg.sender] = newApprovalRequest;
+        emit NewApprovalSubmitted(msg.sender);
     }
 
     /**
