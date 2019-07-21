@@ -75,10 +75,12 @@ export class InstitutionApprovalRequestPage implements OnInit {
             {
               // TODO THIS WILL BE FOR INFURA _ AS ADDRESS NOT FOUND ON GANACHE (would work with metamask though)
               // from: this.wallet.keypair.adminAddress
-              from: '0xE0f2A9E9e7c456a6806cae0a621fC4FDe4A46b9F'
+              from: '0xb14Dfc4C1a88be9a38271EDb81A0141259ac9B8a'
             }
           );
           console.log(result);
+          loadingEl.dismiss();
+          this.showSucessfulAlert()
         } catch (err) { 
           console.log(err);
           const errorString = err.toString();
@@ -97,12 +99,12 @@ export class InstitutionApprovalRequestPage implements OnInit {
               break;
           } 
           loadingEl.dismiss();
-          this.showAlert(sanitisedError);
+          this.showDeniedAlert(sanitisedError);
         }
       });
   }
 
-  private showAlert(message: string) {
+  private showDeniedAlert(message: string) {
     this.alertCtrl
       .create({
         header: 'New institution request denied',
@@ -111,4 +113,14 @@ export class InstitutionApprovalRequestPage implements OnInit {
       })
       .then(alertEl => alertEl.present());
   }
+
+  private showSucessfulAlert() {
+    this.alertCtrl
+      .create({
+        header: 'Request submitted. We just need to verify your university status. Please check back later.',
+        buttons: ['Okay']
+      })
+      .then(alertEl => alertEl.present());
+  }
+
 }
