@@ -22,7 +22,7 @@ export class UniversityVotingService {
     const web3 = this.web3Provider.getWeb3();
     this.universityVoting = TruffleContract(universityVotingArtifact);
     this.universityVoting.setProvider(web3.currentProvider);
-    await this.universityVoting.deployed();
+    await this.universityVoting.at("0xbc2b9A6D47B4859fc0E7CEf50E8b4336520Eafcd");
     console.log(this.universityVoting);
   }
 

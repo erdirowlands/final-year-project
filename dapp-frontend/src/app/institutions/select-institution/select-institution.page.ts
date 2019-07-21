@@ -28,14 +28,23 @@ export class SelectInstitutionPage implements OnInit {
    * showing Institutions that have been created.
    */
   async ngOnInit() {
-    this.deployedUniversityVotingContract = await this.universityVotingContract.universityVoting.deployed();
+    this.deployedUniversityVotingContract = await this.universityVotingContract.universityVoting.at("0xbc2b9A6D47B4859fc0E7CEf50E8b4336520Eafcd");
   //  this.deployedUniversityVotingContract.getInstitutionAddresses();
-    const test = this.getInstitutionLength();
-    console.log(test);
-    console.log(this.deployedUniversityVotingContract);
+  //  const test = this.newInstitutionRequest();
+    this.approveRequest();
+  //  console.log(this.deployedUniversityVotingContract);
   }
 
-  async getCreatedInstitutions() {
+  async approveRequest() {
+    let result = await this.deployedUniversityVotingContract.approveInstitutionRequest(
+      "0x38e15764EeD3c197577F9f42c3F40A2c51AD4f88",
+      { from: "0x5465340976b69551613Aa544D8beD5DdF7343A62" }
+    );
+    console.log(result.logs[0]);
+
+  }
+
+  async newInstitutionRequest() {
     // Institution data
     const institutionName = 'Ulster University';
     const adminName = 'John Francis'; // An admin must be initialised with an Institution
@@ -44,9 +53,10 @@ export class SelectInstitutionPage implements OnInit {
     newRequestDataAsBytes32 = newInstitutionRequestData.map(
       newInstitutionRequestData => asciiToHex(newInstitutionRequestData)
     );
-    await this.deployedUniversityVotingContract.submitInstitutionApprovalRequest(newRequestDataAsBytes32, {
-      from: "0x5465340976b69551613Aa544D8beD5DdF7343A62"
+    let result = await this.deployedUniversityVotingContract.submitInstitutionApprovalRequest(newRequestDataAsBytes32, {
+      from: "0x38e15764EeD3c197577F9f42c3F40A2c51AD4f88"
     });
+    console.log(result);
   }
 
   async getInstitutionLength() {
