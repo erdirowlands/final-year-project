@@ -16,8 +16,7 @@ const routes: Routes = [
           },
           {
             path: 'new-institution',
-            loadChildren:
-              './institution-approval-request/institution-approval-request.module#InstitutionApprovalRequestPageModule'
+            loadChildren: './institution-approval-request/institution-approval-request.module#InstitutionApprovalRequestPageModule',
           }
         ]
       },
@@ -30,8 +29,7 @@ const routes: Routes = [
           },
           {
             path: 'new-election',
-            redirectTo: '../elections/create-election/create-election.module/CreateElectionPageModule',
-            pathMatch: 'full'
+            loadChildren: '../elections/create-election/create-election.module/CreateElectionPageModule',
           }
         ]
       },
@@ -54,8 +52,4 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 
-@NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
-})
 export class InstitutionsRoutingModule {}
