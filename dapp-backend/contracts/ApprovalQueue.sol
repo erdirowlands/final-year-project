@@ -48,6 +48,10 @@ contract ApprovalQueue {
         // Add the approval request to the approval queue mapping, mapped by the
         // prospective admin's address.
         _approvalRequestQueue[msg.sender] = newApprovalRequest;
+
+        // Add to array so address state can be discovered by iteration.
+        _approvalRequestArray.push(msg.sender);
+
         emit NewApprovalSubmitted(msg.sender);
     }
 
