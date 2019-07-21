@@ -18,7 +18,6 @@ export class InstitutionApprovalRequestPage implements OnInit {
   universityVotingDeployed: any;
   form: FormGroup;
 
-
   constructor(
     private wallet: WalletService,
     private universityVotingContract: UniversityVotingService,
@@ -40,7 +39,7 @@ export class InstitutionApprovalRequestPage implements OnInit {
       adminName: new FormControl(null, {
         updateOn: 'blur',
         validators: [Validators.required]
-      }),
+      })
     });
   }
 
@@ -52,35 +51,54 @@ export class InstitutionApprovalRequestPage implements OnInit {
     console.log(result.logs[0]);
   }
 
-  async onSubmitInstitutionApproval(institutionName: string, adminName: string) {
+    onSubmitInstitutionApproval(
+    institutionName: string,
+    adminName: string
+  ) {
     if (!this.form.valid || !this.form.get('image').value) {
       return;
     }
     this.loadingCtrl
-    .create({ keyboardClose: true, message: 'Logging in...' })
-    .then(async loadingEl => {
-    // Institution data
-    const institutionRequest = new InstitutionApprovalRequest(
-      institutionName,
-      adminName
-    );
-    // Create array to use the convenient map function when converting to hex.
-    const requestArray = [
-      institutionRequest.adminName,
-      institutionRequest.institutionName
-    ];
-    const newRequestDataAsBytes32 = requestArray.map(requestArray =>
-      asciiToHex(requestArray)
-    );
-    const result = await this.universityVotingDeployed.submitInstitutionApprovalRequest(
-      newRequestDataAsBytes32,
-      {
-        // TODO THIS WILL BE FOR INFURA _ AS ADDRESS NOT FOUND ON GANACHE (would work with metamask though)
-        // from: this.wallet.keypair.adminAddress
-        from: '0xE0f2A9E9e7c456a6806cae0a621fC4FDe4A46b9F'
-      }
-    );
-    console.log(result);
-  });
+      .create({ keyboardClose: true, message: 'Logging in...' })
+      .then(async loadingEl => {
+        try {
+          loadingEl.present();
+          // Institution data
+          const institutionRequest = new InstitutionApprovalRequest(
+            institutionName,
+            adminName
+          );
+          // Create array to use the convenient map function when converting to hex.
+          const requestArray = [
+            institutionRequest.adminName,
+            institutionRequest.institutionName
+          ];
+          const newRequestDataAsBytes32 = requestArray.map(requestArray =>
+            asciiToHex(requestArray)
+          );
+          const result = await this.universityVotingDeployed.submitInstitutionApprovalRequest(
+            newRequestDataAsBytes32,
+            {
+              // TODO THIS WILL BE FOR INFURA _ AS ADDRESS NOT FOUND ON GANACHE (would work with metamask though)
+              // from: this.wallet.keypair.adminAddress
+              from: '0xE0f2A9E9e7c456a6806cae0a621fC4FDe4A46b9F'
+            }
+          );
+          console.log(result);
+        } catch (err) {
+          loadingEl.dismiss();
+          this.showAlert(err);
+        }
+      });
+  }
+
+  private showAlert(message: string) {
+    this.alertCtrl
+      .create({
+        header: 'New institution request failed',
+        message,
+        buttons: ['Okay']
+      })
+      .then(alertEl => alertEl.present());
   }
 }
