@@ -3,18 +3,26 @@ import { UniversityVotingService } from 'src/app/blockchain/contracts/university
 import { InstitutionContractService } from 'src/app/blockchain/contracts/institution-contract/institution-contract.service';
 import { WalletService } from 'src/app/blockchain/wallet/wallet.service';
 import { InstitutionApprovalRequest } from './institution-approval-request.model';
+
 @Component({
   selector: 'app-institution-approval-request',
   templateUrl: './institution-approval-request.page.html',
-  styleUrls: ['./institution-approval-request.page.scss'],
+  styleUrls: ['./institution-approval-request.page.scss']
 })
 export class InstitutionApprovalRequestPage implements OnInit {
+  
+  universityVotingDeployed: any;
 
-  constructor(private wallet: WalletService,
+  constructor(
+    private wallet: WalletService,
     private universityVotingContract: UniversityVotingService,
-    private institutionContract: InstitutionContractService) { }
+    private institutionContract: InstitutionContractService
+  ) {}
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.universityVotingDeployed = await this.universityVotingContract.universityVotingAbstraction.at(
+      '0x69888797C2472C54340003525B7692b2608b0C7e'
+    );
   }
 
   async approveRequest() {
@@ -25,10 +33,16 @@ export class InstitutionApprovalRequestPage implements OnInit {
     console.log(result.logs[0]);
   }
 
-  async newInstitutionRequest() {
+  async newInstitutionRequest(institutionName: string, adminName: string) {
     // Institution data
-    const institutionName = 'Ulster University';
-    const adminName = 'John Francis'; // An admin must be initialised with an Institution
+    const institutionRequest = new InstitutionApprovalRequest(
+      institutionName,
+      adminName,
+    );
+
+    // Create array to use the convenient map function when converting to hex.
+    const requestArray = [institutionRequest.adminName, institutionRequest.institutionName];
+
     const newInstitutionRequestData = [institutionName, adminName];
     let newRequestDataAsBytes32;
     newRequestDataAsBytes32 = newInstitutionRequestData.map(
@@ -42,5 +56,4 @@ export class InstitutionApprovalRequestPage implements OnInit {
     );
     console.log(result);
   }
-
 }
