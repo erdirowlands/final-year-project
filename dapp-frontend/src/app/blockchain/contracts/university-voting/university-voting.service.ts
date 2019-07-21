@@ -12,19 +12,23 @@ var universityVotingArtifact = require('../artifacts/UniversityVoting.json');
 })
 export class UniversityVotingService {
 
-  universityVoting: any;
+  private _universityVotingAbstraction: any;
 
   constructor(private web3Provider: Web3ProviderService) { 
-    this.initialiseUniversityVotingContract();
+    this.generateContractAbstraction();
   }
 
-  private async  initialiseUniversityVotingContract() {
+  private async  generateContractAbstraction() {
     const web3 = this.web3Provider.getWeb3();
-    this.universityVoting = TruffleContract(universityVotingArtifact);
-    this.universityVoting.setProvider(web3.currentProvider);
-    await this.universityVoting.at("0xbc2b9A6D47B4859fc0E7CEf50E8b4336520Eafcd");
-    console.log(this.universityVoting);
+    this._universityVotingAbstraction = TruffleContract(universityVotingArtifact);
+    this._universityVotingAbstraction.setProvider(web3.currentProvider);
   }
+
+  public get universityVotingAbstraction(): any {
+    return this._universityVotingAbstraction;
+  }
+
+ 
 
 
 

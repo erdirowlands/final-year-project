@@ -4,8 +4,7 @@ import { InstitutionContractService } from 'src/app/blockchain/contracts/institu
 import { Institution } from './institution-details/institution.model';
 import { WalletService } from 'src/app/blockchain/wallet/wallet.service';
 
-const { asciiToHex } = require("web3-utils");
-
+const { asciiToHex } = require('web3-utils');
 
 @Component({
   selector: 'app-select-institution',
@@ -13,7 +12,7 @@ const { asciiToHex } = require("web3-utils");
   styleUrls: ['./select-institution.page.scss']
 })
 export class SelectInstitutionPage implements OnInit {
-  deployedUniversityVotingContract: any;
+  universityVotingDeployed: any;
 
   institutions: Institution[];
 
@@ -28,20 +27,21 @@ export class SelectInstitutionPage implements OnInit {
    * showing Institutions that have been created.
    */
   async ngOnInit() {
-    this.deployedUniversityVotingContract = await this.universityVotingContract.universityVoting.at("0xbc2b9A6D47B4859fc0E7CEf50E8b4336520Eafcd");
-  //  this.deployedUniversityVotingContract.getInstitutionAddresses();
-  //  const test = this.newInstitutionRequest();
-    this.approveRequest();
-  //  console.log(this.deployedUniversityVotingContract);
+    this.universityVotingDeployed = await this.universityVotingContract.universityVotingAbstraction.at(
+      '0xdb221B5Bb37AA679C58D05b65C368B729D7757De'
+    );
+    //  this.universityVotingDeployed.getInstitutionAddresses();
+    //  const test = this.newInstitutionRequest();
+    this.getInstitutionLength();
+    //  console.log(this.universityVotingDeployed);
   }
 
   async approveRequest() {
-    let result = await this.deployedUniversityVotingContract.approveInstitutionRequest(
-      "0x38e15764EeD3c197577F9f42c3F40A2c51AD4f88",
-      { from: "0x5465340976b69551613Aa544D8beD5DdF7343A62" }
+    const result = await this.universityVotingDeployed.approveInstitutionRequest(
+      '0x38e15764EeD3c197577F9f42c3F40A2c51AD4f88',
+      { from: '0x5465340976b69551613Aa544D8beD5DdF7343A62' }
     );
     console.log(result.logs[0]);
-
   }
 
   async newInstitutionRequest() {
@@ -53,14 +53,16 @@ export class SelectInstitutionPage implements OnInit {
     newRequestDataAsBytes32 = newInstitutionRequestData.map(
       newInstitutionRequestData => asciiToHex(newInstitutionRequestData)
     );
-    let result = await this.deployedUniversityVotingContract.submitInstitutionApprovalRequest(newRequestDataAsBytes32, {
-      from: "0x38e15764EeD3c197577F9f42c3F40A2c51AD4f88"
-    });
+    const result = await this.universityVotingDeployed.submitInstitutionApprovalRequest(
+      newRequestDataAsBytes32,
+      {
+        from: '0x38e15764EeD3c197577F9f42c3F40A2c51AD4f88'
+      }
+    );
     console.log(result);
   }
 
   async getInstitutionLength() {
-    await this.deployedUniversityVotingContract.getInstitutionsTotal.call();
+    console.log(await this.universityVotingDeployed.getInstitutionsTotal.call());
   }
-
 }
