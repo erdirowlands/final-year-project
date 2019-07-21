@@ -3,10 +3,7 @@ import { UniversityVotingService } from 'src/app/blockchain/contracts/university
 import { InstitutionContractService } from 'src/app/blockchain/contracts/institution-contract/institution-contract.service';
 import { Institution } from './institution-details/institution.model';
 import { WalletService } from 'src/app/blockchain/wallet/wallet.service';
-import { InstitutionApprovalRequest } from '../institution-approval-request/institution-approval-request.model';
 
-
-const { asciiToHex } = require('web3-utils');
 
 @Component({
   selector: 'app-select-institution',
@@ -32,70 +29,6 @@ export class SelectInstitutionPage implements OnInit {
     this.universityVotingDeployed = await this.universityVotingContract.universityVotingAbstraction.at(
       '0x9eEf1e027dc0DECF5a73b7D83c93010A091a0a7e'
     );
-    //  this.universityVotingDeployed.getInstitutionAddresses();
-    //  const test = this.newInstitutionRequest();
-    this.newInstitutionRequest("Ulster", "Jacob's Creek");
-    //  this.approveRequest();
-    //  console.log(this.universityVotingDeployed);
-  }
-
-  async approveRequest() {
-    let result;
-    try {
-      result = await this.universityVotingDeployed.approveInstitutionRequest(
-        '0xBEF3a23a6ac01b16F601D1620681cf207ff55aF0',
-        { from: '0x5b9bA5f0b6ef3E8D90304D8A9C7318c8226fe372' }
-      );
-      console.log(result.logs[0]);
-    } catch (error) {
-      if (error == "Error: Returned error: VM Exception while processing transaction: revert Approval not found -- Reason given: Approval not found.") {
-        console.log("HI");
-      }
-      console.log(error);
-
-    }
-  }
-
-  async newInstitutionRequest(institutionName: string, adminName: string) {
-    /*
-    // Institution data
-    const institutionName = 'Ulster University';
-    const adminName = 'John Francis'; // An admin must be initialised with an Institution
-    const newInstitutionRequestData = [institutionName, adminName];
-    let newRequestDataAsBytes32;
-    newRequestDataAsBytes32 = newInstitutionRequestData.map(
-      newInstitutionRequestData => asciiToHex(newInstitutionRequestData)
-    );
-    const result = await this.universityVotingDeployed.submitInstitutionApprovalRequest(
-      newRequestDataAsBytes32,
-      {
-        from: '0xBEF3a23a6ac01b16F601D1620681cf207ff55aF0'
-      }
-    );
-    console.log(result); */
-        // Institution data
-        const institutionRequest = new InstitutionApprovalRequest(
-          institutionName,
-          adminName
-        );
-    
-        // Create array to use the convenient map function when converting to hex.
-        const requestArray = [
-          institutionRequest.adminName,
-          institutionRequest.institutionName
-        ];
-        let newRequestDataAsBytes32 = requestArray.map(requestArray =>
-          asciiToHex(requestArray)
-        );
-        const result = await this.universityVotingDeployed.submitInstitutionApprovalRequest(
-          newRequestDataAsBytes32,
-          {
-            // TODO THIS WILL BE FOR INFURA _ AS ADDRESS NOT FOUND ON GANACHE (would work with metamask though)
-            // from: this.wallet.keypair.adminAddress
-            from: "0xE0f2A9E9e7c456a6806cae0a621fC4FDe4A46b9F"
-          }
-        );
-        console.log(result);
   }
 
   async getInstitutionLength() {
