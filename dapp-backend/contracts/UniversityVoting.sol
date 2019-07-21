@@ -77,8 +77,6 @@ contract UniversityVoting is Ownable, ApprovalQueue {
      */
     function submitInstitutionApprovalRequest(bytes32[] memory requestData) public {
         super.submitApprovalRequest("institutionApprovalRequest", requestData);
-        // Emit the new approval.
-        emit NewApprovalSubmitted(msg.sender);
     }
 
     /**
