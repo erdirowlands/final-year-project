@@ -4,7 +4,6 @@ import { InstitutionContractService } from 'src/app/blockchain/contracts/institu
 import { Institution } from './institution-details/institution.model';
 import { WalletService } from 'src/app/blockchain/wallet/wallet.service';
 
-const { asciiToHex } = require('web3-utils');
 
 @Component({
   selector: 'app-select-institution',
@@ -28,41 +27,13 @@ export class SelectInstitutionPage implements OnInit {
    */
   async ngOnInit() {
     this.universityVotingDeployed = await this.universityVotingContract.universityVotingAbstraction.at(
-      '0x69888797C2472C54340003525B7692b2608b0C7e'
+      '0x9eEf1e027dc0DECF5a73b7D83c93010A091a0a7e'
     );
-    //  this.universityVotingDeployed.getInstitutionAddresses();
-    //  const test = this.newInstitutionRequest();
-    this.approveRequest();
-    //  console.log(this.universityVotingDeployed);
-  }
-
-  async approveRequest() {
-    const result = await this.universityVotingDeployed.approveInstitutionRequest(
-      '0xBEF3a23a6ac01b16F601D1620681cf207ff55aF0',
-      { from: '0x5b9bA5f0b6ef3E8D90304D8A9C7318c8226fe372' }
-    );
-    console.log(result.logs[0]);
-  }
-
-  async newInstitutionRequest() {
-    // Institution data
-    const institutionName = 'Ulster University';
-    const adminName = 'John Francis'; // An admin must be initialised with an Institution
-    const newInstitutionRequestData = [institutionName, adminName];
-    let newRequestDataAsBytes32;
-    newRequestDataAsBytes32 = newInstitutionRequestData.map(
-      newInstitutionRequestData => asciiToHex(newInstitutionRequestData)
-    );
-    const result = await this.universityVotingDeployed.submitInstitutionApprovalRequest(
-      newRequestDataAsBytes32,
-      {
-        from: '0xBEF3a23a6ac01b16F601D1620681cf207ff55aF0'
-      }
-    );
-    console.log(result);
   }
 
   async getInstitutionLength() {
-    console.log(await this.universityVotingDeployed.getInstitutionsTotal.call());
+    console.log(
+      await this.universityVotingDeployed.getInstitutionsTotal.call()
+    );
   }
 }

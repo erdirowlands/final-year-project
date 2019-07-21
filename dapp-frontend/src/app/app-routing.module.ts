@@ -9,16 +9,7 @@ const routes: Routes = [
     path: 'institutions',
     loadChildren: './institutions/institutions.module#InstitutionsPageModule',
     canLoad: [AuthGuard]
-  },
-  {
-    path: 'elections',
-    loadChildren: './elections/elections.module#ElectionsPageModule',
-    canLoad: [AuthGuard]
-  },
-  { path: 'election-details', loadChildren: './elections/all-elections/election-details/election-details.module#ElectionDetailsPageModule' },
-  { path: 'institution-contract', loadChildren: './blockchain/contracts/institution-contract/institution-contract.module#InstitutionContractPageModule' },
-  { path: 'election-contract', loadChildren: './blockchain/contracts/election-contract/election-contract.module#ElectionContractPageModule' },
-  { path: 'university-voting', loadChildren: './blockchain/contracts/university-voting/university-voting.module#UniversityVotingPageModule' }
+  }
 ];
 @NgModule({
   imports: [

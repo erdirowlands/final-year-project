@@ -4,42 +4,45 @@ import { InstitutionsPage } from './institutions.page';
 
 const routes: Routes = [
   {
-    path: 'institution-tabs',
+    path: 'tabs',
     component: InstitutionsPage,
     children: [
       {
-        path: 'select-institution',
+        path: 'view',
         children: [
           {
             path: '',
             loadChildren: './select-institution/select-institution.module#SelectInstitutionPageModule'
           },
           {
-            path: ':institutionId',
-            loadChildren:
-              './select-institution/institution-details/institution-details.module#InstitutionDetailsPageModule'
+            path: 'new',
+            loadChildren: './institution-approval-request/institution-approval-request.module#InstitutionApprovalRequestPageModule',
           }
         ]
       },
       {
-        path: 'submit-institution',
+        path: 'elections',
         children: [
           {
             path: '',
-            loadChildren: './institution-approval-request/institution-approval-request.module#InstitutionApprovalRequestPageModule'
+            loadChildren: '../elections/elections.module#ElectionsPageModule'
+          },
+          {
+            path: 'new-election',
+            loadChildren: '../elections/create-election/create-election.module#CreateElectionPageModule',
           }
         ]
       },
       {
         path: '',
-        redirectTo: '/institutions/institution-tabs/select-institution',
+        redirectTo: '/institutions/tabs/view',
         pathMatch: 'full'
       }
     ]
   },
   {
     path: '',
-    redirectTo: '/institutions/institution-tabs/select-institution',
+    redirectTo: '/institutions/tabs/view',
     pathMatch: 'full'
   },
 ];
@@ -49,8 +52,4 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 
-@NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
-})
 export class InstitutionsRoutingModule {}

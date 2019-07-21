@@ -262,6 +262,8 @@ contract Institution is ApprovalQueue {
         // Add the approval request to the approval queue mapping, mapped by the
         // prospective admin's address.
         _approvalRequestQueue[msg.sender] = newApprovalRequest;
+        emit NewApprovalSubmitted(msg.sender);
+
     }
 
 

@@ -32,6 +32,8 @@ contract ApprovalQueue {
 
     event NewApprovalSubmitted(address institution);
 
+    address[] _approvalRequestArray;
+
     function submitApprovalRequest(string memory approvalRequestType, bytes32[] memory requestData)
     public onlyOneRequest(msg.sender) isDuplicateApproval(msg.sender) {
         ApprovalRequest memory newApprovalRequest;
@@ -46,6 +48,10 @@ contract ApprovalQueue {
         // Add the approval request to the approval queue mapping, mapped by the
         // prospective admin's address.
         _approvalRequestQueue[msg.sender] = newApprovalRequest;
+
+        // Add to array so address state can be discovered by iteration.
+        _approvalRequestArray.push(msg.sender);
+
         emit NewApprovalSubmitted(msg.sender);
     }
 
@@ -79,8 +85,7 @@ contract ApprovalQueue {
 
     function getRequest(address submittingAddress) public view returns(bool, string memory, bytes32[] memory ) {
         // require(isAdminStored(storedAdmin), "Admin address not found"); // TODO shouldn't need this, as we'll be using the array as the index.
-        if (isApprovalStored(submittingAddress)) { // TODO this might not be reachable as the return is in the if if it's anything like Java and
-        //the comment above should apply about using the array as the inex
+        if (isApprovalStored(submittingAddress)) { 
             return (_approvalRequestQueue[submittingAddress].isPending, _approvalRequestQueue[submittingAddress].approvalType, _approvalRequestQueue[submittingAddress].data);
         }
     }

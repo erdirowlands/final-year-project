@@ -44,7 +44,7 @@ export class AuthPage implements OnInit {
         }
         loadingEl.dismiss();
         this.router.navigateByUrl(
-          '/institutions/institution-tabs/select-institution'
+          '/institutions/tabs/view'
         );
       });
   }
