@@ -29,7 +29,7 @@ const routes: Routes = [
           },
           {
             path: 'new-election',
-            loadChildren: '../elections/create-election/create-election.module/CreateElectionPageModule',
+            loadChildren: '../elections/create-election/create-election.module#CreateElectionPageModule',
           }
         ]
       },
