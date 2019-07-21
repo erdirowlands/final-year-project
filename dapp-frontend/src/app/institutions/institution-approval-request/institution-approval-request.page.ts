@@ -51,10 +51,7 @@ export class InstitutionApprovalRequestPage implements OnInit {
     console.log(result.logs[0]);
   }
 
-    onSubmitInstitutionApproval(
-    institutionName: string,
-    adminName: string
-  ) {
+  onSubmitInstitutionApproval() {
     if (!this.form.valid || !this.form.get('image').value) {
       return;
     }
@@ -65,8 +62,8 @@ export class InstitutionApprovalRequestPage implements OnInit {
           loadingEl.present();
           // Institution data
           const institutionRequest = new InstitutionApprovalRequest(
-            institutionName,
-            adminName
+            this.form.value.institutionName,
+            this.form.value.adminName
           );
           // Create array to use the convenient map function when converting to hex.
           const requestArray = [
@@ -86,8 +83,22 @@ export class InstitutionApprovalRequestPage implements OnInit {
           );
           console.log(result);
         } catch (err) {
+          const errorString = err.toString();
+          let sanitisedError;
+          switch (errorString) {
+            case 'Error: Returned error: VM Exception while processing transaction: revert You have an outstanding request, please wait for that to be processed':
+              sanitisedError =
+                'You have an outstanding request, please wait for that to be processed';
+              break;
+            case 'Error: Returned error: VM Exception while processing transaction: revert This approval has already been submitted!':
+              sanitisedError = 'This approval has already been submitted!';
+              break;
+            default:
+              sanitisedError = errorString;
+              break;
+          }
           loadingEl.dismiss();
-          this.showAlert(err);
+          this.showAlert(sanitisedError);
         }
       });
   }
