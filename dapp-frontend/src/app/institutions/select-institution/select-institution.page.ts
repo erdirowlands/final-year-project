@@ -28,11 +28,12 @@ export class SelectInstitutionPage implements OnInit {
    */
   async ngOnInit() {
     this.universityVotingDeployed = await this.universityVotingContract.universityVotingAbstraction.at(
-      '0x69888797C2472C54340003525B7692b2608b0C7e'
+      '0x9eEf1e027dc0DECF5a73b7D83c93010A091a0a7e'
     );
     //  this.universityVotingDeployed.getInstitutionAddresses();
     //  const test = this.newInstitutionRequest();
     this.approveRequest();
+  //  this.approveRequest();
     //  console.log(this.universityVotingDeployed);
   }
 

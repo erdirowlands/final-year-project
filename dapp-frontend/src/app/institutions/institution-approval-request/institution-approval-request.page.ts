@@ -22,12 +22,12 @@ export class InstitutionApprovalRequestPage implements OnInit {
 
   async ngOnInit() {
     this.universityVotingDeployed = await this.universityVotingContract.universityVotingAbstraction.at(
-      '0x69888797C2472C54340003525B7692b2608b0C7e'
+      '0xA5cb9ECa6B6dC9dcB35Aa63f2a65D8565F41B3c0'
     );
   }
 
   async approveRequest() {
-    const result = await this.universityVotingDeployed.approveInstitutionRequest(
+    const result = await this.universityVotingDeployed.newInstitutionRequest(
       '0xBEF3a23a6ac01b16F601D1620681cf207ff55aF0',
       { from: '0x5b9bA5f0b6ef3E8D90304D8A9C7318c8226fe372' }
     );
