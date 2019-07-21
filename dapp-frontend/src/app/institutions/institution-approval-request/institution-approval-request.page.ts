@@ -56,13 +56,14 @@ export class InstitutionApprovalRequestPage implements OnInit {
     if (!this.form.valid || !this.form.get('image').value) {
       return;
     }
-    
+    this.loadingCtrl
+    .create({ keyboardClose: true, message: 'Logging in...' })
+    .then(async loadingEl => {
     // Institution data
     const institutionRequest = new InstitutionApprovalRequest(
       institutionName,
       adminName
     );
-
     // Create array to use the convenient map function when converting to hex.
     const requestArray = [
       institutionRequest.adminName,
@@ -80,5 +81,6 @@ export class InstitutionApprovalRequestPage implements OnInit {
       }
     );
     console.log(result);
+  });
   }
 }
