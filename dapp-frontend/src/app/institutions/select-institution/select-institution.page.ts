@@ -34,10 +34,10 @@ export class SelectInstitutionPage implements OnInit {
    * showing Institutions that have been created.
    */
   async ngOnInit() {
-    this.universityVotingDeployed = await this.universityVotingContract.universityVotingAbstraction.at(
-      environment.ethereum.universityVotingContractAddress
-    );
-    this.getInstitutionAddresses();
+  //  this.universityVotingDeployed = await this.universityVotingContract.universityVotingAbstraction.at(
+  //    environment.ethereum.universityVotingContractAddress
+ //   );
+  //  this.getInstitutionAddresses();
   }
 
   ionViewWillEnter() {
@@ -45,7 +45,7 @@ export class SelectInstitutionPage implements OnInit {
     //  this.institutionsObservable.subscribe(() => {
     //    this.isLoading = false;
     // setInterval(() => this.getInstitutionAddresses(), 10);
-    this.refreshInstitutionAddresses();
+  //  this.refreshInstitutionAddresses();
     //  });
   }
 

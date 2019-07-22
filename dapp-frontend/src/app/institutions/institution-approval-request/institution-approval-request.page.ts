@@ -34,9 +34,9 @@ export class InstitutionApprovalRequestPage implements OnInit {
   ) {}
 
   async ngOnInit() {
-    this.universityVotingDeployed = await this.universityVotingContract.universityVotingAbstraction.at(
-      environment.ethereum.universityVotingContractAddress
-    );
+   // this.universityVotingDeployed = await this.universityVotingContract.universityVotingAbstraction.at(
+  //    environment.ethereum.universityVotingContractAddress
+  //  );
   }
 
   // TODO REMOVE
@@ -134,27 +134,27 @@ export class InstitutionApprovalRequestPage implements OnInit {
       asciiToHex(requestArray)
     );
 
-    let method1 = myContract.methods.submitInstitutionApprovalRequest(newRequestDataAsBytes32);
+    let method1 = myContract.methods.submitInstitutionApprovalRequest(newRequestDataAsBytes32).encodeABI();
 
     let method1Hex = asciiToHex(method1);
 
     const privateKey = new Buffer('0x5D0A44B2F735738D8D121CF8866D45A516582C5DCFACD05E79F431FD3BBE1B98', 'hex');
 
-    let pk = web33.eth.accounts.privateKeyToAccount('0x5D0A44B2F735738D8D121CF8866D45A516582C5DCFACD05E79F431FD3BBE1B98');
+   // let pk = web33.eth.accounts.privateKeyToAccount('0x5D0A44B2F735738D8D121CF8866D45A516582C5DCFACD05E79F431FD3BBE1B98');
 
 
     let gasCost = await  web33.eth.gasPrice;
     
    // const walletAccount = this.wallet.wallet[0];
 
-   this.wallet.wallet.add(pk); 
-   const walletAccount = this.wallet.wallet[2];
+   // this.wallet.wallet.add(pk); 
+ //  const walletAccount = this.wallet.wallet[2];
 
     let tx = {
       to : environment.ethereum.universityVotingContractAddress,
       data : method1Hex,
       gasPrice: gasCost,
-      gas: '3000000'
+      gas: '300000'
   };
     this.loadingCtrl
       .create({ keyboardClose: true, message: 'Logging in...' })
@@ -162,7 +162,7 @@ export class InstitutionApprovalRequestPage implements OnInit {
         try {
           loadingEl.present();
           // Institution data
-          web33.eth.accounts.signTransaction(walletAccount.privateKey, privateKey).then(signed => {
+          web33.eth.accounts.signTransaction(tx, privateKey).then(signed => {
             web33.eth.sendSignedTransaction(signed.rawTransaction).on('receipt', console.log);
         });
          // console.log(result);
