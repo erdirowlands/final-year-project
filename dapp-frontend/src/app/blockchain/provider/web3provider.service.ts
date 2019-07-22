@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import Web3 from 'web3';
 import { ethers } from 'ethers';
-const Tx = require('ethereumjs-tx').Transaction;
-
 import { environment } from '../../../environments/environment';
+const Tx = require('ethereumjs-tx').Transaction;
 
 @Injectable({
   providedIn: 'root'

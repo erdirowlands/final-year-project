@@ -1,12 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Web3ProviderService } from '../../provider/web3provider.service';
 import { ethers } from 'ethers';
-const Tx = require('ethereumjs-tx').Transaction;
-
 import { environment } from 'src/environments/environment';
 
-declare var require: any;
-
+const Tx = require('ethereumjs-tx').Transaction;
 let universityVotingArtifact = require('../artifacts/UniversityVoting.json');
 
 @Injectable({
@@ -17,8 +14,8 @@ export class UniversityVotingService {
   private web3;
 
   constructor(private web3Provider: Web3ProviderService) {
-    this.generateContractAbstraction();
     this.web3 = this.web3Provider.getWeb3;
+    this.generateContractAbstraction();
   }
 
   private async generateContractAbstraction() {
@@ -27,10 +24,6 @@ export class UniversityVotingService {
       universityVotingArtifact.abi,
       environment.ethereum.universityVotingContractAddress
     );
-  }
-
-  public get universityVotingAbstraction(): any {
-    return this._universityVotingAbstraction;
   }
 
   public async submitInstitutionRequestSigner(
@@ -78,7 +71,6 @@ export class UniversityVotingService {
 
     // Now we want to send the raw transaction that has been signed with
     // the user's private key.
-    try {
       this.web3.eth
         .sendSignedTransaction('0x' + serializedTx.toString('hex'))
         .on('receipt', console.log)
@@ -87,24 +79,11 @@ export class UniversityVotingService {
         .on('receipt', console.log)
         .on('confirmation', console.log)
         .on('error', console.log);
-    } catch (err) {
-      console.log(err);
-      const errorString = err.toString();
-      let sanitisedError;
-      switch (errorString) {
-        // tslint:disable-next-line: max-line-length
-        case 'Error: Returned error: VM Exception while processing transaction: revert You have an outstanding request, please wait for that to be processed -- Reason given: You have an outstanding request, please wait for that to be processed.':
-          sanitisedError =
-            'You have an outstanding request, please wait for that to be processed';
-          break;
-        case 'Error: Returned error: VM Exception while processing transaction: revert This approval has already been submitted!':
-          sanitisedError = 'This approval has already been submitted!';
-          break;
-        default:
-          sanitisedError = errorString;
-          break;
-      }
-    }
+    
+  }
+
+  public get universityVotingAbstraction(): any {
+    return this._universityVotingAbstraction;
   }
 
 }
