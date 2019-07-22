@@ -12,7 +12,7 @@ import { Web3ProviderService } from 'src/app/blockchain/provider/web3provider.se
 import { ethers } from 'ethers';
 const Tx = require('ethereumjs-tx').Transaction;
 
-var universityVotingArtifact = require('src/app/blockchain/contracts/artifacts/UniversityVoting.json');
+const universityVotingArtifact = require('src/app/blockchain/contracts/artifacts/UniversityVoting.json');
 
 const { asciiToHex } = require('web3-utils');
 const { toWei } = require('web3-utils');
@@ -33,13 +33,13 @@ export class InstitutionApprovalRequestPage implements OnInit {
     private loadingCtrl: LoadingController,
     private alertCtrl: AlertController,
     private router: Router,
-    private web3: Web3ProviderService,
+    private web3: Web3ProviderService
   ) {}
 
   async ngOnInit() {
-   // this.universityVotingDeployed = await this.universityVotingContract.universityVotingAbstraction.at(
-  //    environment.ethereum.universityVotingContractAddress
-  //  );
+    // this.universityVotingDeployed = await this.universityVotingContract.universityVotingAbstraction.at(
+    //    environment.ethereum.universityVotingContractAddress
+    //  );
   }
 
   // TODO REMOVE
@@ -52,7 +52,7 @@ export class InstitutionApprovalRequestPage implements OnInit {
   }
 
   onSubmit(form: NgForm) {
-   if (!form.valid) {
+    if (!form.valid) {
       return;
     }
     const institutionName = form.value.institutionName;
@@ -62,21 +62,41 @@ export class InstitutionApprovalRequestPage implements OnInit {
     form.reset();
   }
 
-  private async  submitInstitutionApproval(institutionName: string, adminName: string) {
+  private async submitInstitutionApproval(
+    institutionName: string,
+    adminName: string
+  ) {
     this.loadingCtrl
       .create({ keyboardClose: true, message: 'Logging in...' })
       .then(async loadingEl => {
         try {
           loadingEl.present();
-
+          // Institution data
+          const institutionRequest = new InstitutionApprovalRequest(
+            institutionName,
+            adminName
+          );
+          // Create array to use the convenient map function when converting to hex.
+          const requestArray = [
+            institutionRequest.adminName,
+            institutionRequest.institutionName
+          ];
+          const newRequestDataAsBytes32 = requestArray.map(requestArray =>
+            asciiToHex(requestArray)
+          );
+          this.universityVotingContract.submitInstitutionRequestSigner(
+            newRequestDataAsBytes32,
+            this.wallet.keypair.adminPrivateKey,
+            this.wallet.keypair.adminAddress
+          );
           loadingEl.dismiss();
           this.router.navigate(['/institutions/tabs/view']);
           this.showSucessfulAlert();
-        } catch (err) { 
+        } catch (err) {
           console.log(err);
           const errorString = err.toString();
-          let sanitisedError; 
-          switch (errorString) { 
+          let sanitisedError;
+          switch (errorString) {
             // tslint:disable-next-line: max-line-length
             case 'Error: Returned error: VM Exception while processing transaction: revert You have an outstanding request, please wait for that to be processed -- Reason given: You have an outstanding request, please wait for that to be processed.':
               sanitisedError =
@@ -88,13 +108,13 @@ export class InstitutionApprovalRequestPage implements OnInit {
             default:
               sanitisedError = errorString;
               break;
-          } 
+          }
           loadingEl.dismiss();
           this.router.navigate(['/institutions/tabs/view']);
           this.showDeniedAlert(sanitisedError);
         }
       });
-    }
+  }
 
   private showDeniedAlert(message: string) {
     this.alertCtrl
@@ -109,10 +129,10 @@ export class InstitutionApprovalRequestPage implements OnInit {
   private showSucessfulAlert() {
     this.alertCtrl
       .create({
-        header: 'Request submitted. We just need to verify your university status. Please check back later.',
+        header:
+          'Request submitted. We just need to verify your university status. Please check back later.',
         buttons: ['Okay']
       })
       .then(alertEl => alertEl.present());
   }
-
 }
