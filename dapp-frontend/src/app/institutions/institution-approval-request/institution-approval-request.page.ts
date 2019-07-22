@@ -32,7 +32,6 @@ export class InstitutionApprovalRequestPage implements OnInit {
     this.universityVotingDeployed = await this.universityVotingContract.universityVotingAbstraction.at(
       environment.ethereum.universityVotingContractAddress
     );
-    this.approveRequest() ;
   }
 
   // TODO REMOVE
@@ -79,7 +78,7 @@ export class InstitutionApprovalRequestPage implements OnInit {
             {
               // TODO THIS WILL BE FOR INFURA _ AS ADDRESS NOT FOUND ON GANACHE (would work with metamask though)
               // from: this.wallet.keypair.adminAddress
-              from: '0x4d220007930cf3FaC24358c387531eC5A18F3116'
+              from: '0xeCDED0f569Ccd0FcEF2bc359e6F742BA1d6e533A'
             }
           );
           console.log(result);
