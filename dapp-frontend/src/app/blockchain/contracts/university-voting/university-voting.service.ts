@@ -4,7 +4,7 @@ import { ethers } from 'ethers';
 import { environment } from 'src/environments/environment';
 
 const Tx = require('ethereumjs-tx').Transaction;
-let universityVotingArtifact = require('../artifacts/UniversityVoting.json');
+const universityVotingArtifact = require('../artifacts/UniversityVoting.json');
 
 @Injectable({
   providedIn: 'root'
@@ -27,16 +27,14 @@ export class UniversityVotingService {
   }
 
   public async submitInstitutionRequestSigner(
-    artifact: any,
-    artifactAddress: string,
-    submittingAddress: string,
     requestData: string[],
-    walletKey: string
+    walletKey: string,
+    walletAddress: string
   ) {
     const web3Contract = this.web3;
     const myContract = new web3Contract.eth.Contract(
-      artifact.abi,
-      artifactAddress
+      this._universityVotingAbstraction.abi,
+      environment.ethereum.universityVotingContractAddress
     );
 
     const newRequestDataAsBytes32 = requestData.map(requestArray =>
@@ -49,7 +47,7 @@ export class UniversityVotingService {
 
     const gasCost = await this.web3.eth.gasPrice;
     const currentNonce = await this.web3.eth.getTransactionCount(
-      '0xeCDED0f569Ccd0FcEF2bc359e6F742BA1d6e533A',
+      walletAddress,
       'pending'
     );
 
@@ -71,19 +69,17 @@ export class UniversityVotingService {
 
     // Now we want to send the raw transaction that has been signed with
     // the user's private key.
-      this.web3.eth
-        .sendSignedTransaction('0x' + serializedTx.toString('hex'))
-        .on('receipt', console.log)
-        .sendSignedTransaction('0x' + serializedTx.toString('hex'))
-        .on('transactionHash', console.log)
-        .on('receipt', console.log)
-        .on('confirmation', console.log)
-        .on('error', console.log);
-    
+    this.web3.eth
+      .sendSignedTransaction('0x' + serializedTx.toString('hex'))
+      .on('receipt', console.log)
+      .sendSignedTransaction('0x' + serializedTx.toString('hex'))
+      .on('transactionHash', console.log)
+      .on('receipt', console.log)
+      .on('confirmation', console.log)
+      .on('error', console.log);
   }
 
   public get universityVotingAbstraction(): any {
     return this._universityVotingAbstraction;
   }
-
 }
