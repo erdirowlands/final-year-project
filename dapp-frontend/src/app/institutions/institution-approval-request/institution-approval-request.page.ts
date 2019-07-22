@@ -134,7 +134,7 @@ export class InstitutionApprovalRequestPage implements OnInit {
       asciiToHex(requestArray)
     );
 
-    let method1 = myContract.methods.submitInstitutionApprovalRequest(newRequestDataAsBytes32).encodeABI();
+    let method1 = myContract.methods.submitInstitutionApprovalRequest(["0x6173647300000000000000000000000000000000000000000000000000000000, 0x6869000000000000000000000000000000000000000000000000000000000000"]).encodeABI();
 
     let method1Hex = asciiToHex(method1);
 
@@ -142,7 +142,7 @@ export class InstitutionApprovalRequestPage implements OnInit {
 
    // let pk = web33.eth.accounts.privateKeyToAccount('0x5D0A44B2F735738D8D121CF8866D45A516582C5DCFACD05E79F431FD3BBE1B98');
 
-
+  // 
     let gasCost = await  web33.eth.gasPrice;
     
    // const walletAccount = this.wallet.wallet[0];
@@ -152,7 +152,7 @@ export class InstitutionApprovalRequestPage implements OnInit {
 
     let tx = {
       to : environment.ethereum.universityVotingContractAddress,
-      data : method1Hex,
+      data : method1,
       gasPrice: gasCost,
       gas: '300000'
   };
