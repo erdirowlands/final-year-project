@@ -32,13 +32,14 @@ export class InstitutionApprovalRequestPage implements OnInit {
     this.universityVotingDeployed = await this.universityVotingContract.universityVotingAbstraction.at(
       environment.ethereum.universityVotingContractAddress
     );
+    this.approveRequest() ;
   }
 
   // TODO REMOVE
   async approveRequest() {
-    const result = await this.universityVotingDeployed.newInstitutionRequest(
-      '0xBEF3a23a6ac01b16F601D1620681cf207ff55aF0',
-      { from: '0xBEF3a23a6ac01b16F601D1620681cf207ff55aF0' }
+    const result = await this.universityVotingDeployed.approveInstitutionRequest(
+      '0x4d220007930cf3FaC24358c387531eC5A18F3116',
+      { from: '0x5b9bA5f0b6ef3E8D90304D8A9C7318c8226fe372' }
     );
     console.log(result.logs[0]);
   }
