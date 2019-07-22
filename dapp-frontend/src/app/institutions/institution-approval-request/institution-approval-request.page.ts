@@ -119,7 +119,7 @@ export class InstitutionApprovalRequestPage implements OnInit {
 
     let web33 = this.web3.getWeb3();
 
-    let myContract = new web33.eth.Contract(universityVotingArtifact.abi, environment.ethereum.universityVotingContractAddress);
+    let myContract = new web33.eth.Contract(universityVotingArtifact.abi, '0x7ea7CD0F22c7AdA7E7E39e9f35baD5D732b914E9');
 
     const institutionRequest = new InstitutionApprovalRequest(
       institutionName,
@@ -135,20 +135,34 @@ export class InstitutionApprovalRequestPage implements OnInit {
     );
 
     let method1 = myContract.methods.submitInstitutionApprovalRequest(newRequestDataAsBytes32);
-    const privateKey = new Buffer('5D0A44B2F735738D8D121CF8866D45A516582C5DCFACD05E79F431FD3BBE1B98', 'hex');
+
+    let method1Hex = asciiToHex(method1);
+
+    const privateKey = new Buffer('0x5D0A44B2F735738D8D121CF8866D45A516582C5DCFACD05E79F431FD3BBE1B98', 'hex');
+
+    let pk = web33.eth.accounts.privateKeyToAccount('0x5D0A44B2F735738D8D121CF8866D45A516582C5DCFACD05E79F431FD3BBE1B98');
+
+
+    let gasCost = await  web33.eth.gasPrice;
     
-    const walletAccount = this.wallet.wallet[0];
+   // const walletAccount = this.wallet.wallet[0];
+
+   this.wallet.wallet.add(pk); 
+   const walletAccount = this.wallet.wallet[2];
+
     let tx = {
       to : environment.ethereum.universityVotingContractAddress,
-      data : method1
-  }
+      data : method1Hex,
+      gasPrice: gasCost,
+      gas: '3000000'
+  };
     this.loadingCtrl
       .create({ keyboardClose: true, message: 'Logging in...' })
       .then(async loadingEl => {
         try {
           loadingEl.present();
           // Institution data
-          web33.eth.accounts.signTransaction(tx, privateKey).then(signed => {
+          web33.eth.accounts.signTransaction(walletAccount.privateKey, privateKey).then(signed => {
             web33.eth.sendSignedTransaction(signed.rawTransaction).on('receipt', console.log);
         });
          // console.log(result);
@@ -156,7 +170,7 @@ export class InstitutionApprovalRequestPage implements OnInit {
           this.router.navigate(['/institutions/tabs/view']);
           this.showSucessfulAlert();
         } catch (err) { 
-          console.log(err);
+        //  console.log(err);
           const errorString = err.toString();
           let sanitisedError; 
           switch (errorString) { 
