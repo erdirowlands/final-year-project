@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { LoadingController, AlertController } from '@ionic/angular';
 import { UniversityVotingService } from 'src/app/blockchain/contracts/university-voting/university-voting.service';
 import { InstitutionContractService } from 'src/app/blockchain/contracts/institution-contract/institution-contract.service';
 import { Institution } from './institution-details/institution.model';
@@ -21,11 +22,13 @@ export class SelectInstitutionPage implements OnInit {
   constructor(
     private wallet: WalletService,
     private universityVotingContract: UniversityVotingService,
-    private institutionContract: InstitutionContractService
+    private institutionContract: InstitutionContractService,
+    private loadingCtrl: LoadingController,
+    private alertCtrl: AlertController,
   ) {}
 
   public institutionsObservable = new Subject<string[]>();
-
+  isLoading = false;
 
   /**
    * Get an instance of the University Voting contract which is responsible for
@@ -35,6 +38,14 @@ export class SelectInstitutionPage implements OnInit {
     this.universityVotingDeployed = await this.universityVotingContract.universityVotingAbstraction.at(
       environment.ethereum.universityVotingContractAddress
     );
+    this.getInstitutionAddresses();
+  }
+
+  ionViewWillEnter() {
+    this.isLoading = true;
+    this.institutionsObservable.subscribe(() => {
+      this.isLoading = false;
+    });
   }
 
   async getInstitutionAddresses() {
@@ -46,7 +57,17 @@ export class SelectInstitutionPage implements OnInit {
     }
       this.institutionsObservable.next(addresses);
       this.institutions = addresses;
+      console.log(this.institutions);
     });
+  }
+
+  private showSucessfulAlert() {
+    this.alertCtrl
+      .create({
+        header: 'Request submitted. We just need to verify your university status. Please check back later.',
+        buttons: ['Okay']
+      })
+      .then(alertEl => alertEl.present());
   }
 
   async getInstitutionLength() {
