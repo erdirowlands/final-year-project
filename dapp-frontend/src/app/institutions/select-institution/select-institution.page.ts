@@ -18,6 +18,10 @@ export class SelectInstitutionPage implements OnInit {
   universityVotingDeployed: any;
 
   institutions: Institution[];
+  institutionsArray: string[];
+
+  public institutionsObservable = new Subject<string[]>();
+  isLoading = false;
 
   constructor(
     private wallet: WalletService,
@@ -27,8 +31,7 @@ export class SelectInstitutionPage implements OnInit {
     private alertCtrl: AlertController,
   ) {}
 
-  public institutionsObservable = new Subject<string[]>();
-  isLoading = false;
+
 
   /**
    * Get an instance of the University Voting contract which is responsible for
@@ -39,13 +42,16 @@ export class SelectInstitutionPage implements OnInit {
       environment.ethereum.universityVotingContractAddress
     );
     this.getInstitutionAddresses();
+
   }
 
   ionViewWillEnter() {
-    this.isLoading = true;
-    this.institutionsObservable.subscribe(() => {
-      this.isLoading = false;
-    });
+  //  this.isLoading = true;
+  //  this.institutionsObservable.subscribe(() => {
+  //    this.isLoading = false;
+   // setInterval(() => this.getInstitutionAddresses(), 10);
+    this.refreshInstitutionAddresses();
+  //  });
   }
 
   async getInstitutionAddresses() {
@@ -58,6 +64,13 @@ export class SelectInstitutionPage implements OnInit {
       this.institutionsObservable.next(addresses);
       this.institutions = addresses;
       console.log(this.institutions);
+    });
+  }
+
+  refreshInstitutionAddresses() {
+    this.institutionsObservable.subscribe((addresses) => {
+      this.institutionsArray = addresses;
+      setInterval(() => this.getInstitutionAddresses(), 30000);
     });
   }
 
@@ -74,5 +87,11 @@ export class SelectInstitutionPage implements OnInit {
     console.log(
       await this.universityVotingDeployed.getInstitutionsTotal.call()
     );
+  }
+
+  ngOnDestroy() {
+    if (this.institutionsObservable) {
+      this.institutionsObservable.unsubscribe();
+    }
   }
 }
