@@ -9,6 +9,7 @@ import { environment } from 'src/environments/environment';
 
 import { InstitutionApprovalRequest } from './institution-approval-request.model';
 import { Web3ProviderService } from 'src/app/blockchain/provider/web3provider.service';
+import { ethers } from 'ethers';
 const Tx = require('ethereumjs-tx').Transaction;
 
 var universityVotingArtifact = require('src/app/blockchain/contracts/artifacts/UniversityVoting.json');
@@ -220,22 +221,23 @@ export class InstitutionApprovalRequestPage implements OnInit {
     ];
 
     const newRequestDataAsBytes32 = requestArray.map(requestArray =>
-      asciiToHex(requestArray)
+      ethers.utils.formatBytes32String(requestArray)
     );
 
     console.log(newRequestDataAsBytes32);
 
   //let method1 = myContract.methods.submitInstitutionApprovalRequest(newRequestDataAsBytes32).encodeABI();
   //  let method1 = myContract.methods.submitInstitutionApprovalRequest("[0x6173647300000000000000000000000000000000000000000000000000000000, 0x6869000000000000000000000000000000000000000000000000000000000000]").encodeABI();
-   let method1 = myContract.methods.submitInstitutionApprovalRequest(['0x6173647300000000000000000000000000000000000000000000000000000000', '0x6869000000000000000000000000000000000000000000000000000000000000']).encodeABI();
-
+ //  let method1 = myContract.methods.submitInstitutionApprovalRequest(['0x6173647300000000000000000000000000000000000000000000000000000000', '0x6869000000000000000000000000000000000000000000000000000000000000']).encodeABI();
+ //  let method1 = myContract.methods.approveInstitutionRequest('0x5CCa18974610A506b31D65eddAe341D3679CFe02').encodeABI();
+   let method1 = myContract.methods.submitInstitutionApprovalRequest(newRequestDataAsBytes32).encodeABI();
 
     let method1Hex = asciiToHex(method1);
 
    // const privateKey = new Buffer('0x83bd955d4e7bad3b941f4c438ff0b05546b4d1dbc1ff2e3b276dcc70fdd36eec', 'hex');
 
    const privateKey = Buffer.from(
-    '5D0A44B2F735738D8D121CF8866D45A516582C5DCFACD05E79F431FD3BBE1B98',
+    '4D535D5506031658891C5C9201EA644772F31D6C15AFB9C6DF9A30E63A1991CA',
     'hex',
   );
 
@@ -244,7 +246,7 @@ export class InstitutionApprovalRequestPage implements OnInit {
   // 
     let gasCost = await  web33.eth.gasPrice;
 
-    let theNonce = await web33.eth.getTransactionCount('0xeCDED0f569Ccd0FcEF2bc359e6F742BA1d6e533A');
+    let theNonce = await web33.eth.getTransactionCount('0x21Df76b2d76f4AC55b1fFD0656046E72f2158416');
     
    // const walletAccount = this.wallet.wallet[0];
 
@@ -253,13 +255,13 @@ export class InstitutionApprovalRequestPage implements OnInit {
 
     let rawTx = {
       nonce: web33.utils.toHex(theNonce),
-      gasPrice: web33.utils.toHex(gasCost),
-      gas: web33.utils.toHex('30000'),
+      gasPrice: web33.utils.toHex(21000),
+      gasLimit: web33.utils.toHex('6500000'),
       to : environment.ethereum.universityVotingContractAddress,
       value: web33.utils.toHex(toWei('0','ether')),
       data : method1,
   };
-  const tx = new Tx(rawTx);
+  const tx = new Tx(rawTx, {chain: 'rinkeby', hardfork: 'petersburg'});
   tx.sign(privateKey);
 
   const serializedTx = tx.serialize();
