@@ -35,13 +35,15 @@ export class SelectInstitutionPage implements OnInit {
     this.universityVotingDeployed = await this.universityVotingContract.universityVotingAbstraction.at(
       environment.ethereum.universityVotingContractAddress
     );
-    this.getInstitutionAddresses()
-    
   }
 
   async getInstitutionAddresses() {
-    let test =  await this.universityVotingDeployed.getInstitutionAddresses();
-    console.log(test);
+  //  let test =  await this.universityVotingDeployed.getInstitutionAddresses();
+   // console.log(test);
+    await this.universityVotingDeployed.getInstitutionAddresses((err, addresses) => {
+      this.institutionsObservable.next(addresses);
+      this.institutions = addresses;
+    });
   }
 
   async getInstitutionLength() {
