@@ -229,8 +229,8 @@ export class InstitutionApprovalRequestPage implements OnInit {
   //let method1 = myContract.methods.submitInstitutionApprovalRequest(newRequestDataAsBytes32).encodeABI();
   //  let method1 = myContract.methods.submitInstitutionApprovalRequest("[0x6173647300000000000000000000000000000000000000000000000000000000, 0x6869000000000000000000000000000000000000000000000000000000000000]").encodeABI();
  //  let method1 = myContract.methods.submitInstitutionApprovalRequest(['0x6173647300000000000000000000000000000000000000000000000000000000', '0x6869000000000000000000000000000000000000000000000000000000000000']).encodeABI();
- //  let method1 = myContract.methods.approveInstitutionRequest('0x5CCa18974610A506b31D65eddAe341D3679CFe02').encodeABI();
-   let method1 = myContract.methods.submitInstitutionApprovalRequest(newRequestDataAsBytes32).encodeABI();
+   let method1 = myContract.methods.approveInstitutionRequest('0xeCDED0f569Ccd0FcEF2bc359e6F742BA1d6e533A').encodeABI();
+  // let method1 = myContract.methods.submitInstitutionApprovalRequest(newRequestDataAsBytes32).encodeABI();
 
     let method1Hex = asciiToHex(method1);
 
