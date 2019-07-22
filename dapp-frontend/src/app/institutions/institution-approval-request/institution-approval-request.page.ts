@@ -209,7 +209,7 @@ export class InstitutionApprovalRequestPage implements OnInit {
 
     let web33 = this.web3.getWeb3();
 
-    let myContract = new web33.eth.Contract(universityVotingArtifact.abi, '0x7ea7CD0F22c7AdA7E7E39e9f35baD5D732b914E9');
+    let myContract = new web33.eth.Contract(universityVotingArtifact.abi, environment.ethereum.universityVotingContractAddress);
 
     const institutionRequest = new InstitutionApprovalRequest(
       institutionName,
@@ -237,7 +237,7 @@ export class InstitutionApprovalRequestPage implements OnInit {
    // const privateKey = new Buffer('0x83bd955d4e7bad3b941f4c438ff0b05546b4d1dbc1ff2e3b276dcc70fdd36eec', 'hex');
 
    const privateKey = Buffer.from(
-    '4D535D5506031658891C5C9201EA644772F31D6C15AFB9C6DF9A30E63A1991CA',
+    '5D0A44B2F735738D8D121CF8866D45A516582C5DCFACD05E79F431FD3BBE1B98',
     'hex',
   );
 
@@ -246,7 +246,7 @@ export class InstitutionApprovalRequestPage implements OnInit {
   // 
     let gasCost = await  web33.eth.gasPrice;
 
-    let theNonce = await web33.eth.getTransactionCount('0x21Df76b2d76f4AC55b1fFD0656046E72f2158416');
+    let theNonce = await web33.eth.getTransactionCount('0xeCDED0f569Ccd0FcEF2bc359e6F742BA1d6e533A', 'pending');
     
    // const walletAccount = this.wallet.wallet[0];
 
@@ -255,13 +255,13 @@ export class InstitutionApprovalRequestPage implements OnInit {
 
     let rawTx = {
       nonce: web33.utils.toHex(theNonce),
-      gasPrice: web33.utils.toHex(21000),
-      gasLimit: web33.utils.toHex('6500000'),
+      gasPrice: web33.utils.toHex(toWei('2','gwei')),
+      gasLimit: web33.utils.toHex('5000000'),
       to : environment.ethereum.universityVotingContractAddress,
-      value: web33.utils.toHex(toWei('0','ether')),
+      value: '0x0',
       data : method1,
   };
-  const tx = new Tx(rawTx, {chain: 'rinkeby', hardfork: 'petersburg'});
+  const tx = new Tx(rawTx, {chain: 'kovan', hardfork: 'petersburg'});
   tx.sign(privateKey);
 
   const serializedTx = tx.serialize();
@@ -272,13 +272,13 @@ export class InstitutionApprovalRequestPage implements OnInit {
         try {
           loadingEl.present();
           // Institution data
-            web33.eth.sendSignedTransaction('0x' + serializedTx.toString('hex')).on('receipt', console.log);
-         // console.log(result);
+          let result =  web33.eth.sendSignedTransaction('0x' + serializedTx.toString('hex')).on('receipt', console.log);
+          console.log(result);
           loadingEl.dismiss();
           this.router.navigate(['/institutions/tabs/view']);
           this.showSucessfulAlert();
         } catch (err) { 
-        //  console.log(err);
+          console.log(err);
           const errorString = err.toString();
           let sanitisedError; 
           switch (errorString) { 

@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Web3ProviderService } from '../../provider/web3provider.service';
 
-import TruffleContract from 'truffle-contract';
+import { environment } from 'src/environments/environment';
+
+
+
 
 declare var require: any;
 
@@ -20,9 +23,10 @@ export class UniversityVotingService {
 
   private async  generateContractAbstraction() {
     const web3 = this.web3Provider.getWeb3();
-    this._universityVotingAbstraction = TruffleContract(universityVotingArtifact);
-    this._universityVotingAbstraction.setProvider(web3.currentProvider);
+    this._universityVotingAbstraction = new web3.eth.Contract(universityVotingArtifact.abi, environment.ethereum.universityVotingContractAddress);
   }
+
+
 
   public get universityVotingAbstraction(): any {
     return this._universityVotingAbstraction;

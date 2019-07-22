@@ -5,8 +5,8 @@
 export const environment = {
   production: false,
   ethereum: {
-    provider: 'https://rinkeby.infura.io/v3/f2c4ebd8ed604600a20a3236bffb51df',
-    universityVotingContractAddress: '0xFfd2fB8637942a4D8Bb760C0876f730d87BaD57E'
+    provider: 'https://kovan.infura.io/v3/f2c4ebd8ed604600a20a3236bffb51df',
+    universityVotingContractAddress: '0xfae327Ba317C013c9E3Ae2c0279E5d1fa294e8eE'
   }
 
 };
