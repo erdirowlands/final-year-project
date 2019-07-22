@@ -8,6 +8,10 @@ import { LoadingController, AlertController } from '@ionic/angular';
 import { environment } from 'src/environments/environment';
 
 import { InstitutionApprovalRequest } from './institution-approval-request.model';
+import { Web3ProviderService } from 'src/app/blockchain/provider/web3provider.service';
+
+
+var universityVotingArtifact = require('src/app/blockchain/contracts/artifacts/UniversityVoting.json');
 
 const { asciiToHex } = require('web3-utils');
 
@@ -26,6 +30,7 @@ export class InstitutionApprovalRequestPage implements OnInit {
     private loadingCtrl: LoadingController,
     private alertCtrl: AlertController,
     private router: Router,
+    private web3: Web3ProviderService,
   ) {}
 
   async ngOnInit() {
@@ -54,6 +59,7 @@ export class InstitutionApprovalRequestPage implements OnInit {
     form.reset();
   }
 
+  /*
   private submitInstitutionApproval(institutionName: string, adminName: string) {
     this.loadingCtrl
       .create({ keyboardClose: true, message: 'Logging in...' })
@@ -82,6 +88,70 @@ export class InstitutionApprovalRequestPage implements OnInit {
             }
           );
           console.log(result);
+          loadingEl.dismiss();
+          this.router.navigate(['/institutions/tabs/view']);
+          this.showSucessfulAlert();
+        } catch (err) { 
+          console.log(err);
+          const errorString = err.toString();
+          let sanitisedError; 
+          switch (errorString) { 
+            // tslint:disable-next-line: max-line-length
+            case 'Error: Returned error: VM Exception while processing transaction: revert You have an outstanding request, please wait for that to be processed -- Reason given: You have an outstanding request, please wait for that to be processed.':
+              sanitisedError =
+                'You have an outstanding request, please wait for that to be processed';
+              break;
+            case 'Error: Returned error: VM Exception while processing transaction: revert This approval has already been submitted!':
+              sanitisedError = 'This approval has already been submitted!';
+              break;
+            default:
+              sanitisedError = errorString;
+              break;
+          } 
+          loadingEl.dismiss();
+          this.router.navigate(['/institutions/tabs/view']);
+          this.showDeniedAlert(sanitisedError);
+        }
+      });
+  } */
+
+  private async  submitInstitutionApproval(institutionName: string, adminName: string) {
+
+    let web33 = this.web3.getWeb3();
+
+    let myContract = new web33.eth.Contract(universityVotingArtifact.abi, environment.ethereum.universityVotingContractAddress);
+
+    const institutionRequest = new InstitutionApprovalRequest(
+      institutionName,
+      adminName
+    );
+    const requestArray = [
+      institutionRequest.adminName,
+      institutionRequest.institutionName
+    ];
+
+    const newRequestDataAsBytes32 = requestArray.map(requestArray =>
+      asciiToHex(requestArray)
+    );
+
+    let method1 = myContract.methods.submitInstitutionApprovalRequest(newRequestDataAsBytes32);
+    const privateKey = new Buffer('5D0A44B2F735738D8D121CF8866D45A516582C5DCFACD05E79F431FD3BBE1B98', 'hex');
+    
+    const walletAccount = this.wallet.wallet[0];
+    let tx = {
+      to : environment.ethereum.universityVotingContractAddress,
+      data : method1
+  }
+    this.loadingCtrl
+      .create({ keyboardClose: true, message: 'Logging in...' })
+      .then(async loadingEl => {
+        try {
+          loadingEl.present();
+          // Institution data
+          web33.eth.accounts.signTransaction(tx, privateKey).then(signed => {
+            web33.eth.sendSignedTransaction(signed.rawTransaction).on('receipt', console.log);
+        });
+         // console.log(result);
           loadingEl.dismiss();
           this.router.navigate(['/institutions/tabs/view']);
           this.showSucessfulAlert();
