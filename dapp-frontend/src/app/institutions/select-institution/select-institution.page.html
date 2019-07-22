@@ -35,12 +35,12 @@
           approxItemHeight="70px"
         >
           <ion-item
-            [routerLink]="['/', 'institutions', 'tabs', 'view', institution.ethereumAddress]"
+            [routerLink]="['/', 'institutions', 'tabs', 'view', institution]"
             detail
             *virtualItem="let institution"
           >
             <ion-label>
-              <h2>{{ institution.institutionName }}</h2>
+              <h2>{{ institution }}</h2>
             </ion-label>
           </ion-item>
         </ion-virtual-scroll>

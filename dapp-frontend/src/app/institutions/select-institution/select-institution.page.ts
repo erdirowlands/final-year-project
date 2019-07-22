@@ -7,8 +7,6 @@ import { WalletService } from 'src/app/blockchain/wallet/wallet.service';
 import { environment } from 'src/environments/environment';
 import { Subject } from 'rxjs';
 
-
-
 @Component({
   selector: 'app-select-institution',
   templateUrl: './select-institution.page.html',
@@ -28,10 +26,8 @@ export class SelectInstitutionPage implements OnInit {
     private universityVotingContract: UniversityVotingService,
     private institutionContract: InstitutionContractService,
     private loadingCtrl: LoadingController,
-    private alertCtrl: AlertController,
+    private alertCtrl: AlertController
   ) {}
-
-
 
   /**
    * Get an instance of the University Voting contract which is responsible for
@@ -42,33 +38,44 @@ export class SelectInstitutionPage implements OnInit {
       environment.ethereum.universityVotingContractAddress
     );
     this.getInstitutionAddresses();
-
   }
 
   ionViewWillEnter() {
-  //  this.isLoading = true;
-  //  this.institutionsObservable.subscribe(() => {
-  //    this.isLoading = false;
-   // setInterval(() => this.getInstitutionAddresses(), 10);
+    //  this.isLoading = true;
+    //  this.institutionsObservable.subscribe(() => {
+    //    this.isLoading = false;
+    // setInterval(() => this.getInstitutionAddresses(), 10);
     this.refreshInstitutionAddresses();
-  //  });
+    //  });
   }
 
   async getInstitutionAddresses() {
-  //  let test =  await this.universityVotingDeployed.getInstitutionAddresses();
-   // console.log(test);
-    await this.universityVotingDeployed.getInstitutionAddresses((err, addresses) => {
-      if (addresses === undefined || addresses.length == 0) {
-        return;
-    }
-      this.institutionsObservable.next(addresses);
-      this.institutions = addresses;
-      console.log(this.institutions);
-    });
+    //  let test =  await this.universityVotingDeployed.getInstitutionAddresses();
+    // console.log(test);
+    await this.universityVotingDeployed.getInstitutionAddresses(
+      (err, addresses) => {
+        if (addresses === undefined || addresses.length == 0) {
+          return;
+        }
+
+        if (
+          !this.institutionsArray ||
+          this.institutionsArray.length !== addresses.length ||
+          this.institutionsArray[0] !== this.institutionsArray[0]
+        ) {
+          console.log('New institutions detected');
+
+          this.institutionsObservable.next(addresses);
+          this.institutions = addresses;
+          console.log(this.institutions);
+        }
+
+      }
+    );
   }
 
   refreshInstitutionAddresses() {
-    this.institutionsObservable.subscribe((addresses) => {
+    this.institutionsObservable.subscribe(addresses => {
       this.institutionsArray = addresses;
       setInterval(() => this.getInstitutionAddresses(), 30000);
     });
@@ -77,7 +84,8 @@ export class SelectInstitutionPage implements OnInit {
   private showSucessfulAlert() {
     this.alertCtrl
       .create({
-        header: 'Request submitted. We just need to verify your university status. Please check back later.',
+        header:
+          'Request submitted. We just need to verify your university status. Please check back later.',
         buttons: ['Okay']
       })
       .then(alertEl => alertEl.present());
