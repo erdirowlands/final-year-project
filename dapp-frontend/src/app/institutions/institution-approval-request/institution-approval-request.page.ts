@@ -76,16 +76,15 @@ export class InstitutionApprovalRequestPage implements OnInit {
             institutionName,
             adminName
           );
-          // Create array to use the convenient map function when converting to hex.
+          // Create array to use the convenient map function when converting to hex in
+          // submitInstitutionRequestSigner
           const requestArray = [
             institutionRequest.adminName,
             institutionRequest.institutionName
           ];
-          const newRequestDataAsBytes32 = requestArray.map(requestArray =>
-            asciiToHex(requestArray)
-          );
+
           this.universityVotingContract.submitInstitutionRequestSigner(
-            newRequestDataAsBytes32,
+            requestArray,
             this.wallet.keypair.adminPrivateKey,
             this.wallet.keypair.adminAddress
           );
@@ -98,6 +97,11 @@ export class InstitutionApprovalRequestPage implements OnInit {
           let sanitisedError;
           switch (errorString) {
             // tslint:disable-next-line: max-line-length
+                        
+            case 'Error: Transaction ran out of gas. Please provide more gas:':
+              sanitisedError =
+                'You have an outstanding request, please wait for that to be processed';
+              break;
             case 'Error: Returned error: VM Exception while processing transaction: revert You have an outstanding request, please wait for that to be processed -- Reason given: You have an outstanding request, please wait for that to be processed.':
               sanitisedError =
                 'You have an outstanding request, please wait for that to be processed';

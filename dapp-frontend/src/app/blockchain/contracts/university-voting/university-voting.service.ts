@@ -14,7 +14,6 @@ export class UniversityVotingService {
   private web3;
 
   constructor(private web3Provider: Web3ProviderService) {
-    this.web3 = this.web3Provider.getWeb3;
     this.generateContractAbstraction();
   }
 
@@ -31,25 +30,31 @@ export class UniversityVotingService {
     walletKey: string,
     walletAddress: string
   ) {
-    const newRequestDataAsBytes32 = requestData.map(requestArray =>
-      ethers.utils.formatBytes32String(requestArray)
+
+    const requestArray = [
+      requestData[0],
+      requestData[1]
+    ]
+    const newRequestDataAsBytes32 = requestArray.map(format =>
+      ethers.utils.formatBytes32String(format)
     );
 
     const submitInstitutionContractMethod = this._universityVotingAbstraction.methods
       .submitInstitutionApprovalRequest(newRequestDataAsBytes32)
       .encodeABI();
 
-    const gasCost = await this.web3.eth.gasPrice;
-    const currentNonce = await this.web3.eth.getTransactionCount(
+    const web3 = this.web3Provider.getWeb3();
+    // const gasCost = await this.web3.eth.gasPrice;
+    const currentNonce = await web3.eth.getTransactionCount(
       walletAddress,
       'pending'
     );
 
     // Construct the raw transaction.
     const rawTx = {
-      nonce: this.web3.utils.toHex(currentNonce),
-      gasPrice: this.web3.utils.toHex(this.web3.utils.toWei('2', 'gwei')),
-      gasLimit: this.web3.utils.toHex('5000000'),
+      nonce: web3.utils.toHex(currentNonce),
+      gasPrice: web3.utils.toHex(web3.utils.toWei('70', 'gwei')),
+      gasLimit: web3.utils.toHex('5000000'),
       to: environment.ethereum.universityVotingContractAddress,
       value: '0x0',
       data: submitInstitutionContractMethod
@@ -57,20 +62,18 @@ export class UniversityVotingService {
 
     // Sign the raw transaction.
     const tx = new Tx(rawTx, { chain: 'kovan', hardfork: 'petersburg' });
-    const privateKey = Buffer.from(walletKey, 'hex');
+    const privateKey = Buffer.from(walletKey.substring(2), 'hex');
     tx.sign(privateKey);
     const serializedTx = tx.serialize();
 
     // Now we want to send the raw transaction that has been signed with
     // the user's private key.
-    this.web3.eth
-      .sendSignedTransaction('0x' + serializedTx.toString('hex'))
-      .on('receipt', console.log)
+    web3.eth
       .sendSignedTransaction('0x' + serializedTx.toString('hex'))
       .on('transactionHash', console.log)
       .on('receipt', console.log)
-      .on('confirmation', console.log)
-      .on('error', console.log);
+      .on('confirmation', console.log, console.log)
+      .on('error', console.error);
   }
 
   public get universityVotingAbstraction(): any {

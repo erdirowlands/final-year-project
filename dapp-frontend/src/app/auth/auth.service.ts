@@ -16,7 +16,7 @@ export class AuthService {
   constructor(private walletService: WalletService) {}
 
   public authenticateWallet(password: string) {
-    this.walletService.getKeyPair(password);
+    this.walletService.initialiseWallet(password);
   }
 
   public secureWallet() {
