@@ -29,10 +29,13 @@ export class Web3ProviderService {
     console.log(this.web3.eth.getAccounts());
   }
 
-
-
-  public submitInstitutionRequestSigner(artifact: any, artifactAddress: string, requestData: string[],  walletKey: string) {
-
+  public async submitInstitutionRequestSigner(
+    artifact: any,
+    artifactAddress: string,
+    submittingAddress: string,
+    requestData: string[],
+    walletKey: string
+  ) {
     const web3Contract = this.web3;
     const myContract = new web3Contract.eth.Contract(
       artifact.abi,
@@ -43,66 +46,60 @@ export class Web3ProviderService {
       ethers.utils.formatBytes32String(requestArray)
     );
 
-    let method1 = myContract.methods.submitInstitutionApprovalRequest(newRequestDataAsBytes32).encodeABI();
-
-    
-    const method1 = myContract.methods
-      .approveInstitutionRequest('0xeCDED0f569Ccd0FcEF2bc359e6F742BA1d6e533A')
+    const submitInstitutionContractMethod = myContract.methods
+      .submitInstitutionApprovalRequest(newRequestDataAsBytes32)
       .encodeABI();
 
-    const privateKey = Buffer.from(
-      '5D0A44B2F735738D8D121CF8866D45A516582C5DCFACD05E79F431FD3BBE1B98',
-      'hex'
-    );
-    const gasCost = await web33.eth.gasPrice;
-
-    const theNonce = await web33.eth.getTransactionCount(
+    const gasCost = await this.web3.eth.gasPrice;
+    const currentNonce = await this.web3.eth.getTransactionCount(
       '0xeCDED0f569Ccd0FcEF2bc359e6F742BA1d6e533A',
       'pending'
     );
 
-    // const walletAccount = this.wallet.wallet[0];
-
-    // this.wallet.wallet.add(pk);
-    //  const walletAccount = this.wallet.wallet[2];
-
+    // Construct the raw transaction.
     const rawTx = {
-      nonce: this.web3.utils.toHex(theNonce),
-      gasPrice: this.web3.utils.toHex(toWei('2', 'gwei')),
-      gasLimit: web33.utils.toHex('5000000'),
-      to: environment.ethereum.universityVotingContractAddress,
+      nonce: this.web3.utils.toHex(currentNonce),
+      gasPrice: this.web3.utils.toHex(this.web3.utils.toWei('2', 'gwei')),
+      gasLimit: this.web3.utils.toHex('5000000'),
+      to: artifactAddress,
       value: '0x0',
-      data: method1
+      data: submitInstitutionContractMethod
     };
-    const tx = new Tx(rawTx, { chain: 'kovan', hardfork: 'petersburg' });
-    tx.sign(privateKey);
 
+    // Sign the raw transaction.
+    const tx = new Tx(rawTx, { chain: 'kovan', hardfork: 'petersburg' });
+    const privateKey = Buffer.from(walletKey, 'hex');
+    tx.sign(privateKey);
     const serializedTx = tx.serialize();
 
-    // Institution data
-    const result = web33.eth
-      .sendSignedTransaction('0x' + serializedTx.toString('hex'))
-      .on('transactionHash', console.log)
-      .on('receipt', console.log)
-      .on('confirmation', console.log)
-      .on('error', console.log);
-  }
-  catch(err) {
-    console.log(err);
-    const errorString = err.toString();
-    let sanitisedError;
-    switch (errorString) {
-      // tslint:disable-next-line: max-line-length
-      case 'Error: Returned error: VM Exception while processing transaction: revert You have an outstanding request, please wait for that to be processed -- Reason given: You have an outstanding request, please wait for that to be processed.':
-        sanitisedError =
-          'You have an outstanding request, please wait for that to be processed';
-        break;
-      case 'Error: Returned error: VM Exception while processing transaction: revert This approval has already been submitted!':
-        sanitisedError = 'This approval has already been submitted!';
-        break;
-      default:
-        sanitisedError = errorString;
-        break;
+    // Now we want to send the raw transaction that has been signed with
+    // the user's private key.
+    try {
+      this.web3.eth
+        .sendSignedTransaction('0x' + serializedTx.toString('hex'))
+        .on('receipt', console.log)
+        .sendSignedTransaction('0x' + serializedTx.toString('hex'))
+        .on('transactionHash', console.log)
+        .on('receipt', console.log)
+        .on('confirmation', console.log)
+        .on('error', console.log);
+    } catch (err) {
+      console.log(err);
+      const errorString = err.toString();
+      let sanitisedError;
+      switch (errorString) {
+        // tslint:disable-next-line: max-line-length
+        case 'Error: Returned error: VM Exception while processing transaction: revert You have an outstanding request, please wait for that to be processed -- Reason given: You have an outstanding request, please wait for that to be processed.':
+          sanitisedError =
+            'You have an outstanding request, please wait for that to be processed';
+          break;
+        case 'Error: Returned error: VM Exception while processing transaction: revert This approval has already been submitted!':
+          sanitisedError = 'This approval has already been submitted!';
+          break;
+        default:
+          sanitisedError = errorString;
+          break;
+      }
     }
   }
 

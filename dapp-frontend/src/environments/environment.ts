@@ -6,7 +6,7 @@ export const environment = {
   production: false,
   ethereum: {
     provider: 'https://kovan.infura.io/v3/f2c4ebd8ed604600a20a3236bffb51df',
-    universityVotingContractAddress: '0xfae327Ba317C013c9E3Ae2c0279E5d1fa294e8eE'
+    universityVotingContractAddress: '0xDa00FE51aeEc88df902945934c9a01C0899f91E6'
   }
 
 };
