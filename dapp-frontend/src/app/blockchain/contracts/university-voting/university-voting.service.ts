@@ -31,17 +31,11 @@ export class UniversityVotingService {
     walletKey: string,
     walletAddress: string
   ) {
-    const web3Contract = this.web3;
-    const myContract = new web3Contract.eth.Contract(
-      this._universityVotingAbstraction.abi,
-      environment.ethereum.universityVotingContractAddress
-    );
-
     const newRequestDataAsBytes32 = requestData.map(requestArray =>
       ethers.utils.formatBytes32String(requestArray)
     );
 
-    const submitInstitutionContractMethod = myContract.methods
+    const submitInstitutionContractMethod = this._universityVotingAbstraction.methods
       .submitInstitutionApprovalRequest(newRequestDataAsBytes32)
       .encodeABI();
 
@@ -56,7 +50,7 @@ export class UniversityVotingService {
       nonce: this.web3.utils.toHex(currentNonce),
       gasPrice: this.web3.utils.toHex(this.web3.utils.toWei('2', 'gwei')),
       gasLimit: this.web3.utils.toHex('5000000'),
-      to: artifactAddress,
+      to: environment.ethereum.universityVotingContractAddress,
       value: '0x0',
       data: submitInstitutionContractMethod
     };
