@@ -41,6 +41,9 @@ export class SelectInstitutionPage implements OnInit {
   //  let test =  await this.universityVotingDeployed.getInstitutionAddresses();
    // console.log(test);
     await this.universityVotingDeployed.getInstitutionAddresses((err, addresses) => {
+      if (addresses === undefined || addresses.length == 0) {
+        return;
+    }
       this.institutionsObservable.next(addresses);
       this.institutions = addresses;
     });
@@ -52,4 +55,3 @@ export class SelectInstitutionPage implements OnInit {
     );
   }
 }
-// "0x68921eAeE74bF357095d360c750AE34730457AC6" 
