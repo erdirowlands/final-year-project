@@ -252,11 +252,11 @@ export class InstitutionApprovalRequestPage implements OnInit {
  //  const walletAccount = this.wallet.wallet[2];
 
     let rawTx = {
-      nonce: toHex(theNonce),
-      gasPrice: toHex(gasCost),
-      gas: toHex('6700000'),
+      nonce: web33.utils.toHex(theNonce),
+      gasPrice: web33.utils.toHex(gasCost),
+      gas: web33.utils.toHex('30000'),
       to : environment.ethereum.universityVotingContractAddress,
-      value: toHex(toWei('0','ether')),
+      value: web33.utils.toHex(toWei('0','ether')),
       data : method1,
   };
   const tx = new Tx(rawTx);
