@@ -37,15 +37,13 @@ export class SelectInstitutionPage implements OnInit {
   async ngOnInit() {
     this.universityVotingAbstraction = this.universityVotingContract.universityVotingAbstraction;
     this.getInstitutionAddresses();
+    this.refreshInstitutionAddresses();
   }
 
   ionViewWillEnter() {
     //  this.isLoading = true;
-    this.institutionsObservable.subscribe(() => {
-      //    this.isLoading = false;
-      setInterval(() => this.getInstitutionAddresses(), environment.institutionObservableRefresh.kovanTimeout);
       this.refreshInstitutionAddresses();
-    });
+
   }
 
   ionViewDidLeave() {
@@ -71,6 +69,7 @@ export class SelectInstitutionPage implements OnInit {
           this.institutions = addresses;
           console.log(this.institutions);
         }
+        console.log("Checking request refresh time: " + this.institutions);
       }
     );
   }

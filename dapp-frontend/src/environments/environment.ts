@@ -13,6 +13,11 @@ export const environment = {
    // provider: 'HTTP://192.168.1.71:7545',
   //  universityVotingContractAddress: '0xc9AEa578c6ec721AE0957dFa4f50C28556BeA929'
 
+  },
+
+  institutionObservableRefresh: {
+    testTimeout: 1000,
+    kovanTimeout: 20000
   }
 
 };
