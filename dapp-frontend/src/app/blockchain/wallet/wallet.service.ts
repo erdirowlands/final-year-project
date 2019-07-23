@@ -4,6 +4,9 @@ import { Web3ProviderService } from '../provider/web3provider.service';
 import { BehaviorSubject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
+import Bip39 from 'bip39';
+import HDKey from 'hdkey';
+
 import { KeyPair } from './key-pair.model';
 
 @Injectable({
@@ -133,6 +136,20 @@ export class WalletService {
       })
     );
   }
+
+  public generateRecoveryPhrase() {
+    return Bip39.generateMnemonic();
+  }
+
+  public generateAccountFromMnemonic(mnemonic: string) {
+    const seed = Bip39.mnemonicToSeed(mnemonic);
+    let root = HDKey.HDKey;
+    root = HDKey.fromMasterSeed(seed);
+    this._keypair.adminPrivateKey = root.privateKey.toString('hex');
+    const account = this._web3Instance.eth.accounts.privateKeyToAccount('0x' + this._keypair.adminPrivateKey);
+    this._keypair.adminAddress = account.address;
+  }
+
 
   public initialiseWeb3Wallet() {
     this._web3Instance = this.web3ProviderService.getWeb3();
