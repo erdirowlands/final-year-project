@@ -47,7 +47,7 @@ export class SelectInstitutionPage implements OnInit {
   }
 
   ionViewWillLeave() {
-    this.institutionsObservable.unsubscribe();
+    this.institutionsObservable.subscribe();
 
   }
 
