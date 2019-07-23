@@ -40,7 +40,7 @@ export class AuthPage implements OnInit {
         try {
           loadingEl.present();
           await this.delay(100);
-          await this.authService.authenticateWallet("password");
+          await this.authService.authenticateWallet(password);
           this.isLoading = false;
         } catch (err) {
           loadingEl.dismiss();
@@ -61,6 +61,10 @@ export class AuthPage implements OnInit {
 
     this.login(password);
     form.reset();
+  }
+
+  onSwitchAuthMode() {
+    this.isLogin = !this.isLogin;
   }
 
   private showAlert(message: string, headerText: string) {
