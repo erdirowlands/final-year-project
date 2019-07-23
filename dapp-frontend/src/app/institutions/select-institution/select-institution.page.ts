@@ -78,6 +78,7 @@ export class SelectInstitutionPage implements OnInit {
     this.institutionsObservable.subscribe(addresses => {
       this.institutionsArray = addresses;
       setInterval(() => this.getInstitutionAddresses(), 30000);
+      console.log("Refresh: event")
     });
   }
 
