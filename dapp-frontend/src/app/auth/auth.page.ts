@@ -2,10 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from './auth.service';
 import { Router } from '@angular/router';
 
-import { LoadingController, AlertController, ModalController, PopoverController } from '@ionic/angular';
+import {
+  LoadingController,
+  AlertController,
+  ModalController,
+  PopoverController
+} from '@ionic/angular';
 import { NgForm } from '@angular/forms';
 import { NewUserPage } from './new-user/new-user.page';
-
 
 @Component({
   selector: 'app-auth',
@@ -52,9 +56,7 @@ export class AuthPage implements OnInit {
           this.showAlert(err, 'Authentication failed');
         }
         loadingEl.dismiss();
-        this.router.navigateByUrl(
-          '/institutions/tabs/view'
-        );
+        this.router.navigateByUrl('/institutions/tabs/view');
       });
   }
 
