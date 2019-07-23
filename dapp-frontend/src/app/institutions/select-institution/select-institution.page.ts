@@ -37,7 +37,7 @@ export class SelectInstitutionPage implements OnInit {
   async ngOnInit() {
     this.universityVotingAbstraction = this.universityVotingContract.universityVotingAbstraction;
     this.getInstitutionAddresses();
-    this.refreshInstitutionAddresses();
+  //  this.refreshInstitutionAddresses();
   }
 
   ionViewWillEnter() {
@@ -46,8 +46,12 @@ export class SelectInstitutionPage implements OnInit {
 
   }
 
-  ionViewDidLeave() {
+  ionViewWillLeave() {
     this.institutionsObservable.unsubscribe();
+
+  }
+
+  ionViewDidLeave() {
   }
 
   async getInstitutionAddresses() {
