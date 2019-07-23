@@ -34,16 +34,10 @@ export class AuthPage implements OnInit {
       .create({ keyboardClose: true, message: 'Logging in...' })
       .then(async loadingEl => {
         try {
-
-          if (this.authService.checkForWalletFile) {
-            loadingEl.present();
-            await this.delay(100);
-            await this.authService.authenticateWallet("password");
-            this.isLoading = false;
-
-          }
-
-
+          loadingEl.present();
+          await this.delay(100);
+          await this.authService.authenticateWallet("password");
+          this.isLoading = false;
         } catch (err) {
           loadingEl.dismiss();
           this.showAlert(err);
