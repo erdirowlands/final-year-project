@@ -43,11 +43,15 @@ export class SelectInstitutionPage implements OnInit {
     //  this.isLoading = true;
     this.institutionsObservable.subscribe(() => {
       //    this.isLoading = false;
-      setInterval(() => this.getInstitutionAddresses(), 10);
+      setInterval(() => this.getInstitutionAddresses(), 1000);
       this.refreshInstitutionAddresses();
     });
   }
-  
+
+  ionViewDidLeave() {
+    this.institutionsObservable.unsubscribe();
+  }
+
   async getInstitutionAddresses() {
     await this.universityVotingAbstraction.methods.getInstitutionAddresses()
     .call(

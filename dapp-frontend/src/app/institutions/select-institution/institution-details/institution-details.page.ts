@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { InstitutionContractService } from 'src/app/blockchain/contracts/institution-contract/institution-contract.service';
+
 
 @Component({
   selector: 'app-institution-details',
@@ -7,9 +9,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class InstitutionDetailsPage implements OnInit {
 
-  constructor() { }
+  constructor(private institutionContract: InstitutionContractService) { }
 
   ngOnInit() {
+    this.institutionContract.generateContractAbstraction("");
   }
 
 }
