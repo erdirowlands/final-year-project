@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Web3ProviderService } from '../../provider/web3provider.service';
 import { ethers } from 'ethers';
 import { environment } from 'src/environments/environment';
+import { WalletService } from '../../wallet/wallet.service';
 
 const Tx = require('ethereumjs-tx').Transaction;
 const universityVotingArtifact = require('../artifacts/UniversityVoting.json');
@@ -13,7 +14,10 @@ export class UniversityVotingService {
   private _universityVotingAbstraction: any;
   private web3;
 
-  constructor(private web3Provider: Web3ProviderService) {
+  constructor(
+    private web3Provider: Web3ProviderService,
+    private wallet: WalletService
+  ) {
     this.generateContractAbstraction();
   }
 
@@ -30,11 +34,7 @@ export class UniversityVotingService {
     walletKey: string,
     walletAddress: string
   ) {
-
-    const requestArray = [
-      requestData[0],
-      requestData[1]
-    ]
+    const requestArray = [requestData[0], requestData[1]];
     const newRequestDataAsBytes32 = requestArray.map(format =>
       ethers.utils.formatBytes32String(format)
     );
@@ -80,10 +80,33 @@ export class UniversityVotingService {
     return this._universityVotingAbstraction;
   }
 
-  public async getInstitutionLength () {
-     const submitInstitutionContractMethod = await this._universityVotingAbstraction.methods.getInstitutionsTotal().call({from: '0xeCDED0f569Ccd0FcEF2bc359e6F742BA1d6e533A'}, (error, result) => {
-      console.log("HEY" + result);
-      console.log("NOO" + error);
-  });
+  public async getInstitutions() {
+    await this._universityVotingAbstraction.methods
+      .getInstitutionAddresses()
+      .call(
+        { from: this.wallet.keypair.adminAddress },
+        (error, result) => {
+          if(error) {
+            console.log('NOO' + error);
+          }
+          console.log('Insitution array length is ' + result);
+          
+        }
+      );
+  }
+
+  public async getInstitutionLength() {
+    await this._universityVotingAbstraction.methods
+      .getInstitutionsTotal()
+      .call(
+        { from: this.wallet.keypair.adminAddress },
+        (error, result) => {
+          if(error) {
+            console.log('NOO' + error);
+          }
+          console.log('Insitution array length is ' + result);
+          
+        }
+      );
   }
 }

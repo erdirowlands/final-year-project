@@ -13,13 +13,14 @@ import { Subject } from 'rxjs';
   styleUrls: ['./select-institution.page.scss']
 })
 export class SelectInstitutionPage implements OnInit {
-  universityVotingDeployed: any;
 
   institutions: Institution[];
   institutionsArray: string[];
 
   public institutionsObservable = new Subject<string[]>();
   isLoading = false;
+
+  universityVotingAbstraction: any;
 
   constructor(
     private wallet: WalletService,
@@ -34,32 +35,25 @@ export class SelectInstitutionPage implements OnInit {
    * showing Institutions that have been created.
    */
   async ngOnInit() {
-  //  this.universityVotingDeployed = await this.universityVotingContract.universityVotingAbstraction.at(
-  //    environment.ethereum.universityVotingContractAddress
- //   );
-    this.universityVotingContract.getInstitutionLength();
+    this.universityVotingAbstraction = this.universityVotingContract.universityVotingAbstraction;
+    this.getInstitutionAddresses();
   }
 
   ionViewWillEnter() {
     //  this.isLoading = true;
-    //  this.institutionsObservable.subscribe(() => {
-    //    this.isLoading = false;
-    // setInterval(() => this.getInstitutionAddresses(), 10);
-  //  this.refreshInstitutionAddresses();
-    //  });
+    this.institutionsObservable.subscribe(() => {
+      //    this.isLoading = false;
+      setInterval(() => this.getInstitutionAddresses(), 10);
+      this.refreshInstitutionAddresses();
+    });
   }
   async getInstitutionAddresses() {
-    //  let test =  await this.universityVotingDeployed.getInstitutionAddresses();
-    // console.log(test);
-    const abstraction = this.universityVotingContract.universityVotingAbstraction;
-    await abstraction.getInstitutionsTotal().call({from: '0xeCDED0f569Ccd0FcEF2bc359e6F742BA1d6e533A'}, (error, result) => {
-      console.log("HEY" + result);
-      console.log("NOO" + error);
-  });
-  
-/*
-    await this.universityVotingDeployed.getInstitutionAddresses(
-      (err, addresses) => {
+
+    
+    await this.universityVotingAbstraction.methods.getInstitutionAddresses()
+    .call(
+      { from: this.wallet.keypair.adminAddress },
+      (error, addresses) => {
         if (addresses === undefined || addresses.length == 0) {
           return;
         }
@@ -77,7 +71,7 @@ export class SelectInstitutionPage implements OnInit {
         }
 
       }
-    ); */
+    ); 
   }
 
   refreshInstitutionAddresses() {
