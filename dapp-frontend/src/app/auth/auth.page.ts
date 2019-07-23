@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 
 import { LoadingController, AlertController, ModalController, PopoverController } from '@ionic/angular';
 import { NgForm } from '@angular/forms';
+import { NewUserPage } from './new-user/new-user.page';
+
 
 @Component({
   selector: 'app-auth',
@@ -31,6 +33,7 @@ export class AuthPage implements OnInit {
   ngOnInit() {
     if (!this.authService.checkForWalletFile()) {
       this.isLogin = false;
+      this.openModal();
     }
   }
 
@@ -67,6 +70,13 @@ export class AuthPage implements OnInit {
 
   onSwitchAuthMode() {
     this.isLogin = !this.isLogin;
+  }
+
+  async openModal() {
+    const modal = await this.modalCtrl.create({
+      component: NewUserPage
+    });
+    modal.present();
   }
 
   private showAlert(message: string, headerText: string) {

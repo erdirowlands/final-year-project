@@ -1,22 +1,17 @@
 import { Injectable } from '@angular/core';
-import {
-  CanLoad,
-  Route,
-  UrlSegment, 
-  Router
-} from '@angular/router';
+import { CanLoad, Route, UrlSegment, Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { take, tap, switchMap } from 'rxjs/operators';
 import { AuthService } from './auth.service';
 import { WalletService } from '../blockchain/wallet/wallet.service';
+import { AuthPage } from './auth.page';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthGuard implements CanLoad {
-
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private authPage: AuthPage, private router: Router) {}
 
   canLoad(
     route: Route,
@@ -27,21 +22,23 @@ export class AuthGuard implements CanLoad {
       switchMap(isDecrypted => {
         if (!isDecrypted) {
           return this.authService.isWalletDecrypted;
-        } else { return of(isDecrypted) }
-
+        } else {
+          return of(isDecrypted);
+        }
       }),
       tap(isDecrypted => {
         if (!isDecrypted) {
-          this.router.navigateByUrl('/auth');
+          if(!this.authService.checkForWalletFile) {
+            this.authPage.openModal();
+          } else {this.router.navigateByUrl('/auth')}
         }
       })
     );
   }
 }
 
-    /*
+/*
     if (!this.authService.isWalletDecrypted) {
       this.router.navigateByUrl('/auth');
     } else { return this.authService.isUserAuthenticated; }
   } */
-
