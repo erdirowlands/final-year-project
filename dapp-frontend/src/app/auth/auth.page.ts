@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from './auth.service';
 import { Router } from '@angular/router';
 
-import { LoadingController, AlertController } from '@ionic/angular';
+import { LoadingController, AlertController, ModalController, PopoverController } from '@ionic/angular';
 import { NgForm } from '@angular/forms';
 
 @Component({
@@ -18,7 +18,9 @@ export class AuthPage implements OnInit {
     private authService: AuthService,
     private router: Router,
     private loadingCtrl: LoadingController,
-    private alertCtrl: AlertController
+    private alertCtrl: AlertController,
+    private modalCtrl: ModalController,
+    private popOver: PopoverController
   ) {}
 
   // ionViewWillEnter() {
