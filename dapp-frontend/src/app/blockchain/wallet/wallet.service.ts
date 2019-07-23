@@ -36,7 +36,7 @@ export class WalletService {
   constructor(private web3ProviderService: Web3ProviderService) {
     this._web3Instance = this.web3ProviderService.getWeb3();
     this._wallet = this._web3Instance.eth.accounts.wallet;
-    this.getKeyPair("password");
+    this.getKeyPair('password');
   }
 
   public initialiseWallet(password: string) {
@@ -50,6 +50,16 @@ export class WalletService {
     } else {
       console.log('No wallet found, would you like to create one?');
       this.createWallet('password');
+    }
+  }
+
+  public checkForWalletFile() {
+    const walletName = localStorage.getItem(this._electionWalletName);
+    // Load the wallet if not in memory already.
+    if (walletName !== null) {
+      return true;
+    } else {
+      return false;
     }
   }
 
@@ -146,10 +156,11 @@ export class WalletService {
     let root = HDKey.HDKey;
     root = HDKey.fromMasterSeed(seed);
     this._keypair.adminPrivateKey = root.privateKey.toString('hex');
-    const account = this._web3Instance.eth.accounts.privateKeyToAccount('0x' + this._keypair.adminPrivateKey);
+    const account = this._web3Instance.eth.accounts.privateKeyToAccount(
+      '0x' + this._keypair.adminPrivateKey
+    );
     this._keypair.adminAddress = account.address;
   }
-
 
   public initialiseWeb3Wallet() {
     this._web3Instance = this.web3ProviderService.getWeb3();
