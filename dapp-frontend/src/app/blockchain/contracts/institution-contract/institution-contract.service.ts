@@ -9,19 +9,21 @@ const institutionArtifact = require('../artifacts/Institution.json');
 })
 export class InstitutionContractService {
   private _institution: any;
-  private institutionAbstraction: any;
+  private _institutionAbstraction: any;
+
 
   constructor(private web3Provider: Web3ProviderService) {}
 
   public async generateContractAbstraction(address: string) {
     const web3 = this.web3Provider.getWeb3();
-    this.institutionAbstraction = new web3.eth.Contract(
+    this._institutionAbstraction = new web3.eth.Contract(
       institutionArtifact.abi,
       address
     );
   }
 
-  public get institution(): any {
-    return this._institution;
+  public get institutionAbstraction(): any {
+    return this._institutionAbstraction;
   }
+
 }

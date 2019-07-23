@@ -3,6 +3,7 @@ import { Web3ProviderService } from '../../provider/web3provider.service';
 import { ethers } from 'ethers';
 import { environment } from 'src/environments/environment';
 import { WalletService } from '../../wallet/wallet.service';
+const { asciiToHex } = require("web3-utils");
 
 const Tx = require('ethereumjs-tx').Transaction;
 const universityVotingArtifact = require('../artifacts/UniversityVoting.json');
@@ -36,7 +37,7 @@ export class UniversityVotingService {
   ) {
     const requestArray = [requestData[0], requestData[1]];
     const newRequestDataAsBytes32 = requestArray.map(format =>
-      ethers.utils.formatBytes32String(format)
+      asciiToHex(format)
     );
 
     const submitInstitutionContractMethod = this._universityVotingAbstraction.methods

@@ -34,6 +34,7 @@ export class InstitutionDetailsPage implements OnInit {
       );
       this.institutionAbstraction = this.institutionContract.institutionAbstraction;
       this.getInstitutionName();
+      this.getAdminName();
     });
   }
 
@@ -45,6 +46,19 @@ export class InstitutionDetailsPage implements OnInit {
           return;
         }
         this.institution = new Institution(name, "test", ["sad"]);
+        console.log(name);
+      });
+  }
+
+
+  private async getAdminName() {
+    await this.institutionAbstraction.methods
+      .getAdmin('0x56EdDD46B3E6DF2a588b4a50069a9058742324dD')
+      .call({ from: this.wallet.keypair.adminAddress }, (error, name) => {
+        if (name === undefined && name !== '') {
+          return;
+        }
+       // this.institution = new Institution(name, "test", ["sad"]);
         console.log(name);
       });
   }
