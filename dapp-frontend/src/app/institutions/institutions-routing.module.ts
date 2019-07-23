@@ -17,6 +17,11 @@ const routes: Routes = [
           {
             path: 'new',
             loadChildren: './institution-approval-request/institution-approval-request.module#InstitutionApprovalRequestPageModule',
+          },
+          {
+            path: ':address',
+            loadChildren:
+              './select-institution/institution-details/institution-details.module#InstitutionDetailsPageModule'
           }
         ]
       },

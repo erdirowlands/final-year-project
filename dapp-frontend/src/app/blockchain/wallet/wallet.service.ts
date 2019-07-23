@@ -6,7 +6,6 @@ import { map, tap } from 'rxjs/operators';
 
 import { KeyPair } from './key-pair.model';
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -20,14 +19,12 @@ export class WalletService {
   // Hold all of the private keys for the user. One private key is used per election,
   // Dev might have to check if wallet has a value before using it, if not,
   // call wallet.load() on it if it has been cleared from memory.
-  // Can provide this instance to the rest of the app :) 
+  // Can provide this instance to the rest of the app :)
   private _wallet: any;
 
   public _keypairObservable = new BehaviorSubject<string[]>(null);
 
   private _keypair: KeyPair;
-
-
 
   private _electionWalletName = 'university_voting_system_wallet';
 
@@ -36,7 +33,6 @@ export class WalletService {
   constructor(private web3ProviderService: Web3ProviderService) {
     this._web3Instance = this.web3ProviderService.getWeb3();
     this._wallet = this._web3Instance.eth.accounts.wallet;
-    this.createWallet("password")
     this.getKeyPair("password");
   }
 
@@ -47,7 +43,7 @@ export class WalletService {
       this.getKeyPair(password);
       console.log(this._wallet);
       console.log('Wallet Found! So not creating one.');
-      //this._usefr = this.wallet;
+      // this._usefr = this.wallet;
     } else {
       console.log('No wallet found, would you like to create one?');
       this.createWallet('password');
@@ -55,20 +51,20 @@ export class WalletService {
   }
 
   public getKeyPair(password: string) {
-    let accs = this.loadWallet(password, this._electionWalletName);
+    const accs = this.loadWallet(password, this._electionWalletName);
 
-     console.log("ACCS:",accs);
-      if (this._keypair == null   ) {
-        console.log(`Observed new accounts`);
-        this._keypairObservable.next(accs);
-        this._keypair= new KeyPair(
-          accs[0].address,
-          accs[0].privateKey,
-          accs[1].address,
-          accs[1].privateKey,
-        );
-        console.log(this._keypair);
-      }
+    console.log('ACCS:', accs);
+    if (this._keypair == null) {
+      console.log(`Observed new accounts`);
+      this._keypairObservable.next(accs);
+      this._keypair = new KeyPair(
+        accs[0].address,
+        accs[0].privateKey,
+        accs[1].address,
+        accs[1].privateKey
+      );
+      console.log(this._keypair);
+    }
   }
 
   public secureWallet() {
@@ -157,7 +153,11 @@ export class WalletService {
     return this._keypair;
   }
 
-  public async signTransaction(candidateAddress: string, password: string, params: string[]) {
+  public async signTransaction(
+    candidateAddress: string,
+    password: string,
+    params: string[]
+  ) {
     // const wallet:
     if (this._wallet !== undefined) {
       // Shouldn't be undefined as the user will be logged in!
@@ -172,6 +172,4 @@ export class WalletService {
       // chainId: 3
     };
   }
-
 }
-

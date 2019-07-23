@@ -1,13 +1,22 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { UniversityVotingService } from 'src/app/blockchain/contracts/university-voting/university-voting.service';
 import { InstitutionContractService } from 'src/app/blockchain/contracts/institution-contract/institution-contract.service';
 import { WalletService } from 'src/app/blockchain/wallet/wallet.service';
 import { NgForm } from '@angular/forms';
 import { LoadingController, AlertController } from '@ionic/angular';
+import { environment } from 'src/environments/environment';
 
 import { InstitutionApprovalRequest } from './institution-approval-request.model';
+import { Web3ProviderService } from 'src/app/blockchain/provider/web3provider.service';
+import { ethers } from 'ethers';
+const Tx = require('ethereumjs-tx').Transaction;
+
+const universityVotingArtifact = require('src/app/blockchain/contracts/artifacts/UniversityVoting.json');
 
 const { asciiToHex } = require('web3-utils');
+const { toWei } = require('web3-utils');
+const { toHex } = require('web3-utils');
 
 @Component({
   selector: 'app-institution-approval-request',
@@ -22,26 +31,28 @@ export class InstitutionApprovalRequestPage implements OnInit {
     private universityVotingContract: UniversityVotingService,
     private institutionContract: InstitutionContractService,
     private loadingCtrl: LoadingController,
-    private alertCtrl: AlertController
+    private alertCtrl: AlertController,
+    private router: Router,
+    private web3: Web3ProviderService
   ) {}
 
   async ngOnInit() {
-    this.universityVotingDeployed = await this.universityVotingContract.universityVotingAbstraction.at(
-      '0xA5cb9ECa6B6dC9dcB35Aa63f2a65D8565F41B3c0'
-    );
+    // this.universityVotingDeployed = await this.universityVotingContract.universityVotingAbstraction.at(
+    //    environment.ethereum.universityVotingContractAddress
+    //  );
   }
 
   // TODO REMOVE
   async approveRequest() {
-    const result = await this.universityVotingDeployed.newInstitutionRequest(
-      '0xBEF3a23a6ac01b16F601D1620681cf207ff55aF0',
+    const result = await this.universityVotingDeployed.approveInstitutionRequest(
+      '0x4d220007930cf3FaC24358c387531eC5A18F3116',
       { from: '0x5b9bA5f0b6ef3E8D90304D8A9C7318c8226fe372' }
     );
     console.log(result.logs[0]);
   }
 
   onSubmit(form: NgForm) {
-   if (!form.valid) {
+    if (!form.valid) {
       return;
     }
     const institutionName = form.value.institutionName;
@@ -51,7 +62,10 @@ export class InstitutionApprovalRequestPage implements OnInit {
     form.reset();
   }
 
-  private submitInstitutionApproval(institutionName: string, adminName: string) {
+  private async submitInstitutionApproval(
+    institutionName: string,
+    adminName: string
+  ) {
     this.loadingCtrl
       .create({ keyboardClose: true, message: 'Logging in...' })
       .then(async loadingEl => {
@@ -62,31 +76,32 @@ export class InstitutionApprovalRequestPage implements OnInit {
             institutionName,
             adminName
           );
-          // Create array to use the convenient map function when converting to hex.
+          // Create array to use the convenient map function when converting to hex in
+          // submitInstitutionRequestSigner
           const requestArray = [
             institutionRequest.adminName,
             institutionRequest.institutionName
           ];
-          const newRequestDataAsBytes32 = requestArray.map(requestArray =>
-            asciiToHex(requestArray)
+
+          this.universityVotingContract.submitInstitutionRequestSigner(
+            requestArray,
+            this.wallet.keypair.adminPrivateKey,
+            this.wallet.keypair.adminAddress
           );
-          const result = await this.universityVotingDeployed.submitInstitutionApprovalRequest(
-            newRequestDataAsBytes32,
-            {
-              // TODO THIS WILL BE FOR INFURA _ AS ADDRESS NOT FOUND ON GANACHE (would work with metamask though)
-              // from: this.wallet.keypair.adminAddress
-              from: '0xb14Dfc4C1a88be9a38271EDb81A0141259ac9B8a'
-            }
-          );
-          console.log(result);
           loadingEl.dismiss();
-          this.showSucessfulAlert()
-        } catch (err) { 
+          this.router.navigate(['/institutions/tabs/view']);
+          this.showSucessfulAlert();
+        } catch (err) {
           console.log(err);
           const errorString = err.toString();
-          let sanitisedError; 
-          switch (errorString) { 
+          let sanitisedError;
+          switch (errorString) {
             // tslint:disable-next-line: max-line-length
+                        
+            case 'Error: Transaction ran out of gas. Please provide more gas:':
+              sanitisedError =
+                'You have an outstanding request, please wait for that to be processed';
+              break;
             case 'Error: Returned error: VM Exception while processing transaction: revert You have an outstanding request, please wait for that to be processed -- Reason given: You have an outstanding request, please wait for that to be processed.':
               sanitisedError =
                 'You have an outstanding request, please wait for that to be processed';
@@ -97,8 +112,9 @@ export class InstitutionApprovalRequestPage implements OnInit {
             default:
               sanitisedError = errorString;
               break;
-          } 
+          }
           loadingEl.dismiss();
+          this.router.navigate(['/institutions/tabs/view']);
           this.showDeniedAlert(sanitisedError);
         }
       });
@@ -117,10 +133,10 @@ export class InstitutionApprovalRequestPage implements OnInit {
   private showSucessfulAlert() {
     this.alertCtrl
       .create({
-        header: 'Request submitted. We just need to verify your university status. Please check back later.',
+        header:
+          'Request submitted. We just need to verify your university status. Please check back later.',
         buttons: ['Okay']
       })
       .then(alertEl => alertEl.present());
   }
-
 }

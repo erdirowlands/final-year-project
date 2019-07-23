@@ -65,6 +65,11 @@ contract UniversityVoting is Ownable, ApprovalQueue {
         // Add information about the newly created contract so it can be accessed later.
         storeInstitutionContractInfo(contractAddress);
         // Emit the creation of the new Institution as an event.
+
+        // Set the request to not pending.
+        ApprovalRequest storage completedRequest = _approvalRequestQueue[submittingAddress];
+        completedRequest.isPending = false;
+
         emit NewInstitutionApproved(contractAddress);
        // return contractAddress;
         // TODO add delete the approval from the mapping - but I might want to keep the data for the frontend.

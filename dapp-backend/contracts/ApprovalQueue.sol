@@ -40,7 +40,7 @@ contract ApprovalQueue {
 
         // Initialise new approval request
         newApprovalRequest.submitter = msg.sender;
-        newApprovalRequest.isPending = true;
+        newApprovalRequest.isPending = true;  // TODO I NEED TO UPDATE THESE VALUES ON APPROVAL
         newApprovalRequest.approvalType = approvalRequestType;
         newApprovalRequest.data = requestData;
         newApprovalRequest.isInitialised = true;
@@ -82,14 +82,14 @@ contract ApprovalQueue {
         require(_approvalRequestQueue[submittingAddress].approvalType.compareTo(approvalRequestType),"This approval has already been submitted!");
         _;
     } */
-
+    /*
     function getRequest(address submittingAddress) public view returns(bool, string memory, bytes32[] memory ) {
         // require(isAdminStored(storedAdmin), "Admin address not found"); // TODO shouldn't need this, as we'll be using the array as the index.
         if (isApprovalStored(submittingAddress)) { 
             return (_approvalRequestQueue[submittingAddress].isPending, _approvalRequestQueue[submittingAddress].approvalType, _approvalRequestQueue[submittingAddress].data);
         }
-    }
-
+    } */
+    
     function getRequestData(address submittingAddress) public view returns(bytes32[] memory ) {
         // require(isAdminStored(storedAdmin), "Admin address not found"); // TODO shouldn't need this, as we'll be using the array as the index.
         if (isApprovalStored(submittingAddress)) { // TODO this might not be reachable as the return is in the if if it's anything like Java and

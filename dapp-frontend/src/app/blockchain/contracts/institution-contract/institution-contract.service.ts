@@ -8,20 +8,22 @@ const institutionArtifact = require('../artifacts/Institution.json');
   providedIn: 'root'
 })
 export class InstitutionContractService {
-
   private _institution: any;
+  private _institutionAbstraction: any;
 
-  constructor(private web3Provider: Web3ProviderService) { 
-    this.initialiseInstitutionContract();
+
+  constructor(private web3Provider: Web3ProviderService) {}
+
+  public async generateContractAbstraction(address: string) {
+    const web3 = this.web3Provider.getWeb3();
+    this._institutionAbstraction = new web3.eth.Contract(
+      institutionArtifact.abi,
+      address
+    );
   }
 
-  private initialiseInstitutionContract() {
-   // this._institution = contract(institutionArtifact);
-  //  this._institution.setProvider(this.web3Provider.getWeb3);
-  }
-
-  public get institution(): any {
-    return this._institution;
+  public get institutionAbstraction(): any {
+    return this._institutionAbstraction;
   }
 
 }

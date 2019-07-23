@@ -5,7 +5,13 @@
 export const environment = {
   production: false,
   ethereum: {
-    provider: 'http://192.168.1.71:7545'
+    // Kovan
+    // provider: 'https://kovan.infura.io/v3/f2c4ebd8ed604600a20a3236bffb51df',
+    // universityVotingContractAddress: '0xDa00FE51aeEc88df902945934c9a01C0899f91E6'
+    // Ganache
+    provider: 'HTTP://192.168.1.71:7545',
+    universityVotingContractAddress: '0x20b2e869d74B4297f20dd34D965Add9af3D881D5'
+
   }
 
 };
