@@ -71,9 +71,9 @@ export class UniversityVotingService {
     // the user's private key.
     await web3.eth
       .sendSignedTransaction('0x' + serializedTx.toString('hex'))
-     // .on('transactionHash', console.log)
+      .on('blockHash', console.log)
       .on('receipt', console.log)
-      .on('confirmation', console.log, console.log)
+    //  .on('confirmation', console.log, console.log)
       .on('error', console.error);
   }
 

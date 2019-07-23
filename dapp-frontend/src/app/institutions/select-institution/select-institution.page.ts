@@ -43,7 +43,7 @@ export class SelectInstitutionPage implements OnInit {
     //  this.isLoading = true;
     this.institutionsObservable.subscribe(() => {
       //    this.isLoading = false;
-      setInterval(() => this.getInstitutionAddresses(), 1000);
+      setInterval(() => this.getInstitutionAddresses(), environment.institutionObservableRefresh.kovanTimeout);
       this.refreshInstitutionAddresses();
     });
   }
