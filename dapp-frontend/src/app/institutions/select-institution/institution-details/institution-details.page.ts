@@ -44,7 +44,7 @@ export class InstitutionDetailsPage implements OnInit {
         if (name === undefined && name !== '') {
           return;
         }
-        this.institution = new Institution(name, "test", "test");
+        this.institution = new Institution(name, "test", ["sad"]);
         console.log(name);
       });
   }

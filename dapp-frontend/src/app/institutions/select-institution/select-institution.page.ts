@@ -92,12 +92,6 @@ export class SelectInstitutionPage implements OnInit {
       .then(alertEl => alertEl.present());
   }
 
-  async getInstitutionLength() {
-    console.log(
-      await this.universityVotingDeployed.getInstitutionsTotal.call()
-    );
-  }
-
   ngOnDestroy() {
     if (this.institutionsObservable) {
       this.institutionsObservable.unsubscribe();
