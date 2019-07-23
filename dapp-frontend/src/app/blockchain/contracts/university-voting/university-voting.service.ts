@@ -80,21 +80,6 @@ export class UniversityVotingService {
     return this._universityVotingAbstraction;
   }
 
-  public async getInstitutions() {
-    await this._universityVotingAbstraction.methods
-      .getInstitutionAddresses()
-      .call(
-        { from: this.wallet.keypair.adminAddress },
-        (error, result) => {
-          if(error) {
-            console.log('NOO' + error);
-          }
-          console.log('Insitution array length is ' + result);
-          
-        }
-      );
-  }
-
   public async getInstitutionLength() {
     await this._universityVotingAbstraction.methods
       .getInstitutionsTotal()

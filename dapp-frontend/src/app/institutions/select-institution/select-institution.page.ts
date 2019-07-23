@@ -47,9 +47,8 @@ export class SelectInstitutionPage implements OnInit {
       this.refreshInstitutionAddresses();
     });
   }
+  
   async getInstitutionAddresses() {
-
-    
     await this.universityVotingAbstraction.methods.getInstitutionAddresses()
     .call(
       { from: this.wallet.keypair.adminAddress },
@@ -57,7 +56,6 @@ export class SelectInstitutionPage implements OnInit {
         if (addresses === undefined || addresses.length == 0) {
           return;
         }
-
         if (
           !this.institutionsArray ||
           this.institutionsArray.length !== addresses.length ||
@@ -69,9 +67,8 @@ export class SelectInstitutionPage implements OnInit {
           this.institutions = addresses;
           console.log(this.institutions);
         }
-
       }
-    ); 
+    );
   }
 
   refreshInstitutionAddresses() {
