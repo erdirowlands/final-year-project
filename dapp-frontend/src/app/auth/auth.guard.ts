@@ -11,7 +11,7 @@ import { AuthPage } from './auth.page';
   providedIn: 'root'
 })
 export class AuthGuard implements CanLoad {
-  constructor(private authService: AuthService, private authPage: AuthPage, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   canLoad(
     route: Route,
@@ -28,9 +28,7 @@ export class AuthGuard implements CanLoad {
       }),
       tap(isDecrypted => {
         if (!isDecrypted) {
-          if(!this.authService.checkForWalletFile) {
-            this.authPage.openModal();
-          } else {this.router.navigateByUrl('/auth')}
+            this.router.navigateByUrl('/auth')
         }
       })
     );
