@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavParams,  } from '@ionic/angular';
+import { NavParams,  ModalController} from '@ionic/angular';
 
 
 
@@ -10,13 +10,13 @@ import { NavParams,  } from '@ionic/angular';
 })
 export class NewUserPage implements OnInit {
 
-  constructor(private navParams: NavParams) { }
+  constructor(private navParams: NavParams, private modalCtrl: ModalController) { }
 
   ngOnInit() {
   }
 
-  closePopover() {
-    //this.popOverCtrl.dismiss();
+  closeModal() {
+    this.modalCtrl.dismiss();
   }
 
 }
