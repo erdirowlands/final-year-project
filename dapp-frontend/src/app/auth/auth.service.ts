@@ -19,6 +19,10 @@ export class AuthService {
     this.walletService.initialiseWallet(password);
   }
 
+  public checkForWalletFile() {
+    return this.walletService.checkForWalletFile();
+  }
+
   public secureWallet() {
     this.walletService.secureWallet();
   }

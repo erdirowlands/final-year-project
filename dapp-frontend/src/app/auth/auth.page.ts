@@ -2,8 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from './auth.service';
 import { Router } from '@angular/router';
 
-import { LoadingController, AlertController } from '@ionic/angular';
+import {
+  LoadingController,
+  AlertController,
+  ModalController,
+  PopoverController
+} from '@ionic/angular';
 import { NgForm } from '@angular/forms';
+import { NewUserPage } from './new-user/new-user.page';
 
 @Component({
   selector: 'app-auth',
@@ -18,7 +24,9 @@ export class AuthPage implements OnInit {
     private authService: AuthService,
     private router: Router,
     private loadingCtrl: LoadingController,
-    private alertCtrl: AlertController
+    private alertCtrl: AlertController,
+    private modalCtrl: ModalController,
+    private popOver: PopoverController
   ) {}
 
   // ionViewWillEnter() {
@@ -26,7 +34,12 @@ export class AuthPage implements OnInit {
   //   this.authService.initialiseWallet()
   //  }
 
-  ngOnInit() {}
+  ngOnInit() {
+    if (!this.authService.checkForWalletFile()) {
+      this.isLogin = false;
+      this.openModal();
+    }
+  }
 
   login(password: string) {
     this.isLoading = true;
@@ -36,16 +49,14 @@ export class AuthPage implements OnInit {
         try {
           loadingEl.present();
           await this.delay(100);
-          await this.authService.authenticateWallet("password");
+          await this.authService.authenticateWallet(password);
           this.isLoading = false;
         } catch (err) {
           loadingEl.dismiss();
-          this.showAlert(err);
+          this.showAlert(err, 'Authentication failed');
         }
         loadingEl.dismiss();
-        this.router.navigateByUrl(
-          '/institutions/tabs/view'
-        );
+        this.router.navigateByUrl('/institutions/tabs/view');
       });
   }
 
@@ -59,10 +70,21 @@ export class AuthPage implements OnInit {
     form.reset();
   }
 
-  private showAlert(message: string) {
+  onSwitchAuthMode() {
+    this.isLogin = !this.isLogin;
+  }
+
+  async openModal() {
+    const modal = await this.modalCtrl.create({
+      component: NewUserPage
+    });
+    modal.present();
+  }
+
+  private showAlert(message: string, headerText: string) {
     this.alertCtrl
       .create({
-        header: 'Authentication failed',
+        header: headerText,
         message,
         buttons: ['Okay']
       })

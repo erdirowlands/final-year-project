@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { LoadingController, AlertController } from '@ionic/angular';
 import { UniversityVotingService } from 'src/app/blockchain/contracts/university-voting/university-voting.service';
 import { InstitutionContractService } from 'src/app/blockchain/contracts/institution-contract/institution-contract.service';
@@ -12,7 +12,7 @@ import { Subject } from 'rxjs';
   templateUrl: './select-institution.page.html',
   styleUrls: ['./select-institution.page.scss']
 })
-export class SelectInstitutionPage implements OnInit {
+export class SelectInstitutionPage implements OnInit, OnDestroy {
 
   institutions: Institution[];
   institutionsArray: string[];
@@ -37,19 +37,20 @@ export class SelectInstitutionPage implements OnInit {
   async ngOnInit() {
     this.universityVotingAbstraction = this.universityVotingContract.universityVotingAbstraction;
     this.getInstitutionAddresses();
+  //  this.refreshInstitutionAddresses();
   }
 
   ionViewWillEnter() {
-    //  this.isLoading = true;
-    this.institutionsObservable.subscribe(() => {
-      //    this.isLoading = false;
-      setInterval(() => this.getInstitutionAddresses(), 1000);
+      this.isLoading = true;
       this.refreshInstitutionAddresses();
-    });
+  }
+
+  ionViewWillLeave() {
   }
 
   ionViewDidLeave() {
-    this.institutionsObservable.unsubscribe();
+    this.institutionsObservable.next(null);
+
   }
 
   async getInstitutionAddresses() {
@@ -68,9 +69,12 @@ export class SelectInstitutionPage implements OnInit {
           console.log('New institutions detected');
 
           this.institutionsObservable.next(addresses);
+          this.isLoading = false;
           this.institutions = addresses;
-          console.log(this.institutions);
         }
+        console.log("Checking request refresh time: " + this.institutions);
+        console.log(this.institutions);
+        this.isLoading = false;
       }
     );
   }
@@ -78,7 +82,8 @@ export class SelectInstitutionPage implements OnInit {
   refreshInstitutionAddresses() {
     this.institutionsObservable.subscribe(addresses => {
       this.institutionsArray = addresses;
-      setInterval(() => this.getInstitutionAddresses(), 30000);
+      // setInterval(() => this.getInstitutionAddresses(), environment.institutionObservableRefresh.kovanTimeout);
+      console.log("Refresh: event")
     });
   }
 
@@ -94,7 +99,7 @@ export class SelectInstitutionPage implements OnInit {
 
   ngOnDestroy() {
     if (this.institutionsObservable) {
-      this.institutionsObservable.unsubscribe();
+      this.institutionsObservable.complete();
     }
   }
 }

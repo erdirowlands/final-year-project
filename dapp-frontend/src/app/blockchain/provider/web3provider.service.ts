@@ -21,9 +21,19 @@ export class Web3ProviderService {
   }
 
   private async createWeb3() {
+    const options = {
+    //  transactionBlockTimeout: 50,
+    defaultBlock: 'latest',
+    transactionBlockTimeout: 50,
+    transactionPollingTimeout: 480,
+
+
+      transactionConfirmationBlocks: 1
+   //   transactionPollingTimeout: 480
+    };
     // this.web3 = new Web3(new Web3.providers.HttpProvider(environment.ethereum.provider));
     this.web3 = new Web3(
-      new Web3.providers.HttpProvider(environment.ethereum.provider)
+      new Web3.providers.HttpProvider(environment.ethereum.provider, null, options )
     );
     console.log(this.web3);
     console.log(this.web3.eth.getAccounts());

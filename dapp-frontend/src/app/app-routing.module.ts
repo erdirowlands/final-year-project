@@ -9,7 +9,8 @@ const routes: Routes = [
     path: 'institutions',
     loadChildren: './institutions/institutions.module#InstitutionsPageModule',
     canLoad: [AuthGuard]
-  }
+  },
+  { path: 'new-user', loadChildren: './auth/new-user/new-user.module#NewUserPageModule' }
 ];
 @NgModule({
   imports: [

@@ -54,7 +54,7 @@ export class UniversityVotingService {
     // Construct the raw transaction.
     const rawTx = {
       nonce: web3.utils.toHex(currentNonce),
-      gasPrice: web3.utils.toHex(web3.utils.toWei('70', 'gwei')),
+      gasPrice: web3.utils.toHex(web3.utils.toWei('2', 'gwei')),
       gasLimit: web3.utils.toHex('5000000'),
       to: environment.ethereum.universityVotingContractAddress,
       value: '0x0',
@@ -69,11 +69,11 @@ export class UniversityVotingService {
 
     // Now we want to send the raw transaction that has been signed with
     // the user's private key.
-    web3.eth
+    await web3.eth
       .sendSignedTransaction('0x' + serializedTx.toString('hex'))
-      .on('transactionHash', console.log)
+      .on('blockHash', console.log)
       .on('receipt', console.log)
-      .on('confirmation', console.log, console.log)
+    //  .on('confirmation', console.log, console.log)
       .on('error', console.error);
   }
 

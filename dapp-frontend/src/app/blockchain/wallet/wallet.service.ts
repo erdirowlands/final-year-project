@@ -4,6 +4,9 @@ import { Web3ProviderService } from '../provider/web3provider.service';
 import { BehaviorSubject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
+import Bip39 from 'bip39';
+import HDKey from 'hdkey';
+
 import { KeyPair } from './key-pair.model';
 
 @Injectable({
@@ -33,7 +36,6 @@ export class WalletService {
   constructor(private web3ProviderService: Web3ProviderService) {
     this._web3Instance = this.web3ProviderService.getWeb3();
     this._wallet = this._web3Instance.eth.accounts.wallet;
-    this.getKeyPair("password");
   }
 
   public initialiseWallet(password: string) {
@@ -46,7 +48,23 @@ export class WalletService {
       // this._usefr = this.wallet;
     } else {
       console.log('No wallet found, would you like to create one?');
-      this.createWallet('password');
+      this.registerWallet(password);
+    }
+  }
+
+  public registerWallet(password: string) {
+    const newWallet = this.createWallet(password);
+    this._keypairObservable.next(this._wallet);
+    
+  }
+
+  public checkForWalletFile() {
+    const walletName = localStorage.getItem(this._electionWalletName);
+    // Load the wallet if not in memory already.
+    if (walletName !== null) {
+      return true;
+    } else {
+      return false;
     }
   }
 
@@ -132,6 +150,21 @@ export class WalletService {
         return !!keypair[0];
       })
     );
+  }
+
+  public generateRecoveryPhrase() {
+    return Bip39.generateMnemonic();
+  }
+
+  public generateAccountFromMnemonic(mnemonic: string) {
+    const seed = Bip39.mnemonicToSeed(mnemonic);
+    let root = HDKey.HDKey;
+    root = HDKey.fromMasterSeed(seed);
+    this._keypair.adminPrivateKey = root.privateKey.toString('hex');
+    const account = this._web3Instance.eth.accounts.privateKeyToAccount(
+      '0x' + this._keypair.adminPrivateKey
+    );
+    this._keypair.adminAddress = account.address;
   }
 
   public initialiseWeb3Wallet() {
