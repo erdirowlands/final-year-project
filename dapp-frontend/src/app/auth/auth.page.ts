@@ -27,8 +27,8 @@ export class AuthPage implements OnInit {
   //  }
 
   ngOnInit() {
-    if (this.authService.checkForWalletFile()) {
-
+    if (!this.authService.checkForWalletFile()) {
+      this.isLogin = false;
     }
   }
 
