@@ -70,10 +70,12 @@ export class SelectInstitutionPage implements OnInit {
           console.log('New institutions detected');
 
           this.institutionsObservable.next(addresses);
+          this.isLoading = false;
           this.institutions = addresses;
-          console.log(this.institutions);
         }
         console.log("Checking request refresh time: " + this.institutions);
+        console.log(this.institutions);
+        this.isLoading = false;
       }
     );
   }
@@ -83,7 +85,6 @@ export class SelectInstitutionPage implements OnInit {
       this.institutionsArray = addresses;
       setInterval(() => this.getInstitutionAddresses(), environment.institutionObservableRefresh.kovanTimeout);
       console.log("Refresh: event")
-      this.isLoading = false;
     });
   }
 
