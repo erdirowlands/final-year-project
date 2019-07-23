@@ -3,14 +3,15 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
+  
   production: false,
   ethereum: {
     // Kovan
-    // provider: 'https://kovan.infura.io/v3/f2c4ebd8ed604600a20a3236bffb51df',
-    // universityVotingContractAddress: '0xDa00FE51aeEc88df902945934c9a01C0899f91E6'
-    // Ganache
-    provider: 'HTTP://192.168.1.71:7545',
-    universityVotingContractAddress: '0x20b2e869d74B4297f20dd34D965Add9af3D881D5'
+     provider: 'https://kovan.infura.io/v3/f2c4ebd8ed604600a20a3236bffb51df',
+     universityVotingContractAddress: '0xDa00FE51aeEc88df902945934c9a01C0899f91E6'
+   //  Ganache
+   // provider: 'HTTP://192.168.1.71:7545',
+  //  universityVotingContractAddress: '0xc9AEa578c6ec721AE0957dFa4f50C28556BeA929'
 
   }
 

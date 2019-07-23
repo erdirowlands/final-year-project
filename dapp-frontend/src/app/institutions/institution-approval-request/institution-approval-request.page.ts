@@ -83,7 +83,7 @@ export class InstitutionApprovalRequestPage implements OnInit {
             institutionRequest.institutionName
           ];
 
-          this.universityVotingContract.submitInstitutionRequestSigner(
+          await this.universityVotingContract.submitInstitutionRequestSigner(
             requestArray,
             this.wallet.keypair.adminPrivateKey,
             this.wallet.keypair.adminAddress
