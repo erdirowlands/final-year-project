@@ -2,23 +2,33 @@
   <img src="../../../assets/Webp.net-resizeimage (1).png" />
 </ion-img>
 
-<ion-item>
-  <ion-text color="primary">
-    <h1>
-      Welcome to Decentralised Voting!     </h1>
-      
-      This app uses the power of the Ethereum
-      blockchain to secure your Elections. 
-      
-      On the next page, you'll be able to
-      create a password that will secure your key. You don't need to know
-      anything about Ethereum or blockchain technology to use this app, but if
-      you're a curios soul, please visit the Ethereum home page for more
-      information! Happy voting :)
+<ion-grid>
+  <ion-item>
+    <ion-text color="primary">
+      <h1>
+        Welcome to Decentralised Voting!
+      </h1>
 
-  </ion-text>
+      <ion-card>
+        <ion-card-header>
+          <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
+          <ion-card-title>Card Title</ion-card-title>
+        </ion-card-header>
+      
+        <ion-card-content>
+          <ion-textarea
+          >This app uses the power of the Ethereum blockchain to secure your
+          Elections. If you want to find out how Ethereum secures ...
+        </ion-textarea>
+        </ion-card-content>
+      </ion-card>
 
-  <a href="https://www.ethereum.org/"></a>
+    </ion-text>
+  </ion-item>
+</ion-grid>
+<ion-item href="https://ionicframework.com/docs/">
+  <ion-icon slot="start" color="medium" name="book"></ion-icon>
+  <ion-label>Ionic Documentation</ion-label>
 </ion-item>
 
 <ion-footer>
