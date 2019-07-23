@@ -48,8 +48,14 @@ export class WalletService {
       // this._usefr = this.wallet;
     } else {
       console.log('No wallet found, would you like to create one?');
-      this.createWallet('password');
+      this.registerWallet(password);
     }
+  }
+
+  public registerWallet(password: string) {
+    const newWallet = this.createWallet(password);
+    this._keypairObservable.next(this._wallet);
+    
   }
 
   public checkForWalletFile() {
