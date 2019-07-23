@@ -40,7 +40,7 @@ contract ApprovalQueue {
 
         // Initialise new approval request
         newApprovalRequest.submitter = msg.sender;
-        newApprovalRequest.isPending = true;
+        newApprovalRequest.isPending = true;  // TODO I NEED TO UPDATE THESE VALUES ON APPROVAL
         newApprovalRequest.approvalType = approvalRequestType;
         newApprovalRequest.data = requestData;
         newApprovalRequest.isInitialised = true;
