@@ -26,9 +26,8 @@ export class AuthGuard implements CanLoad {
       take(1),
       switchMap(isDecrypted => {
         if (!isDecrypted) {
-          return this.authService.isWalletDecrypted
-        }
-        else return of(isDecrypted)
+          return this.authService.isWalletDecrypted;
+        } else { return of(isDecrypted) }
 
       }),
       tap(isDecrypted => {

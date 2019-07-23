@@ -41,7 +41,7 @@ export class SelectInstitutionPage implements OnInit {
   }
 
   ionViewWillEnter() {
-    //  this.isLoading = true;
+      this.isLoading = true;
       this.refreshInstitutionAddresses();
 
   }
@@ -83,6 +83,7 @@ export class SelectInstitutionPage implements OnInit {
       this.institutionsArray = addresses;
       setInterval(() => this.getInstitutionAddresses(), environment.institutionObservableRefresh.kovanTimeout);
       console.log("Refresh: event")
+      this.isLoading = false;
     });
   }
 

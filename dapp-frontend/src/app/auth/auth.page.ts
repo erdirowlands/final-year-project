@@ -26,7 +26,11 @@ export class AuthPage implements OnInit {
   //   this.authService.initialiseWallet()
   //  }
 
-  ngOnInit() {}
+  ngOnInit() {
+    if (this.authService.checkForWalletFile()) {
+
+    }
+  }
 
   login(password: string) {
     this.isLoading = true;
@@ -40,7 +44,7 @@ export class AuthPage implements OnInit {
           this.isLoading = false;
         } catch (err) {
           loadingEl.dismiss();
-          this.showAlert(err);
+          this.showAlert(err, 'Authentication failed');
         }
         loadingEl.dismiss();
         this.router.navigateByUrl(
@@ -59,10 +63,10 @@ export class AuthPage implements OnInit {
     form.reset();
   }
 
-  private showAlert(message: string) {
+  private showAlert(message: string, headerText: string) {
     this.alertCtrl
       .create({
-        header: 'Authentication failed',
+        header: headerText,
         message,
         buttons: ['Okay']
       })
