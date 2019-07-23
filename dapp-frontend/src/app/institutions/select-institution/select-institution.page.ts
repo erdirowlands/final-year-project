@@ -37,7 +37,7 @@ export class SelectInstitutionPage implements OnInit {
   //  this.universityVotingDeployed = await this.universityVotingContract.universityVotingAbstraction.at(
   //    environment.ethereum.universityVotingContractAddress
  //   );
-  //  this.getInstitutionAddresses();
+    this.universityVotingContract.getInstitutionLength();
   }
 
   ionViewWillEnter() {
@@ -48,10 +48,16 @@ export class SelectInstitutionPage implements OnInit {
   //  this.refreshInstitutionAddresses();
     //  });
   }
-
   async getInstitutionAddresses() {
     //  let test =  await this.universityVotingDeployed.getInstitutionAddresses();
     // console.log(test);
+    const abstraction = this.universityVotingContract.universityVotingAbstraction;
+    await abstraction.getInstitutionsTotal().call({from: '0xeCDED0f569Ccd0FcEF2bc359e6F742BA1d6e533A'}, (error, result) => {
+      console.log("HEY" + result);
+      console.log("NOO" + error);
+  });
+  
+/*
     await this.universityVotingDeployed.getInstitutionAddresses(
       (err, addresses) => {
         if (addresses === undefined || addresses.length == 0) {
@@ -71,7 +77,7 @@ export class SelectInstitutionPage implements OnInit {
         }
 
       }
-    );
+    ); */
   }
 
   refreshInstitutionAddresses() {

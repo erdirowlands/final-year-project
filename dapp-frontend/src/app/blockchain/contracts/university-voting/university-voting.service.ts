@@ -79,4 +79,11 @@ export class UniversityVotingService {
   public get universityVotingAbstraction(): any {
     return this._universityVotingAbstraction;
   }
+
+  public async getInstitutionLength () {
+     const submitInstitutionContractMethod = await this._universityVotingAbstraction.methods.getInstitutionsTotal().call({from: '0xeCDED0f569Ccd0FcEF2bc359e6F742BA1d6e533A'}, (error, result) => {
+      console.log("HEY" + result);
+      console.log("NOO" + error);
+  });
+  }
 }
