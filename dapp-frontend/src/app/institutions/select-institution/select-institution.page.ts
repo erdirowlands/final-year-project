@@ -6,8 +6,7 @@ import { Institution } from './institution-details/institution.model';
 import { Web3ProviderService } from 'src/app/blockchain/provider/web3provider.service';
 import { WalletService } from 'src/app/blockchain/wallet/wallet.service';
 import { environment } from 'src/environments/environment';
-import { Subject, Subscription } from 'rxjs';
-import { take, switchMap, map, tap } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 const institutionArtifact = require('../../blockchain/contracts/artifacts/Institution.json');
 
@@ -21,8 +20,6 @@ export class SelectInstitutionPage implements OnInit, OnDestroy {
   institutionsArray: string[];
   placeHolderImage = '../assets/select-institutions/institution_item.png';
   public institutionsObservable = new Subject<string[]>();
-  public institutionsModelObservable = new Subject<string[]>();
-  private institutionsSub: Subscription;
   institutionAbstraction: any;
   isLoading = false;
 
@@ -44,14 +41,13 @@ export class SelectInstitutionPage implements OnInit, OnDestroy {
   async ngOnInit() {
     this.universityVotingAbstraction = this.universityVotingContract.universityVotingAbstraction;
     await this.getInstitutionAddresses();
-    this.addToInstitutions();
-
+    //  this.refreshInstitutionAddresses();
+    this.getInstitutionNames();
   }
 
   ionViewWillEnter() {
     this.isLoading = true;
     this.refreshInstitutionAddresses();
-    this.addToInstitutions();
   }
 
   ionViewWillLeave() {}
@@ -88,7 +84,6 @@ export class SelectInstitutionPage implements OnInit, OnDestroy {
   // TODO: Tricky..
   async getInstitutionNames() {
     const web3 = this.web3Provider.getWeb3();
-    let institution;
     for (let i = 0; i < this.institutionsArray.length; i++) {
       this.institutionAbstraction = new web3.eth.Contract(
         institutionArtifact.abi,
@@ -97,14 +92,16 @@ export class SelectInstitutionPage implements OnInit, OnDestroy {
       await this.institutionAbstraction.methods
         .getInstitutionName()
         .call({ from: this.wallet.keypair.adminAddress }, (error, name) => {
-  
+          if (name === undefined && name !== '') {
+            return;
+          }
           console.log('Inst name' + name);
-          institution = new Institution(this.institutionsArray[i], name, []);
-          //   this.institutions.push(institution);
-          //   console.log('Inst name' + name);
-          //   console.log('new institution' + this.institutions[i].ethereumAddress);
+          this.institutions = new Array();
+          const institution = new Institution(this.institutionsArray[i], name,  []);
+          this.institutions.push(institution);
+          console.log('Inst name' + name);
+          console.log('new institution' + this.institutions[i].ethereumAddress);
         });
-      return institution;
     }
   }
 
@@ -136,47 +133,9 @@ export class SelectInstitutionPage implements OnInit, OnDestroy {
   refreshInstitutionAddresses() {
     this.institutionsObservable.subscribe(addresses => {
       this.institutionsArray = addresses;
-      setInterval(
-        () => this.getInstitutionAddresses(),
-        environment.institutionObservableRefresh.kovanTimeout
-      );
+       setInterval(() => this.getInstitutionAddresses(), environment.institutionObservableRefresh.kovanTimeout);
       console.log('Refresh: event');
     });
-  }
-
-  refreshInstitutionsModel() {
-    return this.institutionsModelObservable.pipe(
-      take(1),
-      switchMap(institution => {
-        return this.getInstitutionNames();
-      }),
-      map(institution => {
-        const institutions = [];
-        for (const key in institution) {
-          if (institution.hasOwnProperty(key)) {
-            institutions.push(
-              new Institution(
-                institution[key].ethereumAddress,
-                institution[key].institutionName,
-                institution[key].admins
-              )
-            );
-          }
-        }
-        return institutions;
-      }),
-      tap(institutions => {
-        this.institutionsModelObservable.next(institutions);
-      })
-    );
-  }
-
-  public addToInstitutions() {
-    this.institutionsSub = this.refreshInstitutionsModel().subscribe(
-      institutions => {
-        this.institutions = institutions;
-      }
-    );
   }
 
   private showSucessfulAlert() {
