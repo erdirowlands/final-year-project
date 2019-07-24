@@ -16,8 +16,9 @@ export class SelectInstitutionPage implements OnInit, OnDestroy {
 
   institutions: Institution[];
   institutionsArray: string[];
-  placeHolderImage = "../assets/select-institutions/institution_item.png";
+  placeHolderImage = '../assets/select-institutions/institution_item.png';
   public institutionsObservable = new Subject<string[]>();
+  institutionAbstraction: any;
   isLoading = false;
 
   universityVotingAbstraction: any;
@@ -51,6 +52,33 @@ export class SelectInstitutionPage implements OnInit, OnDestroy {
   ionViewDidLeave() {
     this.institutionsObservable.next(null);
 
+  }
+
+  async getInstitutionContractDetails() {
+    await this.universityVotingAbstraction.methods.getInstitutionAddresses()
+    .call(
+      { from: this.wallet.keypair.adminAddress },
+      (error, addresses) => {
+        if (addresses === undefined || addresses.length === 0) {
+          return;
+        }
+        if (
+          !this.institutionsArray ||
+          this.institutionsArray.length !== addresses.length ||
+          this.institutionsArray[0] !== this.institutionsArray[0]
+        ) {
+          console.log('New institutions detected');
+
+          this.institutionsObservable.next(addresses);
+          this.isLoading = false;
+          this.institutionsArray = addresses;
+        }
+        console.log("Checking request refresh time: " + this.institutions);
+        console.log(this.institutions);
+        console.log(error);
+        this.isLoading = false;
+      }
+    );
   }
 
   async getInstitutionAddresses() {
