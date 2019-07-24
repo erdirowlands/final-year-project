@@ -9,7 +9,7 @@ export const environment = {
     // Kovan
      provider: 'https://kovan.infura.io/v3/f2c4ebd8ed604600a20a3236bffb51df',
      devProvider: 'HTTP://192.168.1.71:7545',
-     universityVotingContractAddress: '0xDa00FE51aeEc88df902945934c9a01C0899f91E6'
+     universityVotingContractAddress: '0xe9251E6220f8e80DC965F65bf896cf3075B2d9dD'
    //  Ganache
    // provider: 'HTTP://192.168.1.71:7545',
   //  universityVotingContractAddress: '0xc9AEa578c6ec721AE0957dFa4f50C28556BeA929'

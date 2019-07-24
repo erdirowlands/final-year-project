@@ -79,8 +79,8 @@ export class InstitutionApprovalRequestPage implements OnInit {
           // Create array to use the convenient map function when converting to hex in
           // submitInstitutionRequestSigner
           const requestArray = [
-            institutionRequest.adminName,
-            institutionRequest.institutionName
+            institutionRequest.institutionName,
+            institutionRequest.adminName
           ];
 
           await this.universityVotingContract.submitInstitutionRequestSigner(
