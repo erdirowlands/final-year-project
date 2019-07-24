@@ -55,12 +55,13 @@ export class InstitutionDetailsPage implements OnInit {
    *  Multiple return types are supported in Solidity.
    * @param adminAddress the address of the admin to be queried.
    */
-  private async getAdminNames(adminAddress: string) {
+  private async getAdminDetails(adminAddress: string) {
 
-    let adminAddresses = await this.getAdminAddresses();
+    const adminAddresses = await this.getAdminAddresses();
 
+    for (let i = 0; i < adminAddresses.length; i++) {
     await this.institutionAbstraction.methods
-      .getAdmin(adminAddress)
+      .getAdmin(adminAddress[i])
       .call({ from: this.wallet.keypair.adminAddress }, (error, name) => {
         if (name === undefined && name !== '') {
           return;
@@ -72,6 +73,7 @@ export class InstitutionDetailsPage implements OnInit {
         console.log('Admin name' + adminName, isAuthorised);
         console.log('Admin name error ' + error);
       });
+    }
   }
 
   private async getAdminAddresses() {
