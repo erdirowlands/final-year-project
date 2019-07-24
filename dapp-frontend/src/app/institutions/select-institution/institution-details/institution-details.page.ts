@@ -34,7 +34,6 @@ export class InstitutionDetailsPage implements OnInit {
       );
       this.institutionAbstraction = this.institutionContract.institutionAbstraction;
       this.getInstitutionName();
-      this.getAdminName();
     });
   }
 
@@ -46,20 +45,30 @@ export class InstitutionDetailsPage implements OnInit {
           return;
         }
         this.institution = new Institution(name, "test", ["sad"]);
-        console.log(name);
+        console.log("Inst name" + name);
       });
   }
 
 
-  private async getAdminName() {
+  /**
+   *  Returns the admin's name and if they are authorised. 
+   *  Returns false if the address supplied isn't found in the admins mapping within the contract.
+   *  Multiple return types are supported in Solidity.
+   * @param adminAddress the address of the admin to be queried.
+   */
+  private async getAdminName(adminAddress: string ) {
     await this.institutionAbstraction.methods
-      .getAdmin('0x56EdDD46B3E6DF2a588b4a50069a9058742324dD')
+      .getAdmin(adminAddress)
       .call({ from: this.wallet.keypair.adminAddress }, (error, name) => {
         if (name === undefined && name !== '') {
           return;
         }
+        let adminName;
+        let isAuthorised;
+        [adminName, isAuthorised] = name;
        // this.institution = new Institution(name, "test", ["sad"]);
-        console.log(name);
+        console.log("Admin name" + adminName, isAuthorised);
+        console.log("Admin name error " + error);
       });
   }
 }

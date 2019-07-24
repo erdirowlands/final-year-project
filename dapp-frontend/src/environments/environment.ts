@@ -8,7 +8,8 @@ export const environment = {
   ethereum: {
     // Kovan
      provider: 'https://kovan.infura.io/v3/f2c4ebd8ed604600a20a3236bffb51df',
-     universityVotingContractAddress: '0xDa00FE51aeEc88df902945934c9a01C0899f91E6'
+     devProvider: 'HTTP://192.168.1.71:7545',
+     universityVotingContractAddress: '0x4F0d2B1f2cbe803e56953cd9292e7aA79876938e'
    //  Ganache
    // provider: 'HTTP://192.168.1.71:7545',
   //  universityVotingContractAddress: '0xc9AEa578c6ec721AE0957dFa4f50C28556BeA929'
@@ -17,7 +18,7 @@ export const environment = {
 
   institutionObservableRefresh: {
     testTimeout: 1000,
-    kovanTimeout: 30000
+    kovanTimeout: 10000000
   }
 
 };
