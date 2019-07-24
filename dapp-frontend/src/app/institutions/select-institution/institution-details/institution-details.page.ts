@@ -46,7 +46,7 @@ export class InstitutionDetailsPage implements OnInit {
           return;
         }
         this.institution = new Institution(name, "test", ["sad"]);
-        console.log(name);
+        console.log("Inst name" + name);
       });
   }
 
@@ -59,7 +59,8 @@ export class InstitutionDetailsPage implements OnInit {
           return;
         }
        // this.institution = new Institution(name, "test", ["sad"]);
-        console.log(name);
+        console.log("Admin name" + name);
+        console.log("Admin name error " + error);
       });
   }
 }
