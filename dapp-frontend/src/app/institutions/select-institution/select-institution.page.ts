@@ -101,6 +101,7 @@ export class SelectInstitutionPage implements OnInit, OnDestroy {
           this.institutions.push(institution);
           console.log('Inst name' + name);
           console.log('new institution' + this.institutions[i].ethereumAddress);
+          this.isLoading = false;
         });
     }
   }
