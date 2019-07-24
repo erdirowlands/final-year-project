@@ -22,6 +22,7 @@ export class SelectInstitutionPage implements OnInit, OnDestroy {
   public institutionsObservable = new Subject<string[]>();
   institutionAbstraction: any;
   isLoading = false;
+  areNamesLoading = true;
 
   universityVotingAbstraction: any;
 
@@ -103,7 +104,10 @@ export class SelectInstitutionPage implements OnInit, OnDestroy {
           console.log('new institution' + this.institutions[i].ethereumAddress);
           this.isLoading = false;
         });
+
     }
+
+    this.areNamesLoading = false;
   }
 
   async getInstitutionAddresses() {
