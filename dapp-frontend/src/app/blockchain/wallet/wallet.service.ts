@@ -159,6 +159,13 @@ export class WalletService {
     );
   }
 
+  /**
+   * Upgraded wallet creation/management solution - the original "initialiseWallet"
+   * could not have a mnemonic derived from it (as far as I'm aware). 
+   * https://github.com/ethereum/web3.js/issues/1594
+   */
+  public initialiseRecoverableWallet
+
   public generateRecoveryPhrase() {
     return Bip39.generateMnemonic();
   }
