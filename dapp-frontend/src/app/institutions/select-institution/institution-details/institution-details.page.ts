@@ -51,15 +51,23 @@ export class InstitutionDetailsPage implements OnInit {
   }
 
 
-  private async getAdminName() {
+  /**
+   *  Returns the admin's name and if they are authorised. 
+   *  Returns false if the address supplied isn't found in the admins mapping within the contract.
+   * @param adminAddress the address of the admin to be queried.
+   */
+  private async getAdminName(adminAddress: string ) {
     await this.institutionAbstraction.methods
-      .getAdmin('0x56EdDD46B3E6DF2a588b4a50069a9058742324dD')
+      .getAdmin(adminAddress)
       .call({ from: this.wallet.keypair.adminAddress }, (error, name) => {
         if (name === undefined && name !== '') {
           return;
         }
+        let a;
+        let b;
+         [a, b] = name;
        // this.institution = new Institution(name, "test", ["sad"]);
-        console.log("Admin name" + name);
+        console.log("Admin name" + a, b);
         console.log("Admin name error " + error);
       });
   }
