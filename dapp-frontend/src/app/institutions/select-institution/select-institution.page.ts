@@ -3,9 +3,12 @@ import { LoadingController, AlertController } from '@ionic/angular';
 import { UniversityVotingService } from 'src/app/blockchain/contracts/university-voting/university-voting.service';
 import { InstitutionContractService } from 'src/app/blockchain/contracts/institution-contract/institution-contract.service';
 import { Institution } from './institution-details/institution.model';
+import { Web3ProviderService } from 'src/app/blockchain/provider/web3provider.service';
 import { WalletService } from 'src/app/blockchain/wallet/wallet.service';
 import { environment } from 'src/environments/environment';
 import { Subject } from 'rxjs';
+
+const institutionArtifact = require('../artifacts/Institution.json');
 
 @Component({
   selector: 'app-select-institution',
@@ -25,6 +28,7 @@ export class SelectInstitutionPage implements OnInit, OnDestroy {
 
   constructor(
     private wallet: WalletService,
+    private web3Provider: Web3ProviderService,
     private universityVotingContract: UniversityVotingService,
     private institutionContract: InstitutionContractService,
     private loadingCtrl: LoadingController,
@@ -79,6 +83,18 @@ export class SelectInstitutionPage implements OnInit, OnDestroy {
         this.isLoading = false;
       }
     );
+  }
+
+  // TODO: Tricky..
+  async getInstitutionNames() {
+    const web3 = this.web3Provider.getWeb3(); 
+    for (let i = 0; i < this.institutionsArray.length; i++) {
+      let address = this.institutionsArray[i]; 
+      this.institutionAbstraction = new web3.eth.Contract(
+        institutionArtifact.abi,
+        address
+      );
+    }
   }
 
   async getInstitutionAddresses() {
