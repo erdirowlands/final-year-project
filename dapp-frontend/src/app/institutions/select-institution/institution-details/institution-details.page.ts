@@ -37,6 +37,7 @@ export class InstitutionDetailsPage implements OnInit {
       this.institutionAbstraction = this.institutionContract.institutionAbstraction;
     });
     this.institutionName = await this.getInstitutionName();
+    await this.getAdminDetails();
   }
 
   private async getInstitutionName() {
@@ -56,12 +57,12 @@ export class InstitutionDetailsPage implements OnInit {
    *  Multiple return types are supported in Solidity.
    * @param adminAddress the address of the admin to be queried.
    */
-  private async getAdminDetails(adminAddress: string) {
+  private async getAdminDetails() {
 
     const adminAddresses = await this.getAdminAddresses();
     for (let i = 0; i < adminAddresses.length; i++) {
     await this.institutionAbstraction.methods
-      .getAdmin(adminAddress[i])
+      .getAdmin(adminAddresses[i])
       .call({ from: this.wallet.keypair.adminAddress }, (error, name) => {
         if (name === undefined && name !== '') {
           return;
@@ -69,7 +70,7 @@ export class InstitutionDetailsPage implements OnInit {
         let adminName;
         let isAuthorised;
         [adminName, isAuthorised] = name;
-        const admin = new Admin(adminName, adminAddress[i], isAuthorised);
+        const admin = new Admin(adminName, adminAddresses[i], isAuthorised);
         this.admins.push(admin);
         // this.institution = new Institution(name, "test", ["sad"]);
         console.log('Admin name' + adminName, isAuthorised);
@@ -88,6 +89,7 @@ export class InstitutionDetailsPage implements OnInit {
       }
       adminAddresses = addresses;
     });
+    console.log("admin addresses are" + adminAddresses);
     return adminAddresses;
   }
 
