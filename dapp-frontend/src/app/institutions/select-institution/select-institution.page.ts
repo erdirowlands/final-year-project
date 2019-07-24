@@ -46,9 +46,9 @@ export class SelectInstitutionPage implements OnInit, OnDestroy {
   await   this.getInstitutionNames();
   }
 
-  ionViewWillEnter() {
+  async ionViewWillEnter() {
     this.isLoading = true;
-    this.refreshInstitutionAddresses();
+    await this.refreshInstitutionAddresses();
   }
 
   ionViewWillLeave() {}
