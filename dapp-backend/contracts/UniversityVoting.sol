@@ -66,9 +66,10 @@ contract UniversityVoting is Ownable, ApprovalQueue {
         storeInstitutionContractInfo(contractAddress);
         // Emit the creation of the new Institution as an event.
 
-        // Set the request to not pending.
+        // Set the request and state to not pending/initialised to allow admin to submit new requests.
         ApprovalRequest storage completedRequest = _approvalRequestQueue[submittingAddress];
         completedRequest.isPending = false;
+        completedRequest.isInitialised = false;
 
         emit NewInstitutionApproved(contractAddress);
        // return contractAddress;
