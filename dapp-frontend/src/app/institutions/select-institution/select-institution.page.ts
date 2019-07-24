@@ -16,7 +16,7 @@ const institutionArtifact = require('../../blockchain/contracts/artifacts/Instit
   styleUrls: ['./select-institution.page.scss']
 })
 export class SelectInstitutionPage implements OnInit, OnDestroy {
-  institutions: Institution[];
+  institutions: Institution[] = [];
   institutionsArray: string[];
   placeHolderImage = '../assets/select-institutions/institution_item.png';
   public institutionsObservable = new Subject<string[]>();
@@ -96,8 +96,8 @@ export class SelectInstitutionPage implements OnInit, OnDestroy {
             return;
           }
           console.log('Inst name' + name);
-          this.institutions = new Array();
-          const institution = new Institution(this.institutionsArray[i], name,  []);
+          
+          let institution = new Institution(this.institutionsArray[i], name,  []);
           this.institutions.push(institution);
           console.log('Inst name' + name);
           console.log('new institution' + this.institutions[i].ethereumAddress);
@@ -133,7 +133,7 @@ export class SelectInstitutionPage implements OnInit, OnDestroy {
   refreshInstitutionAddresses() {
     this.institutionsObservable.subscribe(addresses => {
       this.institutionsArray = addresses;
-       setInterval(() => this.getInstitutionAddresses(), environment.institutionObservableRefresh.kovanTimeout);
+       setInterval(() => this.getInstitutionAddresses(), environment.institutionObservableRefresh.testTimeout);
       console.log('Refresh: event');
     });
   }
