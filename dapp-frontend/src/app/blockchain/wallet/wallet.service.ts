@@ -159,10 +159,6 @@ export class WalletService {
     );
   }
 
-  public generateRecoveryPhrase() {
-    return Bip39.generateMnemonic();
-  }
-
   public generateAccountFromMnemonic(mnemonic: string) {
     const seed = Bip39.mnemonicToSeed(mnemonic);
     let root = HDKey.HDKey;

@@ -36,7 +36,7 @@
     "rxjs": "^6.3.3",
     "truffle-contract": "^4.0.25",
     "tslib": "^1.9.0",
-    "web3": "^1.2.0",
+    "web3": "^1.0.0-beta.34",
     "zone.js": "~0.8.29"
   },
   "devDependencies": {
