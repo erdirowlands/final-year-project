@@ -8,6 +8,7 @@ export const environment = {
   ethereum: {
     // Kovan
      provider: 'https://kovan.infura.io/v3/f2c4ebd8ed604600a20a3236bffb51df',
+     devProvider: 'HTTP://192.168.1.71:7545',
      universityVotingContractAddress: '0xDa00FE51aeEc88df902945934c9a01C0899f91E6'
    //  Ganache
    // provider: 'HTTP://192.168.1.71:7545',
