@@ -56,7 +56,7 @@ export class AuthPage implements OnInit {
           this.showAlert(err, 'Authentication failed');
         }
         if (!this.isLogin) {
-        this.showAlert('Great, your account has been created! You\'ll be able to view your special recovery phrase should you ever lose your device or delete the app. Go to settings > recovery for more information',  "Account created");
+        this.showAlert('Great, your account has been created! You\'ll be able to find your find and manage your Institution on the next page. If it\'s not there, you can submit a request to us to add it. Happy decentralised voting!,  "Account created");
       }
         loadingEl.dismiss();
         this.router.navigateByUrl('/institutions/tabs/view');
