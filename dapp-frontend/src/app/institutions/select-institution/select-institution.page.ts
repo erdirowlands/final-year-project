@@ -88,11 +88,20 @@ export class SelectInstitutionPage implements OnInit, OnDestroy {
   // TODO: Tricky..
   async getInstitutionNames() {
     const web3 = this.web3Provider.getWeb3(); 
-    for (let address of this.institutionsArray) {
+    for (let i = 0; i < this.institutionsArray.length; i ++) {
       this.institutionAbstraction = new web3.eth.Contract(
         institutionArtifact.abi,
-        address
+        this.institutionsArray[i]
       );
+      await this.institutionAbstraction.methods
+      .getInstitutionName()
+      .call({ from: this.wallet.keypair.adminAddress }, (error, name) => {
+        if (name === undefined && name !== '') {
+          return;
+        }
+        this.institutions[i] = new Institution(name, "test", ["sad"]);
+        console.log("Inst name" + name);
+      });
     }
   }
 
@@ -113,10 +122,10 @@ export class SelectInstitutionPage implements OnInit, OnDestroy {
 
           this.institutionsObservable.next(addresses);
           this.isLoading = false;
-          this.institutions = addresses;
+          this.institutionsArray = addresses;
         }
-        console.log("Checking request refresh time: " + this.institutions);
-        console.log(this.institutions);
+        console.log("Checking request refresh time: " + this.institutionsArray);
+        console.log(this.institutionsArray);
         console.log(error);
         this.isLoading = false;
       }
