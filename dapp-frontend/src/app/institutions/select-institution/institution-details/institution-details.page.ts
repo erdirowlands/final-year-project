@@ -70,6 +70,7 @@ export class InstitutionDetailsPage implements OnInit {
         let isAuthorised;
         [adminName, isAuthorised] = name;
         const admin = new Admin(adminName, adminAddress[i], isAuthorised);
+        this.admins.push(admin);
         // this.institution = new Institution(name, "test", ["sad"]);
         console.log('Admin name' + adminName, isAuthorised);
         console.log('Admin name error ' + error);
