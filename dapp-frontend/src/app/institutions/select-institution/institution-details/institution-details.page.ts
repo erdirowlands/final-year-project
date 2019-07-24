@@ -15,7 +15,7 @@ import { Admin } from 'src/app/auth/admin.model';
 export class InstitutionDetailsPage implements OnInit {
   institutionAbstraction: any;
   institutionName: string;
-  admins: Admin[];
+  admins: Admin[] = [];
 
   constructor(
     private wallet: WalletService,
