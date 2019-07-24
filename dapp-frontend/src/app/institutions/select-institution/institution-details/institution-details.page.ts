@@ -53,6 +53,7 @@ export class InstitutionDetailsPage implements OnInit {
   /**
    *  Returns the admin's name and if they are authorised. 
    *  Returns false if the address supplied isn't found in the admins mapping within the contract.
+   *  Multiple return types are supported in Solidity.
    * @param adminAddress the address of the admin to be queried.
    */
   private async getAdminName(adminAddress: string ) {
@@ -62,11 +63,11 @@ export class InstitutionDetailsPage implements OnInit {
         if (name === undefined && name !== '') {
           return;
         }
-        let a;
-        let b;
-         [a, b] = name;
+        let adminName;
+        let isAuthorised;
+        [adminName, isAuthorised] = name;
        // this.institution = new Institution(name, "test", ["sad"]);
-        console.log("Admin name" + a, b);
+        console.log("Admin name" + adminName, isAuthorised);
         console.log("Admin name error " + error);
       });
   }
