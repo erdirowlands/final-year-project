@@ -13,7 +13,8 @@ import { WalletService } from 'src/app/blockchain/wallet/wallet.service';
 })
 export class InstitutionDetailsPage implements OnInit {
   institutionAbstraction: any;
-  institution: Institution;
+  institutionName: string;
+  admins: string;
 
   constructor(
     private wallet: WalletService,
@@ -34,7 +35,7 @@ export class InstitutionDetailsPage implements OnInit {
       );
       this.institutionAbstraction = this.institutionContract.institutionAbstraction;
     });
-    this.institution.institutionName = await this.getInstitutionName();
+    this.institutionName = await this.getInstitutionName();
   }
 
   private async getInstitutionName() {
@@ -48,15 +49,16 @@ export class InstitutionDetailsPage implements OnInit {
     return name;
   }
 
-  private async getAdmin
-
   /**
    *  Returns the admin's name and if they are authorised.
    *  Returns false if the address supplied isn't found in the admins mapping within the contract.
    *  Multiple return types are supported in Solidity.
    * @param adminAddress the address of the admin to be queried.
    */
-  private async getAdminName(adminAddress: string) {
+  private async getAdminNames(adminAddress: string) {
+
+    let adminAddresses = await this.getAdminAddresses();
+
     await this.institutionAbstraction.methods
       .getAdmin(adminAddress)
       .call({ from: this.wallet.keypair.adminAddress }, (error, name) => {
@@ -71,4 +73,18 @@ export class InstitutionDetailsPage implements OnInit {
         console.log('Admin name error ' + error);
       });
   }
+
+  private async getAdminAddresses() {
+    let adminAddresses = [];
+    await this.institutionAbstraction.methods
+    .getAdminAddresses()
+    .call({ from: this.wallet.keypair.adminAddress }, (error, addresses) => {
+      if (name === undefined && name !== '') {
+        return;
+      }
+      adminAddresses = addresses;
+    });
+    return adminAddresses;
+  }
+
 }
