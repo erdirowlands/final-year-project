@@ -16,12 +16,13 @@ const institutionArtifact = require('../../blockchain/contracts/artifacts/Instit
   styleUrls: ['./select-institution.page.scss']
 })
 export class SelectInstitutionPage implements OnInit, OnDestroy {
-  institutions: Institution[];
+  institutions: Institution[] = [];
   institutionsArray: string[];
   placeHolderImage = '../assets/select-institutions/institution_item.png';
   public institutionsObservable = new Subject<string[]>();
   institutionAbstraction: any;
   isLoading = false;
+  areNamesLoading = true;
 
   universityVotingAbstraction: any;
 
@@ -42,12 +43,12 @@ export class SelectInstitutionPage implements OnInit, OnDestroy {
     this.universityVotingAbstraction = this.universityVotingContract.universityVotingAbstraction;
     await this.getInstitutionAddresses();
     //  this.refreshInstitutionAddresses();
-    this.getInstitutionNames();
+  await   this.getInstitutionNames();
   }
 
-  ionViewWillEnter() {
+  async ionViewWillEnter() {
     this.isLoading = true;
-    this.refreshInstitutionAddresses();
+    await this.refreshInstitutionAddresses();
   }
 
   ionViewWillLeave() {}
@@ -96,13 +97,17 @@ export class SelectInstitutionPage implements OnInit, OnDestroy {
             return;
           }
           console.log('Inst name' + name);
-          this.institutions = new Array();
-          const institution = new Institution(this.institutionsArray[i], name,  []);
+          
+          let institution = new Institution(this.institutionsArray[i], name,  []);
           this.institutions.push(institution);
           console.log('Inst name' + name);
           console.log('new institution' + this.institutions[i].ethereumAddress);
+          this.isLoading = false;
         });
+
     }
+
+    this.areNamesLoading = false;
   }
 
   async getInstitutionAddresses() {
