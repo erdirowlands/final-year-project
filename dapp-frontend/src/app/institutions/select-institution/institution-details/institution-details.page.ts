@@ -34,7 +34,6 @@ export class InstitutionDetailsPage implements OnInit {
       );
       this.institutionAbstraction = this.institutionContract.institutionAbstraction;
       this.getInstitutionName();
-      this.getAdminName();
     });
   }
 
