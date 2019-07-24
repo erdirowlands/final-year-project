@@ -96,7 +96,7 @@ export class SelectInstitutionPage implements OnInit, OnDestroy {
             return;
           }
           console.log('Inst name' + name);
-          const institution = new Institution(name, 'n/a', []);
+          const institution = new Institution(name, this.institutionsArray[i], []);
           this.institutions.push(institution);
           console.log('Inst name' + name);
         });
