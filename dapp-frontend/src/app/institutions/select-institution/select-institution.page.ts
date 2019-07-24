@@ -42,7 +42,7 @@ export class SelectInstitutionPage implements OnInit, OnDestroy {
     this.universityVotingAbstraction = this.universityVotingContract.universityVotingAbstraction;
     await this.getInstitutionAddresses();
     //  this.refreshInstitutionAddresses();
-    this.getInstitutionNames();
+  await   this.getInstitutionNames();
   }
 
   ionViewWillEnter() {
