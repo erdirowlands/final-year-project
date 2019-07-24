@@ -17,7 +17,7 @@ export const environment = {
 
   institutionObservableRefresh: {
     testTimeout: 1000,
-    kovanTimeout: 30000
+    kovanTimeout: 10000000
   }
 
 };

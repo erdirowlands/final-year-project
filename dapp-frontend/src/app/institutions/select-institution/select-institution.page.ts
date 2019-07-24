@@ -16,7 +16,7 @@ export class SelectInstitutionPage implements OnInit, OnDestroy {
 
   institutions: Institution[];
   institutionsArray: string[];
-
+  placeHolderImage = "../assets/select-institutions/institution_item.png";
   public institutionsObservable = new Subject<string[]>();
   isLoading = false;
 
@@ -74,6 +74,7 @@ export class SelectInstitutionPage implements OnInit, OnDestroy {
         }
         console.log("Checking request refresh time: " + this.institutions);
         console.log(this.institutions);
+        console.log(error);
         this.isLoading = false;
       }
     );
