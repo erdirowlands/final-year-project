@@ -5,6 +5,7 @@ import { Institution } from './institution.model';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { WalletService } from 'src/app/blockchain/wallet/wallet.service';
+import { Admin } from 'src/app/auth/admin.model';
 
 @Component({
   selector: 'app-institution-details',
@@ -58,7 +59,6 @@ export class InstitutionDetailsPage implements OnInit {
   private async getAdminDetails(adminAddress: string) {
 
     const adminAddresses = await this.getAdminAddresses();
-
     for (let i = 0; i < adminAddresses.length; i++) {
     await this.institutionAbstraction.methods
       .getAdmin(adminAddress[i])
@@ -69,6 +69,7 @@ export class InstitutionDetailsPage implements OnInit {
         let adminName;
         let isAuthorised;
         [adminName, isAuthorised] = name;
+        const admin = new Admin(adminName, adminAddress[i], isAuthorised);
         // this.institution = new Institution(name, "test", ["sad"]);
         console.log('Admin name' + adminName, isAuthorised);
         console.log('Admin name error ' + error);
