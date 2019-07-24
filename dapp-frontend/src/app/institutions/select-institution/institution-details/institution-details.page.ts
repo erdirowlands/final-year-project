@@ -12,6 +12,9 @@ import { WalletService } from 'src/app/blockchain/wallet/wallet.service';
   styleUrls: ['./institution-details.page.scss']
 })
 export class InstitutionDetailsPage implements OnInit {
+  institutionAbstraction: any;
+  institution: Institution;
+
   constructor(
     private wallet: WalletService,
     private institutionContract: InstitutionContractService,
@@ -19,9 +22,6 @@ export class InstitutionDetailsPage implements OnInit {
     private route: ActivatedRoute,
     private router: Router
   ) {}
-
-  institutionAbstraction: any;
-  institution: Institution;
 
   async ngOnInit() {
     this.route.paramMap.subscribe(paramMap => {
@@ -33,8 +33,8 @@ export class InstitutionDetailsPage implements OnInit {
         paramMap.get('address')
       );
       this.institutionAbstraction = this.institutionContract.institutionAbstraction;
-      this.getInstitutionName();
     });
+    this.institution.institutionName = await this.getInstitutionName();
   }
 
   private async getInstitutionName() {
@@ -44,19 +44,19 @@ export class InstitutionDetailsPage implements OnInit {
         if (name === undefined && name !== '') {
           return;
         }
-        this.institution = new Institution(name, "test", ["sad"]);
-        console.log("Inst name" + name);
       });
+    return name;
   }
 
+  private async getAdmin
 
   /**
-   *  Returns the admin's name and if they are authorised. 
+   *  Returns the admin's name and if they are authorised.
    *  Returns false if the address supplied isn't found in the admins mapping within the contract.
    *  Multiple return types are supported in Solidity.
    * @param adminAddress the address of the admin to be queried.
    */
-  private async getAdminName(adminAddress: string ) {
+  private async getAdminName(adminAddress: string) {
     await this.institutionAbstraction.methods
       .getAdmin(adminAddress)
       .call({ from: this.wallet.keypair.adminAddress }, (error, name) => {
@@ -66,9 +66,9 @@ export class InstitutionDetailsPage implements OnInit {
         let adminName;
         let isAuthorised;
         [adminName, isAuthorised] = name;
-       // this.institution = new Institution(name, "test", ["sad"]);
-        console.log("Admin name" + adminName, isAuthorised);
-        console.log("Admin name error " + error);
+        // this.institution = new Institution(name, "test", ["sad"]);
+        console.log('Admin name' + adminName, isAuthorised);
+        console.log('Admin name error ' + error);
       });
   }
 }
