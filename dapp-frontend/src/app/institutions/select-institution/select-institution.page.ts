@@ -16,8 +16,7 @@ const institutionArtifact = require('../../blockchain/contracts/artifacts/Instit
   styleUrls: ['./select-institution.page.scss']
 })
 export class SelectInstitutionPage implements OnInit, OnDestroy {
-
-  institutions: Institution[];
+  institutions: Institution[] = [];
   institutionsArray: string[];
   placeHolderImage = '../assets/select-institutions/institution_item.png';
   public institutionsObservable = new Subject<string[]>();
@@ -41,28 +40,26 @@ export class SelectInstitutionPage implements OnInit, OnDestroy {
    */
   async ngOnInit() {
     this.universityVotingAbstraction = this.universityVotingContract.universityVotingAbstraction;
-    this.getInstitutionAddresses();
-  //  this.refreshInstitutionAddresses();
+    await this.getInstitutionAddresses();
+    //  this.refreshInstitutionAddresses();
+    this.getInstitutionNames();
   }
 
   ionViewWillEnter() {
-      this.isLoading = true;
-      this.refreshInstitutionAddresses();
+    this.isLoading = true;
+    this.refreshInstitutionAddresses();
   }
 
-  ionViewWillLeave() {
-  }
+  ionViewWillLeave() {}
 
   ionViewDidLeave() {
     this.institutionsObservable.next(null);
-
   }
 
   async getInstitutionContractDetails() {
-    await this.universityVotingAbstraction.methods.getInstitutionAddresses()
-    .call(
-      { from: this.wallet.keypair.adminAddress },
-      (error, addresses) => {
+    await this.universityVotingAbstraction.methods
+      .getInstitutionAddresses()
+      .call({ from: this.wallet.keypair.adminAddress }, (error, addresses) => {
         if (addresses === undefined || addresses.length === 0) {
           return;
         }
@@ -77,39 +74,39 @@ export class SelectInstitutionPage implements OnInit, OnDestroy {
           this.isLoading = false;
           this.institutionsArray = addresses;
         }
-        console.log("Checking request refresh time: " + this.institutions);
+        console.log('Checking request refresh time: ' + this.institutions);
         console.log(this.institutions);
         console.log(error);
         this.isLoading = false;
-      }
-    );
+      });
   }
 
   // TODO: Tricky..
   async getInstitutionNames() {
-    const web3 = this.web3Provider.getWeb3(); 
-    for (let i = 0; i < this.institutionsArray.length; i ++) {
+    const web3 = this.web3Provider.getWeb3();
+    for (let i = 0; i < this.institutionsArray.length; i++) {
       this.institutionAbstraction = new web3.eth.Contract(
         institutionArtifact.abi,
         this.institutionsArray[i]
       );
       await this.institutionAbstraction.methods
-      .getInstitutionName()
-      .call({ from: this.wallet.keypair.adminAddress }, (error, name) => {
-        if (name === undefined && name !== '') {
-          return;
-        }
-        this.institutions[i] = new Institution(name, "test", ["sad"]);
-        console.log("Inst name" + name);
-      });
+        .getInstitutionName()
+        .call({ from: this.wallet.keypair.adminAddress }, (error, name) => {
+          if (name === undefined && name !== '') {
+            return;
+          }
+          console.log('Inst name' + name);
+          const institution = new Institution(name, 'n/a', []);
+          this.institutions.push(institution);
+          console.log('Inst name' + name);
+        });
     }
   }
 
   async getInstitutionAddresses() {
-    await this.universityVotingAbstraction.methods.getInstitutionAddresses()
-    .call(
-      { from: this.wallet.keypair.adminAddress },
-      (error, addresses) => {
+    await this.universityVotingAbstraction.methods
+      .getInstitutionAddresses()
+      .call({ from: this.wallet.keypair.adminAddress }, (error, addresses) => {
         if (addresses === undefined || addresses.length == 0) {
           return;
         }
@@ -124,19 +121,18 @@ export class SelectInstitutionPage implements OnInit, OnDestroy {
           this.isLoading = false;
           this.institutionsArray = addresses;
         }
-        console.log("Checking request refresh time: " + this.institutionsArray);
+        console.log('Checking request refresh time: ' + this.institutionsArray);
         console.log(this.institutionsArray);
         console.log(error);
         this.isLoading = false;
-      }
-    );
+      });
   }
 
   refreshInstitutionAddresses() {
     this.institutionsObservable.subscribe(addresses => {
       this.institutionsArray = addresses;
       // setInterval(() => this.getInstitutionAddresses(), environment.institutionObservableRefresh.kovanTimeout);
-      console.log("Refresh: event")
+      console.log('Refresh: event');
     });
   }
 
