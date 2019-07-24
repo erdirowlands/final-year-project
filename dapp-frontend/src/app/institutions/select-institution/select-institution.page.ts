@@ -8,7 +8,7 @@ import { WalletService } from 'src/app/blockchain/wallet/wallet.service';
 import { environment } from 'src/environments/environment';
 import { Subject } from 'rxjs';
 
-const institutionArtifact = require('../artifacts/Institution.json');
+const institutionArtifact = require('../../blockchain/contracts/artifacts/Institution.json');
 
 @Component({
   selector: 'app-select-institution',
@@ -88,8 +88,7 @@ export class SelectInstitutionPage implements OnInit, OnDestroy {
   // TODO: Tricky..
   async getInstitutionNames() {
     const web3 = this.web3Provider.getWeb3(); 
-    for (let i = 0; i < this.institutionsArray.length; i++) {
-      let address = this.institutionsArray[i]; 
+    for (let address of this.institutionsArray) {
       this.institutionAbstraction = new web3.eth.Contract(
         institutionArtifact.abi,
         address
