@@ -36,7 +36,7 @@ export class WalletService {
   constructor(private web3ProviderService: Web3ProviderService) {
     this._web3Instance = this.web3ProviderService.getWeb3();
     this._wallet = this._web3Instance.eth.accounts.wallet;
-    this.getKeyPair("password"); // TODO FOR DEV SO I CAN LOGIN AUTOMAGICALLY
+    //this.getKeyPair("password"); // TODO FOR DEV SO I CAN LOGIN AUTOMAGICALLY
 
   }
 
@@ -102,14 +102,15 @@ export class WalletService {
    * Sets the Web3 wallet's keypairs at all indexes to null.
    */
   private secureWeb3Wallet() {
-    this._wallet.clear();
+    this._wallet = null
   }
 
   /**
    * Sets the Web3 wallet's keypairs at all indexes to null.
    */
   private secureObservableKeyPair() {
-    this._keypairObservable.next(null);
+    //this._keypairObservable = null;
+     this._keypairObservable.next(null);
   }
 
   /**
