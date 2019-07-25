@@ -25,7 +25,7 @@ export class WalletService {
   // Can provide this instance to the rest of the app :)
   private _wallet: any;
 
-  public _keypairObservable = new BehaviorSubject<string[]>(null);
+  public _keypairObservable = new BehaviorSubject<KeyPair>(null);
 
   private _keypair: KeyPair;
 
@@ -56,7 +56,7 @@ export class WalletService {
 
   public registerWallet(password: string) {
     const newWallet = this.createWallet(password);
-    this._keypairObservable.next(this._wallet);
+    this._keypairObservable.next(this._keypair);
     this._keypair = new KeyPair(
       this._wallet[0].address,
       this._wallet[0].privateKey,
@@ -81,13 +81,14 @@ export class WalletService {
     console.log('ACCS:', accs);
     if (this._keypair == null) {
       console.log(`Observed new accounts`);
-      this._keypairObservable.next(accs);
+      
       this._keypair = new KeyPair(
         accs[0].address,
         accs[0].privateKey,
         accs[1].address,
         accs[1].privateKey
       );
+      this._keypairObservable.next(this._keypair);
       console.log(this._keypair);
     }
   }
@@ -112,6 +113,10 @@ export class WalletService {
   private secureObservableKeyPair() {
     //this._keypairObservable = null;
      this._keypairObservable.next(null);
+  //   this._keypairObservable[0].adminPrivateKey = null;
+    // this._keypairObservable[[0] = null;
+    // this._keypairObservable[0] = null;
+
   }
 
   /**
@@ -153,13 +158,6 @@ export class WalletService {
     const newAccount = this._web3Instance.eth.accounts.create();
   }
 
-  get userIsAuthenticated() {
-    return this._keypairObservable.asObservable().pipe(
-      map(keypair => {
-        return !!keypair[0];
-      })
-    );
-  }
 
   public generateAccountFromMnemonic(mnemonic: string) {
     const seed = Bip39.mnemonicToSeed(mnemonic);
