@@ -30,7 +30,7 @@
       <ion-col size="12" size-sm="8" offset-sm="2" text-center>
         <ion-virtual-scroll [items]="approvalRequestAddresses" approxItemHeight="70px">
           <ion-item
-            *virtualItem="approvalRequestAddress"  (click)="approveRequest(approvalRequestAddress)"
+            *virtualItem="let approvalRequestAddress"
           >
             <ion-thumbnail slot="start">
               <ion-img [src]="placeHolderImage"></ion-img>

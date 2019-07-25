@@ -13,7 +13,7 @@ const routes: Routes = [
   {
     path: 'owner',
     loadChildren: './owner/owner.module#OwnerPageModule',
-    canLoad: [AuthGuard]
+    // canLoad: [AuthGuard]
   },
 ];
 @NgModule({
