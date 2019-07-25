@@ -35,23 +35,14 @@ export class AppComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit() {
-    this.descryptSubscription = this.authService.isWalletDecrypted.subscribe(isAuth => {
-      if (!isAuth && this.previousDecryptState !== isAuth) {
-        this.router.navigateByUrl('/auth');
-      }
-      this.previousDecryptState = isAuth;
-    });
-  }
+
 
   isOwner() {
     return this.wallet.keypair.adminAddress === environment.ethereum.owner;
   }
 
   ngOnDestroy() {
-    if (this.descryptSubscription) {
-      this.descryptSubscription.unsubscribe();
-    }
+    this.authService.logout();
   }
 
   onLogout() {

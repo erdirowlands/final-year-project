@@ -94,30 +94,19 @@ export class WalletService {
   }
 
   public secureWallet() {
-    this.secureWeb3Wallet();
-    this.secureObservableKeyPair();
     this.secureKeyPair();
+    this.secureWeb3Wallet();
   }
 
   /**
    * Sets the Web3 wallet's keypairs at all indexes to null.
    */
   private secureWeb3Wallet() {
+    this.wallet.clear();
     this.web3Instance.eth.accounts.wallet.clear();
-    this._wallet = null
+   // this._wallet = null
   }
 
-  /**
-   * Sets the Web3 wallet's keypairs at all indexes to null.
-   */
-  private secureObservableKeyPair() {
-    //this._keypairObservable = null;
-     this._keypairObservable.next(null);
-  //   this._keypairObservable[0].adminPrivateKey = null;
-    // this._keypairObservable[[0] = null;
-    // this._keypairObservable[0] = null;
-
-  }
 
   /**
    * Sets the key-pair model's properties to null..

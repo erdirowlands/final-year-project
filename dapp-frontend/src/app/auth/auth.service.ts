@@ -36,7 +36,6 @@ export class AuthService {
       map(wallet => {
         if (wallet) {
          return !!wallet.adminAddress;
-          
         } else {
           return false;
         }
