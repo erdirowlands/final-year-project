@@ -266,7 +266,7 @@ contract Institution is ApprovalQueue {
 
     }
 
-    function getAdminAddresses() public view returns (address[] memory) {
+    function getAdminAddressArray() public view returns (address[] memory) {
         return _adminAddresses;
     }
 

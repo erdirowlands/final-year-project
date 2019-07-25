@@ -77,6 +77,11 @@ contract ApprovalQueue {
         return _approvalRequestQueue[submittingAddress].isInitialised;
     }
 
+    function getApprovalRequestAddresses() public view returns (address[] memory) {
+        return _approvalRequestArray;
+    }
+    
+
 /*
     function isCorrectApprovalType(address submittingAddress, string memory approvalRequestType) public {
         require(_approvalRequestQueue[submittingAddress].approvalType.compareTo(approvalRequestType),"This approval has already been submitted!");
