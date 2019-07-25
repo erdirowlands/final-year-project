@@ -11,32 +11,29 @@
 
 
 <ion-content padding>
-    <ion-grid>
-      <ion-row>
-        <ion-col size-sm="6" offset-sm="3">
-            <ion-item>
-              <ion-label color="primary" >Institution name</ion-label>
-            </ion-item>
-        </ion-col>
-      </ion-row>
-      <ion-row>
-          <ion-col size-sm="6" offset-sm="3">
-              <ion-list>
-                <ion-item>
-                  <ion-label position="floating">Your name</ion-label>
+    <ion-item>
+        <ion-label  color="primary" >The current admins are:</ion-label>
+      </ion-item>
+      <ion-grid *ngIf="admins?.length >= 1">
+          <ion-row>
+            <ion-col size="12" size-sm="8" offset-sm="2" text-center>
+              <ion-virtual-scroll [items]="admins" approxItemHeight="70px">
+                <ion-item
+                  detail
+                  *virtualItem="let admin"
+                >
+                  <ion-thumbnail slot="start">
+                    <ion-img [src]="placeHolderImage"></ion-img>
+                  </ion-thumbnail>
+                  <ion-label>
+                      <ion-text color="primary" text-left>
+                    <h2>{{ admin.name }} </h2>
+                    <ion-note  text-wrap> Ethereum address: {{ admin.address }} </ion-note>
+                  </ion-text>
+                  </ion-label>
                 </ion-item>
-              </ion-list>
-              <ion-buttons >
-              <ion-button
-              type="submit"
-              slot="primary">
-              <ion-icon name="checkmark" slot="icon-only"></ion-icon>
-
-            </ion-button>
-          </ion-buttons>
+              </ion-virtual-scroll>
             </ion-col>
-
-      </ion-row>
-
-    </ion-grid>
+          </ion-row>
+        </ion-grid>
 </ion-content>
