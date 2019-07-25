@@ -101,4 +101,8 @@ export class InstitutionDetailsPage implements OnInit {
     console.log('admin addresses are' + adminAddresses);
     return adminAddresses;
   }
+
+  isLoggedInAdmin(address: string) {
+    return this.wallet.keypair.adminAddress === address;
+  }
 }

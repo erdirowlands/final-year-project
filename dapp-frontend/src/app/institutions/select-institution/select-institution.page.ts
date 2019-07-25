@@ -143,6 +143,10 @@ export class SelectInstitutionPage implements OnInit, OnDestroy {
     });
   }
 
+  isAdmin(address: string) {
+    return this.wallet.keypair.adminAddress === address;
+  }
+
   private showSucessfulAlert() {
     this.alertCtrl
       .create({
@@ -152,6 +156,7 @@ export class SelectInstitutionPage implements OnInit, OnDestroy {
       })
       .then(alertEl => alertEl.present());
   }
+
 
   ngOnDestroy() {
     if (this.institutionsObservable) {
