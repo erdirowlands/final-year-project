@@ -40,10 +40,7 @@ export class InstitutionDetailsPage implements OnInit {
       const web3 = this.web3.getWeb3();
       const formattedParamMap = '\'' + paramMap.get('address') + '\'';
       console.log(formattedParamMap);
-      this.institutionAbstraction = new web3.eth.Contract(
-        institutionArtifact.abi,
-        '0x61AbB0DC4a01C1e50436C05bAb0F1510D5D4C391'
-      );
+      this.institutionAbstraction = new web3.eth.Contract(institutionArtifact.abi,'0x61AbB0DC4a01C1e50436C05bAb0F1510D5D4C391');
       this.institutionAddress = paramMap.get('address');
 
       console.log("param map is " + paramMap.get('address') + "Institution address contract now is " + this.institutionAddress);
@@ -102,7 +99,7 @@ export class InstitutionDetailsPage implements OnInit {
     ); */
     let adminAddresses = [];
     await this.institutionAbstraction.methods
-      .getVotingTokenAddress()
+      .getAdminAddressArray()
       .call({ from: this.wallet.keypair.adminAddress }, (error, addresses) => {
         if (name === undefined && name !== '') {
           return;
