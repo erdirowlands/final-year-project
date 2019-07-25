@@ -1,17 +1,19 @@
 import { Component, OnInit } from '@angular/core';
+import { LoadingController, AlertController } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { UniversityVotingService } from 'src/app/blockchain/contracts/university-voting/university-voting.service';
 import { WalletService } from 'src/app/blockchain/wallet/wallet.service';
 import { Web3ProviderService } from 'src/app/blockchain/provider/web3provider.service';
 
 import { environment } from 'src/environments/environment.prod';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-owner',
   templateUrl: './owner.page.html',
   styleUrls: ['./owner.page.scss']
 })
 export class OwnerPage implements OnInit {
-  universityVotingAbstraction: any;  
+  universityVotingAbstraction: any;
   public requestsObservable = new Subject<string[]>();
   approvalRequestAddresses: string[] = [];
   isLoading = false;
@@ -20,20 +22,21 @@ export class OwnerPage implements OnInit {
     private web3Provider: Web3ProviderService,
     private wallet: WalletService,
     private universityVotingContract: UniversityVotingService,
-
+    private loadingCtrl: LoadingController,
+    private alertCtrl: AlertController,
+    private router: Router
   ) {}
 
   async ngOnInit() {
     this.universityVotingAbstraction = this.universityVotingContract.universityVotingAbstraction;
     await this.getApprovalRequests();
-
   }
   async ionViewWillEnter() {
     this.isLoading = true;
     await this.refreshApprovalRequests();
   }
 
-  async approveRequest() {
+  async approveRequest() { 
     let result;
     try {
       result = await this.universityVotingAbstraction.approveInstitutionRequest(
@@ -70,7 +73,9 @@ export class OwnerPage implements OnInit {
           this.isLoading = false;
           this.approvalRequestAddresses = addresses;
         }
-        console.log('Checking request refresh time: ' + this.approvalRequestAddresses);
+        console.log(
+          'Checking request refresh time: ' + this.approvalRequestAddresses
+        );
         console.log(this.approvalRequestAddresses);
         console.log(error);
         this.isLoading = false;
@@ -80,7 +85,10 @@ export class OwnerPage implements OnInit {
   refreshApprovalRequests() {
     this.requestsObservable.subscribe(addresses => {
       this.approvalRequestAddresses = addresses;
-       setInterval(() => this.getApprovalRequests(), environment.institutionObservableRefresh.kovanTimeout);
+      setInterval(
+        () => this.getApprovalRequests(),
+        environment.institutionObservableRefresh.kovanTimeout
+      );
       console.log('Refresh: event');
     });
   }
