@@ -83,7 +83,7 @@ export class OwnerPage implements OnInit {
 
   async getApprovalRequests() {
     await this.universityVotingAbstraction.methods
-      .getInstitutionsTotal()
+      ._approvalRequestArray()
       .call({ from: this.wallet.keypair.adminAddress }, (error, addresses) => {
         if (addresses === undefined || addresses.length == 0) {
           return;
