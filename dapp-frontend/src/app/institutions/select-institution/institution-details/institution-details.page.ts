@@ -45,22 +45,22 @@ export class InstitutionDetailsPage implements OnInit {
       this.institutionAddress = paramMap.get('address');
     });
 
-    //  this.institutionName = await this.getInstitutionName();
-    console.log(this.institutionName);
+    await this.getInstitutionName();
+    console.log("This. institution" + this.institutionAddress);
     await this.getAdminDetails();
   }
 
-  /*
+  
   private async getInstitutionName() {
     await this.institutionAbstraction.methods
-      .getVotingTokenAddress()
+      .getInstitutionName()
       .call({ from: this.wallet.keypair.adminAddress }, (error, name) => {
         if (name === undefined && name !== '') {
           return;
         }
       });
-    return name;
-  } */
+    this.institutionName = name;
+  } 
 
   /**
    *  Returns the admin's name and if they are authorised.
@@ -90,12 +90,6 @@ export class InstitutionDetailsPage implements OnInit {
   }
 
   private async getAdminAddresses() {
-    /*
-    const web3 = this.web3.getWeb3();
-    this.institutionAbstraction = new web3.eth.Contract(
-      institutionArtifact.abi,
-      this.institutionAddress
-    ); */
     let adminAddresses = [];
     await this.institutionAbstraction.methods
       .getAdminAddressArray()
