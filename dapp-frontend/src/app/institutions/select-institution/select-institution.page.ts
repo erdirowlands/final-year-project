@@ -143,6 +143,7 @@ export class SelectInstitutionPage implements OnInit, OnDestroy {
     });
   }
 
+
   private showSucessfulAlert() {
     this.alertCtrl
       .create({
@@ -152,6 +153,7 @@ export class SelectInstitutionPage implements OnInit, OnDestroy {
       })
       .then(alertEl => alertEl.present());
   }
+
 
   ngOnDestroy() {
     if (this.institutionsObservable) {

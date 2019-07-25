@@ -6,32 +6,27 @@ import { AuthService } from './auth.service';
 import { WalletService } from '../blockchain/wallet/wallet.service';
 import { AuthPage } from './auth.page';
 
-
 @Injectable({
   providedIn: 'root'
 })
 export class AuthGuard implements CanLoad {
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private wallet: WalletService,
+    private router: Router
+  ) {}
 
   canLoad(
     route: Route,
     segments: UrlSegment[]
   ): Observable<boolean> | Promise<boolean> | boolean {
-    return this.authService.isWalletDecrypted.pipe(
-      take(1),
-      switchMap(isDecrypted => {
-        if (!isDecrypted) {
-          return this.authService.isWalletDecrypted;
-        } else {
-          return of(isDecrypted);
-        }
-      }),
-      tap(isDecrypted => {
-        if (!isDecrypted) {
-            this.router.navigateByUrl('/auth')
-        }
-      })
-    );
+    if (this.wallet.keypair) {
+      if (this.wallet.keypair.adminAddress) {
+        return true;
+      }
+    } else {
+      this.router.navigateByUrl('/auth');
+    }
   }
 }
 

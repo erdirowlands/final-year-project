@@ -45,22 +45,21 @@ export class InstitutionDetailsPage implements OnInit {
       this.institutionAddress = paramMap.get('address');
     });
 
-    //  this.institutionName = await this.getInstitutionName();
-    console.log(this.institutionName);
+    await this.getInstitutionName();
+    console.log("This institution is" + this.institutionName);
     await this.getAdminDetails();
   }
 
-  /*
+  
   private async getInstitutionName() {
     await this.institutionAbstraction.methods
-      .getVotingTokenAddress()
+      .getInstitutionName()
       .call({ from: this.wallet.keypair.adminAddress }, (error, name) => {
-        if (name === undefined && name !== '') {
-          return;
-        }
+        console.log("asdsadd "+ name)
+        this.institutionName = name;
       });
-    return name;
-  } */
+   
+  } 
 
   /**
    *  Returns the admin's name and if they are authorised.
@@ -90,12 +89,6 @@ export class InstitutionDetailsPage implements OnInit {
   }
 
   private async getAdminAddresses() {
-    /*
-    const web3 = this.web3.getWeb3();
-    this.institutionAbstraction = new web3.eth.Contract(
-      institutionArtifact.abi,
-      this.institutionAddress
-    ); */
     let adminAddresses = [];
     await this.institutionAbstraction.methods
       .getAdminAddressArray()
@@ -107,5 +100,13 @@ export class InstitutionDetailsPage implements OnInit {
       });
     console.log('admin addresses are' + adminAddresses);
     return adminAddresses;
+  }
+
+  openEtherScan(address: string) {
+    window.open('https://kovan.etherscan.io/address/' + address);
+  }
+
+  isLoggedInAdmin(address: string) {
+    return this.wallet.keypair.adminAddress === address;
   }
 }

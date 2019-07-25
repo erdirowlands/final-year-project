@@ -50,16 +50,19 @@ export class AuthPage implements OnInit {
           loadingEl.present();
           await this.delay(100);
           await this.authService.authenticateWallet(password);
+          this.router.navigateByUrl('/institutions/tabs/view');
           this.isLoading = false;
         } catch (err) {
+          this.router.navigateByUrl('/auth');
           loadingEl.dismiss();
           this.showAlert(err, 'Authentication failed');
+          
         }
         if (!this.isLogin) {
         this.showAlert('Great, your account has been created! You\'ll be able to find your find and manage your Institution on the next page. If it\'s not there, you can submit a request to us to add it. Happy decentralised voting!',  "Account created");
       }
         loadingEl.dismiss();
-        this.router.navigateByUrl('/institutions/tabs/view');
+        
       });
   }
 

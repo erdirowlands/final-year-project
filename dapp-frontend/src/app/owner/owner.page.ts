@@ -124,7 +124,7 @@ export class OwnerPage implements OnInit {
   private showDeniedAlert(message: string) {
     this.alertCtrl
       .create({
-        header: 'New institution request denied',
+        header: 'Error with accepting institution approval - showing unsantiused error message',
         message,
         buttons: ['Okay']
       })
@@ -135,7 +135,7 @@ export class OwnerPage implements OnInit {
     this.alertCtrl
       .create({
         header:
-          'Request submitted. We just need to verify your university status. Please check back later.',
+          'Request approved and will show on the institutions page momentarily',
         buttons: ['Okay']
       })
       .then(alertEl => alertEl.present());

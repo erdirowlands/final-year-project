@@ -1,18 +1,19 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Plugins, Capacitor } from '@capacitor/core';
-
 import { Platform } from '@ionic/angular';
 
 
 import { AuthService } from './auth/auth.service';
 import { Subscription } from 'rxjs';
+import { WalletService } from './blockchain/wallet/wallet.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html'
 })
-export class AppComponent {
+export class AppComponent implements OnDestroy {
   private descryptSubscription: Subscription;
   private previousDecryptState = false;
 
@@ -20,6 +21,7 @@ export class AppComponent {
   constructor(
     private platform: Platform,
     private authService: AuthService,
+    private wallet: WalletService,
     private router: Router
   ) {
     this.initializeApp();
@@ -33,19 +35,12 @@ export class AppComponent {
     });
   }
 
-  ngOnInit() {
-    this.descryptSubscription = this.authService.isWalletDecrypted.subscribe(isAuth => {
-      if (!isAuth && this.previousDecryptState !== isAuth) {
-        this.router.navigateByUrl('/auth');
-      }
-      this.previousDecryptState = isAuth;
-    });
+  isOwner() {
+    return this.wallet.keypair.adminAddress === environment.ethereum.owner;
   }
 
   ngOnDestroy() {
-    if (this.descryptSubscription) {
-      this.descryptSubscription.unsubscribe();
-    }
+    this.authService.logout();
   }
 
   onLogout() {
