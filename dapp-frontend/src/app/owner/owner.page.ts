@@ -17,6 +17,8 @@ export class OwnerPage implements OnInit {
   public requestsObservable = new Subject<string[]>();
   approvalRequestAddresses: string[] = [];
   isLoading = false;
+  areApprovalsLoading = true;
+
 
   constructor(
     private web3Provider: Web3ProviderService,
@@ -36,7 +38,7 @@ export class OwnerPage implements OnInit {
     await this.refreshApprovalRequests();
   }
 
-  async approveRequest(submittingAddress: string) { 
+  async approveRequest(submittingAddress: string) {
     {
       this.loadingCtrl
         .create({ keyboardClose: true, message: 'Sending request to Ethereum...' })
@@ -104,6 +106,7 @@ export class OwnerPage implements OnInit {
         console.log(error);
         this.isLoading = false;
       });
+      this.areApprovalsLoading = false;
   }
 
   refreshApprovalRequests() {
