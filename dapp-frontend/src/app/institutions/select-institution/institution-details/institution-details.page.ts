@@ -38,30 +38,33 @@ export class InstitutionDetailsPage implements OnInit {
         return;
       }
       const web3 = this.web3.getWeb3();
+      const formattedParamMap = '\'' + paramMap.get('address') + '\'';
+      console.log(formattedParamMap);
       this.institutionAbstraction = new web3.eth.Contract(
         institutionArtifact.abi,
-        paramMap.get('address')
+        '0x61AbB0DC4a01C1e50436C05bAb0F1510D5D4C391'
       );
       this.institutionAddress = paramMap.get('address');
 
-      console.log("param map is " + paramMap.get('address') + this.institutionAddress);
+      console.log("param map is " + paramMap.get('address') + "Institution address contract now is " + this.institutionAddress);
     });
 
-    this.institutionName = await this.getInstitutionName();
+  //  this.institutionName = await this.getInstitutionName();
     console.log(this.institutionName);
     await this.getAdminDetails();
   }
 
+  /*
   private async getInstitutionName() {
     await this.institutionAbstraction.methods
-      .getInstitutionName()
+      .getVotingTokenAddress()
       .call({ from: this.wallet.keypair.adminAddress }, (error, name) => {
         if (name === undefined && name !== '') {
           return;
         }
       });
     return name;
-  }
+  } */
 
   /**
    *  Returns the admin's name and if they are authorised.
@@ -91,11 +94,12 @@ export class InstitutionDetailsPage implements OnInit {
   }
 
   private async getAdminAddresses() {
+    /*
     const web3 = this.web3.getWeb3();
     this.institutionAbstraction = new web3.eth.Contract(
       institutionArtifact.abi,
       this.institutionAddress
-    );
+    ); */
     let adminAddresses = [];
     await this.institutionAbstraction.methods
       .getVotingTokenAddress()
