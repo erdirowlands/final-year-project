@@ -35,8 +35,6 @@ export class AppComponent implements OnDestroy {
     });
   }
 
-
-
   isOwner() {
     return this.wallet.keypair.adminAddress === environment.ethereum.owner;
   }
