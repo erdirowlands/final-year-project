@@ -32,7 +32,7 @@
           <ion-item
             *virtualItem="let approvalRequestAddress"
           >
-            <ion-thumbnail slot="start">
+            <ion-thumbnail slot="end">
                 <ion-buttons >
                     <ion-button
                     type="submit"
@@ -44,7 +44,7 @@
             </ion-thumbnail>
             <ion-label>
                 <ion-text color="primary" text-left>
-              <h2>{{ approvalRequestAddress }} </h2>
+              <h2  text-wrap>{{ approvalRequestAddress }} </h2>
               <ion-note  text-wrap> Unfortunately not enough time to parse the bytes32 array to get name of submitter :( </ion-note>
             </ion-text>
             </ion-label>
