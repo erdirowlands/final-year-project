@@ -41,7 +41,7 @@ export class UniversityVotingService {
     );
 
     const submitInstitutionContractMethod = this._universityVotingAbstraction.methods
-      .submitInstitutionApprovalRequest(newRequestDataAsBytes32)
+      .approveInstitutionRequest('0x3970F0ac4f4C72899BBfaa5763Ec686D9Bd66660')
       .encodeABI();
 
     const web3 = this.web3Provider.getWeb3();

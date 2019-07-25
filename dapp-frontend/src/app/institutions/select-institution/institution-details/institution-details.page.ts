@@ -4,8 +4,12 @@ import { NavController } from '@ionic/angular';
 import { Institution } from './institution.model';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
+
 import { WalletService } from 'src/app/blockchain/wallet/wallet.service';
 import { Admin } from 'src/app/auth/admin.model';
+import { Web3ProviderService } from 'src/app/blockchain/provider/web3provider.service';
+
+const institutionArtifact = require('../../../blockchain/contracts/artifacts/Institution.json');
 
 @Component({
   selector: 'app-institution-details',
@@ -14,10 +18,12 @@ import { Admin } from 'src/app/auth/admin.model';
 })
 export class InstitutionDetailsPage implements OnInit {
   institutionAbstraction: any;
+  institutionAddress: string;
   institutionName: string;
   admins: Admin[] = [];
 
   constructor(
+    private web3: Web3ProviderService,
     private wallet: WalletService,
     private institutionContract: InstitutionContractService,
     private navController: NavController,
@@ -26,17 +32,23 @@ export class InstitutionDetailsPage implements OnInit {
   ) {}
 
   async ngOnInit() {
-    this.route.paramMap.subscribe(paramMap => {
+    this.route.paramMap.subscribe(async paramMap => {
       if (!paramMap.has('address')) {
         this.navController.navigateBack('/institutions/tabs/view');
         return;
       }
-      this.institutionContract.generateContractAbstraction(
+      const web3 = this.web3.getWeb3();
+      this.institutionAbstraction = new web3.eth.Contract(
+        institutionArtifact.abi,
         paramMap.get('address')
       );
-      this.institutionAbstraction = this.institutionContract.institutionAbstraction;
+      this.institutionAddress = paramMap.get('address');
+
+      console.log("param map is " + paramMap.get('address') + this.institutionAddress);
     });
+
     this.institutionName = await this.getInstitutionName();
+    console.log(this.institutionName);
     await this.getAdminDetails();
   }
 
@@ -58,39 +70,42 @@ export class InstitutionDetailsPage implements OnInit {
    * @param adminAddress the address of the admin to be queried.
    */
   private async getAdminDetails() {
-
     const adminAddresses = await this.getAdminAddresses();
     for (let i = 0; i < adminAddresses.length; i++) {
-    await this.institutionAbstraction.methods
-      .getAdmin(adminAddresses[i])
-      .call({ from: this.wallet.keypair.adminAddress }, (error, name) => {
-        if (name === undefined && name !== '') {
-          return;
-        }
-        let adminName;
-        let isAuthorised;
-        [adminName, isAuthorised] = name;
-        const admin = new Admin(adminName, adminAddresses[i], isAuthorised);
-        this.admins.push(admin);
-        // this.institution = new Institution(name, "test", ["sad"]);
-        console.log('Admin name' + adminName, isAuthorised);
-        console.log('Admin name error ' + error);
-      });
+      await this.institutionAbstraction.methods
+        .getAdmin(adminAddresses[i])
+        .call({ from: this.wallet.keypair.adminAddress }, (error, name) => {
+          if (name === undefined && name !== '') {
+            return;
+          }
+          let adminName;
+          let isAuthorised;
+          [adminName, isAuthorised] = name;
+          const admin = new Admin(adminName, adminAddresses[i], isAuthorised);
+          this.admins.push(admin);
+          // this.institution = new Institution(name, "test", ["sad"]);
+          console.log('Admin name' + adminName, isAuthorised);
+          console.log('Admin name error ' + error);
+        });
     }
   }
 
   private async getAdminAddresses() {
+    const web3 = this.web3.getWeb3();
+    this.institutionAbstraction = new web3.eth.Contract(
+      institutionArtifact.abi,
+      this.institutionAddress
+    );
     let adminAddresses = [];
     await this.institutionAbstraction.methods
-    .getAdminAddresses()
-    .call({ from: this.wallet.keypair.adminAddress }, (error, addresses) => {
-      if (name === undefined && name !== '') {
-        return;
-      }
-      adminAddresses = addresses;
-    });
-    console.log("admin addresses are" + adminAddresses);
+      .getVotingTokenAddress()
+      .call({ from: this.wallet.keypair.adminAddress }, (error, addresses) => {
+        if (name === undefined && name !== '') {
+          return;
+        }
+        adminAddresses = addresses;
+      });
+    console.log('admin addresses are' + adminAddresses);
     return adminAddresses;
   }
-
 }

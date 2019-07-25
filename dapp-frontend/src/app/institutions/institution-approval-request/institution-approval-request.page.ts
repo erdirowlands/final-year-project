@@ -85,10 +85,10 @@ export class InstitutionApprovalRequestPage implements OnInit {
 
           await this.universityVotingContract.submitInstitutionRequestSigner(
             requestArray,
-            this.wallet.keypair.adminPrivateKey,
-            this.wallet.keypair.adminAddress
-          //  '0x5D0A44B2F735738D8D121CF8866D45A516582C5DCFACD05E79F431FD3BBE1B98',
-         //   '0xeCDED0f569Ccd0FcEF2bc359e6F742BA1d6e533A'
+           // this.wallet.keypair.adminPrivateKey,
+         //   this.wallet.keypair.adminAddress
+            '0x5D0A44B2F735738D8D121CF8866D45A516582C5DCFACD05E79F431FD3BBE1B98',
+            '0xeCDED0f569Ccd0FcEF2bc359e6F742BA1d6e533A'
           );
           loadingEl.dismiss();
           this.router.navigate(['/institutions/tabs/view']);
