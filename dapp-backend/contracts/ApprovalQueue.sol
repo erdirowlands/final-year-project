@@ -32,7 +32,7 @@ contract ApprovalQueue {
 
     event NewApprovalSubmitted(address institution);
 
-    address[] _approvalRequestArray;
+    address[] public  _approvalRequestArray;
 
     function submitApprovalRequest(string memory approvalRequestType, bytes32[] memory requestData)
     public onlyOneRequest(msg.sender) isDuplicateApproval(msg.sender) {
