@@ -102,6 +102,10 @@ export class InstitutionDetailsPage implements OnInit {
     return adminAddresses;
   }
 
+  openEtherScan(address: string) {
+    window.open('https://kovan.etherscan.io/address/' + address);
+  }
+
   isLoggedInAdmin(address: string) {
     return this.wallet.keypair.adminAddress === address;
   }
