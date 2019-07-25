@@ -46,7 +46,7 @@ export class InstitutionDetailsPage implements OnInit {
     });
 
     await this.getInstitutionName();
-    console.log("This. institution" + this.institutionAddress);
+    console.log("This institution is" + this.institutionName);
     await this.getAdminDetails();
   }
 
@@ -55,11 +55,10 @@ export class InstitutionDetailsPage implements OnInit {
     await this.institutionAbstraction.methods
       .getInstitutionName()
       .call({ from: this.wallet.keypair.adminAddress }, (error, name) => {
-        if (name === undefined && name !== '') {
-          return;
-        }
+        console.log("asdsadd "+ name)
+        this.institutionName = name;
       });
-    this.institutionName = name;
+   
   } 
 
   /**
