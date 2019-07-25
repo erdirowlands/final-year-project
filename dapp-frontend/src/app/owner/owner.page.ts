@@ -36,23 +36,8 @@ export class OwnerPage implements OnInit {
     await this.refreshApprovalRequests();
   }
 
-  async approveRequest() { 
-    let result;
-    try {
-      result = await this.universityVotingAbstraction.approveInstitutionRequest(
-        '0xBEF3a23a6ac01b16F601D1620681cf207ff55aF0',
-        { from: '0x5b9bA5f0b6ef3E8D90304D8A9C7318c8226fe372' }
-      );
-      console.log(result.logs[0]);
-    } catch (error) {
-      if (
-        error ==
-        'Error: Returned error: VM Exception while processing transaction: revert Approval not found -- Reason given: Approval not found.'
-      ) {
-        console.log('HI');
-      }
-      console.log(error);
-    }
+  async approveRequest(submittingAddress: string) { 
+    
   }
 
   async getApprovalRequests() {

@@ -67,7 +67,7 @@ export class InstitutionApprovalRequestPage implements OnInit {
     adminName: string
   ) {
     this.loadingCtrl
-      .create({ keyboardClose: true, message: 'Logging in...' })
+      .create({ keyboardClose: true, message: 'Sending request to Ethereum...' })
       .then(async loadingEl => {
         try {
           loadingEl.present();
