@@ -26,7 +26,8 @@
                   </ion-thumbnail>
                   <ion-label>
                       <ion-text color="primary" text-left>
-                    <h2>{{ admin.name }}  </h2>
+                    <h2 *ngIf="isLoggedInAdmin(admin.address)">{{ admin.name }} (You)  </h2>
+                    <h2 *ngIf="!isLoggedInAdmin(admin.address)">{{ admin.name }} </h2>
                     <ion-note  *ngIf="isLoggedInAdmin(admin.address)" text-wrap> Your Ethereum address: {{ admin.address }} </ion-note>
                     <ion-note  *ngIf="!isLoggedInAdmin(admin.address)"text-wrap> Ethereum address: {{ admin.address }} </ion-note>
                   </ion-text>
