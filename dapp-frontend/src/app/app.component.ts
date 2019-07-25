@@ -13,7 +13,7 @@ import { environment } from 'src/environments/environment';
   selector: 'app-root',
   templateUrl: 'app.component.html'
 })
-export class AppComponent implements OnInit, OnDestroy {
+export class AppComponent implements OnDestroy {
   private descryptSubscription: Subscription;
   private previousDecryptState = false;
 
