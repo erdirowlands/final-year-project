@@ -16,9 +16,9 @@
             <ion-label>Institutions</ion-label>
           </ion-item>
         </ion-menu-toggle>
-        <ion-menu-toggle>
+        <ion-menu-toggle *ngIf="isOwner()">
             <ion-item lines="none" routerLink="/owner">
-              <ion-icon name="school" slot="start"></ion-icon>
+              <ion-icon name="stats" slot="start"></ion-icon>
               <ion-label>Owner</ion-label>
             </ion-item>
           </ion-menu-toggle>
