@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Plugins, Capacitor } from '@capacitor/core';
-
 import { Platform } from '@ionic/angular';
 
 
 import { AuthService } from './auth/auth.service';
 import { Subscription } from 'rxjs';
+import { WalletService } from './blockchain/wallet/wallet.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -20,6 +21,7 @@ export class AppComponent {
   constructor(
     private platform: Platform,
     private authService: AuthService,
+    private wallet: WalletService,
     private router: Router
   ) {
     this.initializeApp();
@@ -40,6 +42,10 @@ export class AppComponent {
       }
       this.previousDecryptState = isAuth;
     });
+  }
+
+  isOwner() {
+    return this.wallet.keypair.adminAddress === environment.ethereum.owner;
   }
 
   ngOnDestroy() {
