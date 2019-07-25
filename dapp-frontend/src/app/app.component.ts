@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Plugins, Capacitor } from '@capacitor/core';
 import { Platform } from '@ionic/angular';
@@ -13,7 +13,7 @@ import { environment } from 'src/environments/environment';
   selector: 'app-root',
   templateUrl: 'app.component.html'
 })
-export class AppComponent {
+export class AppComponent implements OnInit, OnDestroy {
   private descryptSubscription: Subscription;
   private previousDecryptState = false;
 

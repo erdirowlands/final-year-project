@@ -143,9 +143,6 @@ export class SelectInstitutionPage implements OnInit, OnDestroy {
     });
   }
 
-  isAdmin(address: string) {
-    return this.wallet.keypair.adminAddress === address;
-  }
 
   private showSucessfulAlert() {
     this.alertCtrl
