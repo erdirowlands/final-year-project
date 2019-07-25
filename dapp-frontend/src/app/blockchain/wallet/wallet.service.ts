@@ -102,6 +102,7 @@ export class WalletService {
    * Sets the Web3 wallet's keypairs at all indexes to null.
    */
   private secureWeb3Wallet() {
+    this.web3Instance.eth.accounts.wallet.clear();
     this._wallet = null
   }
 
