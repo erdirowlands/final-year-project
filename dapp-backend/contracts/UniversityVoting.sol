@@ -96,6 +96,14 @@ contract UniversityVoting is Ownable, ApprovalQueue {
         return _addressArray;
     }
 
+    function getApprovalRequestsSuper() public view returns (address[] memory) {
+        return super.getApprovalRequestAddresses();
+    }
+
+    function getApprovalRequestsNative() public view returns (address[] memory) {
+        return _approvalRequestArray;
+    }
+
     function storeInstitutionContractInfo(address institute) public {
         require(!isInstitutionAddressStored(institute),"This institution has already been added");
         // Add the address to not interable mapping to allow for instant access to the address.

@@ -266,6 +266,10 @@ contract Institution is ApprovalQueue {
 
     }
 
+    function getAdminAddressArray() public view returns (address[] memory) {
+        return _adminAddresses;
+    }
+
 
     function setVotingTokenAddress(VotingToken votingToken) public {
         _deployedVotingToken = votingToken;

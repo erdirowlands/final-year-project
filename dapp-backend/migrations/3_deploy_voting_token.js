@@ -11,7 +11,7 @@ module.exports = async (deployer) => {
 
     await deployer.deploy(VotingToken, UniversityVotingInstance.address, name, symbol, decimals);
 
-    await UniversityVotingInstance.setVotingTokenAddress(VotingToken.address);
+    await UniversityVotingInstance.setVotingTokenAddress(VotingToken.address), {gas: 5000000};
 
 
 };

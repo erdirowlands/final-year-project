@@ -10,6 +10,11 @@ const routes: Routes = [
     loadChildren: './institutions/institutions.module#InstitutionsPageModule',
     canLoad: [AuthGuard]
   },
+  {
+    path: 'owner',
+    loadChildren: './owner/owner.module#OwnerPageModule',
+    // canLoad: [AuthGuard]
+  },
 ];
 @NgModule({
   imports: [

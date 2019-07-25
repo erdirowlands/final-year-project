@@ -143,10 +143,18 @@ contract Election {
     function getTokenBalance() public view returns(uint) {
    //     return _voterMapping[voter].votingTokenBalance;
         return _votingToken.balanceOf(msg.sender);
-    } 
+    }
 
-    function getTotalVoters() public view returns(uint total) {
-        return _voterAddressArray.length;
+    function getVoterAddresses() public view returns(address[] memory) {
+        return _voterAddressArray;
+    }
+
+    function getCandidateName(address candidate) public view returns(string memory) {
+        return _candidateMapping[candidate].name;
+    }
+
+    function getCandidateAddresses() public view returns(address[] memory) {
+        return _candidateArray;
     }
 
     function getVictor() public view returns(address) {
