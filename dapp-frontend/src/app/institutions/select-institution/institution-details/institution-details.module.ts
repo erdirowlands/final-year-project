@@ -6,6 +6,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { InstitutionDetailsPage } from './institution-details.page';
+import { CreateElectionComponent } from './create-election/create-election.component';
 
 const routes: Routes = [
   {
@@ -21,6 +22,7 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [InstitutionDetailsPage]
+  declarations: [InstitutionDetailsPage, CreateElectionComponent],
+  entryComponents: [CreateElectionComponent]
 })
 export class InstitutionDetailsPageModule {}

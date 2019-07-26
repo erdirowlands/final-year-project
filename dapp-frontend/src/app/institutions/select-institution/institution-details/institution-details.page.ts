@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { InstitutionContractService } from 'src/app/blockchain/contracts/institution-contract/institution-contract.service';
-import { NavController } from '@ionic/angular';
+import { NavController, ModalController } from '@ionic/angular';
 import { Institution } from './institution.model';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -8,6 +8,7 @@ import { Subscription } from 'rxjs';
 import { WalletService } from 'src/app/blockchain/wallet/wallet.service';
 import { Admin } from 'src/app/auth/admin.model';
 import { Web3ProviderService } from 'src/app/blockchain/provider/web3provider.service';
+import { CreateElectionComponent } from './create-election/create-election.component';
 
 const institutionArtifact = require('../../../blockchain/contracts/artifacts/Institution.json');
 
@@ -27,6 +28,7 @@ export class InstitutionDetailsPage implements OnInit {
     private wallet: WalletService,
     private institutionContract: InstitutionContractService,
     private navController: NavController,
+    private modalCtrl: ModalController,
     private route: ActivatedRoute,
     private router: Router
   ) {}
@@ -46,20 +48,18 @@ export class InstitutionDetailsPage implements OnInit {
     });
 
     await this.getInstitutionName();
-    console.log("This institution is" + this.institutionName);
+    console.log('This institution is' + this.institutionName);
     await this.getAdminDetails();
   }
 
-  
   private async getInstitutionName() {
     await this.institutionAbstraction.methods
       .getInstitutionName()
       .call({ from: this.wallet.keypair.adminAddress }, (error, name) => {
-        console.log("asdsadd "+ name)
+        console.log('asdsadd ' + name);
         this.institutionName = name;
       });
-   
-  } 
+  }
 
   /**
    *  Returns the admin's name and if they are authorised.
@@ -100,6 +100,17 @@ export class InstitutionDetailsPage implements OnInit {
       });
     console.log('admin addresses are' + adminAddresses);
     return adminAddresses;
+  }
+
+  onCreateElection() {
+    this.modalCtrl
+      .create({
+        component: CreateElectionComponent,
+        componentProps: { institutionAddress: this.institutionAddress }
+      })
+      .then(modalEl => {
+        modalEl.present();
+      });
   }
 
   openEtherScan(address: string) {
