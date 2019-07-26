@@ -23,10 +23,6 @@ const routes: Routes = [
             loadChildren:
               './select-institution/institution-details/institution-details.module#InstitutionDetailsPageModule'
           },
-          {
-            path: 'election',
-            loadChildren: '../elections/elections.module#ElectionsPageModule'
-          }
         ]
       },
       {
