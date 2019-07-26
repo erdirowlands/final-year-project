@@ -40,11 +40,13 @@ export class CreateElectionComponent implements OnInit {
     );
   }
 
-  private async submitInstitutionApproval(
-    closingTime: any,
+  private async createNewElection(
+    duration: number,
     description: string
   ) {
-    const openingTime = new Date().getTime();
+    const electionStartTime = await time.latest();
+    duration =
+      (await electionStartTime) + time.duration.weeks(1);
     this.loadingCtrl
       .create({
         keyboardClose: true,
