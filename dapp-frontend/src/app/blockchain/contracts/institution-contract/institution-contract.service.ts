@@ -39,13 +39,13 @@ export class InstitutionContractService {
       address
     );
     const electionStartTime = await  web3.eth.getBlock('latest');
-   // electionDuration =
-    //  (await electionStartTime) + time.duration.weeks(1);
+  // electionDuration =
+   //   (await electionStartTime) + time.duration.weeks(1);
 
  // electionDuration =  new BN(val).mul(this.days('7'))
 
     const createElectionMethod = this._institutionAbstraction.methods
-      .createElection(electionStartTime, electionDuration, description)
+      .createElection('86400', '86400', description)
       .encodeABI();
 
     // const gasCost = await this.web3.eth.gasPrice;
