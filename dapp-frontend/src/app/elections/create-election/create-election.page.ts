@@ -42,7 +42,7 @@ export class CreateElectionPage implements OnInit {
           // submitInstitutionRequestSigner
           const startDateUnix = Date.now() / 1000;
 
-          await this.institutionAbstraction.createElection(
+          await this.institutionContract.createElectionSigner(
             duration,
             description,
             this.wallet.keypair.adminPrivateKey,
@@ -91,9 +91,6 @@ export class CreateElectionPage implements OnInit {
 
 
     const endDateUnix = endDate.getTime() / 1000;
-
-
-
     this.createNewElection(endDateUnix, description);
   }
 
