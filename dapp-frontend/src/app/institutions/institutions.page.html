@@ -4,10 +4,10 @@
   <ion-tabs>
     <ion-tab-bar slot="bottom">
       <ion-tab-button tab="view">
-        <ion-label>Select Institution</ion-label>
-        <ion-icon name="school"></ion-icon>
+        <ion-label></ion-label>
+        <ion-icon ></ion-icon>
       </ion-tab-button>
-      <ion-tab-button tab="view/new">
+      <ion-tab-button *ngIf="expression" tab="view/new">
         <ion-label>Create Institution</ion-label>
         <ion-icon name="add"> </ion-icon>
       </ion-tab-button>
