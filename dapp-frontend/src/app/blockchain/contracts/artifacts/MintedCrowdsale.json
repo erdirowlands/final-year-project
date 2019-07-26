@@ -943,7 +943,7 @@
   },
   "networks": {},
   "schemaVersion": "3.0.11",
-  "updatedAt": "2019-07-25T02:24:59.914Z",
+  "updatedAt": "2019-07-26T07:21:34.051Z",
   "devdoc": {
     "details": "Extension of Crowdsale contract whose tokens are minted in each purchase. Token ownership should be transferred to MintedCrowdsale for minting.",
     "methods": {

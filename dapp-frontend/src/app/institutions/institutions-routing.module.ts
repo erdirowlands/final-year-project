@@ -15,7 +15,7 @@ const routes: Routes = [
             loadChildren: './select-institution/select-institution.module#SelectInstitutionPageModule'
           },
           {
-            path: ':new',
+            path: 'new',
             loadChildren: '../elections/create-election/create-election.module#CreateElectionPageModule',
           },
           {

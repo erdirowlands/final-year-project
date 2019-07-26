@@ -14,7 +14,6 @@ export class InstitutionContractService {
   private _institution: any;
   private _institutionAbstraction: any;
 
-
   constructor(private web3Provider: Web3ProviderService) {}
 
   public async generateContractAbstraction(address: string) {
@@ -36,16 +35,21 @@ export class InstitutionContractService {
     const BN = web3.utils.BN;
     this._institutionAbstraction = new web3.eth.Contract(
       institutionArtifact.abi,
-      address
+      '0xB9d21da669011666063761C9160FDEC583baD524'
     );
-    const electionStartTime = await  web3.eth.getBlock('latest');
-  // electionDuration =
-   //   (await electionStartTime) + time.duration.weeks(1);
+    const electionStartTime = await web3.eth.getBlock('latest');
+    const startDateUnix = Date.now() / 1000;
+    const electionStartTimeMined = new BN(startDateUnix);
+    const newendTime =  startDateUnix + 3000;
+    const ok = new BN(newendTime);
+    const endTime = new BN(86400);
+    // electionDuration =
+    //   (await electionStartTime) + time.duration.weeks(1);
 
- // electionDuration =  new BN(val).mul(this.days('7'))
+    // electionDuration =  new BN(val).mul(this.days('7'))
 
     const createElectionMethod = this._institutionAbstraction.methods
-      .createElection('86400', '86400', description)
+      .createElection(electionStartTimeMined, endTime, description)
       .encodeABI();
 
     // const gasCost = await this.web3.eth.gasPrice;
@@ -57,7 +61,7 @@ export class InstitutionContractService {
     // Construct the raw transaction.
     const rawTx = {
       nonce: web3.utils.toHex(currentNonce),
-      gasPrice: web3.utils.toHex(web3.utils.toWei('2', 'gwei')),
+      gasPrice: web3.utils.toHex(web3.utils.toWei('30', 'gwei')),
       gasLimit: web3.utils.toHex('5000000'),
       to: address,
       value: '0x0',
@@ -76,8 +80,8 @@ export class InstitutionContractService {
       .sendSignedTransaction('0x' + serializedTx.toString('hex'))
       .on('blockHash', console.log)
       .on('receipt', console.log)
-    //  .on('confirmation', console.log, console.log)
-      .on('error', console.error);
+      //  .on('confirmation', console.log, console.log)
+      .on('error', console.log, console.log);
   }
 
   public get institutionAbstraction(): any {
@@ -88,6 +92,4 @@ export class InstitutionContractService {
    * Taken from Open Zeppelin test helpers.
    * https://github.com/OpenZeppelin/openzeppelin-test-helpers
    */
-
-
 }

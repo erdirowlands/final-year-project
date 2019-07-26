@@ -29,6 +29,7 @@ export class CreateElectionPage implements OnInit {
   ngOnInit() {
     this.route.paramMap.subscribe(async paramMap => {
       this.institutionAddress = paramMap.get('address');
+      console.log("THE ADDRESS!!!!" + this.institutionAddress)
     });
   }
 
