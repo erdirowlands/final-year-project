@@ -19,6 +19,10 @@ const routes: Routes = [
             loadChildren: '../elections/create-election/create-election.module#CreateElectionPageModule',
           },
           {
+            path: 'request',
+            loadChildren: './institution-approval-request/institution-approval-request.module#InstitutionApprovalRequestPageModule',
+          },
+          {
             path: 'elections',
             loadChildren: '../elections/elections.module#ElectionsPageModule',
           },
