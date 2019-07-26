@@ -16,12 +16,16 @@ const routes: Routes = [
           },
           {
             path: 'new',
-            loadChildren: './institution-approval-request/institution-approval-request.module#InstitutionApprovalRequestPageModule',
+            loadChildren: '../elections/elections.module#ElectionsPageModule',
           },
           {
             path: ':address',
             loadChildren:
               './select-institution/institution-details/institution-details.module#InstitutionDetailsPageModule'
+          },
+          {
+            path: 'election',
+            loadChildren: '../elections/elections.module#ElectionsPageModule'
           }
         ]
       },
