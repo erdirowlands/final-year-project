@@ -10,7 +10,6 @@ import { WalletService } from 'src/app/blockchain/wallet/wallet.service';
 import { Web3ProviderService } from 'src/app/blockchain/provider/web3provider.service';
 
 const institutionArtifact = require('../../../../blockchain/contracts/artifacts/Institution.json');
-const { time } = require('openzeppelin-test-helpers');
 
 @Component({
   selector: 'app-create-election',

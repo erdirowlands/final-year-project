@@ -2,7 +2,10 @@ import { Injectable } from '@angular/core';
 import { Web3ProviderService } from '../../provider/web3provider.service';
 
 import { contract } from 'truffle-contract';
+import { environment } from 'src/environments/environment';
 const institutionArtifact = require('../artifacts/Institution.json');
+
+const Tx = require('ethereumjs-tx').Transaction;
 
 @Injectable({
   providedIn: 'root'
@@ -23,23 +26,26 @@ export class InstitutionContractService {
   }
 
   public async createElectionSigner(
-    duration: number,
+    electionDuration: number,
     description: string,
     walletKey: string,
     walletAddress: string,
     address: string
   ) {
     const web3 = this.web3Provider.getWeb3();
+    const BN = web3.utils.BN;
     this._institutionAbstraction = new web3.eth.Contract(
       institutionArtifact.abi,
       address
     );
-    const electionStartTime = await time.latest();
-    duration =
-      (await electionStartTime) + time.duration.weeks(1);
+    const electionStartTime = await  web3.eth.getBlock('latest');
+   // electionDuration =
+    //  (await electionStartTime) + time.duration.weeks(1);
+
+ // electionDuration =  new BN(val).mul(this.days('7'))
 
     const createElectionMethod = this._institutionAbstraction.methods
-      .createElection(electionStartTime, duration, description)
+      .createElection(electionStartTime, electionDuration, description)
       .encodeABI();
 
     // const gasCost = await this.web3.eth.gasPrice;
@@ -53,9 +59,9 @@ export class InstitutionContractService {
       nonce: web3.utils.toHex(currentNonce),
       gasPrice: web3.utils.toHex(web3.utils.toWei('2', 'gwei')),
       gasLimit: web3.utils.toHex('5000000'),
-      to: environment.ethereum.universityVotingContractAddress,
+      to: address,
       value: '0x0',
-      data: submitInstitutionContractMethod
+      data: createElectionMethod
     };
 
     // Sign the raw transaction.
@@ -77,5 +83,11 @@ export class InstitutionContractService {
   public get institutionAbstraction(): any {
     return this._institutionAbstraction;
   }
+
+  /**
+   * Taken from Open Zeppelin test helpers.
+   * https://github.com/OpenZeppelin/openzeppelin-test-helpers
+   */
+
 
 }
