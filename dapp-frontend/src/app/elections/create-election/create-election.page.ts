@@ -4,6 +4,7 @@ import { InstitutionContractService } from 'src/app/blockchain/contracts/institu
 import { WalletService } from 'src/app/blockchain/wallet/wallet.service';
 import { Web3ProviderService } from 'src/app/blockchain/provider/web3provider.service';
 import { NgForm } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 
 const institutionArtifact = require('../../blockchain/contracts/artifacts/Institution.json');
 
@@ -13,7 +14,6 @@ const institutionArtifact = require('../../blockchain/contracts/artifacts/Instit
   styleUrls: ['./create-election.page.scss']
 })
 export class CreateElectionPage implements OnInit {
-
   institutionAbstraction: any;
   institutionAddress: string;
 
@@ -22,10 +22,15 @@ export class CreateElectionPage implements OnInit {
     private wallet: WalletService,
     private institutionContract: InstitutionContractService,
     private loadingCtrl: LoadingController,
-    private alertCtrl: AlertController
+    private alertCtrl: AlertController,
+    private route: ActivatedRoute
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.route.paramMap.subscribe(async paramMap => {
+      this.institutionAddress = paramMap.get('address');
+    });
+  }
 
   private async createNewElection(duration: number, description: string) {
     this.loadingCtrl
@@ -85,10 +90,9 @@ export class CreateElectionPage implements OnInit {
     if (!form.valid) {
       return;
     }
-   
+
     const description = form.value.description;
     const endDate = new Date(form.value.endDate);
-
 
     const endDateUnix = endDate.getTime() / 1000;
     this.createNewElection(endDateUnix, description);
