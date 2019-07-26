@@ -16,6 +16,10 @@ const routes: Routes = [
           },
           {
             path: 'new',
+            loadChildren: '../elections/create-election/create-election.module#CreateElectionPageModule',
+          },
+          {
+            path: 'elections',
             loadChildren: '../elections/elections.module#ElectionsPageModule',
           },
           {
@@ -25,20 +29,7 @@ const routes: Routes = [
           },
         ]
       },
-      {
-        path: 'elections',
-        children: [
-          {
-            path: '',
-            loadChildren: '../elections/elections.module#ElectionsPageModule'
-          },
-          {
-            path: 'new-election',
-            loadChildren: '../elections/create-election/create-election.module#CreateElectionPageModule',
-          }
-        ]
-      },
-      {
+      { 
         path: '',
         redirectTo: '/institutions/tabs/view',
         pathMatch: 'full'
