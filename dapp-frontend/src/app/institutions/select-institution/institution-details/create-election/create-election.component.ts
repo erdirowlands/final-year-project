@@ -68,8 +68,8 @@ export class CreateElectionComponent implements OnInit {
             // '0xeCDED0f569Ccd0FcEF2bc359e6F742BA1d6e533A'
           );
           loadingEl.dismiss();
-          this.router.navigate(['/institutions/tabs/view']);
           this.showSucessfulAlert();
+          this.modalCtrl.dismiss(null, 'cancel');
         } catch (err) {
           console.log(err);
           const errorString = err.toString();
@@ -93,7 +93,6 @@ export class CreateElectionComponent implements OnInit {
               break;
           }
           loadingEl.dismiss();
-          this.router.navigate(['/institutions/tabs/view']);
           this.showDeniedAlert(sanitisedError);
         }
       });
@@ -107,5 +106,25 @@ export class CreateElectionComponent implements OnInit {
 
   onCancel() {
     this.modalCtrl.dismiss(null, 'cancel');
+  }
+
+  private showDeniedAlert(message: string) {
+    this.alertCtrl
+      .create({
+        header: 'Election creation failed',
+        message,
+        buttons: ['Okay']
+      })
+      .then(alertEl => alertEl.present());
+  }
+
+  private showSucessfulAlert() {
+    this.alertCtrl
+      .create({
+        header:
+          'Election creation successful',
+        buttons: ['Okay']
+      })
+      .then(alertEl => alertEl.present());
   }
 }
