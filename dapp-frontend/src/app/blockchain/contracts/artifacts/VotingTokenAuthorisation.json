@@ -4,20 +4,6 @@
     {
       "constant": true,
       "inputs": [],
-      "name": "hasClosed",
-      "outputs": [
-        {
-          "name": "",
-          "type": "bool"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [],
       "name": "rate",
       "outputs": [
         {
@@ -46,53 +32,11 @@
     {
       "constant": true,
       "inputs": [],
-      "name": "isOpen",
-      "outputs": [
-        {
-          "name": "",
-          "type": "bool"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "closingTime",
-      "outputs": [
-        {
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [],
       "name": "wallet",
       "outputs": [
         {
           "name": "",
           "type": "address"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "openingTime",
-      "outputs": [
-        {
-          "name": "",
-          "type": "uint256"
         }
       ],
       "payable": false,
@@ -138,14 +82,6 @@
           "type": "address"
         },
         {
-          "name": "openingTime",
-          "type": "uint256"
-        },
-        {
-          "name": "closingTime",
-          "type": "uint256"
-        },
-        {
           "name": "votingToken",
           "type": "address"
         }
@@ -158,23 +94,6 @@
       "payable": true,
       "stateMutability": "payable",
       "type": "fallback"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "name": "prevClosingTime",
-          "type": "uint256"
-        },
-        {
-          "indexed": false,
-          "name": "newClosingTime",
-          "type": "uint256"
-        }
-      ],
-      "name": "TimedCrowdsaleExtended",
-      "type": "event"
     },
     {
       "anonymous": false,
@@ -226,25 +145,25 @@
       "type": "function"
     }
   ],
-  "metadata": "{\"compiler\":{\"version\":\"0.5.3+commit.10d17f24\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"constant\":true,\"inputs\":[],\"name\":\"hasClosed\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"rate\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"weiRaised\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"isOpen\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"closingTime\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"wallet\",\"outputs\":[{\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"voter\",\"type\":\"address\"},{\"name\":\"tokenAmount\",\"type\":\"uint256\"},{\"name\":\"admin\",\"type\":\"address\"}],\"name\":\"sendVotingToken\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"openingTime\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"beneficiary\",\"type\":\"address\"}],\"name\":\"buyTokens\",\"outputs\":[],\"payable\":true,\"stateMutability\":\"payable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"token\",\"outputs\":[{\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"name\":\"institution\",\"type\":\"address\"},{\"name\":\"admin\",\"type\":\"address\"},{\"name\":\"openingTime\",\"type\":\"uint256\"},{\"name\":\"closingTime\",\"type\":\"uint256\"},{\"name\":\"votingToken\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"payable\":true,\"stateMutability\":\"payable\",\"type\":\"fallback\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"prevClosingTime\",\"type\":\"uint256\"},{\"indexed\":false,\"name\":\"newClosingTime\",\"type\":\"uint256\"}],\"name\":\"TimedCrowdsaleExtended\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"purchaser\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"beneficiary\",\"type\":\"address\"},{\"indexed\":false,\"name\":\"value\",\"type\":\"uint256\"},{\"indexed\":false,\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"TokensPurchased\",\"type\":\"event\"}],\"devdoc\":{\"methods\":{\"buyTokens(address)\":{\"details\":\"low level token purchase ***DO NOT OVERRIDE*** This function has a non-reentrancy guard, so it shouldn't be called by another `nonReentrant` function.\",\"params\":{\"beneficiary\":\"Recipient of the token purchase\"}},\"closingTime()\":{\"return\":\"the crowdsale closing time.\"},\"hasClosed()\":{\"details\":\"Checks whether the period in which the crowdsale is open has already elapsed.\",\"return\":\"Whether crowdsale period has elapsed\"},\"isOpen()\":{\"return\":\"true if the crowdsale is open, false otherwise.\"},\"openingTime()\":{\"return\":\"the crowdsale opening time.\"},\"rate()\":{\"return\":\"the number of token units a buyer gets per wei.\"},\"token()\":{\"return\":\"the token being sold.\"},\"wallet()\":{\"return\":\"the address where funds are collected.\"},\"weiRaised()\":{\"return\":\"the amount of wei raised.\"}}},\"userdoc\":{\"methods\":{},\"notice\":\"The authorisation of Voting Tokens is implemented as a custom crowdsale - however the concept of purchasing tokens for Ether is not utilised here. In simple terms, that boils down to buyTokens() not being called in the flow of an Institution admin authorising a voter; rather,_deliverTokens() is called, and a token will then be minted and then transferred to the user. Open Zeppelin crowdsale contracts are being inherited to provide automatic protection against reentrancy attacks and to provide common crowdsale functionality without having to reinvent the wheel.\"}},\"settings\":{\"compilationTarget\":{\"/Users/erdi/git/final-year-project/dapp-backend/contracts/VotingTokenAuthorisation.sol\":\"VotingTokenAuthorisation\"},\"evmVersion\":\"byzantium\",\"libraries\":{},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"/Users/erdi/git/final-year-project/dapp-backend/contracts/ApprovalQueue.sol\":{\"keccak256\":\"0x7a776796959aef06221d0f18c19f70d8ea28e59e098a8c9cf33a1194339c5066\",\"urls\":[\"bzzr://6370b7eab92dd92a56c3f81d96ee2bbcc4f9fad644b6aa31bbcb6fe757b29e0b\"]},\"/Users/erdi/git/final-year-project/dapp-backend/contracts/Election.sol\":{\"keccak256\":\"0x3a5cc0dca4aa5d0e669a97aa6d9f25a3c0d6beb190031d89362c16f1bfd90bd4\",\"urls\":[\"bzzr://a77dfa3771c78b6e06fa52f16c1f78cf4e2a797d27797fbd8d20cdd19a9c41dc\"]},\"/Users/erdi/git/final-year-project/dapp-backend/contracts/Institution.sol\":{\"keccak256\":\"0xccf71b7d2090fd2c6ef100d50705b0123f534c24a654c8312c874ba5d331cd2a\",\"urls\":[\"bzzr://f55f38caefddc19dac3e82a8704e5fd3892a7204a6637ceda9e46c5c790a1f0d\"]},\"/Users/erdi/git/final-year-project/dapp-backend/contracts/UniversityVoting.sol\":{\"keccak256\":\"0x8d172032da01f8e3d4dce2e0da840c81916ae29c0fe40d2cb467d515e097cb77\",\"urls\":[\"bzzr://de9c9dcba96edd80e24f17b5da38a2af015a36c58c6367c861c06fcc7f1bd508\"]},\"/Users/erdi/git/final-year-project/dapp-backend/contracts/VotingToken.sol\":{\"keccak256\":\"0x1b2e422f43fd85862a3df551539064b073e218dbb0419029431370a91d4d3e27\",\"urls\":[\"bzzr://620319e9544d97d2c8a98fd7877846a6fdfb1cb681d3d8ec03c185fdb83fec73\"]},\"/Users/erdi/git/final-year-project/dapp-backend/contracts/VotingTokenAuthorisation.sol\":{\"keccak256\":\"0x5d47334b4e928de7d510571fa8a2274e15c24be93b598b854da3ee1f7342acca\",\"urls\":[\"bzzr://51f79ecdb4b621390130565b6342eda1974e51a64a260ebdd4f25d121c059071\"]},\"openzeppelin-solidity/contracts/access/Roles.sol\":{\"keccak256\":\"0xb002c378d7b82a101bd659c341518953ca0919d342c0a400196982c0e7e7bcdb\",\"urls\":[\"bzzr://bd34c1ce05b5b2b3a62fc02e160f6805b1cadd476854664f433c685b2fda8dad\"]},\"openzeppelin-solidity/contracts/access/roles/MinterRole.sol\":{\"keccak256\":\"0x63da54a7a5d4e4d82ac8d1f4f7f995fd8ef2b5fe1f2960b83e534fa37fb60910\",\"urls\":[\"bzzr://cea53b805426e40efadb24f2613aca39182462e9ecd23fde7aacf0c4b5885aaf\"]},\"openzeppelin-solidity/contracts/crowdsale/Crowdsale.sol\":{\"keccak256\":\"0x6fd4b01de35c3acba3b2a78d915a12abf893b7d392c07370b53881bde8a8a272\",\"urls\":[\"bzzr://0c4cec40e7b9ddd133193d88ae3a81cd162396b73add7bee6263231c89a32566\"]},\"openzeppelin-solidity/contracts/crowdsale/emission/MintedCrowdsale.sol\":{\"keccak256\":\"0x343249b95ade6a20737b7f681a05a257f14a39b21043ff2e31d8e5d861d83777\",\"urls\":[\"bzzr://3a53c6bbb534d2f038289952e35a75bb572f5998582b1d47827907f027dd7fb4\"]},\"openzeppelin-solidity/contracts/crowdsale/validation/TimedCrowdsale.sol\":{\"keccak256\":\"0x9407dd37cfed74aa107fd1614c478ba0a2bc3e084e9aa8fbd5a6f316c53aed3b\",\"urls\":[\"bzzr://196407d49d26f709494b573b06676eaa21b0019ebebd4e610a8b1276965a8067\"]},\"openzeppelin-solidity/contracts/math/SafeMath.sol\":{\"keccak256\":\"0x4ccf2d7b51873db1ccfd54ca2adae5eac3b184f9699911ed4490438419f1c690\",\"urls\":[\"bzzr://1604f5b6d6e916c154efd8c6720cda069e5ba32dfa0a9dedf2b42e5b02d07f89\"]},\"openzeppelin-solidity/contracts/ownership/Ownable.sol\":{\"keccak256\":\"0xf79fb10e8235770eb4aea7249034076a3cc9f9119ad944fc48705bae9c9d20dc\",\"urls\":[\"bzzr://d12a11272051eb6586de8f7e0a82c04a98c9984ce8b2a6cf1ee439f65aba29a9\"]},\"openzeppelin-solidity/contracts/token/ERC20/ERC20.sol\":{\"keccak256\":\"0x852793a3c2f86d336a683b30d688ec3dcfc57451af5a2bf5975cda3b7191a901\",\"urls\":[\"bzzr://07fb42206812a17c1f71e548cfa5cec6f9aa1ae0ca5df870718ca4aa9759d1a5\"]},\"openzeppelin-solidity/contracts/token/ERC20/ERC20Detailed.sol\":{\"keccak256\":\"0xc61b3603089b09a730d8ca72e9133a496cc4405da40e9b87c12f073245d774bf\",\"urls\":[\"bzzr://f280f38d5ab6e1b89fd898ccd3901054a56572c141d91d30302e2db1db4cc6ff\"]},\"openzeppelin-solidity/contracts/token/ERC20/ERC20Mintable.sol\":{\"keccak256\":\"0x6df8d686813b2875e99928ecd07bf8ee6d7473bc6a95eb1190e8fdba86beda76\",\"urls\":[\"bzzr://b4a3a1136392be8723a0d9627d1626323e3891c98e88ca5ab48da1dada375580\"]},\"openzeppelin-solidity/contracts/token/ERC20/IERC20.sol\":{\"keccak256\":\"0x90e8c2521653bbb1768b05889c5760031e688d9cd361f167489b89215e201b95\",\"urls\":[\"bzzr://aa8b45b57edafc3d67bc5d916327ea16807fae33f753ca163ae0c4061b789766\"]},\"openzeppelin-solidity/contracts/token/ERC20/SafeERC20.sol\":{\"keccak256\":\"0xf6f89424e17870561dc23c5933c55c5726b66a68d51ad2a2c00c569a5f02f507\",\"urls\":[\"bzzr://28230529ef5e63b09eec01e3ca835ccb722533bc5379e6fdd04270c42157f8c3\"]},\"openzeppelin-solidity/contracts/utils/Address.sol\":{\"keccak256\":\"0xf3358e5819ca73357abd6c90bdfffd0474af54364897f6b3e3234c4b71fbe9a1\",\"urls\":[\"bzzr://f7f6da60a184233fd666ac44e6fb2bd51ca6ebdc4867a310d368049aa4e62786\"]},\"openzeppelin-solidity/contracts/utils/ReentrancyGuard.sol\":{\"keccak256\":\"0x0441ff2b36d503f3a29d28d3754291f119064f4973d5c780698143d919037a78\",\"urls\":[\"bzzr://d26b514ac785d2a74a903067d051b34541e86a7fc63b782bb39d3a576d8eb4da\"]}},\"version\":1}",
-  "bytecode": "0x608060405234801561001057600080fd5b5060405160a080610c32833981018060405260a081101561003057600080fd5b5080516020820151604083015160608401516080909401516001600081905593949293919291839083908684600160a060020a03821615156100bd576040517f08c379a0000000000000000000000000000000000000000000000000000000008152600401808060200182810382526025815260200180610c0d6025913960400191505060405180910390fd5b600160a060020a038116151561011e576040517f08c379a0000000000000000000000000000000000000000000000000000000008152600401808060200182810382526024815260200180610be96024913960400191505060405180910390fd5b60039290925560028054600160a060020a03928316600160a060020a03199182161790915560018054929093169116179055428210156101a9576040517f08c379a0000000000000000000000000000000000000000000000000000000008152600401808060200182810382526033815260200180610b7f6033913960400191505060405180910390fd5b818111610201576040517f08c379a0000000000000000000000000000000000000000000000000000000008152600401808060200182810382526037815260200180610bb26037913960400191505060405180910390fd5b600591909155600655505060078054600160a060020a03909416600160a060020a03199094169390931790925550506109408061023f6000396000f3fe6080604052600436106100ae576000357c010000000000000000000000000000000000000000000000000000000090048063521eb27311610076578063521eb27314610148578063b01e259014610179578063b7a8807c146101bc578063ec8ac4d8146101d1578063fc0c546a146101f7576100ae565b80631515bc2b146100b95780632c4e722e146100e25780634042b66f1461010957806347535d7b1461011e5780634b6753bc14610133575b6100b73361020c565b005b3480156100c557600080fd5b506100ce610313565b604080519115158252519081900360200190f35b3480156100ee57600080fd5b506100f761031b565b60408051918252519081900360200190f35b34801561011557600080fd5b506100f7610321565b34801561012a57600080fd5b506100ce610327565b34801561013f57600080fd5b506100f7610342565b34801561015457600080fd5b5061015d610348565b60408051600160a060020a039092168252519081900360200190f35b34801561018557600080fd5b506100b76004803603606081101561019c57600080fd5b50600160a060020a03813581169160208101359160409091013516610357565b3480156101c857600080fd5b506100f761050e565b6100b7600480360360208110156101e757600080fd5b5035600160a060020a031661020c565b34801561020357600080fd5b5061015d610514565b6000805460010190819055346102228382610523565b600061022d8261058b565b600454909150610243908363ffffffff6105a816565b600455610250848261060c565b60408051838152602081018390528151600160a060020a0387169233927f6faf93231a456e552dbc9961f58d9713ee4f2e69d15f1975b050ef0911053a7b929081900390910190a36102a2848361030f565b6102aa610616565b6102b4848361030f565b5050600054811461030f576040805160e560020a62461bcd02815260206004820152601f60248201527f5265656e7472616e637947756172643a207265656e7472616e742063616c6c00604482015290519081900360640190fd5b5050565b600654421190565b60035490565b60045490565b6000600554421015801561033d57506006544211155b905090565b60065490565b600254600160a060020a031690565b600754604080517f9a43aa98000000000000000000000000000000000000000000000000000000008152600160a060020a038085166004830152915184939290921691639a43aa9891602480820192602092909190829003018186803b1580156103c057600080fd5b505afa1580156103d4573d6000803e3d6000fd5b505050506040513d60208110156103ea57600080fd5b5051151561042c5760405160e560020a62461bcd02815260040180806020018281038252603181526020018061087a6031913960400191505060405180910390fd5b600754604080517fd44f2598000000000000000000000000000000000000000000000000000000008152600160a060020a0384811660048301529151919092169163d44f2598916024808301926020929190829003018186803b15801561049257600080fd5b505afa1580156104a6573d6000803e3d6000fd5b505050506040513d60208110156104bc57600080fd5b505115156104fe5760405160e560020a62461bcd0281526004018080602001828103825260408152602001806108d56040913960400191505060405180910390fd5b6105088484610652565b50505050565b60055490565b600154600160a060020a031690565b61052b610327565b1515610581576040805160e560020a62461bcd02815260206004820152601860248201527f54696d656443726f776473616c653a206e6f74206f70656e0000000000000000604482015290519081900360640190fd5b61030f8282610757565b60006105a2600354836107f890919063ffffffff16565b92915050565b600082820183811015610605576040805160e560020a62461bcd02815260206004820152601b60248201527f536166654d6174683a206164646974696f6e206f766572666c6f770000000000604482015290519081900360640190fd5b9392505050565b61030f8282610652565b600254604051600160a060020a03909116903480156108fc02916000818181858888f1935050505015801561064f573d6000803e3d6000fd5b50565b61065a610514565b600160a060020a03166340c10f1983836040518363ffffffff167c01000000000000000000000000000000000000000000000000000000000281526004018083600160a060020a0316600160a060020a0316815260200182815260200192505050602060405180830381600087803b1580156106d557600080fd5b505af11580156106e9573d6000803e3d6000fd5b505050506040513d60208110156106ff57600080fd5b5051151561030f576040805160e560020a62461bcd02815260206004820152601f60248201527f4d696e74656443726f776473616c653a206d696e74696e67206661696c656400604482015290519081900360640190fd5b600160a060020a03821615156107a15760405160e560020a62461bcd02815260040180806020018281038252602a8152602001806108ab602a913960400191505060405180910390fd5b80151561030f576040805160e560020a62461bcd02815260206004820152601960248201527f43726f776473616c653a20776569416d6f756e74206973203000000000000000604482015290519081900360640190fd5b6000821515610809575060006105a2565b82820282848281151561081857fe5b04146106055760405160e560020a62461bcd0281526004018080602001828103825260218152602001806108596021913960400191505060405180910390fdfe536166654d6174683a206d756c7469706c69636174696f6e206f766572666c6f77566f74696e67546f6b656e417574686f7269736174696f6e3a2043616c6c6572206973206e6f7420616e2061646d696e2143726f776473616c653a2062656e656669636961727920697320746865207a65726f2061646472657373566f74696e67546f6b656e417574686f7269736174696f6e3a2043616c6c657220697320616e2061646d696e20627574206e6f7420617574686f726973656421a165627a7a723058204df89c507efd4c4a43c8104841d91d393b2f99c5b7e59a61b4acfc3c49195ae1002954696d656443726f776473616c653a206f70656e696e672074696d65206973206265666f72652063757272656e742074696d6554696d656443726f776473616c653a206f70656e696e672074696d65206973206e6f74206265666f726520636c6f73696e672074696d6543726f776473616c653a20746f6b656e20697320746865207a65726f206164647265737343726f776473616c653a2077616c6c657420697320746865207a65726f2061646472657373",
-  "deployedBytecode": "0x6080604052600436106100ae576000357c010000000000000000000000000000000000000000000000000000000090048063521eb27311610076578063521eb27314610148578063b01e259014610179578063b7a8807c146101bc578063ec8ac4d8146101d1578063fc0c546a146101f7576100ae565b80631515bc2b146100b95780632c4e722e146100e25780634042b66f1461010957806347535d7b1461011e5780634b6753bc14610133575b6100b73361020c565b005b3480156100c557600080fd5b506100ce610313565b604080519115158252519081900360200190f35b3480156100ee57600080fd5b506100f761031b565b60408051918252519081900360200190f35b34801561011557600080fd5b506100f7610321565b34801561012a57600080fd5b506100ce610327565b34801561013f57600080fd5b506100f7610342565b34801561015457600080fd5b5061015d610348565b60408051600160a060020a039092168252519081900360200190f35b34801561018557600080fd5b506100b76004803603606081101561019c57600080fd5b50600160a060020a03813581169160208101359160409091013516610357565b3480156101c857600080fd5b506100f761050e565b6100b7600480360360208110156101e757600080fd5b5035600160a060020a031661020c565b34801561020357600080fd5b5061015d610514565b6000805460010190819055346102228382610523565b600061022d8261058b565b600454909150610243908363ffffffff6105a816565b600455610250848261060c565b60408051838152602081018390528151600160a060020a0387169233927f6faf93231a456e552dbc9961f58d9713ee4f2e69d15f1975b050ef0911053a7b929081900390910190a36102a2848361030f565b6102aa610616565b6102b4848361030f565b5050600054811461030f576040805160e560020a62461bcd02815260206004820152601f60248201527f5265656e7472616e637947756172643a207265656e7472616e742063616c6c00604482015290519081900360640190fd5b5050565b600654421190565b60035490565b60045490565b6000600554421015801561033d57506006544211155b905090565b60065490565b600254600160a060020a031690565b600754604080517f9a43aa98000000000000000000000000000000000000000000000000000000008152600160a060020a038085166004830152915184939290921691639a43aa9891602480820192602092909190829003018186803b1580156103c057600080fd5b505afa1580156103d4573d6000803e3d6000fd5b505050506040513d60208110156103ea57600080fd5b5051151561042c5760405160e560020a62461bcd02815260040180806020018281038252603181526020018061087a6031913960400191505060405180910390fd5b600754604080517fd44f2598000000000000000000000000000000000000000000000000000000008152600160a060020a0384811660048301529151919092169163d44f2598916024808301926020929190829003018186803b15801561049257600080fd5b505afa1580156104a6573d6000803e3d6000fd5b505050506040513d60208110156104bc57600080fd5b505115156104fe5760405160e560020a62461bcd0281526004018080602001828103825260408152602001806108d56040913960400191505060405180910390fd5b6105088484610652565b50505050565b60055490565b600154600160a060020a031690565b61052b610327565b1515610581576040805160e560020a62461bcd02815260206004820152601860248201527f54696d656443726f776473616c653a206e6f74206f70656e0000000000000000604482015290519081900360640190fd5b61030f8282610757565b60006105a2600354836107f890919063ffffffff16565b92915050565b600082820183811015610605576040805160e560020a62461bcd02815260206004820152601b60248201527f536166654d6174683a206164646974696f6e206f766572666c6f770000000000604482015290519081900360640190fd5b9392505050565b61030f8282610652565b600254604051600160a060020a03909116903480156108fc02916000818181858888f1935050505015801561064f573d6000803e3d6000fd5b50565b61065a610514565b600160a060020a03166340c10f1983836040518363ffffffff167c01000000000000000000000000000000000000000000000000000000000281526004018083600160a060020a0316600160a060020a0316815260200182815260200192505050602060405180830381600087803b1580156106d557600080fd5b505af11580156106e9573d6000803e3d6000fd5b505050506040513d60208110156106ff57600080fd5b5051151561030f576040805160e560020a62461bcd02815260206004820152601f60248201527f4d696e74656443726f776473616c653a206d696e74696e67206661696c656400604482015290519081900360640190fd5b600160a060020a03821615156107a15760405160e560020a62461bcd02815260040180806020018281038252602a8152602001806108ab602a913960400191505060405180910390fd5b80151561030f576040805160e560020a62461bcd02815260206004820152601960248201527f43726f776473616c653a20776569416d6f756e74206973203000000000000000604482015290519081900360640190fd5b6000821515610809575060006105a2565b82820282848281151561081857fe5b04146106055760405160e560020a62461bcd0281526004018080602001828103825260218152602001806108596021913960400191505060405180910390fdfe536166654d6174683a206d756c7469706c69636174696f6e206f766572666c6f77566f74696e67546f6b656e417574686f7269736174696f6e3a2043616c6c6572206973206e6f7420616e2061646d696e2143726f776473616c653a2062656e656669636961727920697320746865207a65726f2061646472657373566f74696e67546f6b656e417574686f7269736174696f6e3a2043616c6c657220697320616e2061646d696e20627574206e6f7420617574686f726973656421a165627a7a723058204df89c507efd4c4a43c8104841d91d393b2f99c5b7e59a61b4acfc3c49195ae10029",
-  "sourceMap": "1030:938:6:-;;;1166:352;8:9:-1;5:2;;;30:1;27;20:12;5:2;1166:352:6;;;;;;;;;;;;;13:3:-1;8;5:12;2:2;;;30:1;27;20:12;2:2;-1:-1;1166:352:6;;;;;;;;;;;;;;;;;;;1300:1;868:13:20;:17;;;1166:352:6;;;;;;;;;;;;;-1:-1:-1;2422:20:9;;;;2414:70;;;;-1:-1:-1;;;;;2414:70:9;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;2502:28:9;;;;2494:77;;;;-1:-1:-1;;;;;2494:77:9;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;2582:5;:12;;;;2604:7;:16;;-1:-1:-1;2604:16:9;;;-1:-1:-1;;2604:16:9;;;;;;;-1:-1:-1;2630:14:9;;;;;;;;;;;1064:15:11;1049:30;;;1041:94;;;;-1:-1:-1;;;;;1041:94:11;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1206:25;;;1198:93;;;;-1:-1:-1;;;;;1198:93:11;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1302:12;:26;;;;1338:12;:26;-1:-1:-1;;1485:12:6;:26;;-1:-1:-1;;1485:26:6;-1:-1:-1;1485:26:6;;;;;;;;;;;-1:-1:-1;;;;;1030:938:6;-1:-1:-1;1030:938:6;;",
-  "deployedSourceMap": "1030:938:6:-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;2979:21:9;2989:10;2979:9;:21::i;:::-;1030:938:6;2117:156:11;;8:9:-1;5:2;;;30:1;27;20:12;5:2;2117:156:11;;;:::i;:::-;;;;;;;;;;;;;;;;;;3390:75:9;;8:9:-1;5:2;;;30:1;27;20:12;5:2;3390:75:9;;;:::i;:::-;;;;;;;;;;;;;;;;3528:85;;8:9:-1;5:2;;;30:1;27;20:12;5:2;3528:85:9;;;:::i;1764:189:11:-;;8:9:-1;5:2;;;30:1;27;20:12;5:2;1764:189:11;;;:::i;1590:89::-;;8:9:-1;5:2;;;30:1;27;20:12;5:2;1590:89:11;;;:::i;3218:87:9:-;;8:9:-1;5:2;;;30:1;27;20:12;5:2;3218:87:9;;;:::i;:::-;;;;-1:-1:-1;;;;;3218:87:9;;;;;;;;;;;;;;1524:155:6;;8:9:-1;5:2;;;30:1;27;20:12;5:2;1524:155:6;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;-1:-1;;;;;;1524:155:6;;;;;;;;;;;;;;;;;:::i;1436:89:11:-;;8:9:-1;5:2;;;30:1;27;20:12;5:2;1436:89:11;;;:::i;3870:603:9:-;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;-1:-1;3870:603:9;-1:-1:-1;;;;;3870:603:9;;:::i;3066:76::-;;8:9:-1;5:2;;;30:1;27;20:12;5:2;3066:76:9;;;:::i;3870:603::-;1301:13:20;:18;;1318:1;1301:18;;;;;3968:9:9;3987:44;4008:11;3968:9;3987:20;:44::i;:::-;4090:14;4107:26;4123:9;4107:15;:26::i;:::-;4181:10;;4090:43;;-1:-1:-1;4181:25:9;;4196:9;4181:25;:14;:25;:::i;:::-;4168:10;:38;4217:37;4234:11;4247:6;4217:16;:37::i;:::-;4269:59;;;;;;;;;;;;;;-1:-1:-1;;;;;4269:59:9;;;4285:10;;4269:59;;;;;;;;;;;4339:46;4362:11;4375:9;4339:22;:46::i;:::-;4396:15;:13;:15::i;:::-;4421:45;4443:11;4456:9;4421:21;:45::i;:::-;-1:-1:-1;;1410:13:20;;1394:29;;1386:73;;;;;-1:-1:-1;;;;;1386:73:20;;;;;;;;;;;;;;;;;;;;;;;;;;;;3870:603:9;;:::o;2117:156:11:-;2254:12;;2236:15;:30;2117:156;:::o;3390:75:9:-;3453:5;;3390:75;:::o;3528:85::-;3596:10;;3528:85;:::o;1764:189:11:-;1803:4;1899:12;;1880:15;:31;;:66;;;;;1934:12;;1915:15;:31;;1880:66;1873:73;;1764:189;:::o;1590:89::-;1660:12;;1590:89;:::o;3218:87:9:-;3291:7;;-1:-1:-1;;;;;3291:7:9;;3218:87::o;1524:155:6:-;1736:12;;:33;;;;;;-1:-1:-1;;;;;1736:33:6;;;;;;;;;;;:12;;;;;:26;;:33;;;;;;;;;;;;;;;:12;:33;;;5:2:-1;;;;30:1;27;20:12;5:2;1736:33:6;;;;8:9:-1;5:2;;;45:16;42:1;39;24:38;77:16;74:1;67:27;5:2;1736:33:6;;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;-1:-1;1736:33:6;1728:95;;;;;;-1:-1:-1;;;;;1728:95:6;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1841:12;;:37;;;;;;-1:-1:-1;;;;;1841:37:6;;;;;;;;;:12;;;;;:30;;:37;;;;;;;;;;;;;;:12;:37;;;5:2:-1;;;;30:1;27;20:12;5:2;1841:37:6;;;;8:9:-1;5:2;;;45:16;42:1;39;24:38;77:16;74:1;67:27;5:2;1841:37:6;;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;-1:-1;1841:37:6;1833:114;;;;;;;-1:-1:-1;;;;;1833:114:6;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1632:40;1653:5;1660:11;1632:20;:40::i;:::-;1524:155;;;;:::o;1436:89:11:-;1506:12;;1436:89;:::o;3066:76:9:-;3129:6;;-1:-1:-1;;;;;3129:6:9;;3066:76::o;2466:165:11:-;672:8;:6;:8::i;:::-;664:45;;;;;;;-1:-1:-1;;;;;664:45:11;;;;;;;;;;;;;;;;;;;;;;;;;;;;2574:50;2601:11;2614:9;2574:26;:50::i;7183:120:9:-;7250:7;7276:20;7290:5;;7276:9;:13;;:20;;;;:::i;:::-;7269:27;7183:120;-1:-1:-1;;7183:120:9:o;834:176:12:-;892:7;923:5;;;946:6;;;;938:46;;;;;-1:-1:-1;;;;;938:46:12;;;;;;;;;;;;;;;;;;;;;;;;;;;;1002:1;834:176;-1:-1:-1;;;834:176:12:o;6385:134:9:-;6472:40;6487:11;6500;6472:14;:40::i;7390:78::-;7434:7;;:27;;-1:-1:-1;;;;;7434:7:9;;;;7451:9;7434:27;;;;;:7;:27;:7;:27;7451:9;7434:7;:27;;;;;;;;8:9:-1;5:2;;;45:16;42:1;39;24:38;77:16;74:1;67:27;5:2;7434:27:9;7390:78::o;510:309:10:-;711:7;:5;:7::i;:::-;689:62;;;;;;-1:-1:-1;;;;;689:62:10;;;;;;;;;;;;;;;:36;;;;;;;:62;;;;;;;;;;;;;;;-1:-1:-1;689:36:10;:62;;;5:2:-1;;;;30:1;27;20:12;5:2;689:62:10;;;;8:9:-1;5:2;;;45:16;42:1;39;24:38;77:16;74:1;67:27;5:2;689:62:10;;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;-1:-1;689:62:10;668:144;;;;;;;-1:-1:-1;;;;;668:144:10;;;;;;;;;;;;;;;;;;;;;;;;;;;5015:243:9;-1:-1:-1;;;;;5117:25:9;;;;5109:80;;;;-1:-1:-1;;;;;5109:80:9;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;5207:14;;;5199:52;;;;;-1:-1:-1;;;;;5199:52:9;;;;;;;;;;;;;;;;;;;;;;;;;;;1693:458:12;1751:7;1991:6;;1987:45;;;-1:-1:-1;2020:1:12;2013:8;;1987:45;2054:5;;;2058:1;2054;:5;2077;;;;;;;;:10;2069:56;;;;-1:-1:-1;;;;;2069:56:12;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;",
-  "source": "pragma solidity ^0.5.3;\n\nimport \"openzeppelin-solidity/contracts/ownership/Ownable.sol\";\nimport \"openzeppelin-solidity/contracts/crowdsale/emission/MintedCrowdsale.sol\";\nimport \"openzeppelin-solidity/contracts/crowdsale/validation/TimedCrowdsale.sol\";\nimport \"./VotingToken.sol\";\nimport \"./Institution.sol\";\nimport \"./ApprovalQueue.sol\";\n\n\n// *****TODO Complete Ownable flow for this contract*****\n\n/**\n * The authorisation of Voting Tokens is implemented as a custom crowdsale - however the concept of purchasing tokens for Ether\n * is not utilised here. In simple terms, that boils down to buyTokens() not being called in the flow of an Institution admin\n * authorising a voter; rather,_deliverTokens() is called, and a token will then be minted and then transferred to the user.\n * Open Zeppelin crowdsale contracts are being inherited to provide automatic protection against reentrancy attacks and to\n * provide common crowdsale functionality without having to reinvent the wheel.\n */\n // TODO check ownable is still relevant\ncontract VotingTokenAuthorisation is MintedCrowdsale, TimedCrowdsale {\n\n\n    Institution _institution;\n    VotingToken _theToken;\n\n\n    constructor (Institution institution, address admin, uint256 openingTime, uint256 closingTime, VotingToken votingToken)\n    Crowdsale(1,  address(uint160(admin)), votingToken)\n    TimedCrowdsale(openingTime, closingTime)\n    public { //isAdmin(admin) { // CAN'T DO THIS BECAUSE _INSTITUTION NOT INITIALISED YET\n        _institution = institution;\n    }\n\n    function sendVotingToken(address voter, uint256 tokenAmount, address admin) public isAdmin(admin) {\n        super._deliverTokens(voter, tokenAmount);\n    }\n\n    modifier isAdmin(address admin)  {\n        require(_institution.isAdminStored(admin), \"VotingTokenAuthorisation: Caller is not an admin!\");\n        require(_institution.isAdminAuthorised(admin), \"VotingTokenAuthorisation: Caller is an admin but not authorised!\");\n        _;\n    }\n\n}",
+  "metadata": "{\"compiler\":{\"version\":\"0.5.3+commit.10d17f24\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"constant\":true,\"inputs\":[],\"name\":\"rate\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"weiRaised\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"wallet\",\"outputs\":[{\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"voter\",\"type\":\"address\"},{\"name\":\"tokenAmount\",\"type\":\"uint256\"},{\"name\":\"admin\",\"type\":\"address\"}],\"name\":\"sendVotingToken\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"beneficiary\",\"type\":\"address\"}],\"name\":\"buyTokens\",\"outputs\":[],\"payable\":true,\"stateMutability\":\"payable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"token\",\"outputs\":[{\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"name\":\"institution\",\"type\":\"address\"},{\"name\":\"admin\",\"type\":\"address\"},{\"name\":\"votingToken\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"payable\":true,\"stateMutability\":\"payable\",\"type\":\"fallback\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"purchaser\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"beneficiary\",\"type\":\"address\"},{\"indexed\":false,\"name\":\"value\",\"type\":\"uint256\"},{\"indexed\":false,\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"TokensPurchased\",\"type\":\"event\"}],\"devdoc\":{\"methods\":{\"buyTokens(address)\":{\"details\":\"low level token purchase ***DO NOT OVERRIDE*** This function has a non-reentrancy guard, so it shouldn't be called by another `nonReentrant` function.\",\"params\":{\"beneficiary\":\"Recipient of the token purchase\"}},\"rate()\":{\"return\":\"the number of token units a buyer gets per wei.\"},\"token()\":{\"return\":\"the token being sold.\"},\"wallet()\":{\"return\":\"the address where funds are collected.\"},\"weiRaised()\":{\"return\":\"the amount of wei raised.\"}}},\"userdoc\":{\"methods\":{},\"notice\":\"The authorisation of Voting Tokens is implemented as a custom crowdsale - however the concept of purchasing tokens for Ether is not utilised here. In simple terms, that boils down to buyTokens() not being called in the flow of an Institution admin authorising a voter; rather,_deliverTokens() is called, and a token will then be minted and then transferred to the user. Open Zeppelin crowdsale contracts are being inherited to provide automatic protection against reentrancy attacks and to provide common crowdsale functionality without having to reinvent the wheel.\"}},\"settings\":{\"compilationTarget\":{\"/Users/erdi/git/final-year-project/dapp-backend/contracts/VotingTokenAuthorisation.sol\":\"VotingTokenAuthorisation\"},\"evmVersion\":\"byzantium\",\"libraries\":{},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"/Users/erdi/git/final-year-project/dapp-backend/contracts/ApprovalQueue.sol\":{\"keccak256\":\"0x7a776796959aef06221d0f18c19f70d8ea28e59e098a8c9cf33a1194339c5066\",\"urls\":[\"bzzr://6370b7eab92dd92a56c3f81d96ee2bbcc4f9fad644b6aa31bbcb6fe757b29e0b\"]},\"/Users/erdi/git/final-year-project/dapp-backend/contracts/Election.sol\":{\"keccak256\":\"0x3a5cc0dca4aa5d0e669a97aa6d9f25a3c0d6beb190031d89362c16f1bfd90bd4\",\"urls\":[\"bzzr://a77dfa3771c78b6e06fa52f16c1f78cf4e2a797d27797fbd8d20cdd19a9c41dc\"]},\"/Users/erdi/git/final-year-project/dapp-backend/contracts/Institution.sol\":{\"keccak256\":\"0x4d98db46fe0c30430c684fd51f7c4899c343a34908c7341933a6dc279cc069ff\",\"urls\":[\"bzzr://76688684cb5d7316f67ba399c862ddb6556830e0d89c47e0ee073e75e85e4711\"]},\"/Users/erdi/git/final-year-project/dapp-backend/contracts/UniversityVoting.sol\":{\"keccak256\":\"0x8d172032da01f8e3d4dce2e0da840c81916ae29c0fe40d2cb467d515e097cb77\",\"urls\":[\"bzzr://de9c9dcba96edd80e24f17b5da38a2af015a36c58c6367c861c06fcc7f1bd508\"]},\"/Users/erdi/git/final-year-project/dapp-backend/contracts/VotingToken.sol\":{\"keccak256\":\"0x1b2e422f43fd85862a3df551539064b073e218dbb0419029431370a91d4d3e27\",\"urls\":[\"bzzr://620319e9544d97d2c8a98fd7877846a6fdfb1cb681d3d8ec03c185fdb83fec73\"]},\"/Users/erdi/git/final-year-project/dapp-backend/contracts/VotingTokenAuthorisation.sol\":{\"keccak256\":\"0xca5a1ab09a88ca2c95ae70165c9513a4fe31988adba24471ba113bfde833d3e4\",\"urls\":[\"bzzr://bcc98fd5aabe75f388cacd006ab14e2da43828b9c6c865ae64a5ffb0d065c775\"]},\"openzeppelin-solidity/contracts/access/Roles.sol\":{\"keccak256\":\"0xb002c378d7b82a101bd659c341518953ca0919d342c0a400196982c0e7e7bcdb\",\"urls\":[\"bzzr://bd34c1ce05b5b2b3a62fc02e160f6805b1cadd476854664f433c685b2fda8dad\"]},\"openzeppelin-solidity/contracts/access/roles/MinterRole.sol\":{\"keccak256\":\"0x63da54a7a5d4e4d82ac8d1f4f7f995fd8ef2b5fe1f2960b83e534fa37fb60910\",\"urls\":[\"bzzr://cea53b805426e40efadb24f2613aca39182462e9ecd23fde7aacf0c4b5885aaf\"]},\"openzeppelin-solidity/contracts/crowdsale/Crowdsale.sol\":{\"keccak256\":\"0x6fd4b01de35c3acba3b2a78d915a12abf893b7d392c07370b53881bde8a8a272\",\"urls\":[\"bzzr://0c4cec40e7b9ddd133193d88ae3a81cd162396b73add7bee6263231c89a32566\"]},\"openzeppelin-solidity/contracts/crowdsale/emission/MintedCrowdsale.sol\":{\"keccak256\":\"0x343249b95ade6a20737b7f681a05a257f14a39b21043ff2e31d8e5d861d83777\",\"urls\":[\"bzzr://3a53c6bbb534d2f038289952e35a75bb572f5998582b1d47827907f027dd7fb4\"]},\"openzeppelin-solidity/contracts/crowdsale/validation/TimedCrowdsale.sol\":{\"keccak256\":\"0x9407dd37cfed74aa107fd1614c478ba0a2bc3e084e9aa8fbd5a6f316c53aed3b\",\"urls\":[\"bzzr://196407d49d26f709494b573b06676eaa21b0019ebebd4e610a8b1276965a8067\"]},\"openzeppelin-solidity/contracts/math/SafeMath.sol\":{\"keccak256\":\"0x4ccf2d7b51873db1ccfd54ca2adae5eac3b184f9699911ed4490438419f1c690\",\"urls\":[\"bzzr://1604f5b6d6e916c154efd8c6720cda069e5ba32dfa0a9dedf2b42e5b02d07f89\"]},\"openzeppelin-solidity/contracts/ownership/Ownable.sol\":{\"keccak256\":\"0xf79fb10e8235770eb4aea7249034076a3cc9f9119ad944fc48705bae9c9d20dc\",\"urls\":[\"bzzr://d12a11272051eb6586de8f7e0a82c04a98c9984ce8b2a6cf1ee439f65aba29a9\"]},\"openzeppelin-solidity/contracts/token/ERC20/ERC20.sol\":{\"keccak256\":\"0x852793a3c2f86d336a683b30d688ec3dcfc57451af5a2bf5975cda3b7191a901\",\"urls\":[\"bzzr://07fb42206812a17c1f71e548cfa5cec6f9aa1ae0ca5df870718ca4aa9759d1a5\"]},\"openzeppelin-solidity/contracts/token/ERC20/ERC20Detailed.sol\":{\"keccak256\":\"0xc61b3603089b09a730d8ca72e9133a496cc4405da40e9b87c12f073245d774bf\",\"urls\":[\"bzzr://f280f38d5ab6e1b89fd898ccd3901054a56572c141d91d30302e2db1db4cc6ff\"]},\"openzeppelin-solidity/contracts/token/ERC20/ERC20Mintable.sol\":{\"keccak256\":\"0x6df8d686813b2875e99928ecd07bf8ee6d7473bc6a95eb1190e8fdba86beda76\",\"urls\":[\"bzzr://b4a3a1136392be8723a0d9627d1626323e3891c98e88ca5ab48da1dada375580\"]},\"openzeppelin-solidity/contracts/token/ERC20/IERC20.sol\":{\"keccak256\":\"0x90e8c2521653bbb1768b05889c5760031e688d9cd361f167489b89215e201b95\",\"urls\":[\"bzzr://aa8b45b57edafc3d67bc5d916327ea16807fae33f753ca163ae0c4061b789766\"]},\"openzeppelin-solidity/contracts/token/ERC20/SafeERC20.sol\":{\"keccak256\":\"0xf6f89424e17870561dc23c5933c55c5726b66a68d51ad2a2c00c569a5f02f507\",\"urls\":[\"bzzr://28230529ef5e63b09eec01e3ca835ccb722533bc5379e6fdd04270c42157f8c3\"]},\"openzeppelin-solidity/contracts/utils/Address.sol\":{\"keccak256\":\"0xf3358e5819ca73357abd6c90bdfffd0474af54364897f6b3e3234c4b71fbe9a1\",\"urls\":[\"bzzr://f7f6da60a184233fd666ac44e6fb2bd51ca6ebdc4867a310d368049aa4e62786\"]},\"openzeppelin-solidity/contracts/utils/ReentrancyGuard.sol\":{\"keccak256\":\"0x0441ff2b36d503f3a29d28d3754291f119064f4973d5c780698143d919037a78\",\"urls\":[\"bzzr://d26b514ac785d2a74a903067d051b34541e86a7fc63b782bb39d3a576d8eb4da\"]}},\"version\":1}",
+  "bytecode": "0x608060405234801561001057600080fd5b506040516060806109b08339810180604052606081101561003057600080fd5b5080516020820151604090920151600160008190559192918282600160a060020a03821615156100ab576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040180806020018281038252602581526020018061098b6025913960400191505060405180910390fd5b600160a060020a038116151561010c576040517f08c379a00000000000000000000000000000000000000000000000000000000081526004018080602001828103825260248152602001806109676024913960400191505060405180910390fd5b60039290925560028054600160a060020a0319908116600160a060020a03938416179091556001805482169383169390931790925560058054909216941693909317909255506108049050806101636000396000f3fe608060405260043610610071577c010000000000000000000000000000000000000000000000000000000060003504632c4e722e811461007c5780634042b66f146100a3578063521eb273146100b8578063b01e2590146100e9578063ec8ac4d81461012c578063fc0c546a14610152575b61007a33610167565b005b34801561008857600080fd5b5061009161026e565b60408051918252519081900360200190f35b3480156100af57600080fd5b50610091610274565b3480156100c457600080fd5b506100cd61027a565b60408051600160a060020a039092168252519081900360200190f35b3480156100f557600080fd5b5061007a6004803603606081101561010c57600080fd5b50600160a060020a03813581169160208101359160409091013516610289565b61007a6004803603602081101561014257600080fd5b5035600160a060020a0316610167565b34801561015e57600080fd5b506100cd610440565b60008054600101908190553461017d838261044f565b6000610188826104f0565b60045490915061019e908363ffffffff61050d16565b6004556101ab8482610571565b60408051838152602081018390528151600160a060020a0387169233927f6faf93231a456e552dbc9961f58d9713ee4f2e69d15f1975b050ef0911053a7b929081900390910190a36101fd848361026a565b61020561057b565b61020f848361026a565b5050600054811461026a576040805160e560020a62461bcd02815260206004820152601f60248201527f5265656e7472616e637947756172643a207265656e7472616e742063616c6c00604482015290519081900360640190fd5b5050565b60035490565b60045490565b600254600160a060020a031690565b600554604080517f9a43aa98000000000000000000000000000000000000000000000000000000008152600160a060020a038085166004830152915184939290921691639a43aa9891602480820192602092909190829003018186803b1580156102f257600080fd5b505afa158015610306573d6000803e3d6000fd5b505050506040513d602081101561031c57600080fd5b5051151561035e5760405160e560020a62461bcd02815260040180806020018281038252603181526020018061073e6031913960400191505060405180910390fd5b600554604080517fd44f2598000000000000000000000000000000000000000000000000000000008152600160a060020a0384811660048301529151919092169163d44f2598916024808301926020929190829003018186803b1580156103c457600080fd5b505afa1580156103d8573d6000803e3d6000fd5b505050506040513d60208110156103ee57600080fd5b505115156104305760405160e560020a62461bcd0281526004018080602001828103825260408152602001806107996040913960400191505060405180910390fd5b61043a84846105b7565b50505050565b600154600160a060020a031690565b600160a060020a03821615156104995760405160e560020a62461bcd02815260040180806020018281038252602a81526020018061076f602a913960400191505060405180910390fd5b80151561026a576040805160e560020a62461bcd02815260206004820152601960248201527f43726f776473616c653a20776569416d6f756e74206973203000000000000000604482015290519081900360640190fd5b6000610507600354836106bc90919063ffffffff16565b92915050565b60008282018381101561056a576040805160e560020a62461bcd02815260206004820152601b60248201527f536166654d6174683a206164646974696f6e206f766572666c6f770000000000604482015290519081900360640190fd5b9392505050565b61026a82826105b7565b600254604051600160a060020a03909116903480156108fc02916000818181858888f193505050501580156105b4573d6000803e3d6000fd5b50565b6105bf610440565b600160a060020a03166340c10f1983836040518363ffffffff167c01000000000000000000000000000000000000000000000000000000000281526004018083600160a060020a0316600160a060020a0316815260200182815260200192505050602060405180830381600087803b15801561063a57600080fd5b505af115801561064e573d6000803e3d6000fd5b505050506040513d602081101561066457600080fd5b5051151561026a576040805160e560020a62461bcd02815260206004820152601f60248201527f4d696e74656443726f776473616c653a206d696e74696e67206661696c656400604482015290519081900360640190fd5b60008215156106cd57506000610507565b8282028284828115156106dc57fe5b041461056a5760405160e560020a62461bcd02815260040180806020018281038252602181526020018061071d6021913960400191505060405180910390fdfe536166654d6174683a206d756c7469706c69636174696f6e206f766572666c6f77566f74696e67546f6b656e417574686f7269736174696f6e3a2043616c6c6572206973206e6f7420616e2061646d696e2143726f776473616c653a2062656e656669636961727920697320746865207a65726f2061646472657373566f74696e67546f6b656e417574686f7269736174696f6e3a2043616c6c657220697320616e2061646d696e20627574206e6f7420617574686f726973656421a165627a7a723058200612cd181cb25ceb0b5dd0bc801df70ca3a855e9b524a47b78b40101d04e0677002943726f776473616c653a20746f6b656e20697320746865207a65726f206164647265737343726f776473616c653a2077616c6c657420697320746865207a65726f2061646472657373",
+  "deployedBytecode": "0x608060405260043610610071577c010000000000000000000000000000000000000000000000000000000060003504632c4e722e811461007c5780634042b66f146100a3578063521eb273146100b8578063b01e2590146100e9578063ec8ac4d81461012c578063fc0c546a14610152575b61007a33610167565b005b34801561008857600080fd5b5061009161026e565b60408051918252519081900360200190f35b3480156100af57600080fd5b50610091610274565b3480156100c457600080fd5b506100cd61027a565b60408051600160a060020a039092168252519081900360200190f35b3480156100f557600080fd5b5061007a6004803603606081101561010c57600080fd5b50600160a060020a03813581169160208101359160409091013516610289565b61007a6004803603602081101561014257600080fd5b5035600160a060020a0316610167565b34801561015e57600080fd5b506100cd610440565b60008054600101908190553461017d838261044f565b6000610188826104f0565b60045490915061019e908363ffffffff61050d16565b6004556101ab8482610571565b60408051838152602081018390528151600160a060020a0387169233927f6faf93231a456e552dbc9961f58d9713ee4f2e69d15f1975b050ef0911053a7b929081900390910190a36101fd848361026a565b61020561057b565b61020f848361026a565b5050600054811461026a576040805160e560020a62461bcd02815260206004820152601f60248201527f5265656e7472616e637947756172643a207265656e7472616e742063616c6c00604482015290519081900360640190fd5b5050565b60035490565b60045490565b600254600160a060020a031690565b600554604080517f9a43aa98000000000000000000000000000000000000000000000000000000008152600160a060020a038085166004830152915184939290921691639a43aa9891602480820192602092909190829003018186803b1580156102f257600080fd5b505afa158015610306573d6000803e3d6000fd5b505050506040513d602081101561031c57600080fd5b5051151561035e5760405160e560020a62461bcd02815260040180806020018281038252603181526020018061073e6031913960400191505060405180910390fd5b600554604080517fd44f2598000000000000000000000000000000000000000000000000000000008152600160a060020a0384811660048301529151919092169163d44f2598916024808301926020929190829003018186803b1580156103c457600080fd5b505afa1580156103d8573d6000803e3d6000fd5b505050506040513d60208110156103ee57600080fd5b505115156104305760405160e560020a62461bcd0281526004018080602001828103825260408152602001806107996040913960400191505060405180910390fd5b61043a84846105b7565b50505050565b600154600160a060020a031690565b600160a060020a03821615156104995760405160e560020a62461bcd02815260040180806020018281038252602a81526020018061076f602a913960400191505060405180910390fd5b80151561026a576040805160e560020a62461bcd02815260206004820152601960248201527f43726f776473616c653a20776569416d6f756e74206973203000000000000000604482015290519081900360640190fd5b6000610507600354836106bc90919063ffffffff16565b92915050565b60008282018381101561056a576040805160e560020a62461bcd02815260206004820152601b60248201527f536166654d6174683a206164646974696f6e206f766572666c6f770000000000604482015290519081900360640190fd5b9392505050565b61026a82826105b7565b600254604051600160a060020a03909116903480156108fc02916000818181858888f193505050501580156105b4573d6000803e3d6000fd5b50565b6105bf610440565b600160a060020a03166340c10f1983836040518363ffffffff167c01000000000000000000000000000000000000000000000000000000000281526004018083600160a060020a0316600160a060020a0316815260200182815260200192505050602060405180830381600087803b15801561063a57600080fd5b505af115801561064e573d6000803e3d6000fd5b505050506040513d602081101561066457600080fd5b5051151561026a576040805160e560020a62461bcd02815260206004820152601f60248201527f4d696e74656443726f776473616c653a206d696e74696e67206661696c656400604482015290519081900360640190fd5b60008215156106cd57506000610507565b8282028284828115156106dc57fe5b041461056a5760405160e560020a62461bcd02815260040180806020018281038252602181526020018061071d6021913960400191505060405180910390fdfe536166654d6174683a206d756c7469706c69636174696f6e206f766572666c6f77566f74696e67546f6b656e417574686f7269736174696f6e3a2043616c6c6572206973206e6f7420616e2061646d696e2143726f776473616c653a2062656e656669636961727920697320746865207a65726f2061646472657373566f74696e67546f6b656e417574686f7269736174696f6e3a2043616c6c657220697320616e2061646d696e20627574206e6f7420617574686f726973656421a165627a7a723058200612cd181cb25ceb0b5dd0bc801df70ca3a855e9b524a47b78b40101d04e06770029",
+  "sourceMap": "1030:835:6:-;;;1150:265;8:9:-1;5:2;;;30:1;27;20:12;5:2;1150:265:6;;;;;;;;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;-1:-1;1150:265:6;;;;;;;;;;;1242:1;868:13:20;:17;;;1150:265:6;;;;;-1:-1:-1;2422:20:9;;;;2414:70;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;2502:28:9;;;;2494:77;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;2582:5;:12;;;;2604:7;:16;;-1:-1:-1;;2604:16:9;;;-1:-1:-1;2604:16:9;;;;;;;-1:-1:-1;2630:14:9;;;;;;;;;;;;;;1382:12:6;:26;;;;;;;;;;;;;;-1:-1:-1;;;;;1030:835:6;-1:-1:-1;1030:835:6;;",
+  "deployedSourceMap": "1030:835:6:-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;2979:21:9;2989:10;2979:9;:21::i;:::-;1030:835:6;3390:75:9;;8:9:-1;5:2;;;30:1;27;20:12;5:2;3390:75:9;;;:::i;:::-;;;;;;;;;;;;;;;;3528:85;;8:9:-1;5:2;;;30:1;27;20:12;5:2;3528:85:9;;;:::i;3218:87::-;;8:9:-1;5:2;;;30:1;27;20:12;5:2;3218:87:9;;;:::i;:::-;;;;-1:-1:-1;;;;;3218:87:9;;;;;;;;;;;;;;1421:155:6;;8:9:-1;5:2;;;30:1;27;20:12;5:2;1421:155:6;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;-1:-1;;;;;;1421:155:6;;;;;;;;;;;;;;;;;:::i;3870:603:9:-;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;-1:-1;3870:603:9;-1:-1:-1;;;;;3870:603:9;;:::i;3066:76::-;;8:9:-1;5:2;;;30:1;27;20:12;5:2;3066:76:9;;;:::i;3870:603::-;1301:13:20;:18;;1318:1;1301:18;;;;;3968:9:9;3987:44;4008:11;3968:9;3987:20;:44::i;:::-;4090:14;4107:26;4123:9;4107:15;:26::i;:::-;4181:10;;4090:43;;-1:-1:-1;4181:25:9;;4196:9;4181:25;:14;:25;:::i;:::-;4168:10;:38;4217:37;4234:11;4247:6;4217:16;:37::i;:::-;4269:59;;;;;;;;;;;;;;-1:-1:-1;;;;;4269:59:9;;;4285:10;;4269:59;;;;;;;;;;;4339:46;4362:11;4375:9;4339:22;:46::i;:::-;4396:15;:13;:15::i;:::-;4421:45;4443:11;4456:9;4421:21;:45::i;:::-;-1:-1:-1;;1410:13:20;;1394:29;;1386:73;;;;;-1:-1:-1;;;;;1386:73:20;;;;;;;;;;;;;;;;;;;;;;;;;;;;3870:603:9;;:::o;3390:75::-;3453:5;;3390:75;:::o;3528:85::-;3596:10;;3528:85;:::o;3218:87::-;3291:7;;-1:-1:-1;;;;;3291:7:9;;3218:87::o;1421:155:6:-;1633:12;;:33;;;;;;-1:-1:-1;;;;;1633:33:6;;;;;;;;;;;:12;;;;;:26;;:33;;;;;;;;;;;;;;;:12;:33;;;5:2:-1;;;;30:1;27;20:12;5:2;1633:33:6;;;;8:9:-1;5:2;;;45:16;42:1;39;24:38;77:16;74:1;67:27;5:2;1633:33:6;;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;-1:-1;1633:33:6;1625:95;;;;;;-1:-1:-1;;;;;1625:95:6;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1738:12;;:37;;;;;;-1:-1:-1;;;;;1738:37:6;;;;;;;;;:12;;;;;:30;;:37;;;;;;;;;;;;;;:12;:37;;;5:2:-1;;;;30:1;27;20:12;5:2;1738:37:6;;;;8:9:-1;5:2;;;45:16;42:1;39;24:38;77:16;74:1;67:27;5:2;1738:37:6;;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;-1:-1;1738:37:6;1730:114;;;;;;;-1:-1:-1;;;;;1730:114:6;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1529:40;1550:5;1557:11;1529:20;:40::i;:::-;1421:155;;;;:::o;3066:76:9:-;3129:6;;-1:-1:-1;;;;;3129:6:9;;3066:76::o;5015:243::-;-1:-1:-1;;;;;5117:25:9;;;;5109:80;;;;-1:-1:-1;;;;;5109:80:9;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;5207:14;;;5199:52;;;;;-1:-1:-1;;;;;5199:52:9;;;;;;;;;;;;;;;;;;;;;;;;;;;7183:120;7250:7;7276:20;7290:5;;7276:9;:13;;:20;;;;:::i;:::-;7269:27;7183:120;-1:-1:-1;;7183:120:9:o;834:176:12:-;892:7;923:5;;;946:6;;;;938:46;;;;;-1:-1:-1;;;;;938:46:12;;;;;;;;;;;;;;;;;;;;;;;;;;;;1002:1;834:176;-1:-1:-1;;;834:176:12:o;6385:134:9:-;6472:40;6487:11;6500;6472:14;:40::i;7390:78::-;7434:7;;:27;;-1:-1:-1;;;;;7434:7:9;;;;7451:9;7434:27;;;;;:7;:27;:7;:27;7451:9;7434:7;:27;;;;;;;;8:9:-1;5:2;;;45:16;42:1;39;24:38;77:16;74:1;67:27;5:2;7434:27:9;7390:78::o;510:309:10:-;711:7;:5;:7::i;:::-;689:62;;;;;;-1:-1:-1;;;;;689:62:10;;;;;;;;;;;;;;;:36;;;;;;;:62;;;;;;;;;;;;;;;-1:-1:-1;689:36:10;:62;;;5:2:-1;;;;30:1;27;20:12;5:2;689:62:10;;;;8:9:-1;5:2;;;45:16;42:1;39;24:38;77:16;74:1;67:27;5:2;689:62:10;;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;-1:-1;689:62:10;668:144;;;;;;;-1:-1:-1;;;;;668:144:10;;;;;;;;;;;;;;;;;;;;;;;;;;;1693:458:12;1751:7;1991:6;;1987:45;;;-1:-1:-1;2020:1:12;2013:8;;1987:45;2054:5;;;2058:1;2054;:5;2077;;;;;;;;:10;2069:56;;;;-1:-1:-1;;;;;2069:56:12;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;",
+  "source": "pragma solidity ^0.5.3;\n\nimport \"openzeppelin-solidity/contracts/ownership/Ownable.sol\";\nimport \"openzeppelin-solidity/contracts/crowdsale/emission/MintedCrowdsale.sol\";\nimport \"openzeppelin-solidity/contracts/crowdsale/validation/TimedCrowdsale.sol\";\nimport \"./VotingToken.sol\";\nimport \"./Institution.sol\";\nimport \"./ApprovalQueue.sol\";\n\n\n// *****TODO Complete Ownable flow for this contract*****\n\n/**\n * The authorisation of Voting Tokens is implemented as a custom crowdsale - however the concept of purchasing tokens for Ether\n * is not utilised here. In simple terms, that boils down to buyTokens() not being called in the flow of an Institution admin\n * authorising a voter; rather,_deliverTokens() is called, and a token will then be minted and then transferred to the user.\n * Open Zeppelin crowdsale contracts are being inherited to provide automatic protection against reentrancy attacks and to\n * provide common crowdsale functionality without having to reinvent the wheel.\n */\n // TODO check ownable is still relevant\ncontract VotingTokenAuthorisation is MintedCrowdsale {\n\n\n    Institution _institution;\n    VotingToken _theToken;\n\n\n    constructor (Institution institution, address admin, VotingToken votingToken)\n    Crowdsale(1,  address(uint160(admin)), votingToken)\n    public { //isAdmin(admin) { // CAN'T DO THIS BECAUSE _INSTITUTION NOT INITIALISED YET\n        _institution = institution;\n    }\n\n    function sendVotingToken(address voter, uint256 tokenAmount, address admin) public isAdmin(admin) {\n        super._deliverTokens(voter, tokenAmount);\n    }\n\n    modifier isAdmin(address admin)  {\n        require(_institution.isAdminStored(admin), \"VotingTokenAuthorisation: Caller is not an admin!\");\n        require(_institution.isAdminAuthorised(admin), \"VotingTokenAuthorisation: Caller is an admin but not authorised!\");\n        _;\n    }\n\n}",
   "sourcePath": "/Users/erdi/git/final-year-project/dapp-backend/contracts/VotingTokenAuthorisation.sol",
   "ast": {
     "absolutePath": "/Users/erdi/git/final-year-project/dapp-backend/contracts/VotingTokenAuthorisation.sol",
     "exportedSymbols": {
       "VotingTokenAuthorisation": [
-        1885
+        1865
       ]
     },
-    "id": 1886,
+    "id": 1866,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 1797,
+        "id": 1787,
         "literals": [
           "solidity",
           "^",
@@ -257,10 +176,10 @@
       {
         "absolutePath": "openzeppelin-solidity/contracts/ownership/Ownable.sol",
         "file": "openzeppelin-solidity/contracts/ownership/Ownable.sol",
-        "id": 1798,
+        "id": 1788,
         "nodeType": "ImportDirective",
-        "scope": 1886,
-        "sourceUnit": 2766,
+        "scope": 1866,
+        "sourceUnit": 2746,
         "src": "25:63:6",
         "symbolAliases": [],
         "unitAlias": ""
@@ -268,10 +187,10 @@
       {
         "absolutePath": "openzeppelin-solidity/contracts/crowdsale/emission/MintedCrowdsale.sol",
         "file": "openzeppelin-solidity/contracts/crowdsale/emission/MintedCrowdsale.sol",
-        "id": 1799,
+        "id": 1789,
         "nodeType": "ImportDirective",
-        "scope": 1886,
-        "sourceUnit": 2372,
+        "scope": 1866,
+        "sourceUnit": 2352,
         "src": "89:80:6",
         "symbolAliases": [],
         "unitAlias": ""
@@ -279,10 +198,10 @@
       {
         "absolutePath": "openzeppelin-solidity/contracts/crowdsale/validation/TimedCrowdsale.sol",
         "file": "openzeppelin-solidity/contracts/crowdsale/validation/TimedCrowdsale.sol",
-        "id": 1800,
+        "id": 1790,
         "nodeType": "ImportDirective",
-        "scope": 1886,
-        "sourceUnit": 2522,
+        "scope": 1866,
+        "sourceUnit": 2502,
         "src": "170:81:6",
         "symbolAliases": [],
         "unitAlias": ""
@@ -290,10 +209,10 @@
       {
         "absolutePath": "/Users/erdi/git/final-year-project/dapp-backend/contracts/VotingToken.sol",
         "file": "./VotingToken.sol",
-        "id": 1801,
+        "id": 1791,
         "nodeType": "ImportDirective",
-        "scope": 1886,
-        "sourceUnit": 1796,
+        "scope": 1866,
+        "sourceUnit": 1786,
         "src": "252:27:6",
         "symbolAliases": [],
         "unitAlias": ""
@@ -301,10 +220,10 @@
       {
         "absolutePath": "/Users/erdi/git/final-year-project/dapp-backend/contracts/Institution.sol",
         "file": "./Institution.sol",
-        "id": 1802,
+        "id": 1792,
         "nodeType": "ImportDirective",
-        "scope": 1886,
-        "sourceUnit": 1393,
+        "scope": 1866,
+        "sourceUnit": 1383,
         "src": "280:27:6",
         "symbolAliases": [],
         "unitAlias": ""
@@ -312,9 +231,9 @@
       {
         "absolutePath": "/Users/erdi/git/final-year-project/dapp-backend/contracts/ApprovalQueue.sol",
         "file": "./ApprovalQueue.sol",
-        "id": 1803,
+        "id": 1793,
         "nodeType": "ImportDirective",
-        "scope": 1886,
+        "scope": 1866,
         "sourceUnit": 284,
         "src": "308:29:6",
         "symbolAliases": [],
@@ -326,81 +245,61 @@
             "arguments": null,
             "baseName": {
               "contractScope": null,
-              "id": 1804,
+              "id": 1794,
               "name": "MintedCrowdsale",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 2371,
+              "referencedDeclaration": 2351,
               "src": "1067:15:6",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_MintedCrowdsale_$2371",
+                "typeIdentifier": "t_contract$_MintedCrowdsale_$2351",
                 "typeString": "contract MintedCrowdsale"
               }
             },
-            "id": 1805,
+            "id": 1795,
             "nodeType": "InheritanceSpecifier",
             "src": "1067:15:6"
-          },
-          {
-            "arguments": null,
-            "baseName": {
-              "contractScope": null,
-              "id": 1806,
-              "name": "TimedCrowdsale",
-              "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 2521,
-              "src": "1084:14:6",
-              "typeDescriptions": {
-                "typeIdentifier": "t_contract$_TimedCrowdsale_$2521",
-                "typeString": "contract TimedCrowdsale"
-              }
-            },
-            "id": 1807,
-            "nodeType": "InheritanceSpecifier",
-            "src": "1084:14:6"
           }
         ],
         "contractDependencies": [
-          2342,
-          2371,
-          2521,
-          3587
+          2322,
+          2351,
+          3567
         ],
         "contractKind": "contract",
         "documentation": "The authorisation of Voting Tokens is implemented as a custom crowdsale - however the concept of purchasing tokens for Ether\nis not utilised here. In simple terms, that boils down to buyTokens() not being called in the flow of an Institution admin\nauthorising a voter; rather,_deliverTokens() is called, and a token will then be minted and then transferred to the user.\nOpen Zeppelin crowdsale contracts are being inherited to provide automatic protection against reentrancy attacks and to\nprovide common crowdsale functionality without having to reinvent the wheel.",
         "fullyImplemented": true,
-        "id": 1885,
+        "id": 1865,
         "linearizedBaseContracts": [
-          1885,
-          2521,
-          2371,
-          2342,
-          3587
+          1865,
+          2351,
+          2322,
+          3567
         ],
         "name": "VotingTokenAuthorisation",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "constant": false,
-            "id": 1809,
+            "id": 1797,
             "name": "_institution",
             "nodeType": "VariableDeclaration",
-            "scope": 1885,
-            "src": "1107:24:6",
+            "scope": 1865,
+            "src": "1091:24:6",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_contract$_Institution_$1392",
+              "typeIdentifier": "t_contract$_Institution_$1382",
               "typeString": "contract Institution"
             },
             "typeName": {
               "contractScope": null,
-              "id": 1808,
+              "id": 1796,
               "name": "Institution",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 1392,
-              "src": "1107:11:6",
+              "referencedDeclaration": 1382,
+              "src": "1091:11:6",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_Institution_$1392",
+                "typeIdentifier": "t_contract$_Institution_$1382",
                 "typeString": "contract Institution"
               }
             },
@@ -409,26 +308,26 @@
           },
           {
             "constant": false,
-            "id": 1811,
+            "id": 1799,
             "name": "_theToken",
             "nodeType": "VariableDeclaration",
-            "scope": 1885,
-            "src": "1137:21:6",
+            "scope": 1865,
+            "src": "1121:21:6",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_contract$_VotingToken_$1795",
+              "typeIdentifier": "t_contract$_VotingToken_$1785",
               "typeString": "contract VotingToken"
             },
             "typeName": {
               "contractScope": null,
-              "id": 1810,
+              "id": 1798,
               "name": "VotingToken",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 1795,
-              "src": "1137:11:6",
+              "referencedDeclaration": 1785,
+              "src": "1121:11:6",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_VotingToken_$1795",
+                "typeIdentifier": "t_contract$_VotingToken_$1785",
                 "typeString": "contract VotingToken"
               }
             },
@@ -437,28 +336,28 @@
           },
           {
             "body": {
-              "id": 1841,
+              "id": 1821,
               "nodeType": "Block",
-              "src": "1398:120:6",
+              "src": "1295:120:6",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 1839,
+                    "id": 1819,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 1837,
+                      "id": 1817,
                       "name": "_institution",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 1809,
-                      "src": "1485:12:6",
+                      "referencedDeclaration": 1797,
+                      "src": "1382:12:6",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_Institution_$1392",
+                        "typeIdentifier": "t_contract$_Institution_$1382",
                         "typeString": "contract Institution"
                       }
                     },
@@ -466,31 +365,31 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 1838,
+                      "id": 1818,
                       "name": "institution",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 1813,
-                      "src": "1500:11:6",
+                      "referencedDeclaration": 1801,
+                      "src": "1397:11:6",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_Institution_$1392",
+                        "typeIdentifier": "t_contract$_Institution_$1382",
                         "typeString": "contract Institution"
                       }
                     },
-                    "src": "1485:26:6",
+                    "src": "1382:26:6",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_Institution_$1392",
+                      "typeIdentifier": "t_contract$_Institution_$1382",
                       "typeString": "contract Institution"
                     }
                   },
-                  "id": 1840,
+                  "id": 1820,
                   "nodeType": "ExpressionStatement",
-                  "src": "1485:26:6"
+                  "src": "1382:26:6"
                 }
               ]
             },
             "documentation": null,
-            "id": 1842,
+            "id": 1822,
             "implemented": true,
             "kind": "constructor",
             "modifiers": [
@@ -499,14 +398,14 @@
                   {
                     "argumentTypes": null,
                     "hexValue": "31",
-                    "id": 1824,
+                    "id": 1808,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": true,
                     "kind": "number",
                     "lValueRequested": false,
                     "nodeType": "Literal",
-                    "src": "1300:1:6",
+                    "src": "1242:1:6",
                     "subdenomination": null,
                     "typeDescriptions": {
                       "typeIdentifier": "t_rational_1_by_1",
@@ -522,12 +421,12 @@
                         "arguments": [
                           {
                             "argumentTypes": null,
-                            "id": 1827,
+                            "id": 1811,
                             "name": "admin",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 1815,
-                            "src": "1320:5:6",
+                            "referencedDeclaration": 1803,
+                            "src": "1262:5:6",
                             "typeDescriptions": {
                               "typeIdentifier": "t_address",
                               "typeString": "address"
@@ -541,20 +440,20 @@
                               "typeString": "address"
                             }
                           ],
-                          "id": 1826,
+                          "id": 1810,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
                           "lValueRequested": false,
                           "nodeType": "ElementaryTypeNameExpression",
-                          "src": "1312:7:6",
+                          "src": "1254:7:6",
                           "typeDescriptions": {
                             "typeIdentifier": "t_type$_t_uint160_$",
                             "typeString": "type(uint160)"
                           },
                           "typeName": "uint160"
                         },
-                        "id": 1828,
+                        "id": 1812,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -562,7 +461,7 @@
                         "lValueRequested": false,
                         "names": [],
                         "nodeType": "FunctionCall",
-                        "src": "1312:14:6",
+                        "src": "1254:14:6",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint160",
                           "typeString": "uint160"
@@ -576,20 +475,20 @@
                           "typeString": "uint160"
                         }
                       ],
-                      "id": 1825,
+                      "id": 1809,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
                       "lValueRequested": false,
                       "nodeType": "ElementaryTypeNameExpression",
-                      "src": "1304:7:6",
+                      "src": "1246:7:6",
                       "typeDescriptions": {
                         "typeIdentifier": "t_type$_t_address_$",
                         "typeString": "type(address)"
                       },
                       "typeName": "address"
                     },
-                    "id": 1829,
+                    "id": 1813,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -597,7 +496,7 @@
                     "lValueRequested": false,
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "1304:23:6",
+                    "src": "1246:23:6",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address_payable",
                       "typeString": "address payable"
@@ -605,110 +504,64 @@
                   },
                   {
                     "argumentTypes": null,
-                    "id": 1830,
+                    "id": 1814,
                     "name": "votingToken",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 1821,
-                    "src": "1329:11:6",
+                    "referencedDeclaration": 1805,
+                    "src": "1271:11:6",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_VotingToken_$1795",
+                      "typeIdentifier": "t_contract$_VotingToken_$1785",
                       "typeString": "contract VotingToken"
                     }
                   }
                 ],
-                "id": 1831,
+                "id": 1815,
                 "modifierName": {
                   "argumentTypes": null,
-                  "id": 1823,
+                  "id": 1807,
                   "name": "Crowdsale",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 2342,
-                  "src": "1290:9:6",
+                  "referencedDeclaration": 2322,
+                  "src": "1232:9:6",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_type$_t_contract$_Crowdsale_$2342_$",
+                    "typeIdentifier": "t_type$_t_contract$_Crowdsale_$2322_$",
                     "typeString": "type(contract Crowdsale)"
                   }
                 },
                 "nodeType": "ModifierInvocation",
-                "src": "1290:51:6"
-              },
-              {
-                "arguments": [
-                  {
-                    "argumentTypes": null,
-                    "id": 1833,
-                    "name": "openingTime",
-                    "nodeType": "Identifier",
-                    "overloadedDeclarations": [],
-                    "referencedDeclaration": 1817,
-                    "src": "1361:11:6",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_uint256",
-                      "typeString": "uint256"
-                    }
-                  },
-                  {
-                    "argumentTypes": null,
-                    "id": 1834,
-                    "name": "closingTime",
-                    "nodeType": "Identifier",
-                    "overloadedDeclarations": [],
-                    "referencedDeclaration": 1819,
-                    "src": "1374:11:6",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_uint256",
-                      "typeString": "uint256"
-                    }
-                  }
-                ],
-                "id": 1835,
-                "modifierName": {
-                  "argumentTypes": null,
-                  "id": 1832,
-                  "name": "TimedCrowdsale",
-                  "nodeType": "Identifier",
-                  "overloadedDeclarations": [],
-                  "referencedDeclaration": 2521,
-                  "src": "1346:14:6",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_type$_t_contract$_TimedCrowdsale_$2521_$",
-                    "typeString": "type(contract TimedCrowdsale)"
-                  }
-                },
-                "nodeType": "ModifierInvocation",
-                "src": "1346:40:6"
+                "src": "1232:51:6"
               }
             ],
             "name": "",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1822,
+              "id": 1806,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1813,
+                  "id": 1801,
                   "name": "institution",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1842,
-                  "src": "1179:23:6",
+                  "scope": 1822,
+                  "src": "1163:23:6",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_contract$_Institution_$1392",
+                    "typeIdentifier": "t_contract$_Institution_$1382",
                     "typeString": "contract Institution"
                   },
                   "typeName": {
                     "contractScope": null,
-                    "id": 1812,
+                    "id": 1800,
                     "name": "Institution",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 1392,
-                    "src": "1179:11:6",
+                    "referencedDeclaration": 1382,
+                    "src": "1163:11:6",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_Institution_$1392",
+                      "typeIdentifier": "t_contract$_Institution_$1382",
                       "typeString": "contract Institution"
                     }
                   },
@@ -717,11 +570,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 1815,
+                  "id": 1803,
                   "name": "admin",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1842,
-                  "src": "1204:13:6",
+                  "scope": 1822,
+                  "src": "1188:13:6",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -729,10 +582,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 1814,
+                    "id": 1802,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1204:7:6",
+                    "src": "1188:7:6",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -744,78 +597,26 @@
                 },
                 {
                   "constant": false,
-                  "id": 1817,
-                  "name": "openingTime",
-                  "nodeType": "VariableDeclaration",
-                  "scope": 1842,
-                  "src": "1219:19:6",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_uint256",
-                    "typeString": "uint256"
-                  },
-                  "typeName": {
-                    "id": 1816,
-                    "name": "uint256",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "1219:7:6",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_uint256",
-                      "typeString": "uint256"
-                    }
-                  },
-                  "value": null,
-                  "visibility": "internal"
-                },
-                {
-                  "constant": false,
-                  "id": 1819,
-                  "name": "closingTime",
-                  "nodeType": "VariableDeclaration",
-                  "scope": 1842,
-                  "src": "1240:19:6",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_uint256",
-                    "typeString": "uint256"
-                  },
-                  "typeName": {
-                    "id": 1818,
-                    "name": "uint256",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "1240:7:6",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_uint256",
-                      "typeString": "uint256"
-                    }
-                  },
-                  "value": null,
-                  "visibility": "internal"
-                },
-                {
-                  "constant": false,
-                  "id": 1821,
+                  "id": 1805,
                   "name": "votingToken",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1842,
-                  "src": "1261:23:6",
+                  "scope": 1822,
+                  "src": "1203:23:6",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_contract$_VotingToken_$1795",
+                    "typeIdentifier": "t_contract$_VotingToken_$1785",
                     "typeString": "contract VotingToken"
                   },
                   "typeName": {
                     "contractScope": null,
-                    "id": 1820,
+                    "id": 1804,
                     "name": "VotingToken",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 1795,
-                    "src": "1261:11:6",
+                    "referencedDeclaration": 1785,
+                    "src": "1203:11:6",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_VotingToken_$1795",
+                      "typeIdentifier": "t_contract$_VotingToken_$1785",
                       "typeString": "contract VotingToken"
                     }
                   },
@@ -823,25 +624,25 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1178:107:6"
+              "src": "1162:65:6"
             },
             "returnParameters": {
-              "id": 1836,
+              "id": 1816,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "1398:0:6"
+              "src": "1295:0:6"
             },
-            "scope": 1885,
-            "src": "1166:352:6",
+            "scope": 1865,
+            "src": "1150:265:6",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           },
           {
             "body": {
-              "id": 1861,
+              "id": 1841,
               "nodeType": "Block",
-              "src": "1622:57:6",
+              "src": "1519:57:6",
               "statements": [
                 {
                   "expression": {
@@ -849,12 +650,12 @@
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 1857,
+                        "id": 1837,
                         "name": "voter",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 1844,
-                        "src": "1653:5:6",
+                        "referencedDeclaration": 1824,
+                        "src": "1550:5:6",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
                           "typeString": "address"
@@ -862,12 +663,12 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 1858,
+                        "id": 1838,
                         "name": "tokenAmount",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 1846,
-                        "src": "1660:11:6",
+                        "referencedDeclaration": 1826,
+                        "src": "1557:11:6",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
@@ -887,32 +688,32 @@
                       ],
                       "expression": {
                         "argumentTypes": null,
-                        "id": 1854,
+                        "id": 1834,
                         "name": "super",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 3651,
-                        "src": "1632:5:6",
+                        "referencedDeclaration": 3631,
+                        "src": "1529:5:6",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_super$_VotingTokenAuthorisation_$1885",
+                          "typeIdentifier": "t_super$_VotingTokenAuthorisation_$1865",
                           "typeString": "contract super VotingTokenAuthorisation"
                         }
                       },
-                      "id": 1856,
+                      "id": 1836,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
                       "lValueRequested": false,
                       "memberName": "_deliverTokens",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 2370,
-                      "src": "1632:20:6",
+                      "referencedDeclaration": 2350,
+                      "src": "1529:20:6",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_nonpayable$_t_address_$_t_uint256_$returns$__$",
                         "typeString": "function (address,uint256)"
                       }
                     },
-                    "id": 1859,
+                    "id": 1839,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -920,20 +721,20 @@
                     "lValueRequested": false,
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "1632:40:6",
+                    "src": "1529:40:6",
                     "typeDescriptions": {
                       "typeIdentifier": "t_tuple$__$",
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 1860,
+                  "id": 1840,
                   "nodeType": "ExpressionStatement",
-                  "src": "1632:40:6"
+                  "src": "1529:40:6"
                 }
               ]
             },
             "documentation": null,
-            "id": 1862,
+            "id": 1842,
             "implemented": true,
             "kind": "function",
             "modifiers": [
@@ -941,49 +742,49 @@
                 "arguments": [
                   {
                     "argumentTypes": null,
-                    "id": 1851,
+                    "id": 1831,
                     "name": "admin",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 1848,
-                    "src": "1615:5:6",
+                    "referencedDeclaration": 1828,
+                    "src": "1512:5:6",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
                     }
                   }
                 ],
-                "id": 1852,
+                "id": 1832,
                 "modifierName": {
                   "argumentTypes": null,
-                  "id": 1850,
+                  "id": 1830,
                   "name": "isAdmin",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 1884,
-                  "src": "1607:7:6",
+                  "referencedDeclaration": 1864,
+                  "src": "1504:7:6",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$_t_address_$",
                     "typeString": "modifier (address)"
                   }
                 },
                 "nodeType": "ModifierInvocation",
-                "src": "1607:14:6"
+                "src": "1504:14:6"
               }
             ],
             "name": "sendVotingToken",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1849,
+              "id": 1829,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1844,
+                  "id": 1824,
                   "name": "voter",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1862,
-                  "src": "1549:13:6",
+                  "scope": 1842,
+                  "src": "1446:13:6",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -991,10 +792,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 1843,
+                    "id": 1823,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1549:7:6",
+                    "src": "1446:7:6",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -1006,11 +807,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 1846,
+                  "id": 1826,
                   "name": "tokenAmount",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1862,
-                  "src": "1564:19:6",
+                  "scope": 1842,
+                  "src": "1461:19:6",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1018,10 +819,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 1845,
+                    "id": 1825,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1564:7:6",
+                    "src": "1461:7:6",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1032,11 +833,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 1848,
+                  "id": 1828,
                   "name": "admin",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1862,
-                  "src": "1585:13:6",
+                  "scope": 1842,
+                  "src": "1482:13:6",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1044,10 +845,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 1847,
+                    "id": 1827,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1585:7:6",
+                    "src": "1482:7:6",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -1058,25 +859,25 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1548:51:6"
+              "src": "1445:51:6"
             },
             "returnParameters": {
-              "id": 1853,
+              "id": 1833,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "1622:0:6"
+              "src": "1519:0:6"
             },
-            "scope": 1885,
-            "src": "1524:155:6",
+            "scope": 1865,
+            "src": "1421:155:6",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           },
           {
             "body": {
-              "id": 1883,
+              "id": 1863,
               "nodeType": "Block",
-              "src": "1718:247:6",
+              "src": "1615:247:6",
               "statements": [
                 {
                   "expression": {
@@ -1087,12 +888,12 @@
                         "arguments": [
                           {
                             "argumentTypes": null,
-                            "id": 1869,
+                            "id": 1849,
                             "name": "admin",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 1864,
-                            "src": "1763:5:6",
+                            "referencedDeclaration": 1844,
+                            "src": "1660:5:6",
                             "typeDescriptions": {
                               "typeIdentifier": "t_address",
                               "typeString": "address"
@@ -1108,18 +909,18 @@
                           ],
                           "expression": {
                             "argumentTypes": null,
-                            "id": 1867,
+                            "id": 1847,
                             "name": "_institution",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 1809,
-                            "src": "1736:12:6",
+                            "referencedDeclaration": 1797,
+                            "src": "1633:12:6",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_Institution_$1392",
+                              "typeIdentifier": "t_contract$_Institution_$1382",
                               "typeString": "contract Institution"
                             }
                           },
-                          "id": 1868,
+                          "id": 1848,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -1127,13 +928,13 @@
                           "memberName": "isAdminStored",
                           "nodeType": "MemberAccess",
                           "referencedDeclaration": 958,
-                          "src": "1736:26:6",
+                          "src": "1633:26:6",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_address_$returns$_t_bool_$",
                             "typeString": "function (address) view external returns (bool)"
                           }
                         },
-                        "id": 1870,
+                        "id": 1850,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -1141,7 +942,7 @@
                         "lValueRequested": false,
                         "names": [],
                         "nodeType": "FunctionCall",
-                        "src": "1736:33:6",
+                        "src": "1633:33:6",
                         "typeDescriptions": {
                           "typeIdentifier": "t_bool",
                           "typeString": "bool"
@@ -1150,14 +951,14 @@
                       {
                         "argumentTypes": null,
                         "hexValue": "566f74696e67546f6b656e417574686f7269736174696f6e3a2043616c6c6572206973206e6f7420616e2061646d696e21",
-                        "id": 1871,
+                        "id": 1851,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
                         "kind": "string",
                         "lValueRequested": false,
                         "nodeType": "Literal",
-                        "src": "1771:51:6",
+                        "src": "1668:51:6",
                         "subdenomination": null,
                         "typeDescriptions": {
                           "typeIdentifier": "t_stringliteral_b865b056dde40e4486a3921563373ce82cc92ea635e202721b79c212370c8ca2",
@@ -1177,21 +978,21 @@
                           "typeString": "literal_string \"VotingTokenAuthorisation: Caller is not an admin!\""
                         }
                       ],
-                      "id": 1866,
+                      "id": 1846,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        3605,
-                        3606
+                        3585,
+                        3586
                       ],
-                      "referencedDeclaration": 3606,
-                      "src": "1728:7:6",
+                      "referencedDeclaration": 3586,
+                      "src": "1625:7:6",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 1872,
+                    "id": 1852,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1199,15 +1000,15 @@
                     "lValueRequested": false,
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "1728:95:6",
+                    "src": "1625:95:6",
                     "typeDescriptions": {
                       "typeIdentifier": "t_tuple$__$",
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 1873,
+                  "id": 1853,
                   "nodeType": "ExpressionStatement",
-                  "src": "1728:95:6"
+                  "src": "1625:95:6"
                 },
                 {
                   "expression": {
@@ -1218,12 +1019,12 @@
                         "arguments": [
                           {
                             "argumentTypes": null,
-                            "id": 1877,
+                            "id": 1857,
                             "name": "admin",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 1864,
-                            "src": "1872:5:6",
+                            "referencedDeclaration": 1844,
+                            "src": "1769:5:6",
                             "typeDescriptions": {
                               "typeIdentifier": "t_address",
                               "typeString": "address"
@@ -1239,18 +1040,18 @@
                           ],
                           "expression": {
                             "argumentTypes": null,
-                            "id": 1875,
+                            "id": 1855,
                             "name": "_institution",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 1809,
-                            "src": "1841:12:6",
+                            "referencedDeclaration": 1797,
+                            "src": "1738:12:6",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_Institution_$1392",
+                              "typeIdentifier": "t_contract$_Institution_$1382",
                               "typeString": "contract Institution"
                             }
                           },
-                          "id": 1876,
+                          "id": 1856,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -1258,13 +1059,13 @@
                           "memberName": "isAdminAuthorised",
                           "nodeType": "MemberAccess",
                           "referencedDeclaration": 971,
-                          "src": "1841:30:6",
+                          "src": "1738:30:6",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_address_$returns$_t_bool_$",
                             "typeString": "function (address) view external returns (bool)"
                           }
                         },
-                        "id": 1878,
+                        "id": 1858,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -1272,7 +1073,7 @@
                         "lValueRequested": false,
                         "names": [],
                         "nodeType": "FunctionCall",
-                        "src": "1841:37:6",
+                        "src": "1738:37:6",
                         "typeDescriptions": {
                           "typeIdentifier": "t_bool",
                           "typeString": "bool"
@@ -1281,14 +1082,14 @@
                       {
                         "argumentTypes": null,
                         "hexValue": "566f74696e67546f6b656e417574686f7269736174696f6e3a2043616c6c657220697320616e2061646d696e20627574206e6f7420617574686f726973656421",
-                        "id": 1879,
+                        "id": 1859,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
                         "kind": "string",
                         "lValueRequested": false,
                         "nodeType": "Literal",
-                        "src": "1880:66:6",
+                        "src": "1777:66:6",
                         "subdenomination": null,
                         "typeDescriptions": {
                           "typeIdentifier": "t_stringliteral_efa9df24f38ba0bfcccf7d4abc967b3257ca25dbcfbfb458ad28cd7b5ec0675c",
@@ -1308,21 +1109,21 @@
                           "typeString": "literal_string \"VotingTokenAuthorisation: Caller is an admin but not authorised!\""
                         }
                       ],
-                      "id": 1874,
+                      "id": 1854,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        3605,
-                        3606
+                        3585,
+                        3586
                       ],
-                      "referencedDeclaration": 3606,
-                      "src": "1833:7:6",
+                      "referencedDeclaration": 3586,
+                      "src": "1730:7:6",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 1880,
+                    "id": 1860,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1330,38 +1131,38 @@
                     "lValueRequested": false,
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "1833:114:6",
+                    "src": "1730:114:6",
                     "typeDescriptions": {
                       "typeIdentifier": "t_tuple$__$",
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 1881,
+                  "id": 1861,
                   "nodeType": "ExpressionStatement",
-                  "src": "1833:114:6"
+                  "src": "1730:114:6"
                 },
                 {
-                  "id": 1882,
+                  "id": 1862,
                   "nodeType": "PlaceholderStatement",
-                  "src": "1957:1:6"
+                  "src": "1854:1:6"
                 }
               ]
             },
             "documentation": null,
-            "id": 1884,
+            "id": 1864,
             "name": "isAdmin",
             "nodeType": "ModifierDefinition",
             "parameters": {
-              "id": 1865,
+              "id": 1845,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1864,
+                  "id": 1844,
                   "name": "admin",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1884,
-                  "src": "1702:13:6",
+                  "scope": 1864,
+                  "src": "1599:13:6",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1369,10 +1170,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 1863,
+                    "id": 1843,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1702:7:6",
+                    "src": "1599:7:6",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -1383,30 +1184,30 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1701:15:6"
+              "src": "1598:15:6"
             },
-            "src": "1685:280:6",
+            "src": "1582:280:6",
             "visibility": "internal"
           }
         ],
-        "scope": 1886,
-        "src": "1030:938:6"
+        "scope": 1866,
+        "src": "1030:835:6"
       }
     ],
-    "src": "0:1968:6"
+    "src": "0:1865:6"
   },
   "legacyAST": {
     "absolutePath": "/Users/erdi/git/final-year-project/dapp-backend/contracts/VotingTokenAuthorisation.sol",
     "exportedSymbols": {
       "VotingTokenAuthorisation": [
-        1885
+        1865
       ]
     },
-    "id": 1886,
+    "id": 1866,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 1797,
+        "id": 1787,
         "literals": [
           "solidity",
           "^",
@@ -1419,10 +1220,10 @@
       {
         "absolutePath": "openzeppelin-solidity/contracts/ownership/Ownable.sol",
         "file": "openzeppelin-solidity/contracts/ownership/Ownable.sol",
-        "id": 1798,
+        "id": 1788,
         "nodeType": "ImportDirective",
-        "scope": 1886,
-        "sourceUnit": 2766,
+        "scope": 1866,
+        "sourceUnit": 2746,
         "src": "25:63:6",
         "symbolAliases": [],
         "unitAlias": ""
@@ -1430,10 +1231,10 @@
       {
         "absolutePath": "openzeppelin-solidity/contracts/crowdsale/emission/MintedCrowdsale.sol",
         "file": "openzeppelin-solidity/contracts/crowdsale/emission/MintedCrowdsale.sol",
-        "id": 1799,
+        "id": 1789,
         "nodeType": "ImportDirective",
-        "scope": 1886,
-        "sourceUnit": 2372,
+        "scope": 1866,
+        "sourceUnit": 2352,
         "src": "89:80:6",
         "symbolAliases": [],
         "unitAlias": ""
@@ -1441,10 +1242,10 @@
       {
         "absolutePath": "openzeppelin-solidity/contracts/crowdsale/validation/TimedCrowdsale.sol",
         "file": "openzeppelin-solidity/contracts/crowdsale/validation/TimedCrowdsale.sol",
-        "id": 1800,
+        "id": 1790,
         "nodeType": "ImportDirective",
-        "scope": 1886,
-        "sourceUnit": 2522,
+        "scope": 1866,
+        "sourceUnit": 2502,
         "src": "170:81:6",
         "symbolAliases": [],
         "unitAlias": ""
@@ -1452,10 +1253,10 @@
       {
         "absolutePath": "/Users/erdi/git/final-year-project/dapp-backend/contracts/VotingToken.sol",
         "file": "./VotingToken.sol",
-        "id": 1801,
+        "id": 1791,
         "nodeType": "ImportDirective",
-        "scope": 1886,
-        "sourceUnit": 1796,
+        "scope": 1866,
+        "sourceUnit": 1786,
         "src": "252:27:6",
         "symbolAliases": [],
         "unitAlias": ""
@@ -1463,10 +1264,10 @@
       {
         "absolutePath": "/Users/erdi/git/final-year-project/dapp-backend/contracts/Institution.sol",
         "file": "./Institution.sol",
-        "id": 1802,
+        "id": 1792,
         "nodeType": "ImportDirective",
-        "scope": 1886,
-        "sourceUnit": 1393,
+        "scope": 1866,
+        "sourceUnit": 1383,
         "src": "280:27:6",
         "symbolAliases": [],
         "unitAlias": ""
@@ -1474,9 +1275,9 @@
       {
         "absolutePath": "/Users/erdi/git/final-year-project/dapp-backend/contracts/ApprovalQueue.sol",
         "file": "./ApprovalQueue.sol",
-        "id": 1803,
+        "id": 1793,
         "nodeType": "ImportDirective",
-        "scope": 1886,
+        "scope": 1866,
         "sourceUnit": 284,
         "src": "308:29:6",
         "symbolAliases": [],
@@ -1488,81 +1289,61 @@
             "arguments": null,
             "baseName": {
               "contractScope": null,
-              "id": 1804,
+              "id": 1794,
               "name": "MintedCrowdsale",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 2371,
+              "referencedDeclaration": 2351,
               "src": "1067:15:6",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_MintedCrowdsale_$2371",
+                "typeIdentifier": "t_contract$_MintedCrowdsale_$2351",
                 "typeString": "contract MintedCrowdsale"
               }
             },
-            "id": 1805,
+            "id": 1795,
             "nodeType": "InheritanceSpecifier",
             "src": "1067:15:6"
-          },
-          {
-            "arguments": null,
-            "baseName": {
-              "contractScope": null,
-              "id": 1806,
-              "name": "TimedCrowdsale",
-              "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 2521,
-              "src": "1084:14:6",
-              "typeDescriptions": {
-                "typeIdentifier": "t_contract$_TimedCrowdsale_$2521",
-                "typeString": "contract TimedCrowdsale"
-              }
-            },
-            "id": 1807,
-            "nodeType": "InheritanceSpecifier",
-            "src": "1084:14:6"
           }
         ],
         "contractDependencies": [
-          2342,
-          2371,
-          2521,
-          3587
+          2322,
+          2351,
+          3567
         ],
         "contractKind": "contract",
         "documentation": "The authorisation of Voting Tokens is implemented as a custom crowdsale - however the concept of purchasing tokens for Ether\nis not utilised here. In simple terms, that boils down to buyTokens() not being called in the flow of an Institution admin\nauthorising a voter; rather,_deliverTokens() is called, and a token will then be minted and then transferred to the user.\nOpen Zeppelin crowdsale contracts are being inherited to provide automatic protection against reentrancy attacks and to\nprovide common crowdsale functionality without having to reinvent the wheel.",
         "fullyImplemented": true,
-        "id": 1885,
+        "id": 1865,
         "linearizedBaseContracts": [
-          1885,
-          2521,
-          2371,
-          2342,
-          3587
+          1865,
+          2351,
+          2322,
+          3567
         ],
         "name": "VotingTokenAuthorisation",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "constant": false,
-            "id": 1809,
+            "id": 1797,
             "name": "_institution",
             "nodeType": "VariableDeclaration",
-            "scope": 1885,
-            "src": "1107:24:6",
+            "scope": 1865,
+            "src": "1091:24:6",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_contract$_Institution_$1392",
+              "typeIdentifier": "t_contract$_Institution_$1382",
               "typeString": "contract Institution"
             },
             "typeName": {
               "contractScope": null,
-              "id": 1808,
+              "id": 1796,
               "name": "Institution",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 1392,
-              "src": "1107:11:6",
+              "referencedDeclaration": 1382,
+              "src": "1091:11:6",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_Institution_$1392",
+                "typeIdentifier": "t_contract$_Institution_$1382",
                 "typeString": "contract Institution"
               }
             },
@@ -1571,26 +1352,26 @@
           },
           {
             "constant": false,
-            "id": 1811,
+            "id": 1799,
             "name": "_theToken",
             "nodeType": "VariableDeclaration",
-            "scope": 1885,
-            "src": "1137:21:6",
+            "scope": 1865,
+            "src": "1121:21:6",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_contract$_VotingToken_$1795",
+              "typeIdentifier": "t_contract$_VotingToken_$1785",
               "typeString": "contract VotingToken"
             },
             "typeName": {
               "contractScope": null,
-              "id": 1810,
+              "id": 1798,
               "name": "VotingToken",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 1795,
-              "src": "1137:11:6",
+              "referencedDeclaration": 1785,
+              "src": "1121:11:6",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_VotingToken_$1795",
+                "typeIdentifier": "t_contract$_VotingToken_$1785",
                 "typeString": "contract VotingToken"
               }
             },
@@ -1599,28 +1380,28 @@
           },
           {
             "body": {
-              "id": 1841,
+              "id": 1821,
               "nodeType": "Block",
-              "src": "1398:120:6",
+              "src": "1295:120:6",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 1839,
+                    "id": 1819,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 1837,
+                      "id": 1817,
                       "name": "_institution",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 1809,
-                      "src": "1485:12:6",
+                      "referencedDeclaration": 1797,
+                      "src": "1382:12:6",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_Institution_$1392",
+                        "typeIdentifier": "t_contract$_Institution_$1382",
                         "typeString": "contract Institution"
                       }
                     },
@@ -1628,31 +1409,31 @@
                     "operator": "=",
                     "rightHandSide": {
                       "argumentTypes": null,
-                      "id": 1838,
+                      "id": 1818,
                       "name": "institution",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 1813,
-                      "src": "1500:11:6",
+                      "referencedDeclaration": 1801,
+                      "src": "1397:11:6",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_Institution_$1392",
+                        "typeIdentifier": "t_contract$_Institution_$1382",
                         "typeString": "contract Institution"
                       }
                     },
-                    "src": "1485:26:6",
+                    "src": "1382:26:6",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_Institution_$1392",
+                      "typeIdentifier": "t_contract$_Institution_$1382",
                       "typeString": "contract Institution"
                     }
                   },
-                  "id": 1840,
+                  "id": 1820,
                   "nodeType": "ExpressionStatement",
-                  "src": "1485:26:6"
+                  "src": "1382:26:6"
                 }
               ]
             },
             "documentation": null,
-            "id": 1842,
+            "id": 1822,
             "implemented": true,
             "kind": "constructor",
             "modifiers": [
@@ -1661,14 +1442,14 @@
                   {
                     "argumentTypes": null,
                     "hexValue": "31",
-                    "id": 1824,
+                    "id": 1808,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": true,
                     "kind": "number",
                     "lValueRequested": false,
                     "nodeType": "Literal",
-                    "src": "1300:1:6",
+                    "src": "1242:1:6",
                     "subdenomination": null,
                     "typeDescriptions": {
                       "typeIdentifier": "t_rational_1_by_1",
@@ -1684,12 +1465,12 @@
                         "arguments": [
                           {
                             "argumentTypes": null,
-                            "id": 1827,
+                            "id": 1811,
                             "name": "admin",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 1815,
-                            "src": "1320:5:6",
+                            "referencedDeclaration": 1803,
+                            "src": "1262:5:6",
                             "typeDescriptions": {
                               "typeIdentifier": "t_address",
                               "typeString": "address"
@@ -1703,20 +1484,20 @@
                               "typeString": "address"
                             }
                           ],
-                          "id": 1826,
+                          "id": 1810,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
                           "lValueRequested": false,
                           "nodeType": "ElementaryTypeNameExpression",
-                          "src": "1312:7:6",
+                          "src": "1254:7:6",
                           "typeDescriptions": {
                             "typeIdentifier": "t_type$_t_uint160_$",
                             "typeString": "type(uint160)"
                           },
                           "typeName": "uint160"
                         },
-                        "id": 1828,
+                        "id": 1812,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -1724,7 +1505,7 @@
                         "lValueRequested": false,
                         "names": [],
                         "nodeType": "FunctionCall",
-                        "src": "1312:14:6",
+                        "src": "1254:14:6",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint160",
                           "typeString": "uint160"
@@ -1738,20 +1519,20 @@
                           "typeString": "uint160"
                         }
                       ],
-                      "id": 1825,
+                      "id": 1809,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
                       "lValueRequested": false,
                       "nodeType": "ElementaryTypeNameExpression",
-                      "src": "1304:7:6",
+                      "src": "1246:7:6",
                       "typeDescriptions": {
                         "typeIdentifier": "t_type$_t_address_$",
                         "typeString": "type(address)"
                       },
                       "typeName": "address"
                     },
-                    "id": 1829,
+                    "id": 1813,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1759,7 +1540,7 @@
                     "lValueRequested": false,
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "1304:23:6",
+                    "src": "1246:23:6",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address_payable",
                       "typeString": "address payable"
@@ -1767,110 +1548,64 @@
                   },
                   {
                     "argumentTypes": null,
-                    "id": 1830,
+                    "id": 1814,
                     "name": "votingToken",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 1821,
-                    "src": "1329:11:6",
+                    "referencedDeclaration": 1805,
+                    "src": "1271:11:6",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_VotingToken_$1795",
+                      "typeIdentifier": "t_contract$_VotingToken_$1785",
                       "typeString": "contract VotingToken"
                     }
                   }
                 ],
-                "id": 1831,
+                "id": 1815,
                 "modifierName": {
                   "argumentTypes": null,
-                  "id": 1823,
+                  "id": 1807,
                   "name": "Crowdsale",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 2342,
-                  "src": "1290:9:6",
+                  "referencedDeclaration": 2322,
+                  "src": "1232:9:6",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_type$_t_contract$_Crowdsale_$2342_$",
+                    "typeIdentifier": "t_type$_t_contract$_Crowdsale_$2322_$",
                     "typeString": "type(contract Crowdsale)"
                   }
                 },
                 "nodeType": "ModifierInvocation",
-                "src": "1290:51:6"
-              },
-              {
-                "arguments": [
-                  {
-                    "argumentTypes": null,
-                    "id": 1833,
-                    "name": "openingTime",
-                    "nodeType": "Identifier",
-                    "overloadedDeclarations": [],
-                    "referencedDeclaration": 1817,
-                    "src": "1361:11:6",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_uint256",
-                      "typeString": "uint256"
-                    }
-                  },
-                  {
-                    "argumentTypes": null,
-                    "id": 1834,
-                    "name": "closingTime",
-                    "nodeType": "Identifier",
-                    "overloadedDeclarations": [],
-                    "referencedDeclaration": 1819,
-                    "src": "1374:11:6",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_uint256",
-                      "typeString": "uint256"
-                    }
-                  }
-                ],
-                "id": 1835,
-                "modifierName": {
-                  "argumentTypes": null,
-                  "id": 1832,
-                  "name": "TimedCrowdsale",
-                  "nodeType": "Identifier",
-                  "overloadedDeclarations": [],
-                  "referencedDeclaration": 2521,
-                  "src": "1346:14:6",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_type$_t_contract$_TimedCrowdsale_$2521_$",
-                    "typeString": "type(contract TimedCrowdsale)"
-                  }
-                },
-                "nodeType": "ModifierInvocation",
-                "src": "1346:40:6"
+                "src": "1232:51:6"
               }
             ],
             "name": "",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1822,
+              "id": 1806,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1813,
+                  "id": 1801,
                   "name": "institution",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1842,
-                  "src": "1179:23:6",
+                  "scope": 1822,
+                  "src": "1163:23:6",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_contract$_Institution_$1392",
+                    "typeIdentifier": "t_contract$_Institution_$1382",
                     "typeString": "contract Institution"
                   },
                   "typeName": {
                     "contractScope": null,
-                    "id": 1812,
+                    "id": 1800,
                     "name": "Institution",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 1392,
-                    "src": "1179:11:6",
+                    "referencedDeclaration": 1382,
+                    "src": "1163:11:6",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_Institution_$1392",
+                      "typeIdentifier": "t_contract$_Institution_$1382",
                       "typeString": "contract Institution"
                     }
                   },
@@ -1879,11 +1614,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 1815,
+                  "id": 1803,
                   "name": "admin",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1842,
-                  "src": "1204:13:6",
+                  "scope": 1822,
+                  "src": "1188:13:6",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1891,10 +1626,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 1814,
+                    "id": 1802,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1204:7:6",
+                    "src": "1188:7:6",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -1906,78 +1641,26 @@
                 },
                 {
                   "constant": false,
-                  "id": 1817,
-                  "name": "openingTime",
-                  "nodeType": "VariableDeclaration",
-                  "scope": 1842,
-                  "src": "1219:19:6",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_uint256",
-                    "typeString": "uint256"
-                  },
-                  "typeName": {
-                    "id": 1816,
-                    "name": "uint256",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "1219:7:6",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_uint256",
-                      "typeString": "uint256"
-                    }
-                  },
-                  "value": null,
-                  "visibility": "internal"
-                },
-                {
-                  "constant": false,
-                  "id": 1819,
-                  "name": "closingTime",
-                  "nodeType": "VariableDeclaration",
-                  "scope": 1842,
-                  "src": "1240:19:6",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_uint256",
-                    "typeString": "uint256"
-                  },
-                  "typeName": {
-                    "id": 1818,
-                    "name": "uint256",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "1240:7:6",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_uint256",
-                      "typeString": "uint256"
-                    }
-                  },
-                  "value": null,
-                  "visibility": "internal"
-                },
-                {
-                  "constant": false,
-                  "id": 1821,
+                  "id": 1805,
                   "name": "votingToken",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1842,
-                  "src": "1261:23:6",
+                  "scope": 1822,
+                  "src": "1203:23:6",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_contract$_VotingToken_$1795",
+                    "typeIdentifier": "t_contract$_VotingToken_$1785",
                     "typeString": "contract VotingToken"
                   },
                   "typeName": {
                     "contractScope": null,
-                    "id": 1820,
+                    "id": 1804,
                     "name": "VotingToken",
                     "nodeType": "UserDefinedTypeName",
-                    "referencedDeclaration": 1795,
-                    "src": "1261:11:6",
+                    "referencedDeclaration": 1785,
+                    "src": "1203:11:6",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_VotingToken_$1795",
+                      "typeIdentifier": "t_contract$_VotingToken_$1785",
                       "typeString": "contract VotingToken"
                     }
                   },
@@ -1985,25 +1668,25 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1178:107:6"
+              "src": "1162:65:6"
             },
             "returnParameters": {
-              "id": 1836,
+              "id": 1816,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "1398:0:6"
+              "src": "1295:0:6"
             },
-            "scope": 1885,
-            "src": "1166:352:6",
+            "scope": 1865,
+            "src": "1150:265:6",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           },
           {
             "body": {
-              "id": 1861,
+              "id": 1841,
               "nodeType": "Block",
-              "src": "1622:57:6",
+              "src": "1519:57:6",
               "statements": [
                 {
                   "expression": {
@@ -2011,12 +1694,12 @@
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 1857,
+                        "id": 1837,
                         "name": "voter",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 1844,
-                        "src": "1653:5:6",
+                        "referencedDeclaration": 1824,
+                        "src": "1550:5:6",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
                           "typeString": "address"
@@ -2024,12 +1707,12 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 1858,
+                        "id": 1838,
                         "name": "tokenAmount",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 1846,
-                        "src": "1660:11:6",
+                        "referencedDeclaration": 1826,
+                        "src": "1557:11:6",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
@@ -2049,32 +1732,32 @@
                       ],
                       "expression": {
                         "argumentTypes": null,
-                        "id": 1854,
+                        "id": 1834,
                         "name": "super",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 3651,
-                        "src": "1632:5:6",
+                        "referencedDeclaration": 3631,
+                        "src": "1529:5:6",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_super$_VotingTokenAuthorisation_$1885",
+                          "typeIdentifier": "t_super$_VotingTokenAuthorisation_$1865",
                           "typeString": "contract super VotingTokenAuthorisation"
                         }
                       },
-                      "id": 1856,
+                      "id": 1836,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
                       "lValueRequested": false,
                       "memberName": "_deliverTokens",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 2370,
-                      "src": "1632:20:6",
+                      "referencedDeclaration": 2350,
+                      "src": "1529:20:6",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_nonpayable$_t_address_$_t_uint256_$returns$__$",
                         "typeString": "function (address,uint256)"
                       }
                     },
-                    "id": 1859,
+                    "id": 1839,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -2082,20 +1765,20 @@
                     "lValueRequested": false,
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "1632:40:6",
+                    "src": "1529:40:6",
                     "typeDescriptions": {
                       "typeIdentifier": "t_tuple$__$",
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 1860,
+                  "id": 1840,
                   "nodeType": "ExpressionStatement",
-                  "src": "1632:40:6"
+                  "src": "1529:40:6"
                 }
               ]
             },
             "documentation": null,
-            "id": 1862,
+            "id": 1842,
             "implemented": true,
             "kind": "function",
             "modifiers": [
@@ -2103,49 +1786,49 @@
                 "arguments": [
                   {
                     "argumentTypes": null,
-                    "id": 1851,
+                    "id": 1831,
                     "name": "admin",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 1848,
-                    "src": "1615:5:6",
+                    "referencedDeclaration": 1828,
+                    "src": "1512:5:6",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
                     }
                   }
                 ],
-                "id": 1852,
+                "id": 1832,
                 "modifierName": {
                   "argumentTypes": null,
-                  "id": 1850,
+                  "id": 1830,
                   "name": "isAdmin",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 1884,
-                  "src": "1607:7:6",
+                  "referencedDeclaration": 1864,
+                  "src": "1504:7:6",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$_t_address_$",
                     "typeString": "modifier (address)"
                   }
                 },
                 "nodeType": "ModifierInvocation",
-                "src": "1607:14:6"
+                "src": "1504:14:6"
               }
             ],
             "name": "sendVotingToken",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 1849,
+              "id": 1829,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1844,
+                  "id": 1824,
                   "name": "voter",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1862,
-                  "src": "1549:13:6",
+                  "scope": 1842,
+                  "src": "1446:13:6",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -2153,10 +1836,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 1843,
+                    "id": 1823,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1549:7:6",
+                    "src": "1446:7:6",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -2168,11 +1851,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 1846,
+                  "id": 1826,
                   "name": "tokenAmount",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1862,
-                  "src": "1564:19:6",
+                  "scope": 1842,
+                  "src": "1461:19:6",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -2180,10 +1863,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 1845,
+                    "id": 1825,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1564:7:6",
+                    "src": "1461:7:6",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -2194,11 +1877,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 1848,
+                  "id": 1828,
                   "name": "admin",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1862,
-                  "src": "1585:13:6",
+                  "scope": 1842,
+                  "src": "1482:13:6",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -2206,10 +1889,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 1847,
+                    "id": 1827,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1585:7:6",
+                    "src": "1482:7:6",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -2220,25 +1903,25 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1548:51:6"
+              "src": "1445:51:6"
             },
             "returnParameters": {
-              "id": 1853,
+              "id": 1833,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "1622:0:6"
+              "src": "1519:0:6"
             },
-            "scope": 1885,
-            "src": "1524:155:6",
+            "scope": 1865,
+            "src": "1421:155:6",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           },
           {
             "body": {
-              "id": 1883,
+              "id": 1863,
               "nodeType": "Block",
-              "src": "1718:247:6",
+              "src": "1615:247:6",
               "statements": [
                 {
                   "expression": {
@@ -2249,12 +1932,12 @@
                         "arguments": [
                           {
                             "argumentTypes": null,
-                            "id": 1869,
+                            "id": 1849,
                             "name": "admin",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 1864,
-                            "src": "1763:5:6",
+                            "referencedDeclaration": 1844,
+                            "src": "1660:5:6",
                             "typeDescriptions": {
                               "typeIdentifier": "t_address",
                               "typeString": "address"
@@ -2270,18 +1953,18 @@
                           ],
                           "expression": {
                             "argumentTypes": null,
-                            "id": 1867,
+                            "id": 1847,
                             "name": "_institution",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 1809,
-                            "src": "1736:12:6",
+                            "referencedDeclaration": 1797,
+                            "src": "1633:12:6",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_Institution_$1392",
+                              "typeIdentifier": "t_contract$_Institution_$1382",
                               "typeString": "contract Institution"
                             }
                           },
-                          "id": 1868,
+                          "id": 1848,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -2289,13 +1972,13 @@
                           "memberName": "isAdminStored",
                           "nodeType": "MemberAccess",
                           "referencedDeclaration": 958,
-                          "src": "1736:26:6",
+                          "src": "1633:26:6",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_address_$returns$_t_bool_$",
                             "typeString": "function (address) view external returns (bool)"
                           }
                         },
-                        "id": 1870,
+                        "id": 1850,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -2303,7 +1986,7 @@
                         "lValueRequested": false,
                         "names": [],
                         "nodeType": "FunctionCall",
-                        "src": "1736:33:6",
+                        "src": "1633:33:6",
                         "typeDescriptions": {
                           "typeIdentifier": "t_bool",
                           "typeString": "bool"
@@ -2312,14 +1995,14 @@
                       {
                         "argumentTypes": null,
                         "hexValue": "566f74696e67546f6b656e417574686f7269736174696f6e3a2043616c6c6572206973206e6f7420616e2061646d696e21",
-                        "id": 1871,
+                        "id": 1851,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
                         "kind": "string",
                         "lValueRequested": false,
                         "nodeType": "Literal",
-                        "src": "1771:51:6",
+                        "src": "1668:51:6",
                         "subdenomination": null,
                         "typeDescriptions": {
                           "typeIdentifier": "t_stringliteral_b865b056dde40e4486a3921563373ce82cc92ea635e202721b79c212370c8ca2",
@@ -2339,21 +2022,21 @@
                           "typeString": "literal_string \"VotingTokenAuthorisation: Caller is not an admin!\""
                         }
                       ],
-                      "id": 1866,
+                      "id": 1846,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        3605,
-                        3606
+                        3585,
+                        3586
                       ],
-                      "referencedDeclaration": 3606,
-                      "src": "1728:7:6",
+                      "referencedDeclaration": 3586,
+                      "src": "1625:7:6",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 1872,
+                    "id": 1852,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -2361,15 +2044,15 @@
                     "lValueRequested": false,
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "1728:95:6",
+                    "src": "1625:95:6",
                     "typeDescriptions": {
                       "typeIdentifier": "t_tuple$__$",
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 1873,
+                  "id": 1853,
                   "nodeType": "ExpressionStatement",
-                  "src": "1728:95:6"
+                  "src": "1625:95:6"
                 },
                 {
                   "expression": {
@@ -2380,12 +2063,12 @@
                         "arguments": [
                           {
                             "argumentTypes": null,
-                            "id": 1877,
+                            "id": 1857,
                             "name": "admin",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 1864,
-                            "src": "1872:5:6",
+                            "referencedDeclaration": 1844,
+                            "src": "1769:5:6",
                             "typeDescriptions": {
                               "typeIdentifier": "t_address",
                               "typeString": "address"
@@ -2401,18 +2084,18 @@
                           ],
                           "expression": {
                             "argumentTypes": null,
-                            "id": 1875,
+                            "id": 1855,
                             "name": "_institution",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 1809,
-                            "src": "1841:12:6",
+                            "referencedDeclaration": 1797,
+                            "src": "1738:12:6",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_Institution_$1392",
+                              "typeIdentifier": "t_contract$_Institution_$1382",
                               "typeString": "contract Institution"
                             }
                           },
-                          "id": 1876,
+                          "id": 1856,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -2420,13 +2103,13 @@
                           "memberName": "isAdminAuthorised",
                           "nodeType": "MemberAccess",
                           "referencedDeclaration": 971,
-                          "src": "1841:30:6",
+                          "src": "1738:30:6",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_external_view$_t_address_$returns$_t_bool_$",
                             "typeString": "function (address) view external returns (bool)"
                           }
                         },
-                        "id": 1878,
+                        "id": 1858,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -2434,7 +2117,7 @@
                         "lValueRequested": false,
                         "names": [],
                         "nodeType": "FunctionCall",
-                        "src": "1841:37:6",
+                        "src": "1738:37:6",
                         "typeDescriptions": {
                           "typeIdentifier": "t_bool",
                           "typeString": "bool"
@@ -2443,14 +2126,14 @@
                       {
                         "argumentTypes": null,
                         "hexValue": "566f74696e67546f6b656e417574686f7269736174696f6e3a2043616c6c657220697320616e2061646d696e20627574206e6f7420617574686f726973656421",
-                        "id": 1879,
+                        "id": 1859,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
                         "kind": "string",
                         "lValueRequested": false,
                         "nodeType": "Literal",
-                        "src": "1880:66:6",
+                        "src": "1777:66:6",
                         "subdenomination": null,
                         "typeDescriptions": {
                           "typeIdentifier": "t_stringliteral_efa9df24f38ba0bfcccf7d4abc967b3257ca25dbcfbfb458ad28cd7b5ec0675c",
@@ -2470,21 +2153,21 @@
                           "typeString": "literal_string \"VotingTokenAuthorisation: Caller is an admin but not authorised!\""
                         }
                       ],
-                      "id": 1874,
+                      "id": 1854,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        3605,
-                        3606
+                        3585,
+                        3586
                       ],
-                      "referencedDeclaration": 3606,
-                      "src": "1833:7:6",
+                      "referencedDeclaration": 3586,
+                      "src": "1730:7:6",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 1880,
+                    "id": 1860,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -2492,38 +2175,38 @@
                     "lValueRequested": false,
                     "names": [],
                     "nodeType": "FunctionCall",
-                    "src": "1833:114:6",
+                    "src": "1730:114:6",
                     "typeDescriptions": {
                       "typeIdentifier": "t_tuple$__$",
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 1881,
+                  "id": 1861,
                   "nodeType": "ExpressionStatement",
-                  "src": "1833:114:6"
+                  "src": "1730:114:6"
                 },
                 {
-                  "id": 1882,
+                  "id": 1862,
                   "nodeType": "PlaceholderStatement",
-                  "src": "1957:1:6"
+                  "src": "1854:1:6"
                 }
               ]
             },
             "documentation": null,
-            "id": 1884,
+            "id": 1864,
             "name": "isAdmin",
             "nodeType": "ModifierDefinition",
             "parameters": {
-              "id": 1865,
+              "id": 1845,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1864,
+                  "id": 1844,
                   "name": "admin",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1884,
-                  "src": "1702:13:6",
+                  "scope": 1864,
+                  "src": "1599:13:6",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -2531,10 +2214,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 1863,
+                    "id": 1843,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1702:7:6",
+                    "src": "1599:7:6",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -2545,17 +2228,17 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1701:15:6"
+              "src": "1598:15:6"
             },
-            "src": "1685:280:6",
+            "src": "1582:280:6",
             "visibility": "internal"
           }
         ],
-        "scope": 1886,
-        "src": "1030:938:6"
+        "scope": 1866,
+        "src": "1030:835:6"
       }
     ],
-    "src": "0:1968:6"
+    "src": "0:1865:6"
   },
   "compiler": {
     "name": "solc",
@@ -2563,7 +2246,7 @@
   },
   "networks": {},
   "schemaVersion": "3.0.11",
-  "updatedAt": "2019-07-26T07:21:34.028Z",
+  "updatedAt": "2019-07-26T08:03:24.020Z",
   "devdoc": {
     "methods": {
       "buyTokens(address)": {
@@ -2571,19 +2254,6 @@
         "params": {
           "beneficiary": "Recipient of the token purchase"
         }
-      },
-      "closingTime()": {
-        "return": "the crowdsale closing time."
-      },
-      "hasClosed()": {
-        "details": "Checks whether the period in which the crowdsale is open has already elapsed.",
-        "return": "Whether crowdsale period has elapsed"
-      },
-      "isOpen()": {
-        "return": "true if the crowdsale is open, false otherwise."
-      },
-      "openingTime()": {
-        "return": "the crowdsale opening time."
       },
       "rate()": {
         "return": "the number of token units a buyer gets per wei."

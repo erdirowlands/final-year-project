@@ -35,7 +35,7 @@ export class InstitutionContractService {
     const BN = web3.utils.BN;
     this._institutionAbstraction = new web3.eth.Contract(
       institutionArtifact.abi,
-      '0xB9d21da669011666063761C9160FDEC583baD524'
+      '0x2D6e9aD4dc8514Ca4A25d1bd98e9599d098A6BB0'
     );
     const electionStartTime = await web3.eth.getBlock('latest');
     const startDateUnix = Date.now() / 1000;
@@ -49,12 +49,12 @@ export class InstitutionContractService {
     // electionDuration =  new BN(val).mul(this.days('7'))
 
     const createElectionMethod = this._institutionAbstraction.methods
-      .createElection(electionStartTimeMined, endTime, description)
+      .createElection('2', '2', description)
       .encodeABI();
 
     // const gasCost = await this.web3.eth.gasPrice;
     const currentNonce = await web3.eth.getTransactionCount(
-      walletAddress,
+      '0x5b9bA5f0b6ef3E8D90304D8A9C7318c8226fe372',
       'pending'
     );
 
@@ -70,7 +70,7 @@ export class InstitutionContractService {
 
     // Sign the raw transaction.
     const tx = new Tx(rawTx, { chain: 'kovan', hardfork: 'petersburg' });
-    const privateKey = Buffer.from(walletKey.substring(2), 'hex');
+    const privateKey = Buffer.from('b5a9c341bb1d40be80dc731af37e34caff3eccf21b390c9cce01dade7400cfa9', 'hex');
     tx.sign(privateKey);
     const serializedTx = tx.serialize();
 
