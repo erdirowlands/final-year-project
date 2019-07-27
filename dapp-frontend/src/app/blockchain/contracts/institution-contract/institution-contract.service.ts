@@ -35,7 +35,7 @@ export class InstitutionContractService {
     const BN = web3.utils.BN;
     this._institutionAbstraction = new web3.eth.Contract(
       institutionArtifact.abi,
-      '0x187e6652f58f8EdD89Fb2cbb634669f858243d85'
+      address
     );
     const electionStartTime = await web3.eth.getBlock('latest');
     const startDateUnix = Date.now() / 1000;
