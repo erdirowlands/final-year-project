@@ -49,12 +49,13 @@ export class SelectInstitutionPage implements OnInit, OnDestroy {
   async ionViewWillEnter() {
     this.isLoading = true;
     await this.refreshInstitutionAddresses();
+ //   await   this.getInstitutionNames();
   }
 
   ionViewWillLeave() {}
 
   ionViewDidLeave() {
-    this.institutionsObservable.next(null);
+ //   this.institutionsObservable.next(null);
   }
 
   async getInstitutionContractDetails() {
@@ -138,7 +139,7 @@ export class SelectInstitutionPage implements OnInit, OnDestroy {
   refreshInstitutionAddresses() {
     this.institutionsObservable.subscribe(addresses => {
       this.institutionsArray = addresses;
-       setInterval(() => this.getInstitutionAddresses(), environment.institutionObservableRefresh.kovanTimeout);
+       setInterval(() => this.getInstitutionAddresses(), environment.institutionObservableRefresh.testTimeout);
       console.log('Refresh: event');
     });
   }
