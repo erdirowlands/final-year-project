@@ -53,7 +53,7 @@ export class CreateElectionPage implements OnInit {
             description,
             this.wallet.keypair.adminPrivateKey,
             this.wallet.keypair.adminAddress,
-            this.institutionAddress
+            '0x187e6652f58f8EdD89Fb2cbb634669f858243d85'
             // '0x5D0A44B2F735738D8D121CF8866D45A516582C5DCFACD05E79F431FD3BBE1B98',
             // '0xeCDED0f569Ccd0FcEF2bc359e6F742BA1d6e533A'
           );
