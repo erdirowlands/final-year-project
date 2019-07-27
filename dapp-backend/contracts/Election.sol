@@ -140,6 +140,11 @@ contract Election {
         return _voterMapping[voter].isInitialised;
     }
 
+    function getCandidateTokenBalance(address candidate) public view returns(uint) {
+   //     return _voterMapping[voter].votingTokenBalance;
+        return _votingToken.balanceOf(candidate);
+    }
+
     function getTokenBalance() public view returns(uint) {
    //     return _voterMapping[voter].votingTokenBalance;
         return _votingToken.balanceOf(msg.sender);
@@ -155,6 +160,10 @@ contract Election {
 
     function getCandidateAddresses() public view returns(address[] memory) {
         return _candidateArray;
+    }
+
+    function getDescription() public view returns(string memory) {
+        return _description;
     }
 
     function getVictor() public view returns(address) {
