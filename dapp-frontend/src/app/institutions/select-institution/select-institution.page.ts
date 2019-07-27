@@ -43,19 +43,21 @@ export class SelectInstitutionPage implements OnInit, OnDestroy {
     this.universityVotingAbstraction = this.universityVotingContract.universityVotingAbstraction;
     await this.getInstitutionAddresses();
     //  this.refreshInstitutionAddresses();
-  await   this.getInstitutionNames();
+    this.institutions =   [];
+//  await   this.getInstitutionNames();
   }
 
   async ionViewWillEnter() {
     this.isLoading = true;
+
     await this.refreshInstitutionAddresses();
- //   await   this.getInstitutionNames();
+    await   this.getInstitutionNames();
   }
 
-  ionViewWillLeave() {}
 
   ionViewDidLeave() {
- //   this.institutionsObservable.next(null);
+    this.institutionsArray = [];
+    console.log("LEAVING" + this.institutions);
   }
 
   async getInstitutionContractDetails() {
