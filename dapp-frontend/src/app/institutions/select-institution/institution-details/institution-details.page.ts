@@ -142,14 +142,19 @@ export class InstitutionDetailsPage implements OnInit {
         this.electionAddresses[i]
       );
       await this.institutionAbstraction.methods
-        .getInstitutionName()
-        .call({ from: this.wallet.keypair.adminAddress }, (error, name) => {
+        .getElectionDetails()
+        .call({ from: this.wallet.keypair.adminAddress }, (error, details) => {
           if (name === undefined && name !== '') {
             return;
           }
-          console.log('Inst name' + name);
+          console.log('Inst name' + details);
           
-          let institution = new Institution(this.institutionsArray[i], name,  []);
+          let description;
+          let openingTime;
+          let closingTime;
+          [description, openingTime, closingTime] = details;
+
+          let election = new Election(this.electionAddresses[i], name,  []);
           this.institutions.push(institution);
           console.log('Inst name' + name);
           console.log('new institution' + this.institutions[i].ethereumAddress);
