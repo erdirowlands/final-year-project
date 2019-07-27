@@ -7,6 +7,7 @@ import { Subscription } from 'rxjs';
 
 import { WalletService } from 'src/app/blockchain/wallet/wallet.service';
 import { Admin } from 'src/app/auth/admin.model';
+import { Election} from './election.model'
 import { Web3ProviderService } from 'src/app/blockchain/provider/web3provider.service';
 
 const institutionArtifact = require('../../../blockchain/contracts/artifacts/Institution.json');
@@ -21,6 +22,7 @@ export class InstitutionDetailsPage implements OnInit {
   institutionAddress: string;
   institutionName: string;
   admins: Admin[] = [];
+  Elections: Election[] = [];
 
   constructor(
     private web3: Web3ProviderService,
