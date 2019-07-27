@@ -3,7 +3,7 @@ import { InstitutionContractService } from 'src/app/blockchain/contracts/institu
 import { NavController, ModalController } from '@ionic/angular';
 import { Institution } from './institution.model';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subscription, Subject } from 'rxjs';
 
 import { WalletService } from 'src/app/blockchain/wallet/wallet.service';
 import { Admin } from 'src/app/auth/admin.model';
@@ -11,6 +11,7 @@ import { Election} from './election.model'
 import { Web3ProviderService } from 'src/app/blockchain/provider/web3provider.service';
 
 const institutionArtifact = require('../../../blockchain/contracts/artifacts/Institution.json');
+const electionArtifact = require('../../../blockchain/contracts/artifacts/Election.json');
 
 @Component({
   selector: 'app-institution-details',
@@ -22,7 +23,11 @@ export class InstitutionDetailsPage implements OnInit {
   institutionAddress: string;
   institutionName: string;
   admins: Admin[] = [];
-  Elections: Election[] = [];
+  elections: Election[] = [];
+  electionAddresses: string[];
+  electionsObservable = new Subject<string[]>();
+  isLoading = false;
+
 
   constructor(
     private web3: Web3ProviderService,
@@ -103,39 +108,57 @@ export class InstitutionDetailsPage implements OnInit {
     return adminAddresses;
   }
 
-  private async getElectionDetails() {
-    const adminAddresses = await this.getAdminAddresses();
-    for (let i = 0; i < adminAddresses.length; i++) {
+  async getElectionAddresses() {
+    await this.institutionAbstraction.methods
+      .getElectionAddressArray()
+      .call({ from: this.wallet.keypair.adminAddress }, (error, addresses) => {
+        if (addresses === undefined || addresses.length === 0) {
+          return;
+        }
+        if (
+          !this.electionAddresses ||
+          this.electionAddresses.length !== addresses.length ||
+          this.electionAddresses[0] !== this.electionAddresses[0]
+        ) {
+          console.log('New institutions detected');
+
+          this.electionsObservable.next(addresses);
+          this.isLoading = false;
+          this.electionAddresses = addresses;
+        }
+        console.log('Checking election address request refresh time: ' + this.electionAddresses);
+        console.log('ELECTION ADDRESSES' + this.electionAddresses);
+        console.log(error);
+        this.isLoading = false;
+      });
+  }
+
+  // TODO: Tricky..
+  async getElectionDetails() {
+    const web3 = this.web3.getWeb3();
+    for (let i = 0; i < this.electionAddresses.length; i++) {
+      this.institutionAbstraction = new web3.eth.Contract(
+        electionArtifact.abi,
+        this.electionAddresses[i]
+      );
       await this.institutionAbstraction.methods
-        .getAdmin(adminAddresses[i])
+        .getInstitutionName()
         .call({ from: this.wallet.keypair.adminAddress }, (error, name) => {
           if (name === undefined && name !== '') {
             return;
           }
-          let adminName;
-          let isAuthorised;
-          [adminName, isAuthorised] = name;
-          const admin = new Admin(adminName, adminAddresses[i], isAuthorised);
-          this.admins.push(admin);
-          // this.institution = new Institution(name, "test", ["sad"]);
-          console.log('Admin name' + adminName, isAuthorised);
-          console.log('Admin name error ' + error);
+          console.log('Inst name' + name);
+          
+          let institution = new Institution(this.institutionsArray[i], name,  []);
+          this.institutions.push(institution);
+          console.log('Inst name' + name);
+          console.log('new institution' + this.institutions[i].ethereumAddress);
+          this.isLoading = false;
         });
-    }
-  }
 
-  private async getElectionddresses() {
-    let electionAddresses = [];
-    await this.institutionAbstraction.methods
-      .getElectionAddressArray()
-      .call({ from: this.wallet.keypair.adminAddress }, (error, addresses) => {
-        if (name === undefined && name !== '') {
-          return;
-        }
-        electionAddresses = addresses;
-      });
-    console.log('ELECTION addresses are' + electionAddresses);
-    return electionAddresses;
+    }
+
+    this.areNamesLoading = false;
   }
 
 
