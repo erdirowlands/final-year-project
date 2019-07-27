@@ -162,6 +162,10 @@ contract Election {
         return _candidateArray;
     }
 
+    function getElectionDetails() public view returns(string memory, uint256, uint256) {
+        return (_description, _openingTime, _closingTime);
+    }
+
     function getDescription() public view returns(string memory) {
         return _description;
     }
