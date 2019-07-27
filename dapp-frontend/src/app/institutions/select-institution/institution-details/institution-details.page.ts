@@ -8,7 +8,6 @@ import { Subscription } from 'rxjs';
 import { WalletService } from 'src/app/blockchain/wallet/wallet.service';
 import { Admin } from 'src/app/auth/admin.model';
 import { Web3ProviderService } from 'src/app/blockchain/provider/web3provider.service';
-import { CreateElectionComponent } from './create-election/create-election.component';
 
 const institutionArtifact = require('../../../blockchain/contracts/artifacts/Institution.json');
 
@@ -102,16 +101,6 @@ export class InstitutionDetailsPage implements OnInit {
     return adminAddresses;
   }
 
-  onCreateElection() {
-    this.modalCtrl
-      .create({
-        component: CreateElectionComponent,
-        componentProps: { institutionAddress: this.institutionAddress }
-      })
-      .then(modalEl => {
-        modalEl.present();
-      });
-  }
 
   openEtherScan(address: string) {
     window.open('https://kovan.etherscan.io/address/' + address);

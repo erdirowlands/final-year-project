@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { LoadingController, AlertController } from '@ionic/angular';
 import { InstitutionContractService } from 'src/app/blockchain/contracts/institution-contract/institution-contract.service';
 import { WalletService } from 'src/app/blockchain/wallet/wallet.service';
@@ -23,7 +24,8 @@ export class CreateElectionPage implements OnInit {
     private institutionContract: InstitutionContractService,
     private loadingCtrl: LoadingController,
     private alertCtrl: AlertController,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router,
   ) {}
 
   ngOnInit() {
@@ -59,6 +61,8 @@ export class CreateElectionPage implements OnInit {
           );
           loadingEl.dismiss();
           this.showSucessfulAlert();
+          const url = '/institutions/tabs/view/' + this.institutionAddress;
+          this.router.navigateByUrl(url);
         } catch (err) {
           console.log(err);
           const errorString = err.toString();
