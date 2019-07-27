@@ -27,6 +27,7 @@ export class InstitutionDetailsPage implements OnInit {
   electionAddresses: string[];
   electionsObservable = new Subject<string[]>();
   isLoading = false;
+  areNamesLoading = true;
 
 
   constructor(
@@ -154,10 +155,10 @@ export class InstitutionDetailsPage implements OnInit {
           let closingTime;
           [description, openingTime, closingTime] = details;
 
-          let election = new Election(this.electionAddresses[i], name,  []);
-          this.institutions.push(institution);
+          const election = new Election(this.electionAddresses[i], description,  openingTime, closingTime);
+          this.elections.push(election);
           console.log('Inst name' + name);
-          console.log('new institution' + this.institutions[i].ethereumAddress);
+          console.log('new institution' + this.elections[i].ethereumAddress);
           this.isLoading = false;
         });
 
