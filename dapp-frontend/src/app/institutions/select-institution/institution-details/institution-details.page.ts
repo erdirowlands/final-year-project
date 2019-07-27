@@ -101,6 +101,41 @@ export class InstitutionDetailsPage implements OnInit {
     return adminAddresses;
   }
 
+  private async getElectionDetails() {
+    const adminAddresses = await this.getAdminAddresses();
+    for (let i = 0; i < adminAddresses.length; i++) {
+      await this.institutionAbstraction.methods
+        .getAdmin(adminAddresses[i])
+        .call({ from: this.wallet.keypair.adminAddress }, (error, name) => {
+          if (name === undefined && name !== '') {
+            return;
+          }
+          let adminName;
+          let isAuthorised;
+          [adminName, isAuthorised] = name;
+          const admin = new Admin(adminName, adminAddresses[i], isAuthorised);
+          this.admins.push(admin);
+          // this.institution = new Institution(name, "test", ["sad"]);
+          console.log('Admin name' + adminName, isAuthorised);
+          console.log('Admin name error ' + error);
+        });
+    }
+  }
+
+  private async getElectionddresses() {
+    let electionAddresses = [];
+    await this.institutionAbstraction.methods
+      .getElectionAddressArray()
+      .call({ from: this.wallet.keypair.adminAddress }, (error, addresses) => {
+        if (name === undefined && name !== '') {
+          return;
+        }
+        electionAddresses = addresses;
+      });
+    console.log('ELECTION addresses are' + electionAddresses);
+    return electionAddresses;
+  }
+
 
   openEtherScan(address: string) {
     window.open('https://kovan.etherscan.io/address/' + address);
