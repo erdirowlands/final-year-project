@@ -26,7 +26,7 @@ export class ElectionsPage implements OnInit {
     private wallet: WalletService
   ) {}
 
-  ngOnInit() {
+  async ngOnInit() {
     this.route.paramMap.subscribe(async paramMap => {
       if (!paramMap.has('address')) {
         this.navController.navigateBack('/institutions/tabs/view');
@@ -39,6 +39,9 @@ export class ElectionsPage implements OnInit {
       );
       this.address = paramMap.get('address');
     });
+
+    await this.getElectionDescription();
+    console.log('This description is' + this.description);
   }
 
   private async getElectionDescription() {
