@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Web3ProviderService } from '../../provider/web3provider.service';
+import { WalletService } from '../../wallet/wallet.service';
 
 import { contract } from 'truffle-contract';
 import { environment } from 'src/environments/environment';
@@ -14,7 +15,8 @@ export class InstitutionContractService {
   private _institution: any;
   private _institutionAbstraction: any;
 
-  constructor(private web3Provider: Web3ProviderService) {}
+  constructor(private web3Provider: Web3ProviderService,     private wallet: WalletService
+    ) {}
 
   public async generateContractAbstraction(address: string) {
     const web3 = this.web3Provider.getWeb3();

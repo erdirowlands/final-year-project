@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Web3ProviderService } from '../../provider/web3provider.service';
+import { WalletService } from '../../wallet/wallet.service';
 
 const electionArtifact = require('../artifacts/Election.json');
 
@@ -11,7 +12,8 @@ const Tx = require('ethereumjs-tx').Transaction;
 export class ElectionContractService {
   private _electionAbstraction: any;
 
-  constructor(private web3Provider: Web3ProviderService) {}
+  constructor(private web3Provider: Web3ProviderService,     private wallet: WalletService
+    ) {}
 
   public async deriveAddCandidateMethod(
     adminAddress: string,
@@ -93,28 +95,13 @@ export class ElectionContractService {
 
 
 
-  public async addCandidate(
-    electionDuration: number,
-    description: string,
-    walletKey: string,
-    walletAddress: string,
-    address: string
+  public async signMethodTransaction(method: any, contractAddress: string
   ) {
+
     const web3 = this.web3Provider.getWeb3();
-    const BN = web3.utils.BN;
-    this._institutionAbstraction = new web3.eth.Contract(
-      institutionArtifact.abi,
-      address
-    );
-
-    const createElectionMethod = this._institutionAbstraction.methods
-      .createElection(electionStartTimeMined, endTime, description)
-      .encodeABI();
-
     // const gasCost = await this.web3.eth.gasPrice;
     const currentNonce = await web3.eth.getTransactionCount(
-      '0x5b9bA5f0b6ef3E8D90304D8A9C7318c8226fe372',
-      'pending'
+      '0X5B9BA5F0B6EF3E8D90304D8A9C7318C8226FE372'
     );
 
     // Construct the raw transaction.
@@ -122,9 +109,9 @@ export class ElectionContractService {
       nonce: web3.utils.toHex(currentNonce),
       gasPrice: web3.utils.toHex(web3.utils.toWei('30', 'gwei')),
       gasLimit: web3.utils.toHex('5000000'),
-      to: address,
+      to: contractAddress,
       value: '0x0',
-      data: createElectionMethod
+      data: method
     };
 
     // Sign the raw transaction.
