@@ -160,7 +160,22 @@ export class InstitutionDetailsPage implements OnInit {
           let closingTime;
           [description, openingTime, closingTime] = details;
 
-          const election = new Election(this.electionAddresses[i], description,  openingTime, closingTime);
+          // Unix timestamp to date conversion taken from https://www.w3resource.com/javascript-exercises/javascript-date-exercise-17.php
+          const openingTimeDate = new Date(openingTime)
+          const openingTimeString = Math.floor(openingTimeDate.getTime()/1000.0).toString();
+          const hour = openingTimeDate.getHours();
+          const minutes = '0' + openingTimeDate.getMinutes();
+          const seconds = '0' + openingTimeDate.getSeconds();
+          const opening =  hour + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+
+          const closingTimeDate = new Date(closingTime);
+          const closingHour = closingTimeDate.getHours();
+          const closingMinutes = '0' + closingTimeDate.getMinutes();
+          const closingSeconds = '0' + closingTimeDate.getSeconds();
+          const closing =  closingHour + ':' + closingMinutes.substr(-2) + ':' + closingSeconds.substr(-2);
+
+
+          const election = new Election(this.electionAddresses[i], description,  openingTimeString, closing);
           this.elections.push(election);
           console.log('Inst name' + name);
           console.log('new institution' + this.elections[i].ethereumAddress);

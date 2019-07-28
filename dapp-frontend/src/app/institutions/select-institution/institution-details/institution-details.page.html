@@ -61,13 +61,15 @@
           <ion-row>
             <ion-col size="12" size-sm="8" offset-sm="2" text-center>
               <ion-virtual-scroll [items]="elections" approxItemHeight="70px">
-                <ion-item   
+                <ion-item 
                   *virtualItem="let election"
+                  [routerLink]="['/', 'institutions', 'tabs', 'view', 'elections', election.ethereumAddress]"  
+
                 >
                   <ion-thumbnail slot="end" >
                       <ion-buttons >
                           <ion-button
-                          slot="primary" (click) ="openEtherScan(election.address)">
+                          slot="primary" (click) ="openEtherScan(election.ethereumAddress)">
                           <ion-icon name="cube" slot="icon-only" ></ion-icon>
                         </ion-button>
                       </ion-buttons>

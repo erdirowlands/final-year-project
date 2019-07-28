@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Web3ProviderService } from '../../provider/web3provider.service';
+import { WalletService } from '../../wallet/wallet.service';
 
 import { contract } from 'truffle-contract';
 import { environment } from 'src/environments/environment';
@@ -14,7 +15,10 @@ export class InstitutionContractService {
   private _institution: any;
   private _institutionAbstraction: any;
 
-  constructor(private web3Provider: Web3ProviderService) {}
+  constructor(
+    private web3Provider: Web3ProviderService,
+    private wallet: WalletService
+  ) {}
 
   public async generateContractAbstraction(address: string) {
     const web3 = this.web3Provider.getWeb3();
@@ -39,8 +43,8 @@ export class InstitutionContractService {
     );
     const electionStartTime = await web3.eth.getBlock('latest');
     const startDateUnix = Date.now() / 1000;
-    const electionStartTimeMined = new BN(startDateUnix);
-    const newendTime =  startDateUnix + 3000;
+    const electionStartTimeMined = new BN(electionStartTime.timestamp);
+    const newendTime = startDateUnix + 3000;
     const ok = new BN(newendTime);
     const endTime = new BN(86400);
     // electionDuration =
@@ -49,7 +53,7 @@ export class InstitutionContractService {
     // electionDuration =  new BN(val).mul(this.days('7'))
 
     const createElectionMethod = this._institutionAbstraction.methods
-      .createElection('2', '2', description)
+      .createElection(electionStartTimeMined, endTime, description)
       .encodeABI();
 
     // const gasCost = await this.web3.eth.gasPrice;
@@ -70,7 +74,10 @@ export class InstitutionContractService {
 
     // Sign the raw transaction.
     const tx = new Tx(rawTx, { chain: 'kovan', hardfork: 'petersburg' });
-    const privateKey = Buffer.from('b5a9c341bb1d40be80dc731af37e34caff3eccf21b390c9cce01dade7400cfa9', 'hex');
+    const privateKey = Buffer.from(
+      'b5a9c341bb1d40be80dc731af37e34caff3eccf21b390c9cce01dade7400cfa9',
+      'hex'
+    );
     tx.sign(privateKey);
     const serializedTx = tx.serialize();
 
