@@ -63,6 +63,20 @@ export class ElectionContractService {
     return contractMethod;
   }
 
+  public async deriveBeginElection(
+    contractAddress: string
+  ) {
+    const web3 = this.web3Provider.getWeb3();
+    this._electionAbstraction = new web3.eth.Contract(
+      electionArtifact.abi,
+      contractAddress
+    );
+    const contractMethod = this._electionAbstraction.methods
+      .beginElection()
+      .encodeABI();
+    return contractMethod;
+  }
+
   public async addCandidate(
     electionDuration: number,
     description: string,
