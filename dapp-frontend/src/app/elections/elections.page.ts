@@ -46,22 +46,23 @@ export class ElectionsPage implements OnInit {
   }
 
   private async getCandidateDetails() {
-    const adminAddresses = await this.getAdminAddresses();
-    for (let i = 0; i < adminAddresses.length; i++) {
-      await this.institutionAbstraction.methods
-        .getAdmin(adminAddresses[i])
+    const candidateAddresses = await this.getCandidateAddresses();
+    for (let i = 0; i < candidateAddresses.length; i++) {
+      await this.electionAbstraction.methods
+        .getCandidateName(candidateAddresses[i])
         .call({ from: this.wallet.keypair.adminAddress }, (error, name) => {
           if (name === undefined && name !== '') {
             return;
           }
-          let adminName;
-          let isAuthorised;
-          [adminName, isAuthorised] = name;
-          const admin = new Admin(adminName, adminAddresses[i], isAuthorised);
-          this.admins.push(admin);
+          let candidateName;
+          const candidate = new Candidate(candidateAddresses[i], candidateName);
+          this.candidates.push(candidate);
           // this.institution = new Institution(name, "test", ["sad"]);
-          console.log('Admin name' + adminName, isAuthorised);
-          console.log('Admin name error ' + error);
+          console.log(
+            'Candidate name and address' + candidateName,
+            candidateAddresses[i]
+          );
+          console.log('Candidate name error ' + error);
         });
     }
   }
@@ -83,10 +84,12 @@ export class ElectionsPage implements OnInit {
   private async getElectionDescription() {
     await this.electionAbstraction.methods
       .getDescription()
-      .call({ from: this.wallet.keypair.adminAddress }, (error, description) => {
-        console.log('asdsadd ' + name);
-        this.description = description;
-      });
+      .call(
+        { from: this.wallet.keypair.adminAddress },
+        (error, description) => {
+          console.log('asdsadd ' + name);
+          this.description = description;
+        }
+      );
   }
-
 }
