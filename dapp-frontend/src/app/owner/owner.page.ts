@@ -114,7 +114,7 @@ export class OwnerPage implements OnInit {
       this.approvalRequestAddresses = addresses;
       setInterval(
         () => this.getApprovalRequests(),
-        environment.institutionObservableRefresh.testTimeout
+        environment.institutionObservableRefresh.kovanTimeout
       );
       console.log('Refresh: event');
     });

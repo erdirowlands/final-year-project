@@ -10,23 +10,28 @@ import { AuthPage } from './auth.page';
   providedIn: 'root'
 })
 export class AuthGuard implements CanLoad {
-  constructor(
-    private authService: AuthService,
-    private wallet: WalletService,
-    private router: Router
-  ) {}
+
+  constructor(private authService: AuthService, private router: Router) {}
 
   canLoad(
     route: Route,
     segments: UrlSegment[]
   ): Observable<boolean> | Promise<boolean> | boolean {
-    if (this.wallet.keypair) {
-      if (this.wallet.keypair.adminAddress) {
-        return true;
-      }
-    } else {
-      this.router.navigateByUrl('/auth');
-    }
+    return this.authService.isWalletDecrypted.pipe(
+      take(1),
+      switchMap(isDecrypted => {
+        if (!isDecrypted) {
+          return this.authService.isWalletDecrypted
+        }
+        else return of(isDecrypted)
+
+      }),
+      tap(isDecrypted => {
+        if (!isDecrypted) {
+          this.router.navigateByUrl('/auth');
+        }
+      })
+    );
   }
 }
 
