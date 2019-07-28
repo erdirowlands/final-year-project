@@ -24,7 +24,7 @@
         </ion-tab-bar>
       </ion-tabs>
     <ion-item>
-        <ion-label  color="primary" >The current admins are:</ion-label>
+        <ion-label  color="primary" >Institution Admins:</ion-label>
       </ion-item>
       <ion-grid *ngIf="admins?.length >= 1">
           <ion-row>
@@ -67,7 +67,7 @@
                   <ion-thumbnail slot="end" >
                       <ion-buttons >
                           <ion-button
-                          slot="primary" (click) ="openEtherScan(admin.address)">
+                          slot="primary" (click) ="openEtherScan(election.address)">
                           <ion-icon name="cube" slot="icon-only" ></ion-icon>
                         </ion-button>
                       </ion-buttons>
