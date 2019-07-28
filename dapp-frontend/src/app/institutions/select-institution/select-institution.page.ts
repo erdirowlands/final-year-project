@@ -6,9 +6,11 @@ import { Institution } from './institution-details/institution.model';
 import { Web3ProviderService } from 'src/app/blockchain/provider/web3provider.service';
 import { WalletService } from 'src/app/blockchain/wallet/wallet.service';
 import { environment } from 'src/environments/environment';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
+import { Router, NavigationEnd } from '@angular/router';
 
 const institutionArtifact = require('../../blockchain/contracts/artifacts/Institution.json');
+const universityVotingArtifact = require('../../blockchain/contracts/artifacts/UniversityVoting.json');
 
 @Component({
   selector: 'app-select-institution',
@@ -23,6 +25,7 @@ export class SelectInstitutionPage implements OnInit, OnDestroy {
   institutionAbstraction: any;
   isLoading = false;
   areNamesLoading = true;
+  routerSubscription: Subscription;
 
   universityVotingAbstraction: any;
 
@@ -32,7 +35,8 @@ export class SelectInstitutionPage implements OnInit, OnDestroy {
     private universityVotingContract: UniversityVotingService,
     private institutionContract: InstitutionContractService,
     private loadingCtrl: LoadingController,
-    private alertCtrl: AlertController
+    private alertCtrl: AlertController,
+    private router: Router
   ) {}
 
   /**
@@ -40,18 +44,21 @@ export class SelectInstitutionPage implements OnInit, OnDestroy {
    * showing Institutions that have been created.
    */
   async ngOnInit() {
-    this.universityVotingAbstraction = this.universityVotingContract.universityVotingAbstraction;
+    const web3 = this.web3Provider.getWeb3();
+    this.universityVotingAbstraction = new web3.eth.Contract(
+      universityVotingArtifact.abi,
+      environment.ethereum.universityVotingContractAddress
+    );
     await this.getInstitutionAddresses();
-    //  this.refreshInstitutionAddresses();
-    this.institutions =   [];
-//  await   this.getInstitutionNames();
+
+  await   this.getInstitutionNames();
   }
 
   async ionViewWillEnter() {
     this.isLoading = true;
 
     await this.refreshInstitutionAddresses();
-    await   this.getInstitutionNames();
+   // await   this.getInstitutionNames();
   }
 
 
@@ -141,7 +148,7 @@ export class SelectInstitutionPage implements OnInit, OnDestroy {
   refreshInstitutionAddresses() {
     this.institutionsObservable.subscribe(addresses => {
       this.institutionsArray = addresses;
-       setInterval(() => this.getInstitutionAddresses(), environment.institutionObservableRefresh.testTimeout);
+       setInterval(() => this.getInstitutionAddresses(), environment.institutionObservableRefresh.kovanTimeout);
       console.log('Refresh: event');
     });
   }

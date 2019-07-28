@@ -33,7 +33,7 @@ export class Web3ProviderService {
     };
     // this.web3 = new Web3(new Web3.providers.HttpProvider(environment.ethereum.provider));
     this.web3 = new Web3(
-      new Web3.providers.HttpProvider(environment.ethereum.devProvider )
+      new Web3.providers.HttpProvider(environment.ethereum.provider )
     );
     console.log(this.web3);
     console.log(this.web3.eth.getAccounts());

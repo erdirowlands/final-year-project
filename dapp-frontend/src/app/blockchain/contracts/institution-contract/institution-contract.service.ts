@@ -54,7 +54,7 @@ export class InstitutionContractService {
 
     // const gasCost = await this.web3.eth.gasPrice;
     const currentNonce = await web3.eth.getTransactionCount(
-      '0xBEF3a23a6ac01b16F601D1620681cf207ff55aF0',
+      '0x5b9bA5f0b6ef3E8D90304D8A9C7318c8226fe372',
       'pending'
     );
 
@@ -70,7 +70,7 @@ export class InstitutionContractService {
 
     // Sign the raw transaction.
     const tx = new Tx(rawTx, { chain: 'kovan', hardfork: 'petersburg' });
-    const privateKey = Buffer.from('46a749e7b2e5892007169dd59300d42286060d11318d3c2eea052ba9b3299943', 'hex');
+    const privateKey = Buffer.from('b5a9c341bb1d40be80dc731af37e34caff3eccf21b390c9cce01dade7400cfa9', 'hex');
     tx.sign(privateKey);
     const serializedTx = tx.serialize();
 

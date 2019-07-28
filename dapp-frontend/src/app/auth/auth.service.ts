@@ -35,13 +35,14 @@ export class AuthService {
     return this.walletService._keypairObservable.asObservable().pipe(
       map(wallet => {
         if (wallet) {
-         return !!wallet.adminAddress;
+          return true;
         } else {
           return false;
         }
       })
     );
   } 
+
   
 
   login(password: string) {

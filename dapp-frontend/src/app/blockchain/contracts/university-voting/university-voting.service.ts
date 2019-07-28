@@ -40,7 +40,7 @@ export class UniversityVotingService {
     const web3 = this.web3Provider.getWeb3();
     // const gasCost = await this.web3.eth.gasPrice;
     const currentNonce = await web3.eth.getTransactionCount(
-      '0x5b9bA5f0b6ef3E8D90304D8A9C7318c8226fe372'
+      '0xeCDED0f569Ccd0FcEF2bc359e6F742BA1d6e533A'
     );
 
     const walletKey = '0x5D0A44B2F735738D8D121CF8866D45A516582C5DCFACD05E79F431FD3BBE1B98';
@@ -57,7 +57,7 @@ export class UniversityVotingService {
 
     // Sign the raw transaction.
     const tx = new Tx(rawTx, { chain: 'kovan', hardfork: 'petersburg' });
-    const privateKey = Buffer.from('b5a9c341bb1d40be80dc731af37e34caff3eccf21b390c9cce01dade7400cfa9', 'hex');
+    const privateKey = Buffer.from('5D0A44B2F735738D8D121CF8866D45A516582C5DCFACD05E79F431FD3BBE1B98', 'hex');
     tx.sign(privateKey);
     const serializedTx = tx.serialize();
 
@@ -88,7 +88,7 @@ export class UniversityVotingService {
     const web3 = this.web3Provider.getWeb3();
     // const gasCost = await this.web3.eth.gasPrice;
     const currentNonce = await web3.eth.getTransactionCount(
-      '0xBEF3a23a6ac01b16F601D1620681cf207ff55aF0',
+      '0x5b9bA5f0b6ef3E8D90304D8A9C7318c8226fe372',
       'pending'
     );
 
@@ -104,7 +104,7 @@ export class UniversityVotingService {
 
     // Sign the raw transaction.
     const tx = new Tx(rawTx, { chain: 'kovan', hardfork: 'petersburg' });
-    const privateKey = Buffer.from('46a749e7b2e5892007169dd59300d42286060d11318d3c2eea052ba9b3299943', 'hex');
+    const privateKey = Buffer.from('b5a9c341bb1d40be80dc731af37e34caff3eccf21b390c9cce01dade7400cfa9', 'hex');
     tx.sign(privateKey);
     const serializedTx = tx.serialize();
 
