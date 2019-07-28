@@ -49,20 +49,21 @@ export class SelectInstitutionPage implements OnInit, OnDestroy {
       universityVotingArtifact.abi,
       environment.ethereum.universityVotingContractAddress
     );
-    await this.getInstitutionAddresses();
-
-  await   this.getInstitutionNames();
+  
   }
 
   async ionViewWillEnter() {
     this.isLoading = true;
 
-    await this.refreshInstitutionAddresses();
+    console.log("COMINMG IN")
+    await this.getInstitutionAddresses();
+    await   this.getInstitutionNames();
+
    // await   this.getInstitutionNames();
   }
 
 
-  ionViewDidLeave() {
+  async ionViewDidLeave() {
     this.institutionsArray = [];
     console.log("LEAVING" + this.institutions);
   }
