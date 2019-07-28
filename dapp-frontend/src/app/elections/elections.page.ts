@@ -18,7 +18,7 @@ export class ElectionsPage implements OnInit {
   electionAbstraction: any;
   description: string;
   address: string;
-  candidates: Candidate[];
+  candidates: Candidate[] = [];
 
   openingTime: string;
   closingTime: string;

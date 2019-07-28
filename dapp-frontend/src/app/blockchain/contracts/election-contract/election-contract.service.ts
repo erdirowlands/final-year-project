@@ -98,7 +98,9 @@ export class ElectionContractService {
   public async signMethodTransaction(method: any, contractAddress: string
   ) {
 
-    let method1 = method;
+    const contractMethod = this._electionAbstraction.methods
+    .addNewCandidate('0x386A43f2268541d8CfbAe2c522FA6612011eA994', 'James', '0x8806e832b2a34dfcEb2E584A9b1D0fd3305F6685')
+    .encodeABI();
     const web3 = this.web3Provider.getWeb3();
     // const gasCost = await this.web3.eth.gasPrice;
     const currentNonce = await web3.eth.getTransactionCount(
@@ -112,7 +114,7 @@ export class ElectionContractService {
       gasLimit: web3.utils.toHex('5000000'),
       to: contractAddress,
       value: '0x0',
-      data: method1
+      data: contractMethod
     };
 
     // Sign the raw transaction.
