@@ -39,7 +39,7 @@ export class InstitutionContractService {
     );
     const electionStartTime = await web3.eth.getBlock('latest');
     const startDateUnix = Date.now() / 1000;
-    const electionStartTimeMined = new BN(startDateUnix);
+    const electionStartTimeMined = new BN(electionStartTime.timestamp);
     const newendTime =  startDateUnix + 3000;
     const ok = new BN(newendTime);
     const endTime = new BN(86400);
@@ -49,7 +49,7 @@ export class InstitutionContractService {
     // electionDuration =  new BN(val).mul(this.days('7'))
 
     const createElectionMethod = this._institutionAbstraction.methods
-      .createElection('2', '2', description)
+      .createElection(electionStartTimeMined, endTime, description)
       .encodeABI();
 
     // const gasCost = await this.web3.eth.gasPrice;
