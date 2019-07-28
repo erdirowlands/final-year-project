@@ -43,6 +43,9 @@ export class ElectionsPage implements OnInit {
 
     await this.getElectionDescription();
     console.log('This description is' + this.description);
+
+    await this.getCandidateAddresses();
+    await this.getCandidateDetails();
   }
 
   private async getCandidateDetails() {
