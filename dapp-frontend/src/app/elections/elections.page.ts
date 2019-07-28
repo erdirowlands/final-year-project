@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Web3ProviderService } from '../blockchain/provider/web3provider.service';
 import { WalletService } from '../blockchain/wallet/wallet.service';
 import { NavController } from '@ionic/angular';
+import { Candidate } from './candidate.model';
 const electionArtifact = require('../blockchain/contracts/artifacts/Election.json');
 
 @Component({
@@ -14,7 +15,7 @@ export class ElectionsPage implements OnInit {
   electionAbstraction: any;
   description: string;
   address: string;
-  candidates: string[];
+  candidates: Candidate[];
 
   openingTime: string;
   closingTime: string;
@@ -42,6 +43,41 @@ export class ElectionsPage implements OnInit {
 
     await this.getElectionDescription();
     console.log('This description is' + this.description);
+  }
+
+  private async getCandidateDetails() {
+    const adminAddresses = await this.getAdminAddresses();
+    for (let i = 0; i < adminAddresses.length; i++) {
+      await this.institutionAbstraction.methods
+        .getAdmin(adminAddresses[i])
+        .call({ from: this.wallet.keypair.adminAddress }, (error, name) => {
+          if (name === undefined && name !== '') {
+            return;
+          }
+          let adminName;
+          let isAuthorised;
+          [adminName, isAuthorised] = name;
+          const admin = new Admin(adminName, adminAddresses[i], isAuthorised);
+          this.admins.push(admin);
+          // this.institution = new Institution(name, "test", ["sad"]);
+          console.log('Admin name' + adminName, isAuthorised);
+          console.log('Admin name error ' + error);
+        });
+    }
+  }
+
+  private async getCandidateAddresses() {
+    let candidateAddresses = [];
+    await this.electionAbstraction.methods
+      .getCandidateAddresses()
+      .call({ from: this.wallet.keypair.adminAddress }, (error, addresses) => {
+        if (name === undefined && name !== '') {
+          return;
+        }
+        candidateAddresses = addresses;
+      });
+    console.log('candidate addresses are' + candidateAddresses);
+    return candidateAddresses;
   }
 
   private async getElectionDescription() {
