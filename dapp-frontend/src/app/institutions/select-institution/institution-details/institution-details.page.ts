@@ -160,6 +160,15 @@ export class InstitutionDetailsPage implements OnInit {
           let closingTime;
           [description, openingTime, closingTime] = details;
 
+          // Unix timestamp to date conversion taken from https://www.w3resource.com/javascript-exercises/javascript-date-exercise-17.php
+          const openingTimeDate = new Date(openingTime);
+          const hour = openingTimeDate.getHours();
+          const minutes = '0' + openingTimeDate.getMinutes();
+          const seconds = '0' + openingTimeDate.getSeconds();
+
+          const time =  hour + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+
+
           const election = new Election(this.electionAddresses[i], description,  openingTime, closingTime);
           this.elections.push(election);
           console.log('Inst name' + name);
