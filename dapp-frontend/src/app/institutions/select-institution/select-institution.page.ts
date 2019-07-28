@@ -50,16 +50,15 @@ export class SelectInstitutionPage implements OnInit, OnDestroy {
       environment.ethereum.universityVotingContractAddress
     );
     await this.getInstitutionAddresses();
-    //  this.refreshInstitutionAddresses();
-    this.institutions =   [];
-//  await   this.getInstitutionNames();
+
+  await   this.getInstitutionNames();
   }
 
   async ionViewWillEnter() {
     this.isLoading = true;
 
     await this.refreshInstitutionAddresses();
-    await   this.getInstitutionNames();
+   // await   this.getInstitutionNames();
   }
 
 
