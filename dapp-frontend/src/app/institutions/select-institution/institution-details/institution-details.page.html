@@ -11,6 +11,18 @@
 
 
 <ion-content padding>
+    <ion-tabs>
+        <ion-tab-bar slot="bottom">
+            <ion-tab-button tab="view/new/{{institutionAddress}}">
+              <ion-label>Create Election</ion-label>
+              <ion-icon name="school"> </ion-icon>
+            </ion-tab-button>
+          <ion-tab-button tab="view/elections">
+            <ion-label>Approvals</ion-label>
+            <ion-icon name="checkbox-outline"></ion-icon>
+          </ion-tab-button>
+        </ion-tab-bar>
+      </ion-tabs>
     <ion-item>
         <ion-label  color="primary" >The current admins are:</ion-label>
       </ion-item>

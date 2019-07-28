@@ -49,7 +49,7 @@ export class OwnerPage implements OnInit {
               submittingAddress
             );
             loadingEl.dismiss();
-            this.router.navigate(['/institutions/tabs/view']);
+     //       this.router.navigate(['/institutions/tabs/view']);
             this.showSucessfulAlert();
           } catch (err) {
             console.log(err);
@@ -74,7 +74,7 @@ export class OwnerPage implements OnInit {
                 break;
             }
             loadingEl.dismiss();
-            this.router.navigate(['/institutions/tabs/view']);
+     //       this.router.navigate(['/institutions/tabs/view']);
             this.showDeniedAlert(sanitisedError);
           }
         });
@@ -114,7 +114,7 @@ export class OwnerPage implements OnInit {
       this.approvalRequestAddresses = addresses;
       setInterval(
         () => this.getApprovalRequests(),
-        environment.institutionObservableRefresh.kovanTimeout
+        environment.institutionObservableRefresh.testTimeout
       );
       console.log('Refresh: event');
     });

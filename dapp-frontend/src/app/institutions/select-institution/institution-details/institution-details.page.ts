@@ -1,15 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { InstitutionContractService } from 'src/app/blockchain/contracts/institution-contract/institution-contract.service';
-import { NavController } from '@ionic/angular';
+import { NavController, ModalController } from '@ionic/angular';
 import { Institution } from './institution.model';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subscription, Subject } from 'rxjs';
 
 import { WalletService } from 'src/app/blockchain/wallet/wallet.service';
 import { Admin } from 'src/app/auth/admin.model';
+import { Election} from './election.model'
 import { Web3ProviderService } from 'src/app/blockchain/provider/web3provider.service';
 
 const institutionArtifact = require('../../../blockchain/contracts/artifacts/Institution.json');
+const electionArtifact = require('../../../blockchain/contracts/artifacts/Election.json');
 
 @Component({
   selector: 'app-institution-details',
@@ -21,12 +23,19 @@ export class InstitutionDetailsPage implements OnInit {
   institutionAddress: string;
   institutionName: string;
   admins: Admin[] = [];
+  elections: Election[] = [];
+  electionAddresses: string[];
+  electionsObservable = new Subject<string[]>();
+  isLoading = false;
+  areNamesLoading = true;
+
 
   constructor(
     private web3: Web3ProviderService,
     private wallet: WalletService,
     private institutionContract: InstitutionContractService,
     private navController: NavController,
+    private modalCtrl: ModalController,
     private route: ActivatedRoute,
     private router: Router
   ) {}
@@ -46,20 +55,18 @@ export class InstitutionDetailsPage implements OnInit {
     });
 
     await this.getInstitutionName();
-    console.log("This institution is" + this.institutionName);
+    console.log('This institution is' + this.institutionName);
     await this.getAdminDetails();
   }
 
-  
   private async getInstitutionName() {
     await this.institutionAbstraction.methods
       .getInstitutionName()
       .call({ from: this.wallet.keypair.adminAddress }, (error, name) => {
-        console.log("asdsadd "+ name)
+        console.log('asdsadd ' + name);
         this.institutionName = name;
       });
-   
-  } 
+  }
 
   /**
    *  Returns the admin's name and if they are authorised.
@@ -101,6 +108,65 @@ export class InstitutionDetailsPage implements OnInit {
     console.log('admin addresses are' + adminAddresses);
     return adminAddresses;
   }
+
+  async getElectionAddresses() {
+    await this.institutionAbstraction.methods
+      .getElectionAddressArray()
+      .call({ from: this.wallet.keypair.adminAddress }, (error, addresses) => {
+        if (addresses === undefined || addresses.length === 0) {
+          return;
+        }
+        if (
+          !this.electionAddresses ||
+          this.electionAddresses.length !== addresses.length ||
+          this.electionAddresses[0] !== this.electionAddresses[0]
+        ) {
+          console.log('New institutions detected');
+
+          this.electionsObservable.next(addresses);
+          this.isLoading = false;
+          this.electionAddresses = addresses;
+        }
+        console.log('Checking election address request refresh time: ' + this.electionAddresses);
+        console.log('ELECTION ADDRESSES' + this.electionAddresses);
+        console.log(error);
+        this.isLoading = false;
+      });
+  }
+
+  // TODO: Tricky..
+  async getElectionDetails() {
+    const web3 = this.web3.getWeb3();
+    for (let i = 0; i < this.electionAddresses.length; i++) {
+      this.institutionAbstraction = new web3.eth.Contract(
+        electionArtifact.abi,
+        this.electionAddresses[i]
+      );
+      await this.institutionAbstraction.methods
+        .getElectionDetails()
+        .call({ from: this.wallet.keypair.adminAddress }, (error, details) => {
+          if (name === undefined && name !== '') {
+            return;
+          }
+          console.log('Inst name' + details);
+          
+          let description;
+          let openingTime;
+          let closingTime;
+          [description, openingTime, closingTime] = details;
+
+          const election = new Election(this.electionAddresses[i], description,  openingTime, closingTime);
+          this.elections.push(election);
+          console.log('Inst name' + name);
+          console.log('new institution' + this.elections[i].ethereumAddress);
+          this.isLoading = false;
+        });
+
+    }
+
+    this.areNamesLoading = false;
+  }
+
 
   openEtherScan(address: string) {
     window.open('https://kovan.etherscan.io/address/' + address);

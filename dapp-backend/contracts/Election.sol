@@ -13,8 +13,8 @@ contract Election {
     // of admin interaction, but to start at a pre-defined time.
     enum ElectionStatus { CANDIDATES_APPROVAL, IN_PROGRESS, CONCLUDED }
 
-    uint _openingTime;
-    uint _closingTime;
+    uint256 _openingTime;
+    uint256 _closingTime;
     ElectionStatus public _electionStatus;
     VotingToken public _votingToken;
     VotingTokenAuthorisation public _votingTokenAuthorisation; // The address of the VotingTokenSale contract for this election
@@ -52,7 +52,7 @@ contract Election {
 
 
     constructor (address institution, VotingTokenAuthorisation votingTokenAuthorisation,
-    VotingToken votingToken, string memory description, uint openingTime, uint closingTime)
+    VotingToken votingToken, string memory description, uint256 openingTime, uint256 closingTime)
     public {
         _votingTokenAuthorisation = votingTokenAuthorisation;
         _institution = Institution(institution);
@@ -140,6 +140,11 @@ contract Election {
         return _voterMapping[voter].isInitialised;
     }
 
+    function getCandidateTokenBalance(address candidate) public view returns(uint) {
+   //     return _voterMapping[voter].votingTokenBalance;
+        return _votingToken.balanceOf(candidate);
+    }
+
     function getTokenBalance() public view returns(uint) {
    //     return _voterMapping[voter].votingTokenBalance;
         return _votingToken.balanceOf(msg.sender);
@@ -155,6 +160,22 @@ contract Election {
 
     function getCandidateAddresses() public view returns(address[] memory) {
         return _candidateArray;
+    }
+
+    function getElectionDetails() public view returns(string memory, uint256, uint256) {
+        return (_description, _openingTime, _closingTime);
+    }
+
+    function getDescription() public view returns(string memory) {
+        return _description;
+    }
+
+    function getOpeningTime() public view returns(uint256) {
+        return _openingTime;
+    }
+
+    function getClosingTime() public view returns(uint256) {
+        return _closingTime;
     }
 
     function getVictor() public view returns(address) {

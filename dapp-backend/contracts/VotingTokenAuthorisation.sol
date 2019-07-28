@@ -18,16 +18,15 @@ import "./ApprovalQueue.sol";
  * provide common crowdsale functionality without having to reinvent the wheel.
  */
  // TODO check ownable is still relevant
-contract VotingTokenAuthorisation is MintedCrowdsale, TimedCrowdsale {
+contract VotingTokenAuthorisation is MintedCrowdsale {
 
 
     Institution _institution;
     VotingToken _theToken;
 
 
-    constructor (Institution institution, address admin, uint256 openingTime, uint256 closingTime, VotingToken votingToken)
+    constructor (Institution institution, address admin, VotingToken votingToken)
     Crowdsale(1,  address(uint160(admin)), votingToken)
-    TimedCrowdsale(openingTime, closingTime)
     public { //isAdmin(admin) { // CAN'T DO THIS BECAUSE _INSTITUTION NOT INITIALISED YET
         _institution = institution;
     }

@@ -28,6 +28,7 @@
     "@ionic-native/status-bar": "^5.0.0",
     "@ionic/angular": "^4.1.0",
     "bip39": "^3.0.2",
+    "chai": "^4.2.0",
     "core-js": "^2.5.4",
     "ethereumjs-tx": "^2.1.0",
     "ethers": "^4.0.33",

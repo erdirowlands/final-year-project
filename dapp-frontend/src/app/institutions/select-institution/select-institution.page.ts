@@ -43,18 +43,21 @@ export class SelectInstitutionPage implements OnInit, OnDestroy {
     this.universityVotingAbstraction = this.universityVotingContract.universityVotingAbstraction;
     await this.getInstitutionAddresses();
     //  this.refreshInstitutionAddresses();
-  await   this.getInstitutionNames();
+    this.institutions =   [];
+//  await   this.getInstitutionNames();
   }
 
   async ionViewWillEnter() {
     this.isLoading = true;
+
     await this.refreshInstitutionAddresses();
+    await   this.getInstitutionNames();
   }
 
-  ionViewWillLeave() {}
 
   ionViewDidLeave() {
-    this.institutionsObservable.next(null);
+    this.institutionsArray = [];
+    console.log("LEAVING" + this.institutions);
   }
 
   async getInstitutionContractDetails() {
@@ -138,7 +141,7 @@ export class SelectInstitutionPage implements OnInit, OnDestroy {
   refreshInstitutionAddresses() {
     this.institutionsObservable.subscribe(addresses => {
       this.institutionsArray = addresses;
-       setInterval(() => this.getInstitutionAddresses(), environment.institutionObservableRefresh.kovanTimeout);
+       setInterval(() => this.getInstitutionAddresses(), environment.institutionObservableRefresh.testTimeout);
       console.log('Refresh: event');
     });
   }
