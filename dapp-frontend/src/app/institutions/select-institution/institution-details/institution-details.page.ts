@@ -20,6 +20,7 @@ const electionArtifact = require('../../../blockchain/contracts/artifacts/Electi
 })
 export class InstitutionDetailsPage implements OnInit {
   institutionAbstraction: any;
+  electionAbstraction: any;
   institutionAddress: string;
   institutionName: string;
   admins: Admin[] = [];
@@ -125,7 +126,7 @@ export class InstitutionDetailsPage implements OnInit {
           this.electionAddresses.length !== addresses.length ||
           this.electionAddresses[0] !== this.electionAddresses[0]
         ) {
-          console.log('New institutions detected');
+          console.log('New Elections detected');
 
           this.electionsObservable.next(addresses);
           this.isLoading = false;
@@ -142,17 +143,17 @@ export class InstitutionDetailsPage implements OnInit {
   async getElectionDetails() {
     const web3 = this.web3.getWeb3();
     for (let i = 0; i < this.electionAddresses.length; i++) {
-      this.institutionAbstraction = new web3.eth.Contract(
+      this.electionAbstraction = new web3.eth.Contract(
         electionArtifact.abi,
         this.electionAddresses[i]
       );
-      await this.institutionAbstraction.methods
+      await this.electionAbstraction.methods
         .getElectionDetails()
         .call({ from: this.wallet.keypair.adminAddress }, (error, details) => {
           if (name === undefined && name !== '') {
             return;
           }
-          console.log('Inst name' + details);
+          console.log('Got an election name: ' + details[0] + 'Plus the opening time' + details[1] + 'and opening time: ' + details[2]);
           
           let description;
           let openingTime;
@@ -165,8 +166,8 @@ export class InstitutionDetailsPage implements OnInit {
           console.log('new institution' + this.elections[i].ethereumAddress);
           this.isLoading = false;
         });
-
-    }
+      }
+    
 
     this.areNamesLoading = false;
   }
