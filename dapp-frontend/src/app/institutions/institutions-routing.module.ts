@@ -23,7 +23,7 @@ const routes: Routes = [
             loadChildren: './institution-approval-request/institution-approval-request.module#InstitutionApprovalRequestPageModule',
           },
           {
-            path: 'elections',
+            path: 'elections/:address',
             loadChildren: '../elections/elections.module#ElectionsPageModule',
           },
           {
