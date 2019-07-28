@@ -77,6 +77,22 @@ export class ElectionContractService {
     return contractMethod;
   }
 
+  public async deriveEndlection(
+    contractAddress: string
+  ) {
+    const web3 = this.web3Provider.getWeb3();
+    this._electionAbstraction = new web3.eth.Contract(
+      electionArtifact.abi,
+      contractAddress
+    );
+    const contractMethod = this._electionAbstraction.methods
+      .concludeElection()
+      .encodeABI();
+    return contractMethod;
+  }
+
+
+
   public async addCandidate(
     electionDuration: number,
     description: string,
