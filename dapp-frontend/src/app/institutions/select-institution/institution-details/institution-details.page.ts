@@ -165,8 +165,13 @@ export class InstitutionDetailsPage implements OnInit {
           const hour = openingTimeDate.getHours();
           const minutes = '0' + openingTimeDate.getMinutes();
           const seconds = '0' + openingTimeDate.getSeconds();
-
           const time =  hour + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+
+          const closingTimeDate = new Date(closingTime);
+          const closingHour = closingTimeDate.getHours();
+          const closingMinutes = '0' + closingTimeDate.getMinutes();
+          const closingSeconds = '0' + closingTimeDate.getSeconds();
+          const closing =  closingHour + ':' + closingMinutes.substr(-2) + ':' + closingSeconds.substr(-2);
 
 
           const election = new Election(this.electionAddresses[i], description,  openingTime, closingTime);
