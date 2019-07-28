@@ -6,7 +6,8 @@ import { Institution } from './institution-details/institution.model';
 import { Web3ProviderService } from 'src/app/blockchain/provider/web3provider.service';
 import { WalletService } from 'src/app/blockchain/wallet/wallet.service';
 import { environment } from 'src/environments/environment';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
+import { Router, NavigationEnd } from '@angular/router';
 
 const institutionArtifact = require('../../blockchain/contracts/artifacts/Institution.json');
 
@@ -23,6 +24,7 @@ export class SelectInstitutionPage implements OnInit, OnDestroy {
   institutionAbstraction: any;
   isLoading = false;
   areNamesLoading = true;
+  routerSubscription: Subscription;
 
   universityVotingAbstraction: any;
 
@@ -32,7 +34,8 @@ export class SelectInstitutionPage implements OnInit, OnDestroy {
     private universityVotingContract: UniversityVotingService,
     private institutionContract: InstitutionContractService,
     private loadingCtrl: LoadingController,
-    private alertCtrl: AlertController
+    private alertCtrl: AlertController,
+    private router: Router
   ) {}
 
   /**
@@ -146,6 +149,16 @@ export class SelectInstitutionPage implements OnInit, OnDestroy {
     });
   }
 
+  routerWatch() {
+    this.routerSubscription = this.router.events.subscribe(
+      (event: NavigationEnd) => {
+        if(event instanceof NavigationEnd) {
+          if(event.url == '/tabs/view')
+            this.getInstitutionAddresses;
+        }
+      }
+    );
+  }
 
   private showSucessfulAlert() {
     this.alertCtrl

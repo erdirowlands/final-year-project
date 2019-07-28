@@ -7430,8 +7430,8 @@
         }
       },
       "links": {},
-      "address": "0x095175119406305dAa9e4f745E1044A3e2b3416C",
-      "transactionHash": "0x8562f5ff25973c83668debc994cec066cca0a2e56c091da97b586e40e8c108e1"
+      "address": "0x6dDf5edd30b223C1c0188eA6931C0aDc550d73c7",
+      "transactionHash": "0xf3c2fc28473f36a8285098932f990e65b8bed214325ed6c6009276cc2d9693f6"
     },
     "1563454387916": {
       "events": {},
@@ -7441,7 +7441,7 @@
     }
   },
   "schemaVersion": "3.0.11",
-  "updatedAt": "2019-07-27T20:38:45.538Z",
+  "updatedAt": "2019-07-28T01:01:10.191Z",
   "devdoc": {
     "methods": {
       "approveRequest(address)": {
