@@ -69,7 +69,7 @@ export class ElectionsPage implements OnInit {
           if (name === undefined && name !== '') {
             return;
           }
-          let candidateName;
+          let candidateName = name;
           const candidate = new Candidate(candidateAddresses[i], candidateName);
           this.candidates.push(candidate);
           // this.institution = new Institution(name, "test", ["sad"]);

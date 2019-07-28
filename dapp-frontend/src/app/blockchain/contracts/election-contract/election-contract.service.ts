@@ -99,12 +99,12 @@ export class ElectionContractService {
   ) {
 
     const contractMethod = this._electionAbstraction.methods
-    .addNewCandidate('0x386A43f2268541d8CfbAe2c522FA6612011eA994', 'James', '0x8806e832b2a34dfcEb2E584A9b1D0fd3305F6685')
+    .addNewCandidate('0x386A43f2268541d8CfbAe2c522FA6612011eA994', 'James', '0xeCDED0f569Ccd0FcEF2bc359e6F742BA1d6e533A')
     .encodeABI();
     const web3 = this.web3Provider.getWeb3();
     // const gasCost = await this.web3.eth.gasPrice;
     const currentNonce = await web3.eth.getTransactionCount(
-      '0X5B9BA5F0B6EF3E8D90304D8A9C7318C8226FE372'
+      '0xeCDED0f569Ccd0FcEF2bc359e6F742BA1d6e533A'
     );
 
     // Construct the raw transaction.
@@ -120,7 +120,7 @@ export class ElectionContractService {
     // Sign the raw transaction.
     const tx = new Tx(rawTx, { chain: 'kovan', hardfork: 'petersburg' });
     const privateKey = Buffer.from(
-      'b5a9c341bb1d40be80dc731af37e34caff3eccf21b390c9cce01dade7400cfa9',
+      '5D0A44B2F735738D8D121CF8866D45A516582C5DCFACD05E79F431FD3BBE1B98',
       'hex'
     );
     tx.sign(privateKey);
