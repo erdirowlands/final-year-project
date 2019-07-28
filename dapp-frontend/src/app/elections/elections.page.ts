@@ -4,6 +4,8 @@ import { Web3ProviderService } from '../blockchain/provider/web3provider.service
 import { WalletService } from '../blockchain/wallet/wallet.service';
 import { NavController } from '@ionic/angular';
 import { Candidate } from './candidate.model';
+import { ElectionContractService } from '../blockchain/contracts/election-contract/election-contract.service';
+
 const electionArtifact = require('../blockchain/contracts/artifacts/Election.json');
 
 @Component({
@@ -21,6 +23,7 @@ export class ElectionsPage implements OnInit {
   closingTime: string;
 
   constructor(
+    private electionContractService: ElectionContractService,
     private route: ActivatedRoute,
     private navController: NavController,
     private web3: Web3ProviderService,
@@ -49,15 +52,10 @@ export class ElectionsPage implements OnInit {
   }
 
   private async becomeCandidate(name: string) {
-    let candidateAddress = this.wallet.keypair.adminAddress;
-    await this.electionAbstraction.methods
-      .addNewCandidate(candidateAddress, name, candidateAddress)
-      .call({ from: this.wallet.keypair.adminAddress }, (error, addresses) => {
-        if (name === undefined && name !== '') {
-          return;
-        }
-     //   candidateAddresses = addresses;
-      });
+    const candidateAddress = this.wallet.keypair.adminAddress;
+    const method = this.electionContractService.deriveAddCandidateMethod('', name,  candidateAddress, this.address)
+    this.electionContractService.signMethodTransaction(method, this.address);
+    
   }
 
   private async getCandidateDetails() {
