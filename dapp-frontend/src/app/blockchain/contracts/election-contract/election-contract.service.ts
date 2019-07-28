@@ -11,14 +11,22 @@ const Tx = require('ethereumjs-tx').Transaction;
 export class ElectionContractService {
   private _electionAbstraction: any;
 
-  constructor(private web3Provider: Web3ProviderService) { }
+  constructor(private web3Provider: Web3ProviderService) {}
 
-  public async deriveElectionMethod(method: string, contractAddress: string) {
+  public async deriveAddCandidateMethod(
+    adminAddress: string,
+    candidateName: string,
+    candidateAddress: string,
+    contractAddress: string
+  ) {
     const web3 = this.web3Provider.getWeb3();
     this._electionAbstraction = new web3.eth.Contract(
       electionArtifact.abi,
       contractAddress
     );
+    const contractMethod = this._electionAbstraction.methods
+      .addNewCandidate(adminAddress, candidateName, candidateAddress)
+      .encodeABI();
   }
 
   public async addCandidate(
@@ -57,7 +65,10 @@ export class ElectionContractService {
 
     // Sign the raw transaction.
     const tx = new Tx(rawTx, { chain: 'kovan', hardfork: 'petersburg' });
-    const privateKey = Buffer.from('b5a9c341bb1d40be80dc731af37e34caff3eccf21b390c9cce01dade7400cfa9', 'hex');
+    const privateKey = Buffer.from(
+      'b5a9c341bb1d40be80dc731af37e34caff3eccf21b390c9cce01dade7400cfa9',
+      'hex'
+    );
     tx.sign(privateKey);
     const serializedTx = tx.serialize();
 
