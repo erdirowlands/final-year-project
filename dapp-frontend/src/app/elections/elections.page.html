@@ -40,32 +40,8 @@
             </ion-col>
           </ion-row>
         </ion-grid>
-        <form #f="ngForm" (ngSubmit)="onSubmit(f)">
+        <form #f="ngForm" (ngSubmit)="addCandidate(f)">
           <ion-grid>
-            <ion-row>
-              <ion-col size-sm="6" offset-sm="3">
-                <ion-list>
-                  <ion-item>
-                    <ion-label position="floating">Institution name</ion-label>
-                    <ion-input
-                      type="text"
-                      ngModel
-                      name="institutionName"
-                      required
-                      #insitutionCtrl="ngModel"
-                    ></ion-input>
-                  </ion-item>
-                  <ion-item
-                  *ngIf="!insitutionCtrl.valid && insitutionCtrl.touched"
-                  lines="none"
-                >
-                  <ion-label>
-                    Should be at least be 8 characters.
-                  </ion-label>
-                </ion-item>
-                </ion-list>
-              </ion-col>
-            </ion-row>
             <ion-row>
                 <ion-col size-sm="6" offset-sm="3">
                     <ion-list>
@@ -74,18 +50,18 @@
                         <ion-input
                           type="text"
                           ngModel
-                          name="adminName"
+                          name="candidateName"
                           required
                           autocomplete
-                          #adminNameCtrl="ngModel"
+                          #candidateNameCtrl="ngModel"
                         ></ion-input>
                       </ion-item>
                       <ion-item
-                        *ngIf="!adminNameCtrl.valid && adminNameCtrl.touched"
+                        *ngIf="!candidateNameCtrl.valid && candidateNameCtrl.touched"
                         lines="none"
                       >
                         <ion-label>
-                            Your name cannot be blank.
+                            Candidate name cannot be blank.
                         </ion-label>
                       </ion-item>
                     </ion-list>

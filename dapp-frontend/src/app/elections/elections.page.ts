@@ -5,6 +5,7 @@ import { WalletService } from '../blockchain/wallet/wallet.service';
 import { NavController } from '@ionic/angular';
 import { Candidate } from './candidate.model';
 import { ElectionContractService } from '../blockchain/contracts/election-contract/election-contract.service';
+import { NgForm } from '@angular/forms';
 
 const electionArtifact = require('../blockchain/contracts/artifacts/Election.json');
 
@@ -51,9 +52,10 @@ export class ElectionsPage implements OnInit {
     await this.getCandidateDetails();
   }
 
-  private async becomeCandidate(name: string) {
+  private async addCandidate(form: NgForm) {
+    const name = form.value.candidateName;
     const candidateAddress = this.wallet.keypair.adminAddress;
-    const method = this.electionContractService.deriveAddCandidateMethod('', name,  candidateAddress, this.address)
+    const method = this.electionContractService.deriveAddCandidateMethod('', name,  candidateAddress, this.address);
     this.electionContractService.signMethodTransaction(method, this.address);
     
   }

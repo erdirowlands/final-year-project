@@ -98,6 +98,7 @@ export class ElectionContractService {
   public async signMethodTransaction(method: any, contractAddress: string
   ) {
 
+    let method1 = method;
     const web3 = this.web3Provider.getWeb3();
     // const gasCost = await this.web3.eth.gasPrice;
     const currentNonce = await web3.eth.getTransactionCount(
@@ -111,7 +112,7 @@ export class ElectionContractService {
       gasLimit: web3.utils.toHex('5000000'),
       to: contractAddress,
       value: '0x0',
-      data: method
+      data: method1
     };
 
     // Sign the raw transaction.
