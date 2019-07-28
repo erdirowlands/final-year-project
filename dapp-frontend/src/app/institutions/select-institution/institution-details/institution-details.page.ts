@@ -57,6 +57,10 @@ export class InstitutionDetailsPage implements OnInit {
     await this.getInstitutionName();
     console.log('This institution is' + this.institutionName);
     await this.getAdminDetails();
+
+    await this.getElectionAddresses();
+    await this.getElectionDetails();
+
   }
 
   private async getInstitutionName() {

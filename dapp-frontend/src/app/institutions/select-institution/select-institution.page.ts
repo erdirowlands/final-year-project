@@ -149,16 +149,6 @@ export class SelectInstitutionPage implements OnInit, OnDestroy {
     });
   }
 
-  routerWatch() {
-    this.routerSubscription = this.router.events.subscribe(
-      (event: NavigationEnd) => {
-        if(event instanceof NavigationEnd) {
-          if(event.url == '/tabs/view')
-            this.getInstitutionAddresses;
-        }
-      }
-    );
-  }
 
   private showSucessfulAlert() {
     this.alertCtrl
