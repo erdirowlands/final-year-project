@@ -73,11 +73,12 @@
                       </ion-buttons>
                   </ion-thumbnail>
                   <ion-label>
-                      <ion-text color="secondary" text-left>
-                    <h2 >{{ election}}  </h2>
-        
-                  </ion-text>
-                  </ion-label>
+                    <ion-text color="secondary" text-left>
+                  <h2 >{{ election.description }}</h2>
+                  <ion-note  text-wrap> Opening time: {{ election.startTime }} </ion-note>
+                  <ion-note  text-wrap> Closing time: {{ election.endTime }} </ion-note>
+                </ion-text>
+                </ion-label>
                 </ion-item>
               </ion-virtual-scroll>
             </ion-col>
