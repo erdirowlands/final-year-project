@@ -48,6 +48,18 @@ export class ElectionsPage implements OnInit {
     await this.getCandidateDetails();
   }
 
+  private async becomeCandidate(name: string) {
+    let candidateAddress = this.wallet.keypair.adminAddress;
+    await this.electionAbstraction.methods
+      .addNewCandidate(candidateAddress, name, candidateAddress)
+      .call({ from: this.wallet.keypair.adminAddress }, (error, addresses) => {
+        if (name === undefined && name !== '') {
+          return;
+        }
+     //   candidateAddresses = addresses;
+      });
+  }
+
   private async getCandidateDetails() {
     const candidateAddresses = await this.getCandidateAddresses();
     for (let i = 0; i < candidateAddresses.length; i++) {
