@@ -27,6 +27,24 @@ export class ElectionContractService {
     const contractMethod = this._electionAbstraction.methods
       .addNewCandidate(adminAddress, candidateName, candidateAddress)
       .encodeABI();
+    return contractMethod;
+  }
+
+  public async deriveAddVoterethod(
+    voterAddress: string,
+    adminAddress: string,
+    tokenAmount: number,
+    contractAddress: string
+  ) {
+    const web3 = this.web3Provider.getWeb3();
+    this._electionAbstraction = new web3.eth.Contract(
+      electionArtifact.abi,
+      contractAddress
+    );
+    const contractMethod = this._electionAbstraction.methods
+      .addNewVoter(voterAddress, adminAddress, tokenAmount)
+      .encodeABI();
+    return contractMethod;
   }
 
   public async addCandidate(
