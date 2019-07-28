@@ -24,19 +24,17 @@
                   <ion-thumbnail slot="end" >
                       <ion-buttons >
                           <ion-button
-                          slot="primary" (click) ="openEtherScan(admin.address)">
+                          slot="primary" (click) ="openEtherScan(candidate.address)">
                           <ion-icon name="cube" slot="icon-only" ></ion-icon>
                         </ion-button>
                       </ion-buttons>
                   </ion-thumbnail>
                   <ion-label>
-                      <ion-text color="primary" text-left>
-                    <h2 *ngIf="isLoggedInAdmin(admin.address)">{{ admin.name }} ( You )  </h2>
-                    <h2 *ngIf="!isLoggedInAdmin(admin.address)">{{ admin.name }} </h2>
-                    <ion-note  *ngIf="isLoggedInAdmin(admin.address)" text-wrap> Your Ethereum address: {{ admin.address }} </ion-note>
-                    <ion-note  *ngIf="!isLoggedInAdmin(admin.address)"text-wrap> Ethereum address: {{ admin.address }} </ion-note>
-                  </ion-text>
-                  </ion-label>
+                    <ion-text color="primary" text-left>
+                  <h2>{{ candidate.name }} </h2>
+                  <ion-note  text-wrap> Ethereum address: {{ candidate.ethereumAddress }} </ion-note>
+                </ion-text>
+                </ion-label>
                 </ion-item>
               </ion-virtual-scroll>
             </ion-col>

@@ -90,7 +90,7 @@ export class ElectionsPage implements OnInit {
       .call(
         { from: this.wallet.keypair.adminAddress },
         (error, description) => {
-          console.log('asdsadd ' + name);
+          console.log('description of election: ' + name);
           this.description = description;
         }
       );
