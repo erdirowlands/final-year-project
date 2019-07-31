@@ -68,13 +68,12 @@ contract Election {
         _electionStatus = ElectionStatus.IN_PROGRESS;
     }
 
-    // TODO add isAdmin modifier for code document
-    function concludeElection() public  {
-   //     require(now > _closingTime, "The election is still within the set time");
-   //     require(_institution.isAdminStored(msg.sender), "Caller is not an admin!");
+   
+    function concludeElection() public   {
+        require(now > _closingTime, "The election is still within the set time");
+        require(_institution.isAdminStored(msg.sender), "Caller is not an admin!");
         determineVictor();
         _electionStatus = ElectionStatus.CONCLUDED;
-
     }
 
     function determineVictor() internal {
