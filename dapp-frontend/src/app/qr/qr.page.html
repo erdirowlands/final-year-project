@@ -1,0 +1,16 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>QR Code (For testing/demo)</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-label>
+        <ion-text color="primary" text-left>
+      <h2 >A QR code representation of your newly created Ethereum address. Solely for demo purposes so
+        the developer can send you Ether without manually typing in your address. </h2>
+        <qrcode [qrdata]="myAngularxQrCode" [size]="256" [level]="'M'"></qrcode>
+
+    </ion-text>
+    </ion-label>
+</ion-content>
