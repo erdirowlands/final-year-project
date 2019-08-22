@@ -58,7 +58,7 @@ export class InstitutionContractService {
 
     // const gasCost = await this.web3.eth.gasPrice;
     const currentNonce = await web3.eth.getTransactionCount(
-      '0x5b9bA5f0b6ef3E8D90304D8A9C7318c8226fe372',
+      walletAddress,
       'pending'
     );
 
@@ -75,7 +75,7 @@ export class InstitutionContractService {
     // Sign the raw transaction.
     const tx = new Tx(rawTx, { chain: 'kovan', hardfork: 'petersburg' });
     const privateKey = Buffer.from(
-      'b5a9c341bb1d40be80dc731af37e34caff3eccf21b390c9cce01dade7400cfa9',
+      walletKey.substring(2),
       'hex'
     );
     tx.sign(privateKey);
