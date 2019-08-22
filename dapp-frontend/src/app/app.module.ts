@@ -10,12 +10,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NewUserPage } from './auth/new-user/new-user.page';
 import { NewUserPageModule } from './auth/new-user/new-user.module';
+import { QRCodeModule } from 'angularx-qrcode';
 
 
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, NewUserPageModule],
+  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, NewUserPageModule, QRCodeModule],
   providers: [
     StatusBar,
     SplashScreen,

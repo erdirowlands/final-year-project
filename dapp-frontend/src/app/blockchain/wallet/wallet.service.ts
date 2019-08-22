@@ -56,13 +56,14 @@ export class WalletService {
 
   public registerWallet(password: string) {
     const newWallet = this.createWallet(password);
-    this._keypairObservable.next(this._keypair);
     this._keypair = new KeyPair(
       this._wallet[0].address,
       this._wallet[0].privateKey,
       this._wallet[1].address,
       this._wallet[1].privateKey
     );
+    this._keypairObservable.next(this._keypair);
+
   }
 
   public checkForWalletFile() {

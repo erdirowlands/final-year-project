@@ -15,6 +15,7 @@ const routes: Routes = [
     loadChildren: './owner/owner.module#OwnerPageModule',
     // canLoad: [AuthGuard]
   },
+  { path: 'qr', loadChildren: './qr/qr.module#QRPageModule' },
 ];
 @NgModule({
   imports: [

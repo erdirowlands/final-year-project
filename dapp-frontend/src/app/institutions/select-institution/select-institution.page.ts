@@ -29,6 +29,9 @@ export class SelectInstitutionPage implements OnInit, OnDestroy {
 
   universityVotingAbstraction: any;
 
+  addressForDemo: string;
+  public myAngularxQrCode: string = null;
+
   constructor(
     private wallet: WalletService,
     private web3Provider: Web3ProviderService,
@@ -49,6 +52,8 @@ export class SelectInstitutionPage implements OnInit, OnDestroy {
       universityVotingArtifact.abi,
       environment.ethereum.universityVotingContractAddress
     );
+    this.addressForDemo = this.wallet.keypair.adminAddress;
+    this.myAngularxQrCode = this.addressForDemo;
   
   }
 
